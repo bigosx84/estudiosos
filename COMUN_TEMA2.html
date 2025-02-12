@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .question label.option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm">
+            <!-- Aquí se insertarán las preguntas -->
+        </form>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "1. ¿Cuál es la norma institucional básica de Extremadura?",
+                options: ["a) La Constitución Española.", "b) El Estatuto de Autonomía.", "c) La Ley del Gobierno y de la Administración de la Comunidad Autónoma de Extremadura.", "d) Las respuestas a) y b) son correctas."],
+                correct: 1 // Índice de la respuesta correcta
+            },
+            {
+                question: "2. El Estatuto de Autonomía es una norma:",
+                options: ["a) Jurídica.", "b) Política.", "c) Social.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "3. La Comunidad Autónoma de Extremadura asume el ejercicio de su autogobierno regional, la defensa de su propia identidad y de sus valores, así como la mejora y promoción del bienestar de los extremeños a través:",
+                options: ["a) Del pueblo extremeño.", "b) De su Parlamento.", "c) De sus instituciones.", "d) De la Junta."],
+                correct: 3 // Índice de la respuesta correcta
+            },
+            {
+                question: "4. Los poderes de la Comunidad Autónoma de Extremadura emanan:",
+                options: ["a) Del pueblo.", "b) De la Constitución.", "c) Del Estatuto de Autonomía.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "5. ¿Cuál de los siguientes no es un elemento diferencial de Extremadura?",
+                options: ["a) La vitalidad de su arraigada identidad colectiva.", "b) El predominio del mundo rural.", "c) Su proyección en Portugal e Iberoamérica.", "d) La baja densidad de su población."],
+                correct: 0
+            },
+            {
+                question: "6. Las normas, disposiciones o actos de las instituciones:",
+                options: ["a) En ningún caso tendrán efectos extraterritoriales.", "b) Tienen efectos extraterritoriales cuando sea necesario para el pleno ejercicio de aquellas de sus competencias.", "c) Podrán tener efectos extraterritoriales cuando sea necesario para el pleno ejercicio de aquellas de sus competencias cuya naturaleza lo requiera.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "7. Ostentan la condición política de extremeños:",
+                options: ["a) Todos los que tengan la vecindad administrativa en cualquiera de los municipios de Extremadura.", "b) Los ciudadanos españoles que, de acuerdo con las leyes generales del Estado, tengan la vecindad administrativa en cualquiera de los municipios de Extremadura.", "c) Los españoles residentes en el extranjero que hayan tenido vecindad administrativa en Extremadura y acrediten esta condición en la correspondiente representación diplomática de España.", "d) Las comunidades extremeñas asentadas fuera de Extremadura que tengan reconocida la identidad extremeña."],
+                correct: 1
+            },
+            {
+                question: "8. La identidad extremeña:",
+                options: ["a) No puede ser solicitada por comunidades extremeñas asentadas fuera de España.", "b) Implica un deber de colaborar y compartir la vida social y cultural del pueblo extremeño.", "c) Implica la concesión de derechos políticos.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 3
+            },
+            {
+                question: "9. Una ley de la Asamblea aprobada por mayoría de dos tercios de los diputados regulará:",
+                options: ["a) La bandera.", "b) La bandera y el himno.", "c) El escudo y el himno.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "10. La ciudad de Mérida no es la sede de:",
+                options: ["a) La Asamblea.", "b) La Presidencia.", "c) El Consejo Consultivo.", "d) La Junta."],
+                correct: 2
+            },
+            {
+                question: "11. Los principios rectores de los poderes públicos extremeños se regulan en el Estatuto de Autonomía:",
+                options: ["a) En el Capítulo I del Título I.", "b) En el Capítulo I del Título Preliminar.", "c) En el Capítulo I del Título I.", "d) En el Capítulo II del Título Preliminar."],
+                correct: 3
+            },
+            {
+                question: "12. Además de los derechos fundamentales establecidos en la Constitución, los extremeños podrán ejercer frente a los poderes públicos regionales aquellos otros derechos contenidos en el Estatuto de Autonomía o en la legislación, especialmente el de:",
+                options: ["a) Participar en los asuntos públicos directamente.", "b) Participar en los asuntos públicos por medio de representantes.", "c) Petición.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "13. ¿Qué constituye una aspiración esencial de los poderes públicos extremeños?",
+                options: ["a) El pleno empleo.", "b) El impulso de la equidad territorial.", "c) La plena y efectiva igualdad de la mujer en todos los ámbitos de la vida pública, familiar, social, laboral, económica y cultural", "d) La más estricta garantía de los derechos a la salud, a la educación y a la protección pública en caso de dependencia."],
+                correct: 3
+            },
+            {
+                question: "14. La Comunidad Autónoma de Extremadura asume competencias:",
+                options: ["a) Que sean exclusivas.", "b) Que le sean atribuidas, delegadas o transferidas por el Estado de conformidad con lo previsto en la Constitución", "c) Que le puedan corresponder de acuerdo con la Constitución.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "15. En ejercicio de la competencia de desarrollo normativo y ejecución, corresponde a la Comunidad Autónoma de Extremadura:",
+                options: ["a) Ejecutar la normativa del Estado, mediante la legislación propia de desarrollo, la potestad reglamentaria y la función ejecutiva.", "b) En su caso, complementar la normativa del Estado, mediante la legislación propia de desarrollo, la potestad reglamentaria y la función ejecutiva.", "c) Desarrollar la normativa del Estado, mediante la legislación propia de desarrollo, la potestad reglamentaria y la función ejecutiva.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "16. No es una competencia exclusiva de la Comunidad Autónoma de Extremadura:",
+                options: ["a) Sanidad y salud pública, en lo relativo a la organización, funcionamiento interno, coordinación y control de los centros, servicios y establecimientos sanitarios en la Comunidad Autónoma.", "b) Las prestaciones económicas de asistencia social diferentes de las de seguridad social.", "c) Protección civil y emergencias.", "d) La sanidad alimentaria."],
+                correct: 3
+            },
+            {
+                question: "17. En materia de sanidad y salud pública, la Comunidad Autónoma de Extremadura ostenta competencias:",
+                options: ["a) Exclusivas en lo relativo a la organización, funcionamiento interno, coordinación y control de los centros, servicios y establecimientos sanitarios en la Comunidad Autónoma.", "b) De ejecución en lo relativo a la organización, funcionamiento interno, coordinación y control de los centros, servicios y establecimientos sanitarios en la Comunidad Autónoma", "c) De desarrollo normativo y ejecución en lo relativo a la organización, funcionamiento interno, coordinación y control de los centros, servicios y establecimientos sanitarios en la Comunidad Autónoma.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+			            {
+                question: "18. Señale la respuesta incorrecta. En ejercicio de las competencias de ejecución, corresponde a la Comunidad Autónoma de Extremadura:",
+                options: ["a) La potestad reglamentaria organizativa.", "b) La adopción de planes y programas.", "c) La adopción de medidas, decisiones y actos.", "d) La función legislativa, la potestad reglamentaria y, en ejercicio de la función ejecutiva, la adopción de cuantas medidas, decisiones y actos procedan."],
+                correct: 3
+            },
+            {
+                question: "19. El Título VI del actual Estatuto de Autonomía de Extremadura se rubrica como:",
+                options: ["a) Economía y Hacienda.", "b) Régimen Jurídico, ejercicio y control de los Poderes de la Comunidad.", "c) Del Tribunal Superior de Justicia de Extremadura.", "d) Reforma del Estatuto."],
+                correct: 0
+            },
+            {
+                question: "20. En qué materias corresponden a la Comunidad Autónoma de Extremadura las actividades de policía, de servicio público y de fomento:",
+                options: ["a) En las materias en las que ejerce competencias exclusivas.", "b) En las materias en las que ejerce competencias no delegadas ni transferidas por el Estado.", "c) En todas las de su competencia.", "d) En las materias en las que ejerce competencias exclusivas y de desarrollo normativo."],
+                correct: 2
+            },
+            {
+                question: "21. En materia de productos farmacéuticos, la Comunidad Autónoma de Extremadura ostenta competencias:",
+                options: ["a) Exclusivas.", "b) Exclusivas y de desarrollo normativo y ejecución.", "c) De ejecución.", "d) De desarrollo y ejecución."],
+                correct: 2
+            },
+            {
+                question: "22. La Comunidad Autónoma de Extremadura, ejercerá sus poderes a través de:",
+                options: ["a) La Asamblea, el Presidente y el Consejo de Cuentas.", "b) El Presidente, la Junta de Extremadura y el Consejo Económico y Social.", "c) La Asamblea, el Presidente y el Personero Común.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 3
+            },
+            {
+                question: "23. Señale la respuesta incorrecta. La Asamblea de Extremadura:",
+                options: ["a) Representa al pueblo extremeño.", "b) Es elegida por cuatro años.", "c) No puede ser disuelta.", "d) Es inviolable."],
+                correct: 2
+            },
+            {
+                question: "24. El ejercicio de la potestad legislativa corresponde a:",
+                options: ["a) La Asamblea de Extremadura.", "b) La Junta de Extremadura.", "c) El Presidente de la Junta.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "25. Corresponde a la Asamblea de Extremadura:",
+                options: ["a) Solicitar al Gobierno la adopción de proposiciones de ley.", "b) Remitir al Congreso de los Diputados proyectos de ley.", "c) Remitir al Congreso de los Diputados proposiciones de ley.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "26. Los senadores a que se refiere el artículo 69.5 de la Constitución Española, se designan en la Comunidad Autónoma de Extremadura, tras las elecciones autonómicas:",
+                options: ["a) Por el Presidente de la Junta de Extremadura.", "b) Por la Junta de Extremadura", "c) De entre los diputados de la Asamblea.", "d) De acuerdo con la representación proporcional de los grupos de la Cámara y a propuesta del Presidente de la Junta."],
+                correct: 2
+            },
+            {
+                question: "27. Señale la respuesta correcta:",
+                options: ["a) Los diputados de la Asamblea de Extremadura serán, como máximo 75.", "b) Las elecciones serán convocadas mediante Decreto del Consejero de Presidencia.", "c) Para ser elegible no es necesaria la condición política de extremeño.", "d) La circunscripción electoral será la provincia."],
+                correct: 3
+            },
+            {
+                question: "28. La sesión constitutiva de la Asamblea electa será convocada:",
+                options: ["a) Por el Consejero de Presidencia.", "b) Dentro del mes siguiente a la celebración de elecciones.", "c) Por el Presidente cesante.", "d) Conforme a la ley electoral."],
+                correct: 1
+            },
+            {
+                question: "29. Señale la respuesta incorrecta. Los diputados:",
+                options: ["a) No estarán sujetos a mandato imperativo.", "b) Deberán tener identidad extremeña.", "c) Disponen de inviolabilidad por los votos y opiniones que emitan en el ejercicio de su cargo, aun después de haber cesado su mandato.", "d) Durante su mandato, no podrán ser detenidos ni retenidos en el territorio de la Comunidad sino en caso de flagrante delito."],
+                correct: 1
+            },
+            {
+                question: "30. Representa a la Asamblea de Extremadura:",
+                options: ["a) El Presidente de la Junta de Extremadura.", "b) La Mesa de la Asamblea.", "c) La Diputación Permanente.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "31. Cuál es el órgano de gobierno interior de la Asamblea de Extremadura:",
+                options: ["a) La Diputación Permanente.", "b) El Presidente de la Asamblea.", "c) La Mesa de la Asamblea.", "d) La Consejería de Presidencia."],
+                correct: 2
+            },
+            {
+                question: "32. ¿Qué órgano de la Asamblea asume las funciones de esta cuando hubiera sido disuelta anticipadamente o se hubiera agotado la legislatura y hasta la constitución de la nueva Cámara?",
+                options: ["a) El Pleno de la Asamblea.", "b) La Mesa de la Asamblea.", "c) La Diputación Permanente.", "d) El Presidente de la Asamblea."],
+                correct: 2
+            },
+            {
+                question: "33. Señale la respuesta incorrecta. Para que los acuerdos del Pleno y de las Comisiones sean válidos:",
+                options: ["a) Deben ser adoptados en reuniones reglamentariamente convocadas.", "b) Deben asistir la mayoría de sus miembros.", "c) Deben ser aprobados por la mayoría simple de los votos emitidos, en cualquier caso.", "d) Deben ser aprobados por la mayoría simple de los votos emitidos, excepto en los casos en que este Estatuto o una ley exijan una mayoría cualificada."],
+                correct: 2
+            },
+            {
+                question: "34. La potestad legislativa:",
+                options: ["a) Es indelegable.", "b) Reside en el Pleno y se puede delegar en Comisiones en todo caso.", "c) Se puede delegar en la Junta de Extremadura en todo caso.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "35. Señale la respuesta incorrecta. La Junta de Extremadura:",
+                options: ["a) Puede dictar normas con rango de ley.", "b) Dispone de iniciativa legislativa.", "c) No puede dictar normas con rango de ley.", "d) Puede dictar decretos legislativos."],
+                correct: 2
+            },
+            {
+                question: "36. Señale la respuesta incorrecta:",
+                options: ["a) La potestad legislativa de la Comunidad Autónoma reside en el Pleno de la Asamblea de Extremadura.", "b) Las Entidades Locales gozan de potestad legislativa en materias de su competencia.", "c) Las iniciativas legislativas populares deben estar avaladas por al menos 45.000 firmas acreditadas del censo para las elecciones a la Asamblea.", "d) No se puede delegar la potestad legislativa en Comisiones cuando el Estatuto exija una mayoría cualificada ni para las leyes de presupuestos."],
+                correct: 1
+            },
+            {
+                question: "37. Señale la respuesta incorrecta. El candidato a Presidente de Extremadura:",
+                options: ["a) Será propuesto por el Presidente de la Asamblea.", "b) Será presentado por, al menos, una cuarta parte de los miembros de la Asamblea.", "c) Para ser proclamado debe obtener mayoría absoluta.", "d) Debe presentar su programa al Pleno de la Asamblea dentro los quince días siguientes a su designación."],
+                correct: 2
+            },
+            {
+                question: "38. Señale la respuesta correcta en relación con la investidura del Presidente de Extremadura:",
+                options: ["a) Un mismo candidato solo puede ser propuesto una vez.", "b) Se deben convocar de nuevo elecciones si en tres meses desde la primera votación ningún candidato sale elegido.", "c) El Presidente de la Asamblea debe consultar a los grupos parlamentarios antes de proponer un candidato a la Presidencia de Extremadura.", "d) El Presidente de Extremadura no puede ser elegido por mayoría simple del Pleno."],
+                correct: 2
+            },
+            {
+                question: "39. Como supremo representante de la Comunidad Autónoma de Extremadura, corresponde al Presidente:",
+                options: ["a) Promulgar en nombre del Rey las leyes aprobadas por la Asamblea de Extremadura y demás normas con rango de ley.", "b) Ordenar la publicación en el Diario Oficial de Extremadura de los nombramientos del Delegado del Gobierno.", "c) Convocar elecciones a la Asamblea de Extremadura, la sesión constitutiva de esta y, en su caso, disolverla en los términos previstos en este Estatuto.", "d) Firmar los decretos y acuerdos adoptados por la Junta de Extremadura y ordenar su publicación oficial cuando proceda."],
+                correct: 0
+            },
+            {
+                question: "40. Como representante ordinario del Estado, al Presidente de Extremadura no le corresponde:",
+                options: ["a) Promulgar en nombre del Rey las leyes aprobadas por la Asamblea de Extremadura.", "b) Ordenar la publicación en el Diario Oficial de Extremadura de los nombramientos del Delegado del Gobierno y demás altas autoridades estatales en Extremadura, de acuerdo con lo previsto en este Estatuto.", "c) Asegurar en el ámbito de la Comunidad Autónoma el respeto al orden constitucional y al resto del ordenamiento jurídico, adoptando las medidas que fuesen necesarias en el marco de las competencias que le son propias.", "d) Firmar los decretos y acuerdos adoptados por la Junta de Extremadura y ordenar su publicación oficial cuando proceda."],
+                correct: 3
+            },
+            {
+                question: "41. El estatuto de los ex-Presidentes se regulará:",
+                options: ["a) Por ley.", "b) Por decreto legislativo.", "c) Por decreto ley.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "42. Señale la respuesta incorrecta. La disolución anticipada de la Asamblea:",
+                options: ["a) No podrá aprobarse cuando esté en trámite una moción de censura.", "b) No podrá aprobarse cuando esté en trámite una cuestión de confianza.", "c) No podrá aprobarse antes de que transcurra un año desde la anterior disolución, salvo el supuesto regulado en el artículo 25.4 de este Estatuto.", "d) El Presidente, previa deliberación de la Junta de Extremadura y bajo su exclusiva responsabilidad, podrá disponer la disolución anticipada de la Asamblea de Extremadura."],
+                correct: 3
+            },
+            {
+                question: "43. Se entiende otorgada la confianza en el Presidente de Extremadura:",
+                options: ["a) Cuando vote a favor de la misma la mayoría absoluta de los miembros de la Asamblea.", "b) Cuando vote en contra la mayoría simple de los miembros de la Asamblea.", "c) Cuando vote a favor de la misma la mayoría simple de los miembros de la Asamblea.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "44. Señale la respuesta correcta. Si la Asamblea negara su confianza al Presidente:",
+                options: ["a) El Presidente presentará su dimisión ante la Cámara.", "b) El Presidente cesará automáticamente en sus funciones.", "c) El Presidente de la Asamblea convocará, en el plazo máximo de diez días, sesión plenaria para la elección de nuevo Presidente.", "d) El candidato propuesto en dicha moción se entenderá investido de la confianza de la Cámara."],
+                correct: 2
+            },
+            {
+                question: "45. En una misma legislatura, si una moción de censura es rechazada:",
+                options: ["a) No se puede volver a impulsar.", "b) Solo se puede volver a impulsar por signatarios distintos.", "c) Pueden volver a impulsarla los mismos signatarios transcurrido un año desde la presentación de aquella.", "d) Pueden volver a impulsarla los mismos signatarios transcurridos dos años desde la presentación de aquella."],
+                correct: 2
+            },
+            {
+                question: "46. Una cuestión de confianza:",
+                options: ["a) Debe incluir un candidato a Presidente.", "b) Habrá de ser propuesta, al menos, por un quince por ciento de los miembros de la Cámara.", "c) Debe incluir un candidato a Presidente que presente su programa alternativo.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 3
+            },
+            {
+                question: "47. El Presidente de Extremadura no cesa:",
+                options: ["a) Por incompatibilidad con el desempeño de otros cargos públicos.", "b) Por dimisión voluntaria presentada por escrito al Presidente de la Asamblea.", "c) Por la celebración de nuevas elecciones.", "d) Porque se dicte contra él un auto de procesamiento."],
+                correct: 2
+            },
+            {
+                question: "48. Qué normas requieren ser publicadas en el DOE:",
+                options: ["a) Las leyes de la asamblea de Extremadura.", "b) Las disposiciones generales.", "c) Los actos administrativos.", "d) Las respuestas a) y b) son correctas."],
+                correct: 3
+            },
+            {
+                question: "49. Las leyes de la Asamblea de Extremadura serán promulgadas en nombre del Rey por el Presidente de la Comunidad Autónoma en el plazo de:",
+                options: ["a) Diez días desde su remisión oficial por la cámara, disponiendo su publicación en el Diario oficial de Extremadura en el mismo plazo.", "b) Quince días desde su remisión oficial por la cámara, disponiendo su inmediata publicación en el Diario oficial de Extremadura.", "c) Diez días desde su remisión oficial por la cámara, disponiendo su inmediata publicación en el Diario oficial de Extremadura.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "50. Señale la respuesta correcta:",
+                options: ["a) La Junta de Extremadura responde jurídicamente ante la Asamblea de forma solidaria.", "b) La Junta de Extremadura responde políticamente ante la Asamblea de forma solidaria y asume la responsabilidad de la gestión de cada uno de sus miembros.", "c) La responsabilidad política de la Junta de Extremadura ante la Asamblea se entiende sin perjuicio de la responsabilidad directa de cada uno de sus miembros por su gestión.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "51. No corresponde al Gobierno de la Junta de Extremadura:",
+                options: ["a) Interponer recursos de inconstitucionalidad y demás procedimientos de la competencia del Tribunal Constitucional para los que esté legitimada.", "b) Resolver los conflictos de competencias entre corporaciones locales cuando no se haya establecido reserva a favor del Estado.", "c) Establecer la política general de la Comunidad Autónoma en relación con las competencias asumidas.", "d) La potestad sancionadora, dentro de los límites que establezcan la ley y las normas que la desarrollen."],
+                correct: 1
+            },
+            {
+                question: "52. La Junta de Extremadura tiene que estar compuesta necesariamente por:",
+                options: ["a) El Presidente.", "b) El Presidente, Vicepresidentes y Consejeros.", "c) El Presidente y Consejeros.", "d) El Presidente y Vicepresidentes."],
+                correct: 2
+            },
+            {
+                question: "53. En caso de extraordinaria y urgente necesidad, la Junta de Extremadura puede dictar:",
+                options: ["a) Disposiciones generales provisionales bajo la forma de Decreto-ley.", "b) Disposiciones legislativas provisionales bajo la forma de Decreto-ley.", "c) Decretos legislativos.", "d) Las respuestas b) y c) son correctas."],
+                correct: 1
+            },
+            {
+                question: "54. Deben residir en Extremadura:",
+                options: ["a) Todos los miembros de la Junta de Extremadura.", "b) El Presidente.", "c) El Presidente y los Vicepresidentes, de haberlos.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "55. No pueden ser objeto de Decreto-ley:",
+                options: ["a) La reforma del Estatuto.", "b) Las leyes de presupuestos.", "c) Las materias objeto de leyes para las que se requiera una mayoría cualificada.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "56. Los Decretos-leyes:",
+                options: ["a) Deben ser convalidados por la asamblea en un plazo improrrogable de dos meses desde su publicación oficial.", "b) Deben ser objeto de debate en la asamblea antes de someterse a votación.", "c) Deben ser convalidados por la asamblea en un plazo improrrogable de tres meses desde su publicación oficial.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "57. ¿Cuál de las siguientes materias, se corresponde con una competencia de ejecución de la Comunidad Autónoma de Extremadura?",
+                options: ["a) Productos farmacéuticos.", "b) Sanidad agrícola y animal.", "c) Seguridad Social.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+			           {
+                question: "58. Quienes suplen al Presidente en caso de vacante, ausencia o enfermedad:",
+                options: ["a) Los Vicepresidentes.", "b) Los Consejeros.", "c) Los Consejeros y, en su caso, los Vicepresidentes.", "d) Los Vicepresidentes y, en su caso, los Consejeros."],
+                correct: 3
+            },
+            {
+                question: "59. La responsabilidad penal del Presidente y de los Consejeros será exigible ante la Sala de lo Penal del Tribunal Supremo:",
+                options: ["a) Por todos sus actos delictivos.", "b) Por los actos delictivos cometidos en España.", "c) Por los actos delictivos cometidos dentro del territorio de la Comunidad Autónoma.", "d) Por los actos delictivos cometidos fuera del territorio de la Comunidad Autónoma."],
+                correct: 0
+            },
+            {
+                question: "60. La responsabilidad civil del Presidente y de los Consejeros por hechos relativos a su función será exigible:",
+                options: ["a) Ante el Tribunal Supremo en todo caso.", "b) Ante el Tribunal Supremo por los actos delictivos cometidos fuera del territorio de la Comunidad Autónoma.", "c) Ante el Tribunal Superior de Justicia de Extremadura.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "61. La Administración de la Comunidad Autónoma goza de las siguientes potestades y facultades:",
+                options: ["a) Potestad expropiatoria, para cuyo ejercicio la Comunidad Autónoma podrá crear un órgano propio de determinación de justiprecios.", "b) Exención de la obligación de prestar toda clase de cauciones o garantías ante los juzgados y tribunales de cualquier jurisdicción y ante los organismos públicos.", "c) Inembargabilidad de sus bienes y derechos.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "62. Las leyes de la Asamblea de Extremadura y las disposiciones normativas del Presidente y la Junta entrarán en vigor:",
+                options: ["a) A los 20 días de su publicación íntegra en el DOE, salvo que en ellas se disponga otra cosa.", "b) Al día siguiente de su publicación íntegra en el DOE, salvo que en ellas se disponga otra cosa.", "c) El mismo día de su publicación íntegra en el DOE, salvo que en ellas se disponga otra cosa.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "63. La publicación en el DOE de las disposiciones generales y de los actos emanados de instituciones que así lo requieran:",
+                options: ["a) Será suficiente para determinar su entrada en vigor y su eficacia.", "b) Determina su entrada en vigor y su eficacia.", "c) Será suficiente para determinar su entrada en vigor.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "64. Las leyes de la Asamblea y los decretos con rango legal que dicte la Junta de Extremadura:",
+                options: ["a) Serán publicadas solo en el Boletín Oficial del Estado.", "b) Podrán ser publicadas en el Boletín Oficial del Estado.", "c) Serán publicadas en el DOE y en el BOE.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "65. Las leyes de la Asamblea de Extremadura y los decretos leyes:",
+                options: ["a) Serán recurribles ante la jurisdicción contencioso-administrativa.", "b) No están sujetos a control de constitucionalidad.", "c) Están sujetos a control de constitucionalidad.", "d) Están sujetos a revisión contenciosa y a control de constitucionalidad."],
+                correct: 2
+            },
+            {
+                question: "66. Los decretos legislativos:",
+                options: ["a) No pueden ser fiscalizados por la jurisdicción por la contencioso-administrativa.", "b) Podrán ser fiscalizados solo por la jurisdicción constitucional en los supuestos de desviación o exceso en el ejercicio de la delegación legislativa.", "c) No procederá su revisión contenciosa cuando el texto articulado o refundido se hubiere debatido y votado por la Asamblea de Extremadura.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "67. No genera responsabilidad indemnizable:",
+                options: ["a) La aplicación de las leyes en ningún caso.", "b) La aplicación de las leyes y de los actos legislativos en ningún caso.", "c) La aplicación de los actos legislativos no expropiatorios salvo que de modo expreso se establezca en ellos.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "68. En caso de conflictos entre instituciones de autogobierno, el Consejo Consultivo:",
+                options: ["a) Debe emitir dictamen vinculante señalando la titularidad de la competencia controvertida.", "b) Puede emitir dictamen vinculante señalando la titularidad de la competencia controvertida.", "c) Emite dictamen no vinculante señalando la titularidad de la competencia controvertida.", "d) No emite dictamen."],
+                correct: 2
+            },
+            {
+                question: "69. Tiene su sede en Cáceres:",
+                options: ["a) El Consejo Consultivo.", "b) El Personero del Pueblo.", "c) El Consejo Económico y Social.", "d) El Consejo de Cuentas."],
+                correct: 3
+            },
+            {
+                question: "70. Qué institución estatutaria controla externamente la actividad financiera y presupuestaria de las Universidades Públicas de Extremadura:",
+                options: ["a) El Consejo Económico y Social.", "b) El Consejo de Cuentas.", "c) La Consejería de Hacienda.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "71. Cuál es el órgano consultivo de la Junta de Extremadura en materias socioeconómicas:",
+                options: ["a) El Consejo Consultivo.", "b) El Personero del Pueblo.", "c) El Consejo Económico y Social.", "d) El Consejo de Cuentas."],
+                correct: 2
+            },
+            {
+                question: "72. Por ley de la Asamblea, aprobada por mayoría absoluta, se regulará la composición, el régimen jurídico, la organización y el funcionamiento de:",
+                options: ["a) El Consejo Consultivo.", "b) El Personero del Común.", "c) El Consejo de Cuentas.", "d) Las respuestas a) y c) son correctas."],
+                correct: 3
+            },
+            {
+                question: "73. El Consejo Consultivo tiene su sede en:",
+                options: ["a) Mérida.", "b) Cáceres.", "c) Badajoz.", "d) Plasencia."],
+                correct: 1
+            },
+            {
+                question: "74. El Personero del Común deberá ser elegido:",
+                options: ["a) Por mayoría simple de los miembros de la Asamblea de Extremadura.", "b) Por mayoría absoluta de los miembros de la Asamblea de Extremadura.", "c) Por el Presidente de Extremadura de entre los miembros de la Asamblea.", "d) Por tres quintas partes de los miembros de la Asamblea de Extremadura."],
+                correct: 3
+            },
+			            {
+                question: "75. El Consejo Consultivo dictaminará sobre la adecuación a la Constitución, al presente Estatuto y al resto del ordenamiento jurídico:",
+                options: ["a) De los anteproyectos de reforma estatutaria.", "b) De los proyectos de ley y de los anteproyectos de otras normas con rango de ley.", "c) De la interposición o mantenimiento de recursos y acciones ante el Pleno del Tribunal Constitucional y su personación en ellos.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "76. Cuántos títulos tiene el Estatuto de Autonomía (Ley Orgánica 1/2011, de 28 de enero, de reforma del Estatuto de Autonomía de la Comunidad Autónoma de Extremadura):",
+                options: ["a) Diez.", "b) Siete.", "c) Seis.", "d) Ocho."],
+                correct: 3
+            },
+            {
+                question: "77. ¿Cuándo fue aprobado el primer Estatuto de Autonomía de Extremadura?",
+                options: ["a) En 1984.", "b) En 1987.", "c) En 1982.", "d) En 1983."],
+                correct: 3
+            },
+            {
+                question: "78. ¿Cuántas reformas ha sufrido el Estatuto de Autonomía de Extremadura?",
+                options: ["a) Tres.", "b) Dos.", "c) Ninguna.", "d) Cuatro."],
+                correct: 3
+            },
+            {
+                question: "79. ¿Cuántos artículos tiene el Estatuto de Autonomía (Ley Orgánica 1/2011, de 28 de enero, de reforma del Estatuto de Autonomía de la Comunidad Autónoma de Extremadura)?",
+                options: ["a) 87.", "b) 88.", "c) 91.", "d) 90."],
+                correct: 2
+            },
+            {
+                question: "80. ¿Cuántos capítulos tiene el título II del Estatuto de Autonomía (Ley Orgánica 1/2011, de 28 de enero, de reforma del Estatuto de Autonomía de la Comunidad Autónoma de Extremadura)?",
+                options: ["a) Ninguno.", "b) Dos.", "c) Tres.", "d) Cinco."],
+                correct: 2
+            },
+            {
+                question: "81. ¿En qué título del Estatuto de Autonomía (Ley Orgánica 1/2011, de 28 de enero, de reforma del Estatuto de Autonomía de la Comunidad Autónoma de Extremadura), se regula la organización territorial?",
+                options: ["a) IV.", "b) III.", "c) II.", "d) V."],
+                correct: 0
+            },
+            {
+                question: "82. ¿En qué título del Estatuto de Autonomía (Ley Orgánica 1/2011, de 28 de enero, de reforma del Estatuto de Autonomía de la Comunidad Autónoma de Extremadura), se regulan las Instituciones de Extremadura?",
+                options: ["a) IV.", "b) III.", "c) II.", "d) V."],
+                correct: 1
+            },
+            {
+                question: "83. ¿Cuántas disposiciones adicionales tiene el actual Estatuto de Autonomía de Extremadura?",
+                options: ["a) Seis.", "b) Cinco.", "c) Siete.", "d) Tres."],
+                correct: 2
+            },
+            {
+                question: "84. ¿En qué título del actual Estatuto de Autonomía de Extremadura se regula el Poder Judicial en Extremadura?",
+                options: ["a) En ninguno.", "b) En el Título III.", "c) En el Título II.", "d) En el Título VI."],
+                correct: 3
+            },
+            {
+                question: "85. ¿Cuántos capítulos tiene el Título IV del actual Estatuto de Autonomía de Extremadura?",
+                options: ["a) Dos.", "b) Tres.", "c) Ninguno.", "d) Cinco."],
+                correct: 1
+            },
+            {
+                question: "86. ¿En qué capítulo de qué título se regula la Hacienda Pública de Extremadura en el actual Estatuto de Autonomía de Extremadura?",
+                options: ["a) Capítulo II, Título III.", "b) Capítulo I, Título II.", "c) Capítulo II, Título VI.", "d) Capítulo III, Título VII."],
+                correct: 2
+            },
+            {
+                question: "87. ¿Cuándo se produjo la reforma más profunda del Estatuto de Autonomía de Extremadura?",
+                options: ["a) 1987.", "b) 1991.", "c) 1999.", "d) 2003."],
+                correct: 2
+            },
+            {
+                question: "88. La designación de los Senadores que correspondan a la Comunidad Autónoma, corresponde:",
+                options: ["a) Al Gobierno autonómico.", "b) A la Asamblea de Extremadura.", "c) A los votantes del territorio de la Comunidad Autónoma.", "d) A la Junta de Extremadura."],
+                correct: 1
+            },
+            {
+                question: "89. ¿A qué órgano corresponde establecer la política general de la Comunidad Autónoma?",
+                options: ["a) Al Presidente de la Comunidad Autónoma.", "b) A la Asamblea de Extremadura.", "c) A cada Consejero en particular.", "d) A la Junta de Extremadura."],
+                correct: 3
+            },
+            {
+                question: "90. De los siguientes órganos, ¿a cuál de ellos es al que corresponde la iniciativa legislativa en la Asamblea de Extremadura?",
+                options: ["a) Al Congreso de los Diputados.", "b) A las Cortes Generales, a propuesta de una tercera parte de sus miembros.", "c) A los Consejeros de la Junta de Extremadura.", "d) A las entidades locales."],
+                correct: 2
+            },
+            {
+                question: "91. Las leyes de la Asamblea de Extremadura entrarán en vigor:",
+                options: ["a) A los veinte días de su publicación integra en el Boletín Oficial del Estado, salvo que en ellas se disponga otra cosa.", "b) Al día siguiente al de su publicación integra en el Diario Oficial, salvo que en ellas se disponga otra cosa.", "c) Al día siguiente al de su publicación integra en el Boletín Oficial del Estado, salvo que en ellas se disponga otra cosa.", "d) A los veinte días de su publicación íntegra en el Diario Oficial, salvo que en ellas se disponga otra cosa."],
+                correct: 3
+            },
+            {
+                question: "92. La facultad de solicitar al Gobierno de la Nación la adopción de proyectos de ley o remitir al Congreso de los Diputados proposiciones de ley, de acuerdo con el artículo 87.2 de la Constitución, en la Comunidad Autónoma de Extremadura corresponde:",
+                options: ["a) A la Junta de Extremadura.", "b) Al Presidente de la Junta de Extremadura.", "c) A la Asamblea de Extremadura.", "d) Al Presidente de la Asamblea de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "93. ¿A quién representa la Asamblea?",
+                options: ["a) Al Gobierno y al pueblo extremeño.", "b) Al pueblo extremeño y a sus territorios.", "c) Al pueblo extremeño.", "d) A las instituciones extremeñas."],
+                correct: 2
+            },
+            {
+                question: "94. De acuerdo con el artículo 41 del actual Estatuto de Autonomía de Extremadura, ¿a qué control están sometidas las leyes de la Comunidad Autónoma de Extremadura?",
+                options: ["a) Al de los Tribunales Contencioso-Administrativos.", "b) Al Tribunal Supremo.", "c) Al control de constitucionalidad.", "d) Al Tribunal Superior de Justicia de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "95. ¿A qué control están sometidas las normas reglamentarias y los actos administrativos de la Comunidad Autónoma de Extremadura?",
+                options: ["a) Al Tribunal Constitucional.", "b) Al Tribunal Supremo.", "c) Al de la Jurisdicción Contencioso-Administrativa y en su caso, ante la jurisdicción competente que corresponda.", "d) Al del Tribunal Superior de Justicia de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "96. ¿Ante quién responde políticamente la Junta de Extremadura?",
+                options: ["a) Ante el Congreso de los Diputados.", "b) Ante el Consejo de Ministros.", "c) Ante la Asamblea de Extremadura.", "d) Ante el Presidente de la Junta de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "97. ¿Ante quién es exigible la responsabilidad penal de los Diputados de la Asamblea fuera de la Comunidad Autónoma?",
+                options: ["a) Ante el Tribunal Superior de Justicia de la Comunidad Autónoma donde se produzca el hecho delictivo.", "b) Ante el Tribunal Constitucional.", "c) Ante la Sala de la Jurisdicción Contencioso-Administrativa del Tribunal Supremo.", "d) Ante la Sala de lo Penal del Tribunal Supremo."],
+                correct: 3
+            },
+			            {
+                question: "98. La responsabilidad penal del Presidente de la Junta de Extremadura por delitos cometidos en el territorio de la Comunidad Autónoma de Extremadura, será exigible:",
+                options: ["a) Ante el Tribunal Superior de Justicia de Extremadura.", "b) Ante la Sala de lo Penal del Tribunal Supremo.", "c) Ante cualquiera de esos dos Tribunales, de manera indistinta.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "99. ¿Cuál de las siguientes no es causa de cese del Presidente de la Comunidad Autónoma de Extremadura?",
+                options: ["a) Dimisión.", "b) Aprobación de una moción de censura por la Asamblea de Extremadura.", "c) Votación favorable de una cuestión de confianza por la Asamblea de Extremadura.", "d) Renovación de la Asamblea de Extremadura, a consecuencia de unas elecciones."],
+                correct: 2
+            },
+            {
+                question: "100. La competencia consistente en aeropuertos, helipuertos y puertos deportivos y otras infraestructuras de transporte que no sean de interés general, está prevista en el:",
+                options: ["a) Artículo 11 del Estatuto de Autonomía de Extremadura.", "b) Artículo 10 del Estatuto de Autonomía de Extremadura.", "c) Artículo 9 del Estatuto de Autonomía de Extremadura.", "d) No aparece regulada en el Estatuto de Autonomía de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "101. La competencia consistente en la Gestión del régimen económico de la seguridad social y de los servicios que integran el sistema, con pleno respeto a los principios de unidad económico patrimonial y de solidaridad financiera, está prevista en el:",
+                options: ["a) Artículo 9 del Estatuto de Autonomía de Extremadura.", "b) Artículo 10 del Estatuto de Autonomía de Extremadura.", "c) Artículo 11 del Estatuto de Autonomía de Extremadura.", "d) No aparece regulada en el Estatuto de Autonomía de Extremadura."],
+                correct: 1
+            },
+            {
+                question: "102. ¿Qué artículo del Estatuto de Autonomía de Extremadura dice que la ley electoral, cuya aprobación requerirá mayoría de tres quintos de los Diputados de la Asamblea, regulará la convocatoria de elecciones; el procedimiento y los sistemas electorales; la fórmula de atribución de escaños; las subvenciones, los gastos electorales y su control; y un sistema especifico de inelegibilidad e incompatibilidad de los candidatos y diputados?",
+                options: ["a) Artículo 18.", "b) Artículo 21.", "c) Artículo 23.", "d) Artículo 17."],
+                correct: 1
+            },
+            {
+                question: "103. La relación de competencias exclusivas de la Comunidad Autónoma de Extremadura viene regulada en el Estatuto de Autonomía de Extremadura, en el:",
+                options: ["a) Artículo 8.", "b) Artículo 7.", "c) Artículo 6.", "d) Artículo 9."],
+                correct: 0
+            },
+            {
+                question: "104. El Presidente de Extremadura cesa por:",
+                options: ["a) Aprobación de una moción de censura.", "b) Celebración de nuevas elecciones.", "c) Dimisión voluntaria presentada por escrito al Presidente de la Asamblea.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "105. La competencia consistente en Estadística para fines de interés de la Comunidad Autónoma, está prevista en el:",
+                options: ["a) Artículo 10 del Estatuto de Autonomía de Extremadura.", "b) Artículo 9 del Estatuto de Autonomía de Extremadura.", "c) Artículo 8 del Estatuto de Autonomía de Extremadura.", "d) No aparece regulada en el Estatuto de Autonomía de Extremadura."],
+                correct: 0
+            },
+            {
+                question: "106. Las instituciones de la Comunidad ejercerán sus funciones y competencias con sometimiento a la ley y de conformidad con los principios de:",
+                options: ["a) Solidaridad, transparencia e información recíproca con el resto de los poderes públicos del Estado.", "b) Colaboración, solidaridad y transparencia.", "c) Uniformidad, igualdad y colaboración con el resto de los poderes públicos del Estado.", "d) Lealtad institucional, solidaridad, colaboración, coordinación, cooperación y mutua ayuda, entre sí y con todos los poderes públicos."],
+                correct: 3
+            },
+            {
+                question: "107. Los poderes públicos regionales respecto a la orientación sexual y a la identidad de género de todas las personas:",
+                options: ["a) Estimularán su investigación científica y técnica.", "b) Consideran un objetivo irrenunciable que informara todas las políticas regionales y la práctica de las instituciones.", "c) Velarán por su especial protección.", "d) Promoverán políticas para garantizar su respeto."],
+                correct: 3
+            },
+            {
+                question: "108. Al Presidente, como supremo representante de la Comunidad Autónoma de Extremadura, le corresponde:",
+                options: ["a) Ejercer la representación de Extremadura en sus relaciones con las instituciones del Estado.", "b) Convocar elecciones a la Asamblea de Extremadura.", "c) Suscribir convenios de colaboración con el Estado.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "109. Como representante ordinario del Estado en la Comunidad Autónoma de Extremadura, corresponde al Presidente:",
+                options: ["a) Convocar a la Asamblea electa de acuerdo con lo establecido en el número 5 del artículo 21 del Estatuto de Autonomía.", "b) Convocar elecciones a la Asamblea de Extremadura en los términos previstos en el artículo 21, número 4, del Estatuto de Autonomía.", "c) Nombrar al Presidente del Tribunal Superior de Justicia de Extremadura, de acuerdo con lo previsto en el Estatuto de Autonomía.", "d) Ordenar la publicación en el Diario Oficial de Extremadura de los nombramientos del Delegado del Gobierno y demás altas autoridades estatales en Extremadura, de acuerdo con lo previsto en el Estatuto de Autonomía."],
+                correct: 3
+            },
+            {
+                question: "110. De acuerdo con el artículo 15 del texto vigente del Estatuto de Autonomía de Extremadura, la Comunidad Autónoma de Extremadura ejercerá sus poderes a través:",
+                options: ["a) De la Asamblea de Extremadura y de la Junta de Extremadura.", "b) De la Asamblea de Extremadura, su Presidente y de la Diputación Permanente.", "c) De la Asamblea, del Presidente y de la Junta de Extremadura.", "d) De la Asamblea de Extremadura, de las Diputaciones Provinciales y de la Federación de Municipios de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "111. La iniciativa legislativa popular:",
+                options: ["a) Deberá estar avalada por al menos 50.000 firmas acreditadas del censo para las elecciones a la Asamblea.", "b) Deberá estar avalada por al menos el 5 % del censo para las elecciones a la Asamblea.", "c) Deberá estar avalada por al menos 45.000 firmas acreditadas del censo para las elecciones a la Asamblea.", "d) Deberá estar avalada por al menos el 3 % del censo para las elecciones a la Asamblea."],
+                correct: 2
+            },
+            {
+                question: "112. Los poderes de la Comunidad Autónoma de Extremadura emanan:",
+                options: ["a) De la Constitución y de su Estatuto.", "b) Del pueblo, de la Constitución y de su Estatuto.", "c) De su Estatuto.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "113. La sesión constitutiva de la Asamblea electa será convocada en el siguiente plazo:",
+                options: ["a) Dentro de los 20 días siguientes a la celebración de las elecciones.", "b) Dentro de los 30 días siguientes a la celebración de las elecciones.", "c) Dentro de los 25 días siguientes a la celebración de las elecciones.", "d) Dentro de los 15 días siguientes a la celebración de las elecciones."],
+                correct: 1
+            },
+            {
+                question: "114. ¿En qué plazo el candidato propuesto para Presidente de la Junta de Extremadura presentará su programa a la Asamblea?",
+                options: ["a) En el mes siguiente al de las elecciones.", "b) Dentro de los veinte días siguientes al de su designación.", "c) Dentro de los quince días siguientes a su designación.", "d) Ninguna de las anteriores respuestas es correcta."],
+                correct: 2
+            },
+			            {
+                question: "115. ¿Cuál de las siguientes funciones no corresponde a la Asamblea?",
+                options: ["a) Elaborar su Reglamento, cuya aprobación y modificación exigirá mayoría absoluta de la Cámara en una votación final sobre el conjunto del proyecto.", "b) Designar, de entre sus miembros, los senadores y diputados correspondientes a la Comunidad Autónoma según lo establecido en el artículo 69.5 de la Constitución.", "c) Controlar el ejercicio de las delegaciones legislativas conferidas a la Junta y convalidar sus Decretos leyes.", "d) Aprobar los Presupuestos de la Comunidad Autónoma."],
+                correct: 1
+            },
+            {
+                question: "116. El Presidente de Extremadura, será:",
+                options: ["a) Elegido por el Rey.", "b) Nombrado por la Asamblea de Extremadura de entre sus miembros.", "c) Elegido por los ciudadanos.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "117. De acuerdo con el artículo 48 del Estatuto de Autonomía de Extremadura, ¿qué mayoría precisa la votación para la elección del Personero de lo Común?",
+                options: ["a) La mitad de los miembros de la Asamblea de Extremadura.", "b) Dos terceras partes de los miembros de la Asamblea de Extremadura.", "c) Tres cuartas partes de los miembros de la Asamblea de Extremadura.", "d) Tres quintas partes de los miembros de la Asamblea de Extremadura."],
+                correct: 3
+            },
+            {
+                question: "118. ¿Qué artículo de la Ley Orgánica 1/2011, de 28 de enero, de reforma del Estatuto de Autonomía de la Comunidad Autónoma de Extremadura contiene los principios rectores de los poderes públicos regionales?",
+                options: ["a) El artículo 6.", "b) El artículo 7.", "c) El artículo 8.", "d) El artículo 9."],
+                correct: 1
+            },
+            {
+                question: "119. El número máximo de diputados de la Asamblea de Extremadura es de:",
+                options: ["a) 56.", "b) 65.", "c) 46.", "d) 64."],
+                correct: 1
+            },
+            {
+                question: "120. En materia de comercio interior, dentro de la unidad de mercado y conforme a la legislación mercantil, a la Comunidad Autónoma de Extremadura le corresponde:",
+                options: ["a) La competencia exclusiva.", "b) El desarrollo legislativo.", "c) La función ejecutiva.", "d) Extremadura no tiene competencias en dicha materia."],
+                correct: 0
+            },
+            {
+                question: "121. ¿Cuál es el órgano colegiado que ejerce las funciones propias del Gobierno de la Comunidad Autónoma?",
+                options: ["a) Los Consejeros.", "b) El Presidente de la Asamblea y la totalidad de los Consejeros.", "c) La Junta de Extremadura.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "122. Si en el plazo de dos meses, a partir de la primera votación, ninguno de los candidatos hubiera sido elegido Presidente, la Asamblea quedará disuelta y:",
+                options: ["a) Su Diputación Permanente procederá a convocar nuevas elecciones.", "b) El Presidente de la Comunidad Autónoma en funciones procederá a convocar nuevas elecciones.", "c) El Presidente de la Asamblea en funciones procederá a convocar nuevas elecciones.", "d) Su Pleno procederá a convocar nuevas elecciones."],
+                correct: 1
+            },
+            {
+                question: "123. Sobre la base de lo dispuesto en el artículo 22 del Estatuto de Autonomía de Extremadura, la potestad legislativa de la Comunidad Autónoma reside en:",
+                options: ["a) La Junta de Extremadura.", "b) El Presidente de la Junta.", "c) El Pleno de la Asamblea.", "d) Las respuestas a) y c) son correctas."],
+                correct: 2
+            },
+            {
+                question: "124. ¿Quién elige al Presidente de la Junta de Extremadura?",
+                options: ["a) El Rey.", "b) El Presidente del Gobierno.", "c) La Asamblea de Extremadura.", "d) El Consejo de Gobierno de la Junta de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "125. Las Leyes de la Asamblea de Extremadura son promulgadas por:",
+                options: ["a) El Rey.", "b) El Presidente del Gobierno.", "c) El Presidente de la Comunidad Autónoma, en nombre del Rey.", "d) El Presidente de la Asamblea."],
+                correct: 2
+            },
+            {
+                question: "126. ¿Quién nombra y separa a los Consejeros de la Junta de Extremadura?",
+                options: ["a) El Presidente de la Asamblea.", "b) El Rey.", "c) El Presidente de la Junta, a propuesta de la Asamblea de Extremadura.", "d) El Presidente de la Junta, dando cuenta a la Asamblea."],
+                correct: 3
+            },
+            {
+                question: "127. ¿Quién nombra al Presidente de la Comunidad de Extremadura?",
+                options: ["a) El Presidente del Gobierno.", "b) El Rey, a propuesta de la Junta de Extremadura.", "c) El Rey.", "d) El Presidente saliente de la Comunidad de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "128. La reforma del actual Estatuto de Autonomía de Extremadura está dispuesta en:",
+                options: ["a) El Título V.", "b) El Título VI.", "c) El Título IX.", "d) El Título VII."],
+                correct: 1
+            },
+            {
+                question: "129. ¿Dónde tiene su sede el Consejo Consultivo?",
+                options: ["a) En Cáceres.", "b) En Badajoz.", "c) En Mérida.", "d) En Plasencia."],
+                correct: 0
+            },
+            {
+                question: "130. ¿Dónde tiene su sede el Consejo de Cuentas?",
+                options: ["a) En Cáceres.", "b) En Badajoz.", "c) En Mérida.", "d) En Plasencia."],
+                correct: 2
+            },
+            {
+                question: "131. ¿Dónde tiene su sede el Consejo Económico y Social?",
+                options: ["a) En Cáceres.", "b) En Badajoz.", "c) En Mérida.", "d) En Plasencia."],
+                correct: 2
+            },
+            {
+                question: "132. ¿Dónde tiene su sede el Personero del Común?",
+                options: ["a) En Cáceres.", "b) En Badajoz.", "c) En Mérida.", "d) En Plasencia."],
+                correct: 2
+            },
+            {
+                question: "133. Las leyes de la Asamblea de Extremadura serán promulgadas en nombre del Rey, por el Presidente de la Junta:",
+                options: ["a) En el plazo de 15 días desde su remisión oficial por la Cámara.", "b) En el plazo de 20 días desde su remisión oficial por la Cámara.", "c) Al día siguiente de su publicación.", "d) En el plazo de 10 días desde su remisión oficial por la Cámara."],
+                correct: 3
+            },
+            {
+                question: "134. Los miembros de la Junta de Extremadura deberán residir necesariamente:",
+                options: ["a) En Mérida.", "b) En Extremadura.", "c) En España.", "d) En el municipio donde presten sus funciones."],
+                correct: 1
+            },
+            {
+                question: "135. De acuerdo con el artículo 2 del Estatuto de Autonomía de Extremadura, ¿cuándo podrán tener efectos extraterritoriales las normas, disposiciones o actos de las instituciones extremeñas?",
+                options: ["a) Nunca.", "b) En todo caso.", "c) Cuando sea necesario para el pleno ejercicio de aquellas de sus competencias cuya naturaleza lo requiera.", "d) Cuando así lo aconsejen razones de interés general previstas en la Constitución."],
+                correct: 2
+            },
+            {
+                question: "136. No es una competencia exclusiva de la Comunidad Autónoma de Extremadura:",
+                options: ["a) Conservación, defensa y protección del Fuero de Baylío.", "b) Servicio meteorológico de la Comunidad Autónoma.", "c) Productos farmacéuticos.", "d) Ordenación farmacéutica."],
+                correct: 2
+            },
+			            {
+                question: "137. La bandera de la Comunidad Autónoma de Extremadura:",
+                options: ["a) No está definida en el Estatuto, sino que se definió posteriormente mediante la Ley que regula la Bandera, el Escudo y el Himno de Extremadura.", "b) Está formada por tres franjas verticales iguales, verde, negra y blanca por este orden.", "c) Según dispone el artículo 4 del Estatuto de Autonomía, se regulará por ley de la Asamblea aprobada por mayoría de dos tercios de los diputados.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "138. En cuanto al medioambiente, Extremadura ostenta la competencia:",
+                options: ["a) Ejecutiva.", "b) Exclusiva.", "c) De desarrollo normativo y ejecución.", "d) No ostenta competencias en materia medioambiental."],
+                correct: 2
+            },
+            {
+                question: "139. Señala la respuesta incorrecta. La Asamblea de Extremadura:",
+                options: ["a) Es elegida por cuatro años.", "b) No podrá ser disuelta, salvo en los supuestos previstos en el presente Estatuto.", "c) Goza de autonomía reglamentaria, presupuestaria, administrativa, pero no disciplinaria.", "d) Es inviolable."],
+                correct: 2
+            },
+            {
+                question: "140. Los diputados de la Asamblea de Extremadura, por los votos y opiniones emitidos en el ejercicio de su cargo, disponen de:",
+                options: ["a) Inmunidad.", "b) Inimputabilidad.", "c) Inviolabilidad.", "d) Fuero especial."],
+                correct: 2
+            },
+            {
+                question: "141. De entre los siguientes, y de acuerdo con el artículo 1 del Estatuto de Autonomía de Extremadura, ¿cuál es un elemento diferencial de Extremadura?",
+                options: ["a) La vitalidad de su reciente identidad colectiva.", "b) La calidad de su medioambiente y su patrimonio cultural.", "c) La baja densidad de su población y su dispersión, entendida como dificultad relativa de acceso a los servicios y equipamientos generales.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "142. En materia de pesca lacustre, a la Comunidad Autónoma de Extremadura le corresponde:",
+                options: ["a) La competencia exclusiva.", "b) La Comunidad Autónoma de Extremadura no tiene competencias en pesca lacustre.", "c) La función ejecutiva.", "d) El desarrollo legislativo."],
+                correct: 0
+            },
+            {
+                question: "143. La Administración de la Comunidad Autónoma de Extremadura sirve con objetividad a los intereses generales de Extremadura y procura satisfacer con eficacia y eficiencia las necesidades públicas, de conformidad con:",
+                options: ["a) Los principios constitucionales y estatutarios.", "b) La Constitución, el Estatuto de Autonomía y las demás normas legales y al Derecho.", "c) La Ley y al Derecho.", "d) Los principios de buena fe, confianza legítima, transparencia, calidad en el servicio a los ciudadanos, así como los establecidos en el artículo 15.3 del Estatuto."],
+                correct: 3
+            },
+            {
+                question: "144. Según el artículo 6 del actual Estatuto de Autonomía de Extremadura, los derechos fundamentales de los extremeños son los establecidos en:",
+                options: ["a) La Constitución.", "b) La Constitución y el Estatuto de Autonomía.", "c) La Constitución, el Estatuto de Autonomía y la legislación de la Comunidad Autónoma.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "145. Respecto al Fuero del Baylío y demás instituciones de Derecho consuetudinario, corresponde a la Comunidad Autónoma:",
+                options: ["a) La conservación.", "b) La defensa.", "c) La protección.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "146. Entre las potestades y privilegios que el artículo 38 del Estatuto de Autonomía de Extremadura reconoce a la Comunidad Autónoma, se encuentra:",
+                options: ["a) La comparecencia en juicio en los mismos términos que la Administración del Estado.", "b) La facultad de utilización del apremio administrativo y los privilegios de prelación, preferencia y demás reconocidos a la hacienda pública en materia de cobro de créditos a su favor.", "c) La inembargabilidad de sus bienes y derechos.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "147. El artículo 5 del Estatuto de Autonomía señala que Mérida es la sede de:",
+                options: ["a) La Asamblea de Extremadura.", "b) La Junta y la Asamblea de Extremadura.", "c) La Asamblea, la Presidencia y la Junta de Extremadura.", "d) La Asamblea, la Presidencia, la Junta de Extremadura y el Tribunal Superior de Justicia de Extremadura."],
+                correct: 2
+            },
+            {
+                question: "148. El Estatuto de Autonomía de Extremadura fue aprobado inicialmente por:",
+                options: ["a) La Ley Orgánica 1/1983, de 25 de febrero.", "b) La Ley Orgánica 5/1985, de 23 de febrero.", "c) La Ley Orgánica 1/1981, de 25 de febrero.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "149. Cuando el Presidente de la Junta plantee la cuestión de confianza ante la Asamblea, está se entenderá otorgada cuando voten a favor de la misma:",
+                options: ["a) La mayoría simple de los miembros de la Asamblea.", "b) La mayoría absoluta de los miembros de la Asamblea.", "c) La mayoría de 2/3 de los miembros de la Asamblea.", "d) La mayoría de 3/4 de los miembros de la Asamblea."],
+                correct: 1
+            },
+            {
+                question: "150. Concreta el artículo 19 del Estatuto de Autonomía de Extremadura que la Asamblea elegirá, de entre sus miembros:",
+                options: ["a) El Presidente.", "b) La Mesa.", "c) La Diputación Permanente.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "151. ¿Qué órganos velarán, para que el elenco competencial de Extremadura sea actualizado en términos de homogeneidad respecto del conjunto de las Comunidades Autónomas?",
+                options: ["a) Las instituciones estatales.", "b) Las instituciones autonómicas.", "c) Las instituciones estatutarias.", "d) Las respuestas a) y b) son correctas."],
+                correct: 3
+            },
+            {
+                question: "152. La Comunidad Autónoma ejercerá sus poderes a través de:",
+                options: ["a) La Asamblea.", "b) El Presidente.", "c) La Junta de Extremadura.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+			            {
+                question: "153. ¿Cómo se denominan las disposiciones de la Junta de Extremadura que contengan legislación delegada?",
+                options: ["a) Decretos Legislativos.", "b) Leyes Ordinarias.", "c) Leyes Orgánicas.", "d) Decretos Leyes."],
+                correct: 0
+            },
+            {
+                question: "154. De acuerdo con el artículo 3 de la Ley Orgánica 1/2011, de 28 de enero, de reforma del Estatuto de Autonomía de la Comunidad Autónoma de Extremadura, ¿quiénes ostentan la condición política de extremeños?",
+                options: ["a) Los ciudadanos españoles que, de acuerdo con las Leyes generales del Estado, tengan vecindad administrativa en cualquiera de los municipios de Extremadura.", "b) Los ciudadanos españoles que, de acuerdo con las Leyes autonómicas propias, tengan vecindad administrativa en cualquiera de los municipios de Extremadura.", "c) Los ciudadanos que, de acuerdo con las Leyes generales del Estado, tengan vecindad administrativa en cualquiera de los municipios de Extremadura.", "d) Las respuestas a) y b) son correctas."],
+                correct: 0
+            },
+            {
+                question: "155. No es una competencia exclusiva de la Comunidad Autónoma de Extremadura:",
+                options: ["a) Artesanía.", "b) Régimen minero y energético e instalaciones radioactivas de segunda y tercera categorías.", "c) Servicio meteorológico de la Comunidad Autónoma.", "d) Espectáculos y actividades recreativas."],
+                correct: 2
+            },
+            {
+                question: "156. ¿Cuántos artículos tiene actualmente el Estatuto de Autonomía de Extremadura?",
+                options: ["a) Noventa y uno.", "b) Noventa y tres.", "c) Sesenta y tres.", "d) Sesenta y cinco."],
+                correct: 1
+            },
+            {
+                question: "157. Se requiere mayoría absoluta, según el Estatuto de Autonomía de Extremadura:",
+                options: ["a) Para ser proclamado Presidente de la Junta de Extremadura en la primera votación.", "b) Para que la Asamblea de Extremadura exija la responsabilidad política de la Junta mediante la adopción de una moción de censura.", "c) Para regular todas las competencias de desarrollo normativo de la Comunidad Autónoma.", "d) Las respuestas a) y b) son correctas."],
+                correct: 3
+            },
+            {
+                question: "158. La más alta representación de Extremadura es ostentada:",
+                options: ["a) Por el Delegado del Gobierno en Extremadura.", "b) Por el Presidente de la Asamblea.", "c) Por el Presidente de la Comunidad Autónoma de Extremadura.", "d) Por el Subdelegado del Gobierno en Extremadura."],
+                correct: 2
+            },
+            {
+                question: "159. La cuestión de confianza se plantea ante la Asamblea:",
+                options: ["a) Por el Presidente de la Junta de Extremadura, a propuesta de la misma.", "b) Por el Presidente de la Junta de Extremadura, previa deliberación de la Junta de Extremadura y siempre que no esté en trámite una moción de censura.", "c) Por el Presidente de la Junta de Extremadura, previo acuerdo de la Junta de Extremadura.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "160. Señala la respuesta incorrecta:",
+                options: ["a) La bandera extremeña está formada por tres franjas horizontales iguales, verde la superior, blanca la central y negra la inferior.", "b) La protección de los símbolos de Extremadura es la que corresponde a los demás símbolos del Estado, de acuerdo con el ordenamiento jurídico.", "c) El día de Extremadura es el 8 de septiembre.", "d) El escudo y el himno de Extremadura se regularán por ley de la Asamblea, aprobada por la mayoría de los diputados."],
+                correct: 3
+            },
+            {
+                question: "161. En cuanto a la moción de censura al Presidente de la Junta de Extremadura, una de las siguientes respuestas no es correcta:",
+                options: ["a) Será presentada, al menos, por la cuarta parte de los miembros de la Asamblea, y deberá incluir un candidato a Presidente.", "b) Si la Asamblea aprobara una moción de censura, el Presidente cesará automáticamente en sus funciones y el candidato propuesto en dicha moción se entenderá investido de la confianza de la Cámara, dándose cuenta al Rey para su nombramiento.", "c) En una misma legislatura, los signatarios de una moción de censura rechazada no podrán impulsar otra hasta transcurrido un año desde la presentación de aquella.", "d) La Asamblea de Extremadura puede exigir la responsabilidad política del Presidente de la Comunidad Autónoma mediante la adopción por mayoría absoluta de una moción de censura."],
+                correct: 3
+            },
+            {
+                question: "162. ¿Puede la Junta de Extremadura dictar disposiciones legislativas provisionales bajo la forma de Decreto-ley?",
+                options: ["a) No, en ningún caso, ya que es una materia reservada al Estado.", "b) Sí, aunque no pueden ser objeto de Decreto-Ley la reforma del Estatuto, las leyes de presupuestos o las materias objeto de leyes para las que se requiera una mayoría cualificada.", "c) Sí, siempre que haya una delegación legislativa previa otorgada por la Asamblea de Extremadura.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "163. Puede delegarse la potestad legislativa del Pleno de la Asamblea de Extremadura:",
+                options: ["a) Sí, en la Junta de Extremadura en todo caso.", "b) Sí, en las Cortes Generales.", "c) No, en ningún caso.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "164. ¿Cuándo podrá presentarse recurso contencioso-administrativo contra los Decretos-leyes?",
+                options: ["a) Nunca.", "b) Siempre.", "c) Solamente en los casos en que la Asamblea apruebe una ley para la que no dispone de ámbito competencial.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "165. Con respecto a los expresidentes de la Comunidad Autónoma de Extremadura, el Estatuto de Autonomía de Extremadura dispone que:",
+                options: ["a) Su estatuto se regulará reglamentariamente.", "b) Su estatuto se regulará por Ley.", "c) Su estatuto se regulará por Ley de la Asamblea aprobada por la mayoría de tres quintos de los miembros de la misma.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "166. Señala cuál de los siguientes no constituye un elemento diferencial de Extremadura:",
+                options: ["a) Su proyección en Portugal e Iberoamérica.", "b) Los condicionantes históricos de su desarrollo socioeconómico.", "c) La alta densidad de su población y su dispersión.", "d) La calidad de su medioambiente y su patrimonio cultural."],
+                correct: 2
+            },
+			            {
+                question: "167. El alcance y contenido del reconocimiento a las Comunidades extremeñas asentadas fuera de Extremadura, ¿implicará la concesión de derechos políticos?",
+                options: ["a) Sí, en todos los casos.", "b) Sí, salvo algunos casos.", "c) No, salvo algunos casos.", "d) No, en ningún caso."],
+                correct: 3
+            },
+            {
+                question: "168. El Estatuto de Autonomía de Extremadura, aprobado por Ley Orgánica 1/2011, de 28 de enero, contiene:",
+                options: ["a) 9 Disposiciones Transitorias.", "b) 8 Disposiciones Adicionales.", "c) 3 Disposiciones Finales.", "d) 7 Disposiciones Adicionales."],
+                correct: 1
+            },
+            {
+                question: "169. La sede de la Junta de Extremadura y de la Asamblea se fija en:",
+                options: ["a) Plasencia.", "b) Badajoz.", "c) Cáceres.", "d) Mérida."],
+                correct: 3
+            },
+            {
+                question: "170. El territorio de Extremadura es el de los Municipios comprendidos dentro de los actuales límites de:",
+                options: ["a) La Provincia de Extremadura.", "b) La Provincia de Cáceres, Badajoz y la comarca de Sierra de Francia", "c) Las Provincias de Badajoz y Cáceres.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "171. Las Comunidades extremeñas asentadas fuera de Extremadura podrán solicitar como tales el reconocimiento de:",
+                options: ["a) La nacionalidad extremeña.", "b) La identidad extremeña.", "c) La vecindad extremeña.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 1
+            },
+            {
+                question: "172. La Comunidad Autónoma ejercerá sus poderes a través:",
+                options: ["a) De la Asamblea de Extremadura.", "b) De la Junta de Extremadura.", "c) De su Presidente.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "173. La bandera extremeña está formada por:",
+                options: ["a) Dos franjas horizontales iguales, verde y blanca por este orden.", "b) Dos franjas verticales iguales, verde y blanca por este orden.", "c) Tres franjas horizontales iguales, verde la superior, blanca la central y negra la inferior.", "d) Tres franjas verticales iguales, verde, blanca y negra, por este orden."],
+                correct: 2
+            },
+            {
+                question: "174. Extremadura se constituye en Comunidad Autónoma:",
+                options: ["a) Como expresión de su identidad regional histórica.", "b) Dentro de la indisoluble unidad de la Nación española.", "c) De acuerdo con la Constitución Española y con el Estatuto de Autonomía de Extremadura.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "175. La Junta de Extremadura responde políticamente:",
+                options: ["a) Ante la Asamblea de forma solidaria, sin perjuicio de la responsabilidad directa de cada uno de sus miembros por su gestión.", "b) Ante la Asamblea y el Presidente.", "c) Ante el Tribunal Superior de Justicia de Extremadura.", "d) Ante el Presidente y 2/3 partes de los Consejeros."],
+                correct: 0
+            },
+            {
+                question: "176. El Presidente de la Junta de Extremadura será elegido por:",
+                options: ["a) La propia Junta de Extremadura.", "b) Los Consejeros.", "c) El Rey.", "d) La Asamblea de entre sus miembros y nombrado por el Rey."],
+                correct: 3
+            },
+            {
+                question: "177. Será proclamado Presidente de la Junta de Extremadura el candidato que obtenga la mayoría:",
+                options: ["a) Absoluta.", "b) Relativa en primera votación.", "c) Simple.", "d) Absoluta en primera votación, y simple en segunda votación."],
+                correct: 0
+            },
+            {
+                question: "178. El Presidente de la Junta de Extremadura puede plantear ante la Asamblea, previa deliberación de la Junta, la cuestión de confianza sobre una declaración de política general. La confianza se entendería otorgada cuando voten a favor de la misma:",
+                options: ["a) La mayoría absoluta de los miembros de la Asamblea.", "b) La mayoría simple de los miembros de la Asamblea.", "c) Las 2/3 partes de los miembros de la Asamblea.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 1
+            },
+            {
+                question: "179. ¿Qué porcentaje de miembros de la Asamblea es necesario para proponer una moción de censura contra el Presidente de la Junta de Extremadura?",
+                options: ["a) El 15 %.", "b) El 25 %.", "c) El 51 %.", "d) El 60 %."],
+                correct: 1
+            },
+            {
+                question: "180. El Título III del actual Estatuto de Autonomía de Extremadura se denomina:",
+                options: ["a) De las Competencias.", "b) Economía y Hacienda.", "c) Del poder judicial en Extremadura.", "d) Reforma del Estatuto."],
+                correct: 0
+            },
+            {
+                question: "181. La Comunidad Autónoma de Extremadura, a través de sus instituciones, asume:",
+                options: ["a) La defensa de su propia identidad y valores.", "b) La mejora y promoción del bienestar de los extremeños.", "c) El ejercicio de su autogobierno regional.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "182. Los miembros de la Asamblea de Extremadura serán elegidos por sufragio universal, libre, igual, directo y secreto, de acuerdo con criterios de representación proporcional, en número máximo de:",
+                options: ["a) 60.", "b) 65.", "c) 70.", "d) 75."],
+                correct: 3
+            },
+            {
+                question: "183. Corresponde a la Asamblea de Extremadura:",
+                options: ["a) Aprobar los Presupuestos de la Comunidad Autónoma.", "b) El control de los medios de comunicación social dependientes de la Comunidad Autónoma.", "c) Promover y controlar la acción de la Junta de Extremadura.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "184. La pesca fluvial es una competencia:",
+                options: ["a) De desarrollo legislativo y de ejecución de la Comunidad Autónoma de Extremadura.", "b) Ejecutiva de la Comunidad Autónoma de Extremadura.", "c) Exclusiva de la Comunidad Autónoma de Extremadura.", "d) Exclusiva del Estado."],
+                correct: 2
+            },
+            {
+                question: "185. Los poderes de la Comunidad Autónoma de Extremadura emanan:",
+                options: ["a) Del Estatuto.", "b) De la Constitución.", "c) Del pueblo.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "186. Para Extremadura, el Estatuto de Autonomía es:",
+                options: ["a) Su norma institucional básica.", "b) Su norma constitucional básica.", "c) Su norma institucional mínima.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "187. El Título II del actual Estatuto de Autonomía de Extremadura se rubrica como:",
+                options: ["a) De las instituciones de Extremadura.", "b) De la Asamblea de Extremadura.", "c) Del Presidente.", "d) De la Junta de Extremadura."],
+                correct: 0
+            },
+            {
+                question: "188. Los poderes públicos regionales impulsarán activamente la equidad territorial y la cohesión social en sus políticas internas y en sus relaciones con:",
+                options: ["a) Otras Comunidades Autónomas.", "b) Las instituciones generales del Estado.", "c) Las instituciones europeas.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "189. ¿Qué artículo del Estatuto de Autonomía trata del Consejo Económico y Social?",
+                options: ["a) El artículo 47.", "b) El artículo 48.", "c) El artículo 49.", "d) El artículo 50."],
+                correct: 2
+            },
+			            {
+                question: "190. En caso de plantearse conflicto de atribuciones, la institución requerida mantendrá o declinará su competencia, dando traslado a:",
+                options: ["a) La Asamblea.", "b) La Junta de Extremadura.", "c) El Consejo Consultivo.", "d) El Personero del Común."],
+                correct: 2
+            },
+            {
+                question: "191. En caso de plantearse conflicto de atribuciones, ¿de qué plazo dispone la institución que considere que sus atribuciones se han invadido para requerir de incompetencia a la otra?",
+                options: ["a) Dos meses desde que se tenga noticia de la supuesta extralimitación.", "b) Dos meses, en todo caso.", "c) Un mes desde que se tenga noticia de la supuesta extralimitación.", "d) Un mes, en todo caso."],
+                correct: 0
+            },
+            {
+                question: "192. ¿Quién regulará los procedimientos administrativos propios y adaptará los procedimientos generales para dar celeridad y transparencia a la tramitación administrativa?",
+                options: ["a) La Asamblea.", "b) La Junta de Extremadura.", "c) La Comunidad Autónoma.", "d) El Consejo Consultivo."],
+                correct: 2
+            },
+            {
+                question: "193. ¿Quién establece las sustituciones que procedan entre los miembros de la Junta de Extremadura?",
+                options: ["a) El Presidente de la Asamblea.", "b) El Presidente de la Junta.", "c) La Junta de Portavoces.", "d) Los Grupos parlamentarios."],
+                correct: 1
+            },
+            {
+                question: "194. ¿Cuál de las siguientes materias no puede ser objeto de Decreto-ley?",
+                options: ["a) La reforma del Estatuto.", "b) Las leyes de presupuestos.", "c) Las materias objeto de leyes para las que se requiera una mayoría cualificada.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "195. En una misma legislatura, los signatarios de una moción de censura rechazada no podrán impulsar otra hasta:",
+                options: ["a) Transcurrido un año desde la presentación de aquella.", "b) Transcurridos seis meses desde la presentación de aquella.", "c) Transcurridos dos años desde la presentación de aquella.", "d) Transcurridos quince días desde la presentación de aquella."],
+                correct: 0
+            },
+            {
+                question: "196. El candidato propuesto para Presidente de la Comunidad Autónoma presentará su programa en el plazo de:",
+                options: ["a) Los diez días siguientes a su presentación.", "b) Los diez días siguientes a su designación.", "c) Los quince días siguientes a su presentación.", "d) Los quince días siguientes a su designación."],
+                correct: 3
+            },
+            {
+                question: "197. Los miembros de la Diputación Permanente continúan en el ejercicio de sus funciones:",
+                options: ["a) Hasta la constitución de la nueva Cámara.", "b) Hasta el cese del Presidente.", "c) Hasta la convocatoria de elecciones.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 0
+            },
+            {
+                question: "198. La fórmula de atribución de escaños de la Asamblea de Extremadura se regulará:",
+                options: ["a) En el Estatuto de Autonomía.", "b) En la Constitución.", "c) En la ley electoral.", "d) En el Reglamento de la Asamblea."],
+                correct: 2
+            },
+            {
+                question: "199. ¿Quiénes velarán para que el elenco competencial de Extremadura sea actualizado?",
+                options: ["a) Los poderes públicos regionales.", "b) La Comunidad Autónoma.", "c) El Estado.", "d) Las instituciones estatutarias."],
+                correct: 0
+            },
+            {
+                question: "200. ¿Qué funciones tiene la Comunidad Autónoma de Extremadura sobre la normativa de la Unión Europea en los ámbitos materiales de competencia autonómica?",
+                options: ["a) Funciones de desarrollo y, en su caso, la ejecución.", "b) Funciones legislativas y de desarrollo.", "c) Funciones reglamentarias y, en su caso, la ejecución.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "201. ¿Qué competencias tiene la Comunidad Autónoma de Extremadura sobre la educación, enseñanza y universidades?",
+                options: ["a) Competencias de desarrollo normativo y ejecución.", "b) Competencias de ejecución, en colaboración con el Estado.", "c) Competencias exclusivas.", "d) Competencias exclusivas, en coordinación con el Estado."],
+                correct: 0
+            },
+            {
+                question: "202. Los ferrocarriles, carreteras y caminos cuyo itinerario se desarrolle íntegramente en el territorio de la Comunidad Autónoma es competencia exclusiva de:",
+                options: ["a) El Estado.", "b) La Comunidad Autónoma de Extremadura.", "c) El Estado, en coordinación con la Comunidad Autónoma.", "d) La Comunidad Autónoma, en colaboración con el Estado."],
+                correct: 1
+            },
+            {
+                question: "203. ¿Sobre qué materias tiene competencia exclusiva la Comunidad Autónoma de Extremadura?",
+                options: ["a) Caza y explotaciones cinegéticas.", "b) Pesca fluvial y lacustre.", "c) Acuicultura.", "d) Todas las respuestas anteriores son correctas."],
+                correct: 3
+            },
+            {
+                question: "204. ¿Qué competencias tiene Extremadura sobre las Cámaras de comercio e industria y otras corporaciones de derecho público representativas de intereses económicos y profesionales, Colegios profesionales y ejercicio de profesiones tituladas?",
+                options: ["a) Competencias exclusivas.", "b) Competencias de desarrollo normativo y ejecución.", "c) Competencias de ejecución.", "d) Competencias exclusivas, en coordinación con el Estado."],
+                correct: 1
+            },
+            {
+                question: "205. ¿Qué competencias tiene Extremadura sobre la Administración de justicia?",
+                options: ["a) Competencias exclusivas.", "b) Competencias de desarrollo normativo y ejecución.", "c) Competencias de ejecución.", "d) Nulas."],
+                correct: 2
+            },
+            {
+                question: "206. ¿Qué competencias tiene Extremadura sobre la cooperación transfronteriza e internacional para el desarrollo?",
+                options: ["a) Competencias exclusivas.", "b) Competencias de desarrollo normativo y ejecución.", "c) Competencias de ejecución.", "d) Competencias exclusivas, en coordinación con el Estado."],
+                correct: 3
+            },
+            {
+                question: "207. Además de las competencias previstas en el Título I del Estatuto de Autonomía, ¿qué otras competencias asume la Comunidad Autónoma de Extremadura?",
+                options: ["a) Las competencias que le sean atribuidas, delegadas o transferidas por el Estado.", "b) Las competencias que le sean atribuidas, delegadas o transferidas por otras Comunidades Autónomas.", "c) Las competencias que le sean atribuidas, delegadas o transferidas por el Gobierno estatal.", "d) Las competencias que le sean atribuidas, delegadas o transferidas por las instituciones regionales."],
+                correct: 0
+            },
+            {
+                question: "208. En relación al medioambiente y a la biodiversidad de la región, los poderes públicos regionales:",
+                options: ["a) Fomentarán un modelo de desarrollo sostenible y cuidarán de la preservación y mejora.", "b) Perseguirán un modelo de desarrollo sostenible y cuidarán de la preservación y mejora.", "c) Las respuestas a) y b) son correctas.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "209. ¿Quiénes apoyarán la generación de energías renovables?",
+                options: ["a) Las empresas extremeñas.", "b) Los poderes públicos regionales.", "c) Las instituciones extremeñas.", "d) Los partidos políticos."],
+                correct: 1
+            },
+            {
+                question: "210. Es un objetivo común de las políticas públicas regionales:",
+                options: ["a) La integración de los emigrantes que viven en Extremadura.", "b) La integración de los inmigrantes que viven en Extremadura.", "c) Las respuestas a) y b) son correctas.", "d) Ninguna de las respuestas anteriores es correcta."],
+                correct: 2
+            },
+            {
+                question: "211. ¿Cuál es la ley del Escudo, del Himno y del día de Extremadura?",
+                options: ["a) Ley 4/1985, de 3 de junio.", "b) Ley 3/2005, de 8 de julio.", "c) Ley 8/2011, de 23 de marzo.", "d) Ley 40/2015, de 1 de octubre."],
+                correct: 0
+            }
+
+
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            q.options.forEach((option, i) => {
+                const optionLabel = document.createElement('label');
+                optionLabel.classList.add('option');
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    const result = questionDiv.querySelector('.result');
+                    if (i === q.correct) {
+                        result.textContent = 'Correcto';
+                        result.style.color = 'green';
+                    } else {
+                        result.textContent = 'Incorrecto';
+                        result.style.color = 'red';
+                    }
+                });
+                optionLabel.appendChild(radio);
+                optionLabel.appendChild(document.createTextNode(option));
+                questionDiv.appendChild(optionLabel);
+            });
+
+            const result = document.createElement('div');
+            result.classList.add('result');
+            questionDiv.appendChild(result);
+
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
