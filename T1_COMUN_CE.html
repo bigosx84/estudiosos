@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Interactivo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .pregunta { margin-bottom: 15px; }
+        .opcion { display: block; margin: 5px 0; cursor: pointer; }
+        .correcto { color: green; font-weight: bold; }
+        .incorrecto { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Test tema 1. La Constitución Española de 1978.</h2>
+    <div id="test"></div>
+    
+    <script>
+const preguntas = [
+    {
+        pregunta: "¿Cuántos capítulos componen el Título I de la Constitución?",
+        opciones: [
+            "Diez.",
+            "Diez, más cuatro disposiciones adicionales, nueve disposiciones transitorias, una disposición derogatoria y una disposición final.",
+            "El Título I no tiene capítulos.",
+            "Cinco."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "¿Cuántos Títulos tiene la Constitución Española?",
+        opciones: [
+            "Nueve.",
+            "Once.",
+            "Doce.",
+            "Diez."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "¿Qué Título de la Constitución Española se ocupa del Poder Judicial?",
+        opciones: [
+            "El VI.",
+            "El V.",
+            "El VII.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El Título III de la Constitución Española se dedica a las Cortes Generales y…",
+        opciones: [
+            "A la organización territorial del Estado.",
+            "A las relaciones entre el Gobierno y las Cortes Generales.",
+            "Al Gobierno y la Administración.",
+            "Solo se ocupa de las Cortes Generales."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El Título IX de la Constitución Española regula:",
+        opciones: [
+            "El Tribunal Constitucional.",
+            "El Tribunal Constitucional y el Tribunal Supremo.",
+            "Todos los Tribunales de Justicia.",
+            "Economía y Hacienda."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "La Constitución Española:",
+        opciones: [
+            "Fue aprobada en referéndum por el pueblo español el 6 de diciembre de 1978.",
+            "Fue sancionada en referéndum por el pueblo español el 6 de diciembre de 1978.",
+            "Fue publicada en el Boletín Oficial del Estado el 29 de diciembre de 1978.",
+            "Fue ratificada en el Boletín Oficial del Estado el 27 de diciembre de 1978."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El Título Preliminar de la Constitución Española tiene:",
+        opciones: [
+            "Diez capítulos.",
+            "Nueve artículos.",
+            "Dos secciones.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "La Constitución Española entró en vigor:",
+        opciones: [
+            "Al día siguiente de su publicación en el BOE.",
+            "El 29 de diciembre de 1978.",
+            "El 27 de diciembre de 1978, cuando fue sancionada por S. M. el Rey.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "¿Qué artículos componen la Sección 2ª del Capítulo Segundo del Título I de la Constitución Española?",
+        opciones: [
+            "Del 15 al 29.",
+            "Del 14 al 29.",
+            "Del 30 al 38.",
+            "Del 15 al 30."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "¿Cuál de las siguientes no es una característica de la Constitución Española?",
+        opciones: [
+            "No ideológica.",
+            "Consensuada.",
+            "Rígida.",
+            "Pactada."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "¿Qué Título de la Constitución Española se ocupa de las Relaciones entre el Gobierno y las Cortes Generales?",
+        opciones: [
+            "El X.",
+            "Ninguno.",
+            "El IX.",
+            "El V."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La Constitución Española consta de:",
+        opciones: [
+            "159 artículos.",
+            "169 artículos.",
+            "168 artículos.",
+            "166 artículos."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "La parte dogmática de la Constitución Española está formada por:",
+        opciones: [
+            "El Preámbulo y el Título I.",
+            "El Preámbulo y el Título Preliminar.",
+            "El Título Preliminar y el Título I.",
+            "El Título Preliminar."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta incorrecta. La Constitución Española tiene:",
+        opciones: [
+            "Cuatro disposiciones adicionales.",
+            "Cuatro disposiciones transitorias.",
+            "Una disposición derogatoria.",
+            "Una disposición final."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Qué Título de la Constitución Española regula las relaciones entre el Gobierno y el Poder Judicial?",
+        opciones: [
+            "El VI.",
+            "El V.",
+            "Ninguno.",
+            "El VII."
+        ],
+        respuesta_correcta: 2
+    },
+	 {
+        pregunta: "De la Reforma Constitucional:",
+        opciones: [
+            "Es un Título independiente dentro de la Constitución Española.",
+            "Es un Capítulo dentro del Título dedicado al Tribunal Constitucional.",
+            "Es un Capítulo dentro del Título dedicado al Poder Judicial.",
+            "Se integra en la Parte Dogmática de la Constitución Española."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "¿Qué Título de la Constitución Española regula las relaciones entre el Poder Judicial y el Tribunal Constitucional?",
+        opciones: [
+            "El VI.",
+            "El IX.",
+            "Ninguno.",
+            "El VI y el IX."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "¿Qué Título de la Constitución Española se ocupa de la Organización territorial del Estado?",
+        opciones: [
+            "El VIII.",
+            "El VII.",
+            "El V.",
+            "El VI."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El Capítulo Primero del Título I de la Constitución tiene:",
+        opciones: [
+            "Dos secciones.",
+            "Tres secciones.",
+            "No tiene secciones.",
+            "Una sección."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El Título I de la Constitución Española se ocupa:",
+        opciones: [
+            "De los derechos fundamentales y libertades públicas.",
+            "De los derechos y libertades.",
+            "De los derechos y deberes fundamentales.",
+            "De los derechos y deberes de los ciudadanos."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Los derechos y deberes de los ciudadanos se regulan:",
+        opciones: [
+            "En la Sección 2ª del Capítulo I de la Constitución Española.",
+            "En la Sección 1ª del Capítulo II de la Constitución Española.",
+            "En la Sección 2ª del Capítulo II del Título I de la Constitución Española.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La Constitución Española habla “de los principios rectores de la política social y económica” en:",
+        opciones: [
+            "El Título VIII.",
+            "En la Sección 3ª del Capítulo II de su Título I.",
+            "En el Capítulo Primero de su Título I.",
+            "En el Capítulo Tercero de su Título I."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La Constitución Española no dedica un Capítulo en el Título I a:",
+        opciones: [
+            "La suspensión de los derechos y libertades.",
+            "Las garantías de las libertades y derechos fundamentales.",
+            "Las garantías de los derechos y deberes de los ciudadanos.",
+            "Los españoles y extranjeros."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "¿Cuántos artículos tiene el Capítulo Quinto del Título I de la Constitución Española?",
+        opciones: [
+            "Cinco.",
+            "Dos.",
+            "Uno.",
+            "No tiene artículos."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta incorrecta. En el Preámbulo de la Constitución se dice que la Nación española proclama su voluntad de:",
+        opciones: [
+            "Garantizar la convivencia democrática dentro de la Constitución y de las leyes conforme a un orden económico y social justo.",
+            "Consolidar un Estado de Derecho que asegure el imperio de la ley como expresión de la voluntad popular.",
+            "Establecer una sociedad económica avanzada.",
+            "Promover el progreso de la cultura y de la economía para asegurar a todos una digna calidad de vida."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La soberanía nacional reside en:",
+        opciones: [
+            "Las Cortes.",
+            "El Congreso de los Diputados.",
+            "El pueblo español.",
+            "El Estado."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta correcta. Los valores superiores de nuestro ordenamiento jurídico son:",
+        opciones: [
+            "La libertad, la justicia, la igualdad y el pluralismo político.",
+            "La libertad, la justicia, la igualdad, la equidad y el pluralismo político.",
+            "La libertad, la justicia y la igualdad.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "España se constituye en:",
+        opciones: [
+            "Un Estado social y democrático de Derecho.",
+            "Un Estado social y parlamentario de Derecho.",
+            "Un Estado social de Derecho.",
+            "Un Estado de Derecho."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Los poderes del Estado emanan:",
+        opciones: [
+            "De las Cortes.",
+            "Del Congreso de los Diputados.",
+            "De la soberanía nacional.",
+            "Del pueblo español."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La forma política del Estado español es:",
+        opciones: [
+            "Democrática y parlamentaria.",
+            "Social y democrática de Derecho.",
+            "Monarquía parlamentaria.",
+            "Constitucional y democrática."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La Constitución se fundamenta en:",
+        opciones: [
+            "La indisoluble unidad de los pueblos que la integran.",
+            "La indisoluble unidad de los españoles.",
+            "La indisoluble unidad de la Nación española.",
+            "La indisoluble unidad de sus nacionalidades y regiones."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La Constitución Española no garantiza:",
+        opciones: [
+            "El derecho a la autonomía de las nacionalidades.",
+            "El derecho a la autonomía de las regiones.",
+            "El derecho a la autonomía de las comunidades históricas.",
+            "La solidaridad entre las regiones."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Todos los españoles:",
+        opciones: [
+            "Tienen el derecho de conocer y usar el castellano.",
+            "Tienen el deber de conocer el castellano.",
+            "Tienen el deber de usar el castellano.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Las demás lenguas españolas:",
+        opciones: [
+            "Serán oficiales en las Comunidades Autónomas de acuerdo con la Constitución.",
+            "Serán oficiales en las respectivas Comunidades Autónomas de acuerdo con sus Estatutos.",
+            "Serán oficiales en las respectivas Comunidades Autónomas de acuerdo con la Constitución.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Qué se considera patrimonio cultural objeto de especial respeto y protección?",
+        opciones: [
+            "Las regiones.",
+            "Las nacionalidades.",
+            "La riqueza de las distintas modalidades lingüísticas de España.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La bandera de España está formada por:",
+        opciones: [
+            "Tres franjas verticales, roja, amarilla y roja, siendo la amarilla de doble anchura que cada una de las rojas.",
+            "Tres franjas horizontales, roja, amarilla y roja, siendo la amarilla de doble altura que cada una de las rojas.",
+            "Tres franjas horizontales, roja, amarilla y roja, siendo la amarilla de doble anchura que cada una de las rojas.",
+            "Tres franjas horizontales, amarilla, roja y amarilla, siendo la roja de doble anchura que cada una de las amarillas."
+        ],
+        respuesta_correcta: 2
+    },
+	    {
+        pregunta: "Los Estatutos:",
+        opciones: [
+            "Reconocerán banderas y enseñas propias de las Comunidades Autónomas.",
+            "Podrán reconocer banderas y enseñas propias de las Comunidades Autónomas.",
+            "Reconocerán banderas propias de las Comunidades Autónomas, pero no enseñas.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Junto a la bandera de España:",
+        opciones: [
+            "Se podrán utilizar las banderas propias de las Comunidades Autónomas en sus edificios públicos y en sus actos oficiales.",
+            "Se podrán utilizar las banderas y enseñas propias de las Comunidades Autónomas en sus edificios públicos y en sus actos oficiales.",
+            "Se utilizarán las banderas y enseñas propias de las Comunidades Autónomas en sus edificios públicos y en sus actos oficiales.",
+            "Se utilizarán las banderas y enseñas propias de las Comunidades Autónomas solo en sus edificios públicos."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Son instrumento fundamental para la participación política:",
+        opciones: [
+            "El Parlamento.",
+            "El Congreso de los Diputados.",
+            "Los partidos políticos.",
+            "Las asociaciones."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La creación y el ejercicio de la actividad de los partidos políticos, de los sindicatos de trabajadores y de las asociaciones empresariales deben ser:",
+        opciones: [
+            "Democráticos, dentro del respeto a la Constitución y a la ley.",
+            "Libres y democráticos, dentro del respeto a la Constitución y a la ley.",
+            "Libres dentro del respeto a la Constitución y a la ley.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Quiénes contribuyen a la defensa y promoción de los intereses económicos y sociales que les son propios:",
+        opciones: [
+            "Los partidos políticos.",
+            "Los sindicatos de trabajadores.",
+            "Los sindicatos de trabajadores y las asociaciones empresariales.",
+            "Las asociaciones empresariales."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "¿Cuál no es una misión de las Fuerzas Armadas?",
+        opciones: [
+            "Garantizar la soberanía de España.",
+            "Garantizar la independencia de España.",
+            "Garantizar la autonomía de las nacionalidades y regiones de España.",
+            "Defender la integridad territorial y el ordenamiento constitucional."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Las bases de la organización militar se regularán:",
+        opciones: [
+            "Por ley ordinaria.",
+            "Por ley orgánica.",
+            "Por reglamento.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "A quién corresponde facilitar la participación de todos los ciudadanos en la vida política, económica, cultural y social:",
+        opciones: [
+            "A los partidos políticos.",
+            "A los sindicatos de trabajadores.",
+            "A los poderes públicos.",
+            "A las Cortes Generales."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La Constitución no garantiza:",
+        opciones: [
+            "El principio de legalidad.",
+            "La jerarquía normativa y la publicidad de las normas.",
+            "La retroactividad de las disposiciones sancionadoras no favorables o restrictivas de derechos individuales.",
+            "La seguridad jurídica, la responsabilidad y la interdicción de la arbitrariedad de los poderes públicos."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "No es un fundamento del orden político y de la paz social:",
+        opciones: [
+            "La dignidad de la persona.",
+            "La libertad económica.",
+            "El libre desarrollo de la personalidad.",
+            "El respeto a la ley y a los derechos de los demás."
+        ],
+        respuesta_correcta: 1
+    },
+	    {
+        pregunta: "Las normas relativas a los derechos fundamentales y a las libertades que la Constitución reconoce se interpretarán de conformidad con:",
+        opciones: [
+            "Con la Declaración Universal de Derechos Humanos.",
+            "Con la Declaración Universal de Derechos Humanos y los tratados y acuerdos internacionales sobre las mismas materias.",
+            "Con la Declaración Universal de Derechos Humanos y los tratados y acuerdos internacionales sobre las mismas materias ratificados por España.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La mayoría de edad:",
+        opciones: [
+            "Se alcanza a los 18 años para los españoles.",
+            "Se alcanza a los 16 años para los españoles.",
+            "Varía en función de la Comunidad Autónoma en la que se resida.",
+            "Se alcanza a los 14 años en toda España."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "La nacionalidad española se adquiere, se conserva y se pierde de acuerdo con lo establecido por:",
+        opciones: [
+            "La ley.",
+            "El Congreso de los Diputados.",
+            "El Gobierno.",
+            "El Senado."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El Estado podrá concertar tratados de doble nacionalidad:",
+        opciones: [
+            "Con cualquier país.",
+            "Solo con los países iberoamericanos.",
+            "Solo con los países iberoamericanos que tengan una particular vinculación con España.",
+            "Con los países iberoamericanos o con aquellos que hayan tenido o tengan una particular vinculación con España."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "No podrá ser privado de la nacionalidad española:",
+        opciones: [
+            "Ningún español.",
+            "Ningún español de origen.",
+            "Ningún español, salvo en los supuestos legalmente previstos.",
+            "Ningún español de origen, salvo en los supuestos legalmente previstos."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Solo se concederá en cumplimiento de un tratado o de la ley, atendiendo al principio/criterio de reciprocidad:",
+        opciones: [
+            "El derecho de asilo en España.",
+            "La extradición.",
+            "El derecho de sufragio activo y pasivo en las elecciones municipales.",
+            "Las respuestas b) y c) son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Quedan excluidos de la extradición:",
+        opciones: [
+            "Los actos de terrorismo.",
+            "Los delitos políticos.",
+            "Los delitos sexuales.",
+            "Los atentados contra la vida."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Los extranjeros gozarán en España de las libertades públicas que garantiza el Título I de la Constitución Española en los términos que se establezcan en:",
+        opciones: [
+            "La ley.",
+            "La ley y en la Declaración Universal de Derechos Humanos.",
+            "Los tratados y la ley.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "¿En qué artículo de la Constitución Española se reconoce que los españoles somos iguales ante la ley?",
+        opciones: [
+            "Artículo 13.",
+            "Artículo 9.2.",
+            "Artículo 23.2.",
+            "Artículo 14."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La pena de muerte:",
+        opciones: [
+            "Queda abolida en todo caso.",
+            "Queda abolida salvo lo que puedan disponer las leyes penales militares para tiempos de guerra.",
+            "Queda abolida salvo lo que puedan disponer las leyes penales militares.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Los poderes públicos mantendrán relaciones de cooperación:",
+        opciones: [
+            "Solo con la Iglesia Católica.",
+            "Con ninguna confesión dada la aconfesionalidad del Estado.",
+            "Con la Iglesia Católica y con las demás confesiones.",
+            "Con la confesión mayoritaria de la sociedad española."
+        ],
+        respuesta_correcta: 2
+    },
+	    {
+        pregunta: "No podrá durar más de 72 horas:",
+        opciones: [
+            "La prisión provisional.",
+            "El “habeas corpus”.",
+            "La detención preventiva.",
+            "Las respuestas a) y c) son correctas."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Se garantiza la asistencia de abogado al detenido:",
+        opciones: [
+            "Solo en diligencias judiciales, en los términos que la ley establezca.",
+            "Solo en diligencias policiales, en los términos que la ley establezca.",
+            "En diligencias policiales y judiciales.",
+            "En diligencias policiales y judiciales, en los términos que la ley establezca."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Señale la respuesta correcta. La persona detenida:",
+        opciones: [
+            "Debe ser informada de forma inmediata, y de modo que le sea comprensible, de sus derechos y de las razones de su detención, en dependencias judiciales.",
+            "Está obligada a declarar en dependencias judiciales.",
+            "No está obligada a declarar.",
+            "No está obligada a declarar en dependencias policiales."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Se garantiza el secreto de las comunicaciones y, en especial, de las postales, telegráficas y telefónicas:",
+        opciones: [
+            "Salvo resolución judicial.",
+            "Salvo en caso de flagrante delito.",
+            "Siempre y en todo caso.",
+            "Las respuestas a) y b) son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Los españoles tienen derecho a entrar y salir libremente de España:",
+        opciones: [
+            "Sin limitación alguna.",
+            "En los términos que la ley establezca.",
+            "Con los límites que la ley establezca por motivos políticos o ideológicos.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Qué parte de la Constitución española de 1978 no tiene fuerza jurídica?",
+        opciones: [
+            "El Título I.",
+            "El Título Preliminar.",
+            "El Preámbulo.",
+            "Las disposiciones finales."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta incorrecta. La Constitución Española reconoce el derecho:",
+        opciones: [
+            "A expresar y difundir libremente los pensamientos, ideas y opiniones mediante la palabra, el escrito o cualquier otro medio de reproducción.",
+            "A la producción y creación literaria, artística, científica y técnica.",
+            "A la libertad de cátedra.",
+            "A comunicar o recibir libremente información por cualquier medio de difusión."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El derecho de reunión pacífica y sin armas:",
+        opciones: [
+            "No se puede prohibir en ningún caso.",
+            "No necesita autorización previa.",
+            "Solo necesita autorización previa en caso de reuniones en lugares de tránsito público.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta correcta:",
+        opciones: [
+            "Las asociaciones pueden ser disueltas o ver suspendidas sus actividades por orden de la autoridad administrativa.",
+            "Las asociaciones no tienen que inscribirse en un registro a ningún efecto.",
+            "Son ilegales las asociaciones solo cuando persigan fines tipificados como delito.",
+            "Las asociaciones secretas y las de carácter paramilitar están prohibidas."
+        ],
+        respuesta_correcta: 3
+    },
+	    {
+        pregunta: "Estarán orientadas hacia la reeducación y reinserción social:",
+        opciones: [
+            "Las penas privativas de libertad.",
+            "Las medidas de seguridad.",
+            "Las penas privativas de libertad, las medidas de seguridad y las sanciones administrativas.",
+            "Las respuestas a) y b) son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La Administración civil:",
+        opciones: [
+            "No podrá imponer sanciones que, directa o subsidiariamente, impliquen privación de libertad.",
+            "Podrá imponer sanciones que, subsidiariamente, impliquen privación de libertad.",
+            "Podrá imponer sanciones que, directa o subsidiariamente, impliquen privación de libertad salvo cuando se trate de infracciones muy graves.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Los Tribunales de Honor:",
+        opciones: [
+            "Están prohibidos en cualquier ámbito.",
+            "Se admiten en la Administración Civil.",
+            "Solo están prohibidos en la Administración Civil.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "¿Quiénes intervendrán en el control y gestión de todos los centros sostenidos por la Administración con fondos públicos en los términos que la ley establezca?",
+        opciones: [
+            "Los profesores y los padres.",
+            "Solo los poderes públicos.",
+            "La inspección educativa.",
+            "Los profesores, los padres y, en su caso, los alumnos."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta correcta:",
+        opciones: [
+            "La enseñanza secundaria es obligatoria y gratuita.",
+            "La enseñanza básica es obligatoria y gratuita.",
+            "La enseñanza básica es voluntaria y gratuita.",
+            "La enseñanza es voluntaria y gratuita en todos sus niveles."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Señale la respuesta correcta:",
+        opciones: [
+            "Solo los españoles tienen el derecho a la educación.",
+            "Todos tienen el derecho a la educación.",
+            "Los españoles, y los extranjeros en los términos que establezcan los tratados y la ley, tienen el derecho a la educación.",
+            "No existe un derecho a la educación."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta incorrecta. La Constitución Española:",
+        opciones: [
+            "Reconoce la autonomía de las Universidades, en los términos que la ley establezca.",
+            "Reconoce solo a las personas jurídicas la libertad de creación de centros docentes, dentro del respeto a los principios constitucionales.",
+            "Garantiza el derecho de los padres para que sus hijos reciban la formación religiosa y moral que esté de acuerdo con sus propias convicciones.",
+            "Reconoce la libertad de enseñanza."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Según la Constitución Española, tienen derecho a sindicarse libremente:",
+        opciones: [
+            "Solo los españoles.",
+            "Todos.",
+            "Los españoles, y los extranjeros en los términos que establezcan los tratados y la ley.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El derecho a sindicarse libremente:",
+        opciones: [
+            "No puede exceptuarse en ningún caso.",
+            "Por ley, puede limitarse o exceptuarse a las Fuerzas o Institutos armados o a los demás Cuerpos sometidos a disciplina militar.",
+            "Por ley, puede exceptuarse a los funcionarios públicos.",
+            "Por ley, solo puede limitarse o exceptuarse a las Fuerzas o Institutos armados."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "La libertad sindical comprende el derecho:",
+        opciones: [
+            "A fundar sindicatos.",
+            "A afiliarse al de su elección.",
+            "De los sindicatos a formar confederaciones y a formar organizaciones sindicales internacionales o a afiliarse a las mismas.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Señale la respuesta correcta. El derecho de petición:",
+        opciones: [
+            "Se reconoce a todos los españoles.",
+            "Debe ejercerse solo de forma individual, por escrito, en la forma y con los efectos que determine la ley.",
+            "Debe ejercerse solo de forma colectiva, por escrito, en la forma y con los efectos que determine la ley.",
+            "Las respuestas a) y c) son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+	    {
+        pregunta: "Defender a España es:",
+        opciones: [
+            "Un deber de todos.",
+            "Un derecho de los españoles.",
+            "Un derecho y un deber para todos.",
+            "Un derecho y un deber para los españoles."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "¿En qué situaciones no pueden regularse, mediante ley, los deberes de los ciudadanos?",
+        opciones: [
+            "Catástrofe.",
+            "Calamidad pública.",
+            "Riesgo.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Todos contribuirán al sostenimiento de los gastos públicos de acuerdo con:",
+        opciones: [
+            "El criterio de eficiencia.",
+            "Los criterios de eficiencia y economía.",
+            "Su capacidad económica.",
+            "Los principios de igualdad y progresividad."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Los principios inspiradores de nuestro sistema tributario son:",
+        opciones: [
+            "La eficiencia y la estabilidad económica.",
+            "La igualdad y la progresividad.",
+            "La capacidad económica y la igualdad.",
+            "La capacidad económica y la equidad."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "La ley regulará:",
+        opciones: [
+            "Las formas de matrimonio y los derechos y deberes de los cónyuges.",
+            "La edad y capacidad para contraerlo.",
+            "Las causas de separación y disolución y sus efectos.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Señale la respuesta correcta:",
+        opciones: [
+            "Nadie podrá ser privado de sus bienes y derechos sino por causa justificada, mediante la correspondiente indemnización y de conformidad con lo dispuesto por las leyes.",
+            "El derecho a la propiedad privada y a la herencia no tienen una función social que delimita su contenido.",
+            "Nadie podrá ser privado de sus bienes y derechos sino por causa justificada de utilidad pública o interés social, mediante la correspondiente indemnización y de conformidad con lo dispuesto por las leyes.",
+            "Nadie podrá ser privado de sus bienes y derechos, en ningún caso."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Se reconoce el derecho de fundación:",
+        opciones: [
+            "Para fines altruistas, con arreglo a la ley.",
+            "Para fines de utilidad pública, con arreglo a la ley.",
+            "Para fines de interés general, con arreglo a la ley.",
+            "Para fines altruistas y lucrativos de interés general."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Quiénes tiene el deber de trabajar y el derecho al trabajo:",
+        opciones: [
+            "Todos los españoles.",
+            "Todos los ciudadanos.",
+            "Los españoles y los extranjeros.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El derecho al trabajo:",
+        opciones: [
+            "Está en la Sección 1ª (De los derechos fundamentales y de las libertades públicas) del Capítulo Segundo del Título I.",
+            "Está en la Sección 2ª (De los derechos y deberes de los ciudadanos) del Capítulo Segundo del Título I.",
+            "Está en el Capítulo Tercero del Título I.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El derecho a la remuneración suficiente debe permitir satisfacer:",
+        opciones: [
+            "Las necesidades del trabajador.",
+            "Las necesidades del trabajador y del empresario.",
+            "Las necesidades del trabajador y de su familia.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta incorrecta:",
+        opciones: [
+            "La ley regulará las peculiaridades propias del régimen jurídico de los Colegios Profesionales.",
+            "La ley regulará el ejercicio de las profesiones.",
+            "La estructura interna de los Colegios deberá ser democrática.",
+            "El funcionamiento de los Colegios deberá ser democrático."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Quiénes pueden adoptar medidas de conflicto colectivo:",
+        opciones: [
+            "Solo los sindicatos de trabajadores.",
+            "Solo los trabajadores.",
+            "Los sindicatos de trabajadores y los empresarios.",
+            "Los trabajadores y empresarios."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Señale la respuesta correcta sobre el artículo 37 de la Constitución Española:",
+        opciones: [
+            "La ley garantizará el derecho a la negociación colectiva laboral entre los trabajadores y empresarios.",
+            "La ley garantizará la fuerza vinculante de los convenios.",
+            "La ley podrá garantizar el funcionamiento de los servicios esenciales de la comunidad ante medidas de conflicto colectivo.",
+            "Los poderes públicos deberán establecer limitaciones al derecho a adoptar medidas de conflicto colectivo."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Se reconoce la libertad de empresa en el marco de:",
+        opciones: [
+            "La economía planificada.",
+            "La economía social, justa y equitativa.",
+            "La economía de mercado.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Señale la respuesta correcta:",
+        opciones: [
+            "Los poderes públicos posibilitarán la investigación de la paternidad.",
+            "Los padres deben prestar asistencia de todo orden a los hijos habidos dentro o fuera del matrimonio solo durante su minoría de edad.",
+            "Los padres deben prestar asistencia de todo orden solo a los hijos habidos dentro del matrimonio, durante su minoría de edad y en los demás casos en que legalmente proceda.",
+            "La ley posibilitará la investigación de la paternidad."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Señale la respuesta incorrecta. Los poderes públicos fomentarán una política que:",
+        opciones: [
+            "Garantice la formación y readaptación profesionales.",
+            "Vele por la seguridad e higiene en el trabajo.",
+            "Garantice el descanso necesario.",
+            "Garantice el pleno empleo."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Señale la respuesta incorrecta. El descanso necesario se garantiza mediante:",
+        opciones: [
+            "La limitación de la jornada laboral.",
+            "Las vacaciones periódicas retribuidas.",
+            "La concesión de permisos para la conciliación de la vida familiar y laboral.",
+            "La promoción de centros adecuados."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Los poderes públicos mantendrán un régimen de Seguridad Social:",
+        opciones: [
+            "Público, para todos los españoles.",
+            "Público para todos los ciudadanos.",
+            "Que no garantice la asistencia y prestaciones sociales suficientes en caso de desempleo.",
+            "Público y/o privado, para todos los ciudadanos."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El Estado orientará su política:",
+        opciones: [
+            "Al reingreso de los trabajadores españoles emigrados.",
+            "A la reinserción de los trabajadores españoles emigrados.",
+            "Al retorno de los trabajadores españoles en el extranjero.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El derecho a la salud, según la Constitución Española:",
+        opciones: [
+            "Es un derecho fundamental de la Sección 1ª del Capítulo Segundo del Título I.",
+            "Es un principio rector de la política social y económica.",
+            "No existe.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿A quién compete organizar y tutelar la salud pública?",
+        opciones: [
+            "Al Gobierno.",
+            "A la Comunidades Autónomas.",
+            "A los poderes públicos.",
+            "Al Congreso de los Diputados."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Los poderes públicos no tienen que fomentar:",
+        opciones: [
+            "La educación sanitaria.",
+            "La educación física y el deporte.",
+            "La adecuada utilización del ocio.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Para quienes atenten contra el medio ambiente, y en los términos que la ley fije, se establecerán:",
+        opciones: [
+            "Sanciones administrativas, en ningún caso penales, así como la obligación de reparar el daño causado.",
+            "Sanciones penales, así como la obligación de reparar el daño causado.",
+            "Sanciones penales o, en su caso, administrativas, así como la obligación de reparar el daño causado.",
+            "Sanciones penales."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Los poderes públicos garantizarán la conservación y promoverán el enriquecimiento del patrimonio histórico, cultural y artístico de los pueblos de España y de los bienes que lo integran:",
+        opciones: [
+            "Siempre que sean de titularidad pública.",
+            "Cualquiera que sea su régimen jurídico y su titularidad.",
+            "Salvo que sean de titularidad privada.",
+            "Siempre que sean de titularidad estatal o autonómica."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El derecho a disfrutar de una vivienda digna y adecuada forma parte:",
+        opciones: [
+            "Del Capítulo Primero del Título I.",
+            "Del Capítulo Segundo del Título I.",
+            "Del Capítulo Tercero del Título I.",
+            "Del Capítulo Cuarto del Título I."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Señale la respuesta incorrecta. Los poderes públicos:",
+        opciones: [
+            "Promoverán las condiciones para la participación libre y eficaz de la juventud y la tercera edad en el desarrollo político, social, económico y cultural.",
+            "Impulsarán las políticas que garanticen la plena autonomía personal y la inclusión social de las personas con discapacidad, en entornos universalmente accesibles.",
+            "Regularán la utilización del suelo de acuerdo con el interés general para impedir la especulación.",
+            "Garantizarán, mediante pensiones adecuadas y periódicamente actualizadas, la suficiencia económica a los ciudadanos durante la tercera edad."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "El sistema de servicios sociales a la tercera edad atenderá sus problemas específicos de:",
+        opciones: [
+            "Salud y vivienda.",
+            "Cultura.",
+            "Salud, vivienda, cultura y ocio.",
+            "Las respuestas a) y b) son correctas."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Los poderes públicos:",
+        opciones: [
+            "Fomentarán las organizaciones de consumidores y usuarios y las oirán en las cuestiones que puedan afectar a aquellos, en los términos que la ley establezca.",
+            "Podrán fomentar las organizaciones de consumidores y usuarios y las oirán en las cuestiones que puedan afectar a aquellos, en los términos que la ley establezca.",
+            "Fomentarán las organizaciones de consumidores y usuarios y podrán oírlas en las cuestiones que puedan afectar a aquellos, en los términos que la ley establezca.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Deberán ser democráticos:",
+        opciones: [
+            "La estructura interna y funcionamiento de los Sindicatos.",
+            "La estructura interna y funcionamiento de los Colegios Profesionales y de las organizaciones profesionales.",
+            "La estructura interna y funcionamiento de los partidos políticos.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Los derechos y libertades regulados en el Capítulo segundo del Título I vinculan:",
+        opciones: [
+            "A todos los ciudadanos.",
+            "A los poderes públicos.",
+            "Al poder legislativo.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El principio de legalidad se recoge en el artículo:",
+        opciones: [
+            "9.",
+            "1.3.",
+            "1.1.",
+            "2.1."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿En cuántas partes se estructura la Constitución española de 1978?",
+        opciones: [
+            "En tres partes: orgánica, dogmática y estructural.",
+            "No tiene divisiones internas.",
+            "En dos partes: orgánica y estructural.",
+            "En dos partes: dogmática y orgánica."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Señale la respuesta correcta:",
+        opciones: [
+            "Cualquier ciudadano podrá recabar la tutela de las libertades y derechos reconocidos en el artículo 14 y la Sección primera del Capítulo segundo ante los Tribunales ordinarios por un procedimiento basado en los principios de preferencia y celeridad y, en su caso, a través del recurso de amparo ante el Tribunal Constitucional.",
+            "Cualquier ciudadano podrá recabar la tutela de las libertades y derechos reconocidos en el artículo 14 y la Sección primera del Capítulo segundo ante los Tribunales ordinarios por un procedimiento basado en los principios de preferencia y sumariedad y, en su caso, a través del recurso de amparo ante el Tribunal Constitucional.",
+            "Cualquier ciudadano podrá recabar la tutela de las libertades y derechos reconocidos en la Sección primera del Capítulo segundo ante los Tribunales ordinarios por un procedimiento basado en los principios de preferencia y celeridad y, en su caso, a través del recurso de amparo ante el Tribunal Constitucional.",
+            "Cualquier ciudadano podrá recabar la tutela de las libertades y derechos reconocidos en la Sección primera del Capítulo segundo ante los Tribunales ordinarios por un procedimiento basado en los principios de preferencia y sumariedad y, en su caso, a través del recurso de amparo ante el Tribunal Constitucional."
+        ],
+        respuesta_correcta: 1
+    },
+	 {
+        pregunta: "El reconocimiento, el respeto y la protección de los principios rectores de la política social y económica:",
+        opciones: [
+            "Informarán la legislación positiva, la práctica efectiva y la actuación de los poderes públicos.",
+            "Solo podrán ser alegados ante la Jurisdicción ordinaria de acuerdo con lo que dispongan las normas que los desarrollen.",
+            "Las respuestas a) y b) son correctas.",
+            "Las respuestas a) y b) son incorrectas."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El derecho a la autonomía de las nacionalidades se recoge en:",
+        opciones: [
+            "El artículo 10.",
+            "El artículo 5.",
+            "El artículo 1.",
+            "El artículo 2."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La protección de los derechos fundamentales corresponde:",
+        opciones: [
+            "Solo al Tribunal Supremo.",
+            "Solo al Tribunal Constitucional.",
+            "A los Tribunales ordinarios y al Tribunal Constitucional.",
+            "Al poder público."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La institución del Defensor del Pueblo se regula por:",
+        opciones: [
+            "Ley orgánica.",
+            "Ley.",
+            "Reglamento.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Designa al Defensor del Pueblo:",
+        opciones: [
+            "El Presidente del Gobierno.",
+            "El Consejo de Ministros.",
+            "El Congreso.",
+            "Las Cortes Generales."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El derecho de petición se recoge en el artículo:",
+        opciones: [
+            "25.",
+            "28.",
+            "29.",
+            "19."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Para la defensa de los derechos del Título I, el Defensor del Pueblo podrá:",
+        opciones: [
+            "Supervisar la actividad de la Administración, dando cuenta a las Cortes Generales.",
+            "Supervisar la actividad de la Administración, dando cuenta al Congreso.",
+            "Supervisar la actividad del Gobierno, dando cuenta a las Cortes Generales.",
+            "Supervisar la actividad del Gobierno, dando cuenta al Congreso."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El Defensor del Pueblo:",
+        opciones: [
+            "Es designado por las Cortes Generales.",
+            "Es alto comisionado de las Cortes Generales.",
+            "Defiende los derechos del Título I.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "El artículo 24 de la Constitución no reconoce el derecho:",
+        opciones: [
+            "Al Juez ordinario predeterminado por la Ley.",
+            "A la asistencia de letrado.",
+            "A no declarar contra sí mismos.",
+            "A confesarse culpable."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Según el artículo 9 de la Constitución, los ciudadanos y los poderes públicos deberán estar sujetos:",
+        opciones: [
+            "A la Constitución.",
+            "A la Constitución y al resto del ordenamiento jurídico.",
+            "A la legislación penal, administrativa y a la Constitución.",
+            "A la Constitución, y a las disposiciones legislativas del Gobierno."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "La misión de garantizar la soberanía e independencia de España, corresponde:",
+        opciones: [
+            "A las Fuerzas de Seguridad.",
+            "A las Fuerzas Armadas.",
+            "A la Policía Nacional.",
+            "A las Cortes Generales."
+        ],
+        respuesta_correcta: 1
+    },
+	 {
+        pregunta: "Según dispone el artículo 33 de la Constitución Española, la propiedad privada:",
+        opciones: [
+            "Es un derecho fundamental de la persona reconocido en nuestra Constitución.",
+            "Al igual que la herencia, está protegido por el recurso de amparo.",
+            "Tiene una función social que delimitará su contenido, de acuerdo con las leyes.",
+            "Tal función social no existe respecto del derecho a la herencia."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El derecho a la vida se consagra en el siguiente artículo de la Constitución:",
+        opciones: [
+            "Artículo 10.",
+            "Artículo 16.",
+            "Artículo 15.",
+            "Artículo 24."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El derecho de reunión se contempla en un artículo de la Constitución:",
+        opciones: [
+            "Artículo 19.",
+            "Artículo 20.",
+            "Artículo 21.",
+            "Artículo 22."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La extradición solo se concederá:",
+        opciones: [
+            "En cumplimiento de la Ley.",
+            "Atendiendo al principio de solidaridad.",
+            "En cumplimiento de un Tratado.",
+            "Las respuestas a) y c) son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La detención preventiva tiene un plazo máximo de:",
+        opciones: [
+            "Cuarenta y ocho horas.",
+            "Treinta y seis horas.",
+            "Sesenta horas.",
+            "Setenta y dos horas."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "La abolición de la pena de muerte se recoge en el artículo:",
+        opciones: [
+            "14.",
+            "15.",
+            "17.",
+            "18."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Según el artículo 22 de la Constitución, las asociaciones deberán inscribirse en un registro administrativo a los solos efectos de:",
+        opciones: [
+            "Declaración.",
+            "Control.",
+            "Publicidad.",
+            "Legalidad."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Según la Constitución, la soberanía nacional:",
+        opciones: [
+            "Corresponde a las Cortes Generales, al estar compuestas por los representantes del pueblo.",
+            "Corresponde al Rey.",
+            "Reside en el pueblo español.",
+            "Corresponde al Gobierno de la Nación elegido directamente por el pueblo."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El artículo de la Constitución que trata sobre las personas con discapacidad, es el:",
+        opciones: [
+            "Cuarenta y cinco.",
+            "Cuarenta y seis.",
+            "Cuarenta y ocho.",
+            "Cuarenta y nueve."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La Constitución no reconoce el derecho:",
+        opciones: [
+            "De fundación para fines de interés general.",
+            "De todos los españoles a no trabajar.",
+            "De todos los trabajadores a la huelga para la defensa de sus intereses.",
+            "Todos son derechos reconocidos por la Constitución."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "No tienen efecto retroactivo:",
+        opciones: [
+            "Las disposiciones sancionadoras.",
+            "Las disposiciones sancionadoras no favorables o restrictivas de derechos individuales.",
+            "Las normas de rango inferior a la ley que establezcan una limitación a las libertades individuales.",
+            "Las disposiciones favorables que limiten derechos adquiridos."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El gasto público realizará una asignación equitativa de los recursos públicos, que responderá al criterio de:",
+        opciones: [
+            "Eficiencia.",
+            "Economía.",
+            "Los dos criterios anteriores.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+	 {
+        pregunta: "¿Qué artículo de la Constitución regula el Derecho a la Seguridad Social?",
+        opciones: [
+            "El 40.",
+            "El 41.",
+            "El 42.",
+            "El 43."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Qué artículo de la Constitución Española dispone que los Poderes Públicos facilitarán la adecuada utilización del ocio?",
+        opciones: [
+            "El 41.3.",
+            "El 43.3.",
+            "El 44.4.",
+            "El 31.2."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Qué artículo de la Constitución Española menciona la bandera de España?",
+        opciones: [
+            "El artículo 3.",
+            "El artículo 4.",
+            "El artículo 5.",
+            "El artículo 6."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Cuál de los siguientes derechos fundamentales y libertades públicas ha de ser desarrollado y ejercitado, según la Constitución, con arreglo a su legislación específica por afectar a un determinado colectivo profesional o funcionarial?",
+        opciones: [
+            "El de huelga.",
+            "El de sindicación.",
+            "El de asociación.",
+            "El de petición."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Cuál de los siguientes no es un principio rector de la política social y económica?",
+        opciones: [
+            "El derecho de sindicación.",
+            "El derecho a disfrutar de un medio ambiente adecuado.",
+            "El derecho a la protección de la salud.",
+            "El derecho a una vivienda digna y adecuada."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Uno de los siguientes derechos no viene recogido en el artículo 18 de la Constitución Española:",
+        opciones: [
+            "El derecho al honor.",
+            "El derecho a expresar libremente los pensamientos.",
+            "La inviolabilidad del domicilio.",
+            "El derecho a la intimidad personal y familiar."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Qué contenido tiene el artículo 44 de la Constitución?",
+        opciones: [
+            "El derecho a la salud.",
+            "El derecho de acceso a la cultura.",
+            "El derecho a una vivienda adecuada.",
+            "El derecho a vacaciones retribuidas."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El derecho a la educación se encuentra recogido en el artículo:",
+        opciones: [
+            "27.",
+            "28.",
+            "25.",
+            "17."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "¿Qué es, según el artículo 54 de la Constitución Española, el Defensor del Pueblo?",
+        opciones: [
+            "El encargado de oponerse, en los juicios, al Ministerio Fiscal.",
+            "El único competente para ejercer la acción popular prevista en el artículo 125 de la Constitución.",
+            "Un abogado encargado de defender en los juicios a quienes no pueden pagarse uno particular.",
+            "El Alto Comisionado de las Cortes Generales para la defensa de los derechos comprendidos en el Título Primero de la Constitución."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Según el artículo 26 de la Constitución, los Tribunales de Honor están prohibidos:",
+        opciones: [
+            "En la Administración Civil.",
+            "En la Administración Militar.",
+            "En las Organizaciones Profesionales.",
+            "En el ámbito de la Administración Civil y de las Organizaciones Profesionales."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "El principio de solidaridad interterritorial se recoge en la Constitución en su artículo:",
+        opciones: [
+            "2.",
+            "5.",
+            "3.",
+            "1."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El que “los padres deben prestar asistencia de todo orden a los hijos habidos dentro o fuera del matrimonio, durante su minoría de edad y en los demás casos en que legalmente proceda”:",
+        opciones: [
+            "Es uno de los Derechos Fundamentales y Libertades Públicas reconocidos en la Constitución.",
+            "Es un principio constitucional.",
+            "Está recogido entre los principios rectores de la política social y económica.",
+            "Está recogido en la Sección de los Derechos y Deberes de los ciudadanos."
+        ],
+        respuesta_correcta: 2
+    },
+	{
+        pregunta: "A tenor de lo establecido en el artículo 34 de la Constitución Española, el derecho de fundación se reconoce para:",
+        opciones: [
+            "Fines docentes.",
+            "Fines de interés público.",
+            "Fines de interés general, con arreglo a la ley.",
+            "Cualesquiera siempre que sean lícitos."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "En relación con el trabajo, el artículo 40 de la Constitución establece que “Los poderes públicos”:",
+        opciones: [
+            "Garantizarán el descanso necesario, mediante la limitación de la jornada laboral, las vacaciones anuales y la construcción de centros adecuados.",
+            "Garantizarán el descanso necesario, mediante la limitación de la jornada laboral, las vacaciones periódicas y la construcción de centros adecuados.",
+            "Garantizarán el descanso necesario, mediante la limitación de la jornada laboral, las vacaciones anuales retribuidas y la promoción de centros adecuados.",
+            "Garantizarán el descanso necesario, mediante la limitación de la jornada laboral, las vacaciones periódicas retribuidas y la promoción de centros adecuados."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La estructura de cada uno de los partidos políticos:",
+        opciones: [
+            "Ha de ser democrática.",
+            "Ha de expresar el pluralismo político.",
+            "Ha de concurrir a la formación de la voluntad popular.",
+            "Ha de ser instrumento fundamental para la participación política."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El artículo 8 de la Constitución Española señala que las Fuerzas Armadas están constituidas por (señala la incorrecta):",
+        opciones: [
+            "El Ejército de Tierra.",
+            "La Armada.",
+            "El Ejército del Aire.",
+            "El Ejército del Agua."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "¿Qué confesión religiosa tiene carácter estatal, según la Constitución?",
+        opciones: [
+            "La que decida el pueblo español en referéndum.",
+            "La Católica.",
+            "Ninguna confesión tendrá carácter estatal.",
+            "La que designa el Gobierno de la nación."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La Constitución garantiza:",
+        opciones: [
+            "La seguridad jurídica.",
+            "La responsabilidad.",
+            "La interdicción de la arbitrariedad de los poderes públicos.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "De acuerdo con lo dispuesto en el artículo 51 de la Constitución Española, la Ley regulará el comercio interior y el régimen de autorización de productos comerciales en el marco de:",
+        opciones: [
+            "La garantía de la defensa de los consumidores y usuarios.",
+            "La garantía y defensa del derecho a la salud.",
+            "La garantía y defensa de la suficiencia económica de los ciudadanos de la tercera edad.",
+            "La garantía y defensa de los derechos económicos de los españoles en el extranjero."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El Título preliminar de la Constitución Española, comprende:",
+        opciones: [
+            "Los artículos 1 a 6.",
+            "Los artículos 1 a 8.",
+            "Los artículos 1 a 9.",
+            "Los artículos 1 a 12."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Podrá establecerse un servicio civil:",
+        opciones: [
+            "Para el cumplimiento de fines de interés general.",
+            "Por causas de fuerza mayor.",
+            "Por razones de interés público.",
+            "En caso de grave riesgo."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Según la Constitución Española, el derecho a la autonomía se reconoce a:",
+        opciones: [
+            "El pueblo español.",
+            "La Nación española, y las nacionalidades y regiones que la integran.",
+            "El Estado español.",
+            "Las nacionalidades y regiones."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Según la Constitución, la nacionalidad española se adquiere de acuerdo con:",
+        opciones: [
+            "El nacimiento.",
+            "La territorialidad.",
+            "El origen.",
+            "Lo establecido por la Ley"
+        ],
+        respuesta_correcta: 3
+    },
+	 {
+        pregunta: "Según el artículo 5 de la Constitución Española de 1978, la capital del Estado es:",
+        opciones: [
+            "La Ciudad de Madrid.",
+            "La Villa de Madrid.",
+            "El Pueblo de Madrid.",
+            "La Localidad de Madrid."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Según el artículo 50 de la Constitución, ¿cómo se promoverá el bienestar de los ciudadanos durante la tercera edad?",
+        opciones: [
+            "Mediante pensiones adecuadas y periódicamente actualizadas.",
+            "Mediante un sistema de servicios sociales que atenderán sus problemas específicos de salud, vivienda, cultura y ocio.",
+            "Mediante asistencia y prestaciones complementarias.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Señala la característica que más distingue a nuestra Constitución:",
+        opciones: [
+            "Muy novedosa.",
+            "Rígida.",
+            "Fácilmente reformable.",
+            "Impuesta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Dispone la Constitución que los objetores de conciencia:",
+        opciones: [
+            "Están exentos de prestar servicio alguno.",
+            "No existe, puesto que la mili ya está abolida en España.",
+            "Prestan servicio militar en la Cruz Roja.",
+            "Pueden prestar un servicio social."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Según dispone el artículo 46 de la Constitución Española, los atentados contra el Patrimonio serán sancionados:",
+        opciones: [
+            "Por una Ley Civil.",
+            "Por las Ordenanzas Municipales.",
+            "Por la Ley Penal.",
+            "Indistintamente, por la Ley Civil o por la Ley Penal."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El artículo 7 de la Constitución Española, establece:",
+        opciones: [
+            "El derecho a la huelga de los funcionarios.",
+            "Que los sindicatos, en el ejercicio de su actividad, son libres dentro del respeto a la Constitución y a la ley.",
+            "Que todos los españoles tienen derecho a la sindicación.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Cuántas disposiciones tiene en total la Constitución Española?",
+        opciones: [
+            "Catorce.",
+            "Quince.",
+            "Trece.",
+            "Once."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "El artículo 45 de la Constitución, en relación con el derecho a disfrutar de un medio ambiente adecuado para el desarrollo de la persona, establece para quienes violen el deber de conservarlo:",
+        opciones: [
+            "Sanciones penales, así como la obligación de reparar el daño causado.",
+            "En los términos que la ley fije se establecerán sanciones penales o, en su caso, administrativas, así como la obligación de reparar el daño causado.",
+            "Sanciones penales o, en su caso, administrativas, así como la obligación de reparar el daño causado.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "¿Podrá ser limitado el derecho a entrar o salir de España?",
+        opciones: [
+            "Nunca.",
+            "Sí, pero solo por motivos políticos o ideológicos.",
+            "Sí, pero nunca por motivos políticos o ideológicos.",
+            "En todo caso."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La Constitución no exige expresamente una estructura interna y un funcionamiento democrático a:",
+        opciones: [
+            "Colegios profesionales.",
+            "Sindicatos y asociaciones empresariales.",
+            "Partidos políticos.",
+            "Lo exige a todos los anteriores."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Los derechos y deberes de los cónyuges, en el matrimonio:",
+        opciones: [
+            "Están establecidos en el concordato firmado con la Iglesia Católica.",
+            "Son derechos fundamentales establecidos en la Constitución.",
+            "Solo serán válidos los que ellos mutua y particularmente acuerden.",
+            "Se regularán por ley."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "El Estado velará especialmente por la salvaguardia de:",
+        opciones: [
+            "Los derechos económicos y sociales de los trabajadores españoles en el extranjero.",
+            "Los derechos civiles y económicos de los trabajadores españoles en el extranjero.",
+            "Los derechos políticos y sociales de los trabajadores españoles en el extranjero.",
+            "Los derechos económicos y políticos de los trabajadores españoles en el extranjero."
+        ],
+        respuesta_correcta: 0
+    },
+	  {
+        pregunta: "¿Pueden participar los extranjeros en procesos electorales españoles?",
+        opciones: [
+            "No, nunca.",
+            "Sí, en todos.",
+            "Sí, en elecciones autonómicas exclusivamente.",
+            "Sí, en elecciones municipales, atendiendo a lo que por criterios de reciprocidad, pueda establecerse por tratado o ley."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Todos tienen derecho a:",
+        opciones: [
+            "La vida.",
+            "La integridad física.",
+            "La integridad moral.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La Constitución, ¿autoriza la tortura?",
+        opciones: [
+            "Sí, en tiempos de guerra.",
+            "No, ni las penas degradantes.",
+            "No, ni las penas o tratos inhumanos o degradantes.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El derecho a la huelga de los trabajadores podrá suspenderse cuando se declare el estado:",
+        opciones: [
+            "De excepción",
+            "De sitio",
+            "De excepción o de sitio",
+            "De alarma, de excepción o de sitio."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El procedimiento para producir la inmediata puesta a disposición judicial de toda persona detenida ilegalmente se denomina:",
+        opciones: [
+            "De legalidad penal.",
+            "De “habeas corpus”.",
+            "De “tenere corpus”.",
+            "De interdicción."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Salvo resolución judicial, se garantiza el secreto de las comunicaciones y, en especial, de las:",
+        opciones: [
+            "Postales.",
+            "Postales y telegráficas.",
+            "Postales, telegráficas y telefónicas.",
+            "Postales, electrónicas, telegráficas y telefónicas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "El ejercicio del derecho de reunión pacífica y sin armas, ¿necesitará autorización previa?",
+        opciones: [
+            "No.",
+            "Sí.",
+            "Depende del número de reunidos.",
+            "Depende del tema de la reunión."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "¿Se podrán prohibir las reuniones y manifestaciones que se celebren en lugares de tránsito público?",
+        opciones: [
+            "No.",
+            "Únicamente cuando existan razones fundadas de alteración del orden público.",
+            "Únicamente cuando existan razones fundadas de alteración del orden público, con peligro para personas.",
+            "Únicamente cuando existan razones fundadas de alteración del orden público, con peligro para personas o bienes."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "¿Se exige comunicación previa a la autoridad para celebrar reuniones y manifestaciones en lugares de tránsito público?",
+        opciones: [
+            "Sí.",
+            "No.",
+            "Depende del número de reunidos.",
+            "Depende de la hora del acontecimiento."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Las asociaciones, ¿podrán ser disueltas o suspendidas en sus actividades?",
+        opciones: [
+            "No.",
+            "Sí, en virtud de resolución administrativa motivada.",
+            "Sí, en virtud de resolución judicial motivada.",
+            "Sí, en virtud de resolución administrativa o judicial."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "¿A quién dará cuenta de su actividad el Defensor del Pueblo?",
+        opciones: [
+            "Al Gobierno.",
+            "Al Congreso.",
+            "Al Senado.",
+            "A las Cortes Generales."
+        ],
+        respuesta_correcta: 3
+    },
+	 {
+        pregunta: "El domicilio es inviolable:",
+        opciones: [
+            "Ninguna entrada o registro podrá hacerse en él salvo en caso de flagrante delito.",
+            "Ninguna entrada o registro podrá hacerse en él sin consentimiento del titular, salvo en caso de flagrante delito.",
+            "Ninguna entrada o registro podrá hacerse en él sin resolución judicial, salvo en caso de flagrante delito.",
+            "Ninguna entrada o registro podrá hacerse en él sin consentimiento del titular o resolución judicial, salvo en caso de flagrante delito."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Todos los españoles tienen derecho a disfrutar de una vivienda:",
+        opciones: [
+            "Digna y adecuada.",
+            "Suficiente y adecuada.",
+            "Digna y suficiente.",
+            "Suficiente y económica."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Los poderes públicos garantizarán la conservación y promoverán el enriquecimiento del patrimonio:",
+        opciones: [
+            "Histórico de los pueblos de España.",
+            "Histórico y cultural de los pueblos de España.",
+            "Histórico, cultural y artístico de los pueblos de España.",
+            "Histórico, cultural, artístico y folclórico de los pueblos de España."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Los atentados contra el patrimonio de los pueblos de España se sancionará mediante:",
+        opciones: [
+            "Multas.",
+            "Una ley especial.",
+            "La ley penal.",
+            "Multas coercitivas."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Respecto de la salud se reconoce el derecho:",
+        opciones: [
+            "A la protección.",
+            "A la curación.",
+            "A la prevención.",
+            "A la asistencia médica."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "La asistencia y prestaciones complementarias de la Seguridad Social serán:",
+        opciones: [
+            "Obligatorias.",
+            "Universales.",
+            "Libres.",
+            "Contributivas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Respecto de la familia, los poderes públicos asegurarán su protección:",
+        opciones: [
+            "Social.",
+            "Social y económica.",
+            "Social, económica y jurídica.",
+            "Social, económica, administrativa y jurídica."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Todos los españoles tienen:",
+        opciones: [
+            "El deber de trabajar.",
+            "El derecho al trabajo.",
+            "El deber de trabajar y el derecho al trabajo.",
+            "El derecho a la ocupación plena."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Mediante ley podrán regularse los deberes de los ciudadanos en los casos de:",
+        opciones: [
+            "Grave riesgo.",
+            "Grave riesgo o catástrofe.",
+            "Grave riesgo, catástrofe o calamidad pública.",
+            "Grave riesgo, siniestro o catástrofe."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Los españoles, ¿tienen el derecho de defender a España?",
+        opciones: [
+            "No.",
+            "Sí, y también el deber.",
+            "Sí, si han cumplido o están cumpliendo el servicio militar.",
+            "Sí, si son mayores de 18 años."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Todos los españoles tendrán el derecho de petición:",
+        opciones: [
+            "Individual.",
+            "Individual y colectiva.",
+            "Individual y colectiva, por escrito.",
+            "Individual y colectiva, por escrito o verbalmente."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "La Constitución, ¿reconoce el derecho a la huelga de los trabajadores?",
+        opciones: [
+            "No, lo encomienda a una ley.",
+            "Sí, para la defensa de sus salarios.",
+            "Sí, para la defensa de sus intereses.",
+            "Sí, para la defensa de sus contratos."
+        ],
+        respuesta_correcta: 2
+    },
+	    {
+        pregunta: "El Estado podrá concertar tratados de doble nacionalidad con (señala la incorrecta):",
+        opciones: [
+            "Los países iberoamericanos.",
+            "Los países europeos.",
+            "Los países que hayan tenido una particular vinculación con España.",
+            "Los países que tengan una particular vinculación con España."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Los extranjeros:",
+        opciones: [
+            "Gozarán en España de las libertades públicas que garantiza el Título I en los términos que establece la Constitución Española.",
+            "Gozarán en España de las libertades públicas que garantiza el Título I en los términos que establezcan la ley.",
+            "Gozarán en España de las libertades públicas que garantiza el Título I en los términos que establezcan los tratados y la ley.",
+            "No gozarán en España de ninguna de las libertades públicas que garantiza el Título I."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Solamente los españoles serán titulares de los derechos reconocidos en el artículo 23, salvo lo que, atendiendo a criterios de reciprocidad, pueda establecerse por tratado o ley:",
+        opciones: [
+            "Para el derecho de sufragio activo en las elecciones municipales.",
+            "Para el derecho de sufragio activo y pasivo en las elecciones autonómicas.",
+            "Para el derecho de sufragio pasivo en las elecciones municipales.",
+            "Para el derecho de sufragio activo y pasivo en las elecciones municipales."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Las penas privativas de libertad y las medidas de seguridad, ¿podrán consistir en trabajos forzados?",
+        opciones: [
+            "No.",
+            "Sí.",
+            "Sí, si no exceden de un año.",
+            "Sí, para casos de terrorismo."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "La extradición solo se concederá en cumplimiento de un tratado o de la ley, atendiendo al principio de:",
+        opciones: [
+            "Reciprocidad.",
+            "Legalidad.",
+            "Contradicción.",
+            "Seguridad jurídica."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Quedan excluidos de la extradición:",
+        opciones: [
+            "Los delitos civiles, considerándose como tales los actos de terrorismo.",
+            "Los delitos políticos, considerándose como tales los actos de terrorismo.",
+            "Los delitos civiles, no considerándose como tales los actos de terrorismo.",
+            "Los delitos políticos, no considerándose como tales los actos de terrorismo."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Establecerá los términos en que los ciudadanos de otros países y los apátridas podrán gozar del derecho de asilo en España:",
+        opciones: [
+            "La ley.",
+            "La Constitución.",
+            "Los Tratados Internacionales.",
+            "Los Convenios."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Los españoles son iguales ante la ley, sin que pueda prevalecer discriminación alguna por razón de:",
+        opciones: [
+            "Clase social, raza, sexo, opiniones políticas o cualquier otra condición o circunstancia personal o social.",
+            "Nacimiento, raza, sexo, religión, opiniones políticas o cualquier otra condición o circunstancia personal o social.",
+            "Clase social, raza, sexo, religión, opinión o cualquier otra condición o circunstancia personal o social.",
+            "Nacimiento, raza, sexo, religión, opinión o cualquier otra condición o circunstancia personal o social."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "El artículo 17 de la Constitución Española dice:",
+        opciones: [
+            "Todos los españoles tienen derecho a la libertad y a la seguridad.",
+            "Todos los españoles mayores de edad tienen derecho a la libertad y a la seguridad.",
+            "Toda persona tiene derecho a la libertad y a la seguridad.",
+            "Todas las personas jurídicas tienen derecho a la libertad y a la seguridad."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El artículo 17 de la Constitución Española dice que nadie puede ser privado de su libertad:",
+        opciones: [
+            "En ningún caso.",
+            "Sino con la observancia de lo establecido en este artículo y en los casos y en la forma previstos en la Constitución.",
+            "Sino con la observancia de lo establecido en este artículo y en los casos y en la forma previstos en la jurisprudencia.",
+            "Sino con la observancia de lo establecido en este artículo y en los casos y en la forma previstos en la ley."
+        ],
+        respuesta_correcta: 3
+    },
+	    {
+        pregunta: "Señala la respuesta correcta:",
+        opciones: [
+            "En ningún caso podrá acordarse el secuestro de publicaciones, grabaciones y otros medios de información.",
+            "Solo podrá acordarse el secuestro de publicaciones, grabaciones y otros medios de información en casos de fuerza mayor.",
+            "Solo podrá acordarse el secuestro de publicaciones, grabaciones y otros medios de información cuando se declare el estado de alarma.",
+            "Solo podrá acordarse el secuestro de publicaciones, grabaciones y otros medios de información en virtud de resolución judicial."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Las asociaciones:",
+        opciones: [
+            "Solo podrán ser disueltas o suspendidas en sus actividades por motivos de orden público.",
+            "Solo podrán ser disueltas o suspendidas en sus actividades en caso de estado de alarma.",
+            "Solo podrán ser disueltas o suspendidas en sus actividades en virtud de resolución judicial motivada.",
+            "No podrán ser disueltas o suspendidas en sus actividades en ningún caso."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "Se prohíben:",
+        opciones: [
+            "Las asociaciones clasificadas y las de carácter militar.",
+            "Las asociaciones secretas y las de carácter militar.",
+            "Las asociaciones clasificadas y las de carácter paramilitar.",
+            "Las asociaciones secretas y las de carácter paramilitar."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Los ciudadanos tienen el derecho a participar en los asuntos públicos:",
+        opciones: [
+            "Por medio de representantes, libremente elegidos en elecciones periódicas por sufragio restringido.",
+            "Por medio de representantes, libremente elegidos en elecciones periódicas por sufragio universal.",
+            "Directamente o por medio de representantes, libremente elegidos en elecciones periódicas por sufragio restringido.",
+            "Directamente o por medio de representantes, libremente elegidos en elecciones periódicas por sufragio universal."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Los ciudadanos tienen derecho a acceder en condiciones de igualdad a las funciones y cargos públicos:",
+        opciones: [
+            "Sin ningún requisito.",
+            "Con los requisitos que señalen las leyes.",
+            "Con los requisitos que señalen los Jueces.",
+            "Con los requisitos que señalen los partidos políticos."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Todas las personas tienen derecho a obtener tutela efectiva de los jueces y tribunales en el ejercicio de sus derechos e intereses legítimos:",
+        opciones: [
+            "Sin que, en ningún caso, pueda producirse indefensión.",
+            "Salvo en caso de detención.",
+            "Salvo en caso de flagrante delito.",
+            "Salvo en caso de personas no aforadas."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "La ley regulará los casos en que no se estará obligado a declarar sobre hechos presuntamente delictivos por razón de:",
+        opciones: [
+            "Género o edad.",
+            "Parentesco o edad.",
+            "Edad o secreto profesional.",
+            "Parentesco o secreto profesional."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Nadie puede ser condenado o sancionado por acciones u omisiones que en el momento de producirse no constituyan:",
+        opciones: [
+            "Delito según la legislación vigente en aquel momento.",
+            "Delito o falta, según la legislación vigente en aquel momento.",
+            "Falta o infracción administrativa, según la legislación vigente en aquel momento.",
+            "Delito, falta o infracción administrativa, según la legislación vigente en aquel momento."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Todos contribuirán al sostenimiento de los gastos públicos de acuerdo con su capacidad económica mediante un sistema tributario justo inspirado en los principios de:",
+        opciones: [
+            "Equidad y estabilidad que tendrá alcance confiscatorio.",
+            "Igualdad y progresividad que tendrá alcance confiscatorio.",
+            "Equidad y estabilidad que, en ningún caso, tendrá alcance confiscatorio.",
+            "Igualdad y progresividad que, en ningún caso, tendrá alcance confiscatorio."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "El hombre y la mujer tienen derecho a contraer matrimonio con:",
+        opciones: [
+            "Igualdad jurídica propia.",
+            "Igualdad jurídica formal.",
+            "Plena igualdad jurídica.",
+            "Igualdad jurídica limitada."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "La ley regulará (señala la incorrecta):",
+        opciones: [
+            "Las formas de matrimonio.",
+            "La edad, capacidad y lugar para contraer matrimonio.",
+            "Los derechos y deberes de los cónyuges.",
+            "Las causas de separación y disolución y sus efectos."
+        ],
+        respuesta_correcta: 1
+    },
+	 {
+        pregunta: "El artículo 33 de la Constitución Española reconoce el derecho a:",
+        opciones: [
+            "La propiedad pública y al usufructo.",
+            "La propiedad pública y a la herencia.",
+            "La propiedad privada y al usufructo.",
+            "La propiedad privada y a la herencia."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Todos los españoles tienen el derecho a:",
+        opciones: [
+            "La libre elección de profesión u oficio.",
+            "La promoción a través del trabajo.",
+            "Una remuneración suficiente para satisfacer sus necesidades y las de su familia.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Regulará un estatuto de los trabajadores:",
+        opciones: [
+            "La ley.",
+            "Un reglamento.",
+            "Una Orden.",
+            "Un Decreto."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "El artículo 36 de la Constitución establece respecto a los Colegios Profesionales y el ejercicio de las profesiones tituladas:",
+        opciones: [
+            "La ley regulará las peculiaridades propias de su régimen jurídico.",
+            "Los Poderes Públicos garantizarán su independencia.",
+            "Deberán constar en un registro público.",
+            "Una ley orgánica regulará sus formas y requisitos."
+        ],
+        respuesta_correcta: 0
+    },
+    {
+        pregunta: "Los poderes públicos promoverán las condiciones necesarias y establecerán las normas pertinentes para hacer efectivo el derecho a la vivienda, regulando la utilización del suelo de acuerdo con:",
+        opciones: [
+            "El interés particular para impedir la expropiación.",
+            "El interés particular para impedir la especulación.",
+            "El interés general para impedir la expropiación.",
+            "El interés general para impedir la especulación."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Los poderes públicos garantizarán, mediante pensiones adecuadas y periódicamente actualizadas, la suficiencia económica a los ciudadanos:",
+        opciones: [
+            "Durante la tercera edad.",
+            "Durante la baja laboral.",
+            "Menores de edad.",
+            "Sin recursos económicos."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "Los poderes públicos garantizarán la defensa de los consumidores y usuarios, protegiendo, mediante procedimientos eficaces:",
+        opciones: [
+            "La seguridad.",
+            "La salud.",
+            "Sus legítimos intereses económicos.",
+            "Todas las respuestas anteriores son correctas."
+        ],
+        respuesta_correcta: 3
+    },
+    {
+        pregunta: "El artículo 51 de la Constitución Española establece que La ley regulará el:",
+        opciones: [
+            "Comercio interior y el régimen de autorización de productos industriales.",
+            "Comercio exterior y el régimen de autorización de productos comerciales.",
+            "Comercio interior y el régimen de autorización de productos comerciales.",
+            "Comercio exterior y el régimen de autorización de productos industriales."
+        ],
+        respuesta_correcta: 2
+    },
+    {
+        pregunta: "El recurso de amparo ante el Tribunal Constitucional:",
+        opciones: [
+            "Será aplicable a la objeción de conciencia reconocida en el artículo 30.",
+            "Será aplicable en determinados casos a la objeción de conciencia reconocida en el artículo 30.",
+            "No será aplicable a la objeción de conciencia reconocida en el artículo 30.",
+            "Ninguna de las respuestas anteriores es correcta."
+        ],
+        respuesta_correcta: 1
+    },
+    {
+        pregunta: "Los principios reconocidos en el Capítulo tercero solo podrán ser alegados ante:",
+        opciones: [
+            "La Jurisdicción ordinaria de acuerdo con lo que dispongan las leyes que los desarrollen.",
+            "La Jurisdicción excepcional de acuerdo con lo que dispongan las leyes que los desarrollen.",
+            "La Jurisdicción extraordinaria de acuerdo con lo que dispongan las leyes que los desarrollen.",
+            "La Jurisdicción administrativa de acuerdo con lo que dispongan las leyes que los desarrollen."
+        ],
+        respuesta_correcta: 0
+    }
+];
+
+
+        const contenedor = document.getElementById("test");
+        
+        preguntas.forEach((pregunta, index) => {
+            const divPregunta = document.createElement("div");
+            divPregunta.classList.add("pregunta");
+            divPregunta.innerHTML = `<p><strong>${index + 1}. ${pregunta.pregunta}</strong></p>`;
+            
+            pregunta.opciones.forEach((opcion, i) => {
+                const btn = document.createElement("button");
+                btn.classList.add("opcion");
+                btn.textContent = opcion;
+                btn.onclick = () => verificarRespuesta(btn, i, pregunta.respuesta_correcta, divPregunta);
+                divPregunta.appendChild(btn);
+            });
+            
+            contenedor.appendChild(divPregunta);
+        });
+
+        function verificarRespuesta(btn, seleccionada, correcta, divPregunta) {
+            const botones = divPregunta.querySelectorAll("button");
+            botones.forEach(b => b.disabled = true);
+            
+            if (seleccionada === correcta) {
+                btn.classList.add("correcto");
+                btn.textContent += " ✅ Correcto";
+            } else {
+                btn.classList.add("incorrecto");
+                btn.textContent += " ❌ Incorrecto";
+                const correctaBtn = botones[correcta];
+                correctaBtn.classList.add("correcto");
+                correctaBtn.textContent += " ✅ Esta era la correcta";
+            }
+        }
+    </script>
+</body>
+</html>
