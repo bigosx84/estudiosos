@@ -3,21 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Interactivo</title>
+    <title>Formulario de Preguntas</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .pregunta { margin-bottom: 15px; }
-        .opcion { display: block; margin: 5px 0; cursor: pointer; }
-        .correcto { color: green; font-weight: bold; }
-        .incorrecto { color: red; font-weight: bold; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .question label.option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .question label.option:hover {
+            background-color: #d0e7ff;
+        }
+        .result {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .correct::before {
+            content: '✔';
+            color: green;
+            margin-right: 5px;
+        }
+        .incorrect::before {
+            content: '✘';
+            color: red;
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
-    <h2>Test tema 1. La Constitución Española de 1978.</h2>
-    <div id="test"></div>
-    
+    <div class="container">
+        <form id="quizForm">
+            <!-- Aquí se insertarán las preguntas -->
+        </form>
+    </div>
+
     <script>
-const preguntas = [
+        const questions = [
     {
         pregunta: "¿Cuántos capítulos componen el Título I de la Constitución?",
         opciones: [
@@ -2241,39 +2299,45 @@ const preguntas = [
 ];
 
 
-        const contenedor = document.getElementById("test");
-        
-        preguntas.forEach((pregunta, index) => {
-            const divPregunta = document.createElement("div");
-            divPregunta.classList.add("pregunta");
-            divPregunta.innerHTML = `<p><strong>${index + 1}. ${pregunta.pregunta}</strong></p>`;
-            
-            pregunta.opciones.forEach((opcion, i) => {
-                const btn = document.createElement("button");
-                btn.classList.add("opcion");
-                btn.textContent = opcion;
-                btn.onclick = () => verificarRespuesta(btn, i, pregunta.respuesta_correcta, divPregunta);
-                divPregunta.appendChild(btn);
-            });
-            
-            contenedor.appendChild(divPregunta);
-        });
+        const form = document.getElementById('quizForm');
 
-        function verificarRespuesta(btn, seleccionada, correcta, divPregunta) {
-            const botones = divPregunta.querySelectorAll("button");
-            botones.forEach(b => b.disabled = true);
-            
-            if (seleccionada === correcta) {
-                btn.classList.add("correcto");
-                btn.textContent += " ✅ Correcto";
-            } else {
-                btn.classList.add("incorrecto");
-                btn.textContent += " ❌ Incorrecto";
-                const correctaBtn = botones[correcta];
-                correctaBtn.classList.add("correcto");
-                correctaBtn.textContent += " ✅ Esta era la correcta";
-            }
-        }
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            q.options.forEach((option, i) => {
+                const optionLabel = document.createElement('label');
+                optionLabel.classList.add('option');
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    const result = optionLabel.querySelector('.result');
+                    if (i === q.correct) {
+                        result.classList.add('correct');
+                        result.classList.remove('incorrect');
+                    } else {
+                        result.classList.add('incorrect');
+                        result.classList.remove('correct');
+                    }
+                });
+                optionLabel.appendChild(radio);
+                optionLabel.appendChild(document.createTextNode(option));
+
+                const result = document.createElement('span');
+                result.classList.add('result');
+                optionLabel.appendChild(result);
+
+                questionDiv.appendChild(optionLabel);
+            });
+
+            form.appendChild(questionDiv);
+        });
     </script>
 </body>
 </html>
