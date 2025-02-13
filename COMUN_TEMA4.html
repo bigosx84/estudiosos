@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .question label.option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .question label.option:hover {
+            background-color: #d0e7ff;
+        }
+        .result {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .correct::before {
+            content: '✔';
+            color: green;
+            margin-right: 5px;
+        }
+        .incorrect::before {
+            content: '✘';
+            color: red;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm">
+            <!-- Aquí se insertarán las preguntas -->
+        </form>
+    </div>
+
+    <script>
+        const questions = [
+		    {
+        question: "1. La negociación colectiva con arreglo a las instrucciones emanadas del Consejo de Gobierno de la Junta de Extremadura y en los términos establecidos en el Real Decreto Legislativo 5/2015, de 30 de octubre, por el que se aprueba el texto refundido de la Ley del Estatuto Básico del Empleado Público, corresponde al siguiente órgano:",
+        options: [
+            "a) A la Dirección Gerencia.",
+            "b) A la Dirección General de Planificación Económica.",
+            "c) A la Dirección General de Recursos Humanos.",
+            "d) A la Dirección General de Asistencia Sanitaria."
+        ],
+        correct: 2
+    },
+    {
+        question: "2. ¿A quién corresponderá la convocatoria y resolución de los procedimientos de selección y provisión de plazas del personal estatutario del Servicio Extremeño de Salud?",
+        options: [
+            "a) A la Dirección General de Recursos Humanos.",
+            "b) Al Consejero competente en materia de sanidad.",
+            "c) A la Dirección Gerencia del Servicio Extremeño de Salud.",
+            "d) A la Dirección General de los Servicios Jurídicos."
+        ],
+        correct: 2
+    },
+    {
+        question: "3. A la Dirección Gerencia le corresponde, entre otras, una de las siguientes funciones:",
+        options: [
+            "a) Ostentar la representación legal de la Consejería competente en materia de Sanidad.",
+            "b) Ordenar los pagos del Organismo Autónomo.",
+            "c) El nombramiento del personal estatutario fijo.",
+            "d) La aprobación del proyecto del Presupuesto anual del Organismo Autónomo."
+        ],
+        correct: 1
+    },
+    {
+        question: "4. El Consejo General del Servicio Extremeño de Salud estará integrado por:",
+        options: [
+            "a) Cuatro representantes de la Administración de la Comunidad Autónoma.",
+            "b) Cinco representantes de la Administración de la Comunidad Autónoma.",
+            "c) Seis representantes de la Administración de la Comunidad Autónoma.",
+            "d) Dos representantes de la Administración de la Comunidad Autónoma."
+        ],
+        correct: 2
+    },
+    {
+        question: "5. ¿Cuál es el órgano superior del SES?",
+        options: [
+            "a) La Dirección Gerencia.",
+            "b) La Dirección General de Recursos Humanos.",
+            "c) La Dirección General de Planificación Económica.",
+            "d) La Dirección General de Asistencia Sanitaria."
+        ],
+        correct: 0
+    },
+    {
+        question: "6. ¿Qué Decreto aprueba el Logotipo del Organismo Autónomo, Servicio Extremeño de Salud?",
+        options: [
+            "a) El Decreto 221/2008, de 24 de octubre.",
+            "b) El Decreto 235/2023, de 12 de septiembre.",
+            "c) El Decreto 209/2001, de 27 de diciembre.",
+            "d) El Decreto 59/2014, de 15 de abril."
+        ],
+        correct: 2
+    },
+    {
+        question: "7. El Consejo General del SES es un órgano:",
+        options: [
+            "a) De Dirección y Control.",
+            "b) De Coordinación.",
+            "c) De Control y Participación en la Gestión.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        correct: 2
+    },
+    {
+        question: "8. ¿De qué recurso son susceptibles los actos y resoluciones del Director Gerente del SES?",
+        options: [
+            "a) Del recurso de alzada.",
+            "b) Del recurso potestativo de reposición.",
+            "c) Del recurso contencioso-administrativo.",
+            "d) Las respuestas b) y c) son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "9. Partiendo de lo dispuesto en el artículo 3 de la Ley de Salud de Extremadura, esta se inspira en uno de los siguientes principios:",
+        options: [
+            "a) Universalización de la atención sanitaria, garantizando la igualdad efectiva en las condiciones de acceso a los servicios y actuaciones sanitarias.",
+            "b) Dispersión funcional de todos los recursos sanitarios públicos.",
+            "c) Participación social, comunitaria y de los usuarios del sistema sanitario público.",
+            "d) Las respuestas a) y c) son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "10. Dentro de la composición del Consejo General del SES, ¿cuántos miembros son nombrados como representantes de la Comunidad Autónoma por la Consejería competente en materia de sanidad?",
+        options: [
+            "a) Uno.",
+            "b) Dos.",
+            "c) Tres.",
+            "d) Cuatro."
+        ],
+        correct: 0
+    },
+	    {
+        question: "11. El Consejo General estará integrado, entre otros, por los siguientes miembros:",
+        options: [
+            "a) El Presidente de la Junta de Extremadura.",
+            "b) El Consejero competente en materia sanitaria.",
+            "c) Dos representantes de las Corporaciones Locales de la Comunidad Autónoma de Extremadura.",
+            "d) Las respuestas b) y c) son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "12. ¿Quién preside el Consejo de Dirección?",
+        options: [
+            "a) El Consejo de Dirección estará presidido por el Director Gerente del SES.",
+            "b) El Consejo de Dirección estará presidido por el Secretario General.",
+            "c) El Consejo de Dirección estará presidido por el Consejero competente en materia sanitaria.",
+            "d) El Consejo de Dirección estará presidido por un Gerente de Área."
+        ],
+        correct: 2
+    },
+    {
+        question: "13. ¿Quién aprueba el anteproyecto del presupuesto anual del Organismo Autónomo?",
+        options: [
+            "a) El titular de la Dirección General de Recursos Humanos.",
+            "b) La Dirección Gerencia.",
+            "c) El Consejero competente en materia de sanidad.",
+            "d) El Director de Recursos Económicos del SES."
+        ],
+        correct: 1
+    },
+    {
+        question: "14. ¿Quién nombrará al titular de la Dirección Gerencia del SES?",
+        options: [
+            "a) El Consejero competente en materia sanitaria.",
+            "b) El Presidente de la Junta de Extremadura.",
+            "c) La Asamblea de Extremadura.",
+            "d) El Consejo de Gobierno de la Junta de Extremadura."
+        ],
+        correct: 3
+    },
+    {
+        question: "15. No es una de las funciones del Consejo General del Servicio Extremeño de Salud:",
+        options: [
+            "a) Coordinación, deliberación, y participación en la toma de decisiones.",
+            "b) Establecer los criterios de actuación del Organismo Autónomo, de acuerdo con las directrices de la Consejería responsable en materia de sanidad.",
+            "c) La propuesta de adopción de medidas encaminadas a la mejor prestación de los servicios gestionados por el Organismo Autónomo.",
+            "d) Aprobar la memoria anual de la gestión del Servicio Extremeño de Salud."
+        ],
+        correct: 3
+    },
+    {
+        question: "16. El Consejo de Dirección es un órgano:",
+        options: [
+            "a) De control y participación en la gestión.",
+            "b) De dirección y gestión.",
+            "c) De coordinación.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        correct: 1
+    },
+    {
+        question: "17. ¿Quién propondrá para su nombramiento al titular de la Dirección Gerencia del SES?",
+        options: [
+            "a) El Consejo de Gobierno de la Junta de Extremadura.",
+            "b) La Asamblea de Extremadura.",
+            "c) El Consejero competente en materia de sanidad.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        correct: 2
+    },
+    {
+        question: "18. A la Dirección General de Asistencia Sanitaria le corresponderán las siguientes funciones:",
+        options: [
+            "a) Organizar y dirigir las actuaciones de gestión económica que se realicen por los Centros de Gasto.",
+            "b) La dirección de la gestión asistencial de los centros, establecimientos y servicios sanitarios del Organismo Autónomo.",
+            "c) El desarrollo de las Políticas de Uso Racional del Medicamento.",
+            "d) Las respuestas b) y c) son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "19. Los bienes y derechos del Servicio Extremeño de Salud se regirán por la normativa contenida en:",
+        options: [
+            "a) La Ley General de Hacienda Pública de Extremadura.",
+            "b) La Ley de Patrimonio de la Comunidad Autónoma de Extremadura.",
+            "c) La Ley de Salud de Extremadura.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "20. Los regímenes presupuestarios, económico-financiero, de contabilidad, de intervención y de control financiero del SES se regirán por:",
+        options: [
+            "a) Las disposiciones contenidas en la Ley de Salud de Extremadura.",
+            "b) La Ley General de Sanidad y Leyes de Presupuestos Generales de la Comunidad Autónoma de Extremadura.",
+            "c) Los Estatutos del SES.",
+            "d) El Estatuto Marco del personal estatutario de los Servicios de Salud."
+        ],
+        correct: 1
+    },
+	    {
+        question: "21. No es una función que corresponda a la Dirección General de Asistencia Sanitaria del SES:",
+        options: [
+            "a) El control y evaluación de la calidad asistencial.",
+            "b) La planificación operativa de los recursos adscritos a esta Dirección General.",
+            "c) El desarrollo de los aspectos generales de la docencia y la investigación en el marco de las competencias propias.",
+            "d) La dirección de la gestión asistencial de los centros, establecimientos y servicios sanitarios del Organismo Autónomo."
+        ],
+        correct: 2
+    },
+    {
+        question: "22. A la Dirección General de Planificación Económica del SES le corresponderá una de las siguientes funciones:",
+        options: [
+            "a) Ejecución de la política retributiva y gestión de la nómina del Organismo Autónomo.",
+            "b) La rendición de cuentas anual del Organismo.",
+            "c) La contratación de los seguros de responsabilidad civil y gerencia de riesgos.",
+            "d) La elaboración de la cuenta anual del Organismo Autónomo."
+        ],
+        correct: 3
+    },
+    {
+        question: "23. Establece el artículo 2 de la Ley de Salud de Extremadura que el ámbito de aplicación de la misma, dentro del territorio de la Comunidad Autónoma de Extremadura es:",
+        options: [
+            "a) Todos los extremeños y residentes en cualquiera de los municipios de Extremadura, siempre que se encuentren en situación legal.",
+            "b) Las Administraciones Públicas de la Comunidad Autónoma de Extremadura.",
+            "c) Los no residentes gozarán de los mismos derechos en la forma y condiciones previstas en la legislación autonómica.",
+            "d) Las instituciones públicas solamente, cuando así se establezca en la presente norma."
+        ],
+        correct: 0
+    },
+    {
+        question: "24. El Plan de Salud de Extremadura será aprobado por:",
+        options: [
+            "a) El Consejo de Gobierno de la Junta de Extremadura, a propuesta de la Consejería competente en materia de sanidad, oído el Consejo Extremeño de Salud.",
+            "b) El Consejo de Gobierno de la Junta de Extremadura, a propuesta del Servicio Extremeño de Salud, oído el Consejo Extremeño de Salud.",
+            "c) El Servicio Extremeño de Salud, a propuesta de la Consejería competente en materia de sanidad, oído el Consejo Extremeño de Salud.",
+            "d) El Servicio Extremeño de Salud, a propuesta de la Consejería competente en materia de sanidad, oído el Consejo de Gobierno de la Junta de Extremadura."
+        ],
+        correct: 0
+    },
+    {
+        question: "25. ¿Mediante qué Ley se creó el Servicio Extremeño de Salud como organismo autónomo de carácter administrativo adscrito a la Consejería competente en materia sanitaria?",
+        options: [
+            "a) Mediante la Ley 12/2001, de 22 de mayo, de Salud de Extremadura.",
+            "b) Mediante la Ley 10/2001, de 28 de junio, de Salud de Extremadura.",
+            "c) Mediante la Ley 11/2003, de 12 de julio, de Salud de Extremadura.",
+            "d) Mediante la Ley 7/1999, de 13 de enero, de Salud de Extremadura."
+        ],
+        correct: 1
+    },
+    {
+        question: "26. No forma parte de la clasificación del personal del Servicio Extremeño de Salud:",
+        options: [
+            "a) Funcionario de carrera.",
+            "b) Personal estatutario, ya sea fijo o temporal.",
+            "c) Personal eventual.",
+            "d) Funcionario estatutario interino."
+        ],
+        correct: 3
+    },
+    {
+        question: "27. ¿Cuál es el último Decreto que ha modificado al Decreto 221/2008, de 24 de octubre, por el que se aprueban los Estatutos del Organismo Autónomo Servicio Extremeño de Salud?",
+        options: [
+            "a) Decreto 145/2019, de 10 de septiembre.",
+            "b) Real Decreto 15/2021 de 18 de mayo.",
+            "c) Decreto 235/2023, de 12 de septiembre.",
+            "d) Decreto 148/2018, de 26 de septiembre."
+        ],
+        correct: 2
+    },
+    {
+        question: "28. ¿En qué anexo del Decreto 221/2008, de 24 de octubre, figura el Logotipo del Organismo Autónomo, Servicio Extremeño de Salud?",
+        options: [
+            "a) I.",
+            "b) II.",
+            "c) III.",
+            "d) IV."
+        ],
+        correct: 0
+    },
+    {
+        question: "29. ¿En qué color han de ir las siglas del SES en el logotipo del Organismo Autónomo, Servicio Extremeño de Salud?",
+        options: [
+            "a) Verde.",
+            "b) Blanco.",
+            "c) Negro.",
+            "d) Gris."
+        ],
+        correct: 0
+    },
+    {
+        question: "30. Dentro de la composición del Consejo General del SES, ¿cuántos representantes serán designados por las organizaciones de consumidores y usuarios?",
+        options: [
+            "a) Cuatro.",
+            "b) Tres.",
+            "c) Dos.",
+            "d) Uno."
+        ],
+        correct: 2
+    },
+    {
+        question: "31. ¿A quién corresponderá la resolución de las reclamaciones previas a la vía jurisdiccional civil y laboral?",
+        options: [
+            "a) A la Dirección General de Recursos Humanos.",
+            "b) Al Consejero competente en materia de sanidad.",
+            "c) A la Dirección Gerencia del Servicio Extremeño de Salud.",
+            "d) A la Dirección General de los Servicios Jurídicos."
+        ],
+        correct: 2
+    },
+    {
+        question: "32. En caso de vacante, ausencia o enfermedad de su titular, corresponderá asumir la presidencia del Consejo General:",
+        options: [
+            "a) Al responsable del órgano competente en materia de planificación sanitaria de la Comunidad Autónoma.",
+            "b) Al Director Gerente del SES.",
+            "c) Al Director de Planificación Económica.",
+            "d) Al Presidente del Consejo de Dirección."
+        ],
+        correct: 0
+    },
+    {
+        question: "33. La Ley de Salud de Extremadura es de aplicación a:",
+        options: [
+            "a) Todos los extremeños y residentes en cualquiera de los municipios de Extremadura, con independencia de su situación legal o administrativa.",
+            "b) Las Administraciones Públicas de la Comunidad Autónoma de Extremadura.",
+            "c) Las entidades o instituciones, tanto publicas coma privadas, cuando así se establezca en la citada norma.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    },
+	    {
+        question: "34. La Ley de Salud de Extremadura se inspira en el principio de:",
+        options: [
+            "a) Concepción integral de la salud, incluyendo actuaciones de promoción, prevención, asistencia, rehabilitación e incorporación social.",
+            "b) Universalización de la atención sanitaria, garantizando la igualdad efectiva en las condiciones de acceso a los servicios y actuaciones sanitarias.",
+            "c) Aseguramiento único y financiación públicos del Sistema Sanitario Público de Extremadura.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "35. Las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura serán:",
+        options: [
+            "a) Como mínimo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+            "b) Como máximo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+            "c) Las establecidas en cada momento para el Sistema Nacional de Salud.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        correct: 0
+    },
+    {
+        question: "36. ¿Puede reunirse extraordinariamente el Consejo General?",
+        options: [
+            "a) No.",
+            "b) Sí, solo por iniciativa de su presidente.",
+            "c) Sí, solo a propuesta de la mayoría absoluta de sus miembros.",
+            "d) Sí, por iniciativa del Presidente o a propuesta de la mayoría absoluta de sus miembros."
+        ],
+        correct: 3
+    },
+    {
+        question: "37. ¿Quién aprueba la memoria anual de la gestión del SES?",
+        options: [
+            "a) El Consejo General.",
+            "b) El Consejo de Dirección.",
+            "c) El Consejo de salud de área.",
+            "d) El Consejo de salud de zona."
+        ],
+        correct: 1
+    },
+    {
+        question: "38. ¿Quién es el Presidente del Consejo de Dirección?",
+        options: [
+            "a) El Consejero competente en materia sanitaria.",
+            "b) El Presidente de la Junta de Extremadura.",
+            "c) El Director Gerente del SES.",
+            "d) El Consejo General no tiene Presidente tiene Director General."
+        ],
+        correct: 0
+    },
+    {
+        question: "39. El asesoramiento jurídico interno del Organismo Autónomo SES, corresponde a:",
+        options: [
+            "a) La Dirección Gerencia.",
+            "b) La Dirección General de Recursos Humanos.",
+            "c) La Dirección General de Asistencia Sanitaria.",
+            "d) La Dirección General de Salud Pública."
+        ],
+        correct: 0
+    },
+    {
+        question: "40. A las sesiones del Consejo General asistirá el Director Gerente del Servicio Extremeño de Salud:",
+        options: [
+            "a) Con voz y con voto.",
+            "b) Con voz, pero sin voto.",
+            "c) Acompañado por los Altos Cargos o responsables de las unidades, cuando así lo demande la especificidad de los temas a tratar.",
+            "d) Las respuestas b) y c) son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "41. Son titulares de los derechos y deberes contemplados en la Ley de Salud de Extremadura, en relación con el Sistema Sanitario Público:",
+        options: [
+            "a) Los españoles y los extranjeros residentes en España.",
+            "b) Los españoles y extranjeros no residentes en Extremadura que no tengan establecida su residencia en el territorio nacional, con el alcance determinado par la legislación estatal.",
+            "c) Los nacionales de Estados miembros de la Unión Europea tienen los derechos que resulten de la aplicación del Derecho comunitario europeo y de los Tratados y Convenios suscritos o que pudieran suscribirse por el Estado español y les sean de aplicación.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "42. Se garantizará a todas las personas en Extremadura la atención en:",
+        options: [
+            "a) Cualquier situación.",
+            "b) Situación de urgencias.",
+            "c) Situación de emergencias.",
+            "d) Las respuestas b) y c) son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "43. De conformidad con los derechos reconocidos en la Constitución Española y en la legislación básica estatal, en el Sistema Sanitario Público de Extremadura se garantiza el derecho:",
+        options: [
+            "a) A las prestaciones y servicios de salud individual y colectiva del Sistema Sanitario Público de Extremadura.",
+            "b) A la confidencialidad de toda la información relacionada con su proceso y con su estancia en cualquier institución sanitaria de Extremadura.",
+            "c) A la información sobre los factores, situaciones y causas de riesgo para la salud individual y colectiva conocidos.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "44. La Ley de Salud de Extremadura tiene por objeto:",
+        options: [
+            "a) La ordenación del Sistema Sanitario Público de Extremadura.",
+            "b) La regulación del Sistema Sanitario Privado de Extremadura.",
+            "c) La Creación del Servicio Privado de Salud.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 0
+    },
+    {
+        question: "45. Se constituye el Sistema Sanitario Público de Extremadura como el conjunto de recursos, de actividades y de prestaciones que, conforme al Plan de Salud de Extremadura, funcionan de forma:",
+        options: [
+            "a) Eficaz y eficiente.",
+            "b) Económica y ordenada.",
+            "c) Coordinada y ordenada.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 2
+    },
+    {
+        question: "46. La Junta de Extremadura, mediante las facultades de dirección, coordinación, ordenación, planificación, supervisión y control que en ella se le atribuyen, garantiza el funcionamiento:",
+        options: [
+            "a) Coordinado y eficaz del Sistema Sanitario Público de Extremadura.",
+            "b) Coordinado y ordenado del Sistema Sanitario Público de Extremadura.",
+            "c) Armónico y eficaz del Sistema Sanitario Público de Extremadura.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        correct: 1
+    },
+	    {
+        question: "47. La inclusión de nuevos servicios y prestaciones en el Sistema Sanitario Público de Extremadura, será objeto de una evaluación previa de:",
+        options: [
+            "a) Su armonía y eficacia.",
+            "b) Su coordinación y ordenación.",
+            "c) Su eficacia y eficiencia.",
+            "d) Su efectividad y eficiencia."
+        ],
+        correct: 2
+    },
+    {
+        question: "48. La Dirección General de Salud Pública es un órgano:",
+        options: [
+            "a) De control y participación en la gestión.",
+            "b) De dirección y gestión.",
+            "c) De coordinación.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        correct: 1
+    },
+    {
+        question: "49. No es uno de los órganos de Dirección y Gestión del Servicio Extremeño de Salud:",
+        options: [
+            "a) La Dirección General de Planificación Económica.",
+            "b) La Dirección General de Asistencia Sanitaria.",
+            "c) La Dirección General de Salud Pública.",
+            "d) El Consejo de Dirección."
+        ],
+        correct: 3
+    },
+    {
+        question: "50. ¿Cuántos representantes de la Administración de la Comunidad Autónoma forman parte del Consejo General del Servicio Extremeño de Salud?",
+        options: [
+            "a) Tres.",
+            "b) Cinco.",
+            "c) Seis.",
+            "d) Ocho."
+        ],
+        correct: 2
+    },
+    {
+        question: "51. El Consejo General del Servicio Extremeño de Salud se reunirá, con carácter ordinario, al menos:",
+        options: [
+            "a) Mensualmente.",
+            "b) Quincenalmente.",
+            "c) Trimestralmente.",
+            "d) Semestralmente."
+        ],
+        correct: 2
+    },
+    {
+        question: "52. En relación con la Ley de Salud de Extremadura, indica cuál de las siguientes respuestas no es correcta:",
+        options: [
+            "a) Será de aplicación a instituciones exclusivamente públicas cuando así se establezca.",
+            "b) Será de aplicación a cualquier institución tanto pública como privada cuando así se establezca.",
+            "c) Será de aplicación a las administraciones públicas de la Comunidad Autónoma de Extremadura.",
+            "d) Será de aplicación a todos los Extremeños."
+        ],
+        correct: 0
+    },
+    {
+        question: "53. ¿Qué norma creó el SES?",
+        options: [
+            "a) Decreto 221/2008, de 24 de octubre, por el que se aprueban los Estatutos del Organismo Autónomo Servicio Extremeño de Salud.",
+            "b) Ley 10/2001, de 28 de junio, de Salud de Extremadura.",
+            "c) Ley 3/2005 de 8 de julio.",
+            "d) Ley 40/2015 de 1 de octubre."
+        ],
+        correct: 1
+    },
+    {
+        question: "54. ¿Cuál de las siguientes funciones no corresponde a la Dirección Gerencia del SES?",
+        options: [
+            "a) El nombramiento del personal estatutario fijo.",
+            "b) La dirección y coordinación general de la estructura de gestión del Organismo Autónomo.",
+            "c) Ordenar los pagos del Organismo Autónomo.",
+            "d) La gestión del patrimonio afecto."
+        ],
+        correct: 0
+    },
+    {
+        question: "55. ¿A quién corresponde la autoridad sanitaria en Extremadura?",
+        options: [
+            "a) Al Ministerio de Sanidad.",
+            "b) Al Servicio Extremeño de Salud.",
+            "c) A la presidencia de la Junta de Extremadura.",
+            "d) Al titular de la Consejería responsable en materia sanitaria."
+        ],
+        correct: 3
+    },
+    {
+        question: "56. ¿Qué Ley creó el Servicio Extremeño de Salud?",
+        options: [
+            "a) La Ley 10/2001, de 28 de junio.",
+            "b) La Ley 10/2002, de 28 de julio.",
+            "c) La Ley 18/2001, de 2 de mayo.",
+            "d) La Ley 15/2000, de 28 de noviembre."
+        ],
+        correct: 0
+    },
+    {
+        question: "57. ¿Cuál de los siguientes órganos del Servicio Extremeño de Salud es un órgano de coordinación?",
+        options: [
+            "a) La Dirección Gerencia.",
+            "b) El Consejo de Dirección.",
+            "c) La Dirección General de Recursos Humanos.",
+            "d) La Dirección General de Planificación Económica."
+        ],
+        correct: 1
+    },
+    {
+        question: "58. Indique cuál de las siguientes respuestas no es correcta. Es función de la Dirección General de Asistencia Sanitaria:",
+        options: [
+            "a) El control y evaluación de la calidad asistencial.",
+            "b) La planificación operativa de los recursos adscritos a esta Dirección General.",
+            "c) El control sanitario del medio ambiente, sin perjuicio de las competencias atribuidas a otras consejerías.",
+            "d) La elaboración y dirección de los programas asistenciales relacionados con conductas adictivas."
+        ],
+        correct: 2
+    },
+    {
+        question: "59. ¿Cuántos miembros del Consejo General son designados por la Consejería competente en materia sanitaria?",
+        options: [
+            "a) 1.",
+            "b) 2.",
+            "c) 3.",
+            "d) 4."
+        ],
+        correct: 3
+    },
+    {
+        question: "60. ¿A los residentes en cualquiera de los municipios de Extremadura, aun no siendo extremeños, les será de aplicación la Ley de Salud de Extremadura?",
+        options: [
+            "a) No, solo a los extremeños.",
+            "b) No a todos, solo a los naturales de ciertas regiones.",
+            "c) Sí, pero depende su situación legal.",
+            "d) Sí, con independencia de su situación legal o administrativa."
+        ],
+        correct: 3
+    },
+	    {
+        question: "61. ¿A quién corresponde el cese del titular de la Dirección General de Recursos Humanos?",
+        options: [
+            "a) Al Consejo de Gobierno de la Junta de Extremadura a propuesta del titular de la Consejería competente en materia sanitaria.",
+            "b) Al titular de la Consejería competente en materia sanitaria.",
+            "c) Al Presidente de la Junta de Extremadura a propuesta del titular de la Consejería competente en materia sanitaria.",
+            "d) Consejo de Gobierno de la Junta de Extremadura a propuesta del Presidente de la Junta de Extremadura."
+        ],
+        correct: 0
+    },
+    {
+        question: "62. El Consejo de Dirección no ejercerá funciones de:",
+        options: [
+            "a) Coordinación.",
+            "b) Proposición.",
+            "c) Deliberación.",
+            "d) Participación."
+        ],
+        correct: 0
+    },
+    {
+        question: "63. La Ley de Salud de Extremadura no tiene entre sus principios:",
+        options: [
+            "a) La eficacia y eficiencia en la asignación, utilización y gestión de los recursos.",
+            "b) La inhibición social, comunitaria y de los trabajadores.",
+            "c) La integración funcional de todos los recursos sanitarios públicos.",
+            "d) La mejora continua de la calidad de los servicios y prestaciones."
+        ],
+        correct: 1
+    },
+    {
+        question: "64. ¿Quién ostenta en el SES la condición de órgano de contratación?",
+        options: [
+            "a) El Consejero de Sanidad.",
+            "b) El Presidente de la Junta de Extremadura.",
+            "c) El Director Gerente.",
+            "d) El Consejo General no tiene Presidente tiene Director General."
+        ],
+        correct: 2
+    },
+    {
+        question: "65. ¿Cuál de las siguientes funciones corresponde a la Dirección General de Planificación Económica?",
+        options: [
+            "a) La tramitación de los expedientes de modificaciones de créditos.",
+            "b) La gestión económica general del Organismo Autónomo.",
+            "c) El control y gestión de todos los ingresos y pagos del organismo autónomo.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "66. El Sistema Sanitario Público de Extremadura se basa en una:",
+        options: [
+            "a) Organización desconcentrada y no descentralizada.",
+            "b) Organización no desconcentrada y descentralizada.",
+            "c) Organización desconcentrada y descentralizada.",
+            "d) Organización no desconcentrada y no descentralizada."
+        ],
+        correct: 2
+    },
+    {
+        question: "67. ¿A quién corresponde la prestación de la atención sanitaria en Extremadura?",
+        options: [
+            "a) Al Ministerio de Sanidad.",
+            "b) Al Servicio Extremeño de Salud.",
+            "c) A la presidencia de la Junta de Extremadura.",
+            "d) A la Consejería responsable en materia sanitaria."
+        ],
+        correct: 1
+    },
+    {
+        question: "68. ¿Quién es el Presidente del Consejo General?",
+        options: [
+            "a) El Consejero competente en materia sanitaria.",
+            "b) El Presidente de la Junta de Extremadura.",
+            "c) El Director Gerente del SES.",
+            "d) El Consejo General no tiene Presidente tiene Director General."
+        ],
+        correct: 0
+    },
+    {
+        question: "69. Los bienes del Servicio Extremeño de Salud se regirán por la normativa contenida en:",
+        options: [
+            "a) La Ley General de Hacienda Pública de Extremadura.",
+            "b) La Ley de Patrimonio de la Comunidad Autónoma de Extremadura.",
+            "c) La Ley de Salud de Extremadura.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "70. ¿Cuál de los siguientes órganos del Servicio Extremeño de Salud no es un órgano de dirección y gestión?",
+        options: [
+            "a) La Dirección Gerencia.",
+            "b) El Consejo General.",
+            "c) La Dirección General de Recursos Humanos.",
+            "d) La Dirección General de Planificación Económica."
+        ],
+        correct: 1
+    },
+    {
+        question: "71. ¿Cuántos miembros del Consejo General son designados por las organizaciones de consumidores y usuarios?",
+        options: [
+            "a) 1.",
+            "b) 2.",
+            "c) 3.",
+            "d) 4."
+        ],
+        correct: 2
+    },
+    {
+        question: "72. Conforme a la Ley 10/2001, de 28 de junio, de Salud de Extremadura se crea:",
+        options: [
+            "a) El Sistema Nacional de Salud.",
+            "b) El Sistema Extremeño de Salud.",
+            "c) El Sistema Sanitario Público de Extremadura.",
+            "d) El Servicio Extremeño de Salud."
+        ],
+        correct: 2
+    },
+    {
+        question: "73. El ámbito de la Ley 10/2001, de 28 de junio, de Salud de Extremadura lo constituye:",
+        options: [
+            "a) La Comunidad Autónoma de Extremadura.",
+            "b) El territorio de la Comunidad Autónoma de Extremadura.",
+            "c) La residencia en el territorio de la Comunidad Autónoma de Extremadura.",
+            "d) La residencia en cualquiera de los municipios que integran el territorio de la Comunidad Autónoma de Extremadura."
+        ],
+        correct: 1
+    },
+    {
+        question: "74. ¿Cuál de los siguientes no es un principio rector de la Ley 10/2001, de 28 de junio, de Salud de Extremadura?",
+        options: [
+            "a) Concepción integral de la salud, incluyendo actuaciones de promoción, prevención, asistencia, rehabilitación e incorporación social.",
+            "b) Superación de los desequilibrios territoriales y en la prestación de los servicios y superación de las desigualdades sociosanitarias.",
+            "c) Defensa del ámbito territorial de Extremadura frente a cualquier agresión sanitaria o sociosanitaria superadora de las desigualdades.",
+            "d) Fomento del conocimiento sobre el ejercicio de los derechos y deberes de los ciudadanos."
+        ],
+        correct: 2
+    },
+	    {
+        question: "75. ¿Quién garantiza el funcionamiento armónico y eficaz del Sistema Sanitario Público de Extremadura?",
+        options: [
+            "a) La Junta de Extremadura.",
+            "b) El Estado.",
+            "c) El Estado en el ejercicio de las competencias de Alta Inspección y la Junta de Extremadura.",
+            "d) El Estado en el ejercicio de las competencias de Alta Inspección y la Junta de Extremadura, así como las restantes Administraciones Públicas con competencias en temas de actividades, recursos y prestaciones sanitarias."
+        ],
+        correct: 3
+    },
+    {
+        question: "76. Las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura serán las establecidas en cada momento para el Sistema Nacional de Salud:",
+        options: [
+            "a) En todo caso no pudiendo rebasarse el techo económico y competencial de las mismas.",
+            "b) No, solo aquellas que se correspondan a las peculiaridades propias de la Comunidad Autónoma.",
+            "c) Como mínimo.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        correct: 2
+    },
+    {
+        question: "77. Señale el derecho que se garantiza en el Sistema Sanitario Público de Extremadura:",
+        options: [
+            "a) A la confidencialidad de toda la información relacionada con su proceso y con su estancia en cualquier institución sanitaria de Extremadura.",
+            "b) A que se les asigne un médico, cuyo nombre se les dará a conocer, que será su interlocutor principal con el equipo asistencial.",
+            "c) A disponer, en todos los centros, servicios y establecimientos sanitarios y sociosanitarios, de una carta de derechos y deberes por la que ha de regirse su relación con los mismos.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "78. Uno de los siguientes no es un deber al que están sujetos los ciudadanos con respecto al Sistema Sanitario Público de Extremadura:",
+        options: [
+            "a) Cuidar las instalaciones y colaborar en el mantenimiento de la habitabilidad.",
+            "b) Responsabilizarse del uso adecuado de las prestaciones ofrecidas.",
+            "c) Al libre acceso al Defensor de los usuarios del Sistema Sanitario Público de Extremadura.",
+            "d) Mantener el debido respeto a las normas establecidas en cada centro sanitario."
+        ],
+        correct: 2
+    },
+    {
+        question: "79. El SES es un organismo:",
+        options: [
+            "a) Autónomo.",
+            "b) Administrativo.",
+            "c) Adscrito a la Consejería competente en materia sanitaria y dotado de personalidad jurídica propia.",
+            "d) Todas las respuestas anteriores con correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "80. El SES se rige por:",
+        options: [
+            "a) La Ley 10/2001, de 28 de junio.",
+            "b) Los Estatutos del Decreto 221/2008, de 24 de octubre.",
+            "c) La Ley 1/2002, de 28 de febrero, del Gobierno y de la Administración de la CA.",
+            "d) Todas las respuestas anteriores con correctas."
+        ],
+        correct: 3
+    },
+    {
+        question: "81. La Ley de Salud de Extremadura se aprueba con fecha:",
+        options: [
+            "a) 27 de junio de 2001.",
+            "b) 28 de junio de 2001.",
+            "c) 28 de junio de 2011.",
+            "d) 30 de junio de 2005."
+        ],
+        correct: 1
+    },
+    {
+        question: "82. La Ley de Salud de Extremadura se publica en el DOE con fecha:",
+        options: [
+            "a) 3 de julio de 2001.",
+            "b) 29 de junio de 2001.",
+            "c) 28 de junio de 2011.",
+            "d) 30 de junio de 2005."
+        ],
+        correct: 1
+    },
+    {
+        question: "83. La Ley de Salud de Extremadura se publica en el BOE con fecha:",
+        options: [
+            "a) 3 de julio de 2001.",
+            "b) 29 de junio de 2001.",
+            "c) 25 de julio de 2001.",
+            "d) 30 de junio de 2005."
+        ],
+        correct: 2
+    },
+    {
+        question: "84. La Ley de Salud de Extremadura entró en vigor con fecha:",
+        options: [
+            "a) 3 de julio de 2001.",
+            "b) 4 de julio de 2001.",
+            "c) 25 de julio de 2001.",
+            "d) 30 de junio de 2005."
+        ],
+        correct: 1
+    },
+    {
+        question: "85. Señale el derecho que se garantiza en el Sistema Sanitario Público de Extremadura:",
+        options: [
+            "a) Prestaciones y servicios de salud individual y colectiva del Sistema Sanitario Público de Extremadura.",
+            "b) A ser advertidos de si los procedimientos de pronóstico, diagnóstico y terapéuticos que se le apliquen pudieran ser utilizados en un proyecto docente o de investigación.",
+            "c) El progresivo ofrecimiento de habitación individual en los centros hospitalarios de la Comunidad Autónoma de Extremadura.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        correct: 3
+    }
+        ];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            q.options.forEach((option, i) => {
+                const optionLabel = document.createElement('label');
+                optionLabel.classList.add('option');
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    const result = optionLabel.querySelector('.result');
+                    if (i === q.correct) {
+                        result.classList.add('correct');
+                        result.classList.remove('incorrect');
+                    } else {
+                        result.classList.add('incorrect');
+                        result.classList.remove('correct');
+                    }
+                });
+                optionLabel.appendChild(radio);
+                optionLabel.appendChild(document.createTextNode(option));
+
+                const result = document.createElement('span');
+                result.classList.add('result');
+                optionLabel.appendChild(result);
+
+                questionDiv.appendChild(optionLabel);
+            });
+
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
