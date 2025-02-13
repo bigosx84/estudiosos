@@ -27,11 +27,15 @@
         }
         .question {
             margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-radius: 8px;
         }
         .question label {
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
+            color: #333;
         }
         .question input[type="radio"] {
             margin-right: 10px;
@@ -40,10 +44,26 @@
             display: flex;
             align-items: center;
             margin-bottom: 5px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .question label.option:hover {
+            background-color: #d0e7ff;
         }
         .result {
-            margin-top: 10px;
+            margin-left: 10px;
             font-weight: bold;
+        }
+        .correct::before {
+            content: '✔';
+            color: green;
+            margin-right: 5px;
+        }
+        .incorrect::before {
+            content: '✘';
+            color: red;
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -851,7 +871,7 @@
 
         ];
 
-        const form = document.getElementById('quizForm');
+       const form = document.getElementById('quizForm');
 
         questions.forEach((q, index) => {
             const questionDiv = document.createElement('div');
@@ -869,23 +889,24 @@
                 radio.name = `question${index}`;
                 radio.value = i;
                 radio.addEventListener('change', () => {
-                    const result = questionDiv.querySelector('.result');
+                    const result = optionLabel.querySelector('.result');
                     if (i === q.correct) {
-                        result.textContent = 'Correcto';
-                        result.style.color = 'green';
+                        result.classList.add('correct');
+                        result.classList.remove('incorrect');
                     } else {
-                        result.textContent = 'Incorrecto';
-                        result.style.color = 'red';
+                        result.classList.add('incorrect');
+                        result.classList.remove('correct');
                     }
                 });
                 optionLabel.appendChild(radio);
                 optionLabel.appendChild(document.createTextNode(option));
+
+                const result = document.createElement('span');
+                result.classList.add('result');
+                optionLabel.appendChild(result);
+
                 questionDiv.appendChild(optionLabel);
             });
-
-            const result = document.createElement('div');
-            result.classList.add('result');
-            questionDiv.appendChild(result);
 
             form.appendChild(questionDiv);
         });
