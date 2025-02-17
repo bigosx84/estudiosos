@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seleccione un Test</title>
+  <title>Acceso a los Tests</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #e9f5ff; /* Fondo azul claro */
+      background-color: #e9f5ff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      padding: 10px; /* Espacio para evitar que quede pegado en móviles */
     }
     .container {
       background-color: #fff;
@@ -20,50 +21,73 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       text-align: center;
+      width: 100%;
+      max-width: 400px; /* Limita el tamaño en pantallas grandes */
     }
-    h1 {
-      color: #333;
+    #testLinks {
+      display: none;
     }
-    p {
-      color: #666;
+    input, button {
+      width: 100%; /* Hace que los elementos ocupen todo el ancho */
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
     }
-    ul {
-      list-style-type: none;
-      padding: 0;
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
     }
-    li {
-      margin: 10px 0;
-    }
-    a {
-      text-decoration: none;
-      color: #007BFF;
-      font-weight: bold;
-    }
-    a:hover {
-      text-decoration: underline;
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
+  <script>
+    function checkPassword() {
+      var password = document.getElementById("password").value;
+      var correctPassword = "112"; // Cambia esto por la contraseña deseada
+
+      if (password === correctPassword) {
+        document.getElementById("unlockSection").style.display = "none";
+        document.getElementById("testLinks").style.display = "block";
+      } else {
+        alert("Código incorrecto. Inténtalo de nuevo.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("password").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          checkPassword();
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <div class="container">
-    <h1>A POR LA PLAZA!!</h1>
-    <p>PARTE COMÚN</p>
-    <ul>
-      <!-- Enlace a Test 1 -->
-      <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
-      <!-- Enlace a Test 2 -->
-      <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
-      <!-- Enlace a Test 3 -->
-      <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
-      <!-- Enlace a Test 4 -->
-      <li><a href="COMUN_TEMA4.html">TEMA 4: La Ley de Salud de Extremadura. Estatuo del SES</a></li>
-    </ul>
-    <h1>PARTE ESPECÍFICA</h1>
-    <p></p>
-    <ul>
-      <!-- Enlace a Test 1 -->
-      <li><a href="ESPEC_TEMA1.html">TEMA 1: Nociones básicas de la Asistencia Sanitaria</a></li>
-    </ul>
+    <div id="unlockSection">
+      <p>Introduce el código para acceder:</p>
+      <input type="password" id="password">
+      <button onclick="checkPassword()">Desbloquear</button>
+    </div>
+
+    <div id="testLinks">
+      <h1>A POR LA PLAZA!!</h1>
+      <p>PARTE COMÚN</p>
+      <ul>
+        <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
+        <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
+        <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
+        <li><a href="COMUN_TEMA4.html">TEMA 4: La Ley de Salud de Extremadura. Estatuto del SES</a></li>
+      </ul>
+      <h1>PARTE ESPECÍFICA</h1>
+      <ul>
+        <li><a href="ESPEC_TEMA1.html">TEMA 1: Nociones básicas de la Asistencia Sanitaria</a></li>
+      </ul>
+    </div>
   </div>
 </body>
 </html>
