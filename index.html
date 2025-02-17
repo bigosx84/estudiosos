@@ -37,7 +37,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
-      height: 40px; /* Igual altura para input y botón */
+      height: 40px;
     }
     input {
       flex: 1;
@@ -47,7 +47,7 @@
       color: white;
       border: none;
       cursor: pointer;
-      width: 100px; /* Tamaño fijo para el botón */
+      width: 100px;
     }
     button:hover {
       background-color: #0056b3;
@@ -74,11 +74,21 @@
     }
   </style>
   <script>
-    function checkPassword() {
-      var password = document.getElementById("password").value;
-      var correctPassword = "112";
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
 
-      if (password === correctPassword) {
+    async function checkPassword() {
+      var password = document.getElementById("password").value;
+      var hashedInput = await hashPassword(password);
+
+      var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f";
+
+      if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
         document.getElementById("testLinks").style.display = "block";
       } else {
@@ -122,3 +132,4 @@
   </div>
 </body>
 </html>
+
