@@ -65,6 +65,11 @@
             color: red;
             margin-right: 5px;
         }
+        .explanation {
+            display: none;
+            margin-top: 10px;
+            color: green;
+        }
     </style>
 </head>
 <body>
@@ -2329,7 +2334,7 @@
    }
         ];
 
-        const form = document.getElementById('quizForm');
+         const form = document.getElementById('quizForm');
 
         questions.forEach((q, index) => {
             const questionDiv = document.createElement('div');
@@ -2348,12 +2353,19 @@
                 radio.value = i;
                 radio.addEventListener('change', () => {
                     const result = optionLabel.querySelector('.result');
+                    const explanation = questionDiv.querySelector('.explanation');
                     if (i === q.correct) {
                         result.classList.add('correct');
                         result.classList.remove('incorrect');
+                        if (explanation) {
+                            explanation.style.display = 'block';
+                        }
                     } else {
                         result.classList.add('incorrect');
                         result.classList.remove('correct');
+                        if (explanation) {
+                            explanation.style.display = 'none';
+                        }
                     }
                 });
                 optionLabel.appendChild(radio);
@@ -2365,6 +2377,13 @@
 
                 questionDiv.appendChild(optionLabel);
             });
+
+            if (q.explanation) {
+                const explanationDiv = document.createElement('div');
+                explanationDiv.classList.add('explanation');
+                explanationDiv.textContent = q.explanation;
+                questionDiv.appendChild(explanationDiv);
+            }
 
             form.appendChild(questionDiv);
         });
