@@ -72,13 +72,6 @@
     a:hover {
       text-decoration: underline;
     }
-    #randomQuestion {
-      margin-bottom: 20px;
-      padding: 10px;
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
   </style>
   <script>
     async function hashPassword(password) {
@@ -98,43 +91,10 @@
       if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
         document.getElementById("testLinks").style.display = "block";
-        loadRandomQuestion();
+        loadDailyQuestion();
       } else {
         alert("Código incorrecto. Inténtalo de nuevo.");
       }
-    }
-
-    async function loadRandomQuestion() {
-      const files = [
-        'COMUN_TEMA1.html',
-        'COMUN_TEMA2.html',
-        'COMUN_TEMA3.html',
-        'COMUN_TEMA4.html',
-        'ESPEC_TEMA1.HTML',
-        'ESPEC_TEMA2.HTML',
-        'ESPEC_TEMA11.HTML'
-      ];
-
-      const randomFile = files[Math.floor(Math.random() * files.length)];
-      const response = await fetch(randomFile);
-      const text = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(text, 'text/html');
-      const scriptContent = doc.querySelector('script').textContent;
-      const questions = eval(scriptContent.match(/const questions = \[(.*?)\];/s)[0]);
-      const randomIndex = Math.floor(Math.random() * questions.length);
-      const randomQuestion = questions[randomIndex];
-      displayQuestion(randomQuestion);
-    }
-
-    function displayQuestion(question) {
-      const questionContainer = document.getElementById('randomQuestion');
-      questionContainer.innerHTML = `
-        <p>${question.question}</p>
-        <ul>
-          ${question.options.map((option, index) => `<li>${option} ${index === question.correct ? '(Correcta)' : ''}</li>`).join('')}
-        </ul>
-      `;
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -145,6 +105,45 @@
         }
       });
     });
+
+    const questionFiles = [
+      'COMUN_TEMA1.html',
+      'COMUN_TEMA2.html',
+      'COMUN_TEMA3.html',
+      'COMUN_TEMA4.html',
+      'ESPEC_TEMA1.HTML',
+      'ESPEC_TEMA2.HTML',
+      'ESPEC_TEMA11.HTML'
+    ];
+
+    function getRandomQuestion() {
+      const randomIndex = Math.floor(Math.random() * questionFiles.length);
+      return questionFiles[randomIndex];
+    }
+
+    function loadQuestion(file) {
+      fetch(file)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('testLinks').innerHTML = data;
+        })
+        .catch(error => console.error('Error al cargar la pregunta:', error));
+    }
+
+    function loadDailyQuestion() {
+      const lastQuestionDate = localStorage.getItem('lastQuestionDate');
+      const today = new Date().toDateString();
+
+      if (lastQuestionDate !== today) {
+        const questionFile = getRandomQuestion();
+        loadQuestion(questionFile);
+        localStorage.setItem('lastQuestionDate', today);
+        localStorage.setItem('lastQuestionFile', questionFile);
+      } else {
+        const questionFile = localStorage.getItem('lastQuestionFile');
+        loadQuestion(questionFile);
+      }
+    }
   </script>
 </head>
 <body>
@@ -158,7 +157,6 @@
     </div>
 
     <div id="testLinks">
-      <div id="randomQuestion"></div>
       <h1>PARTE COMÚN</h1>
       <ul>
         <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
