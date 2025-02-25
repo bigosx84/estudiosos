@@ -125,7 +125,10 @@
       fetch(file)
         .then(response => response.text())
         .then(data => {
-          document.getElementById('testLinks').innerHTML = data;
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(data, 'text/html');
+          const questionContent = doc.querySelector('.container').innerHTML;
+          document.getElementById('testLinks').innerHTML = questionContent;
         })
         .catch(error => console.error('Error al cargar la pregunta:', error));
     }
@@ -174,4 +177,3 @@
   </div>
 </body>
 </html>
-
