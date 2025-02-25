@@ -103,15 +103,16 @@ function verificarRespuesta(nombre, index, seleccion, correcta) {
     let resultado = document.getElementById(`resultado-${index}`);
     let inputs = document.getElementsByName(`pregunta-${index}`);
 
+    // Desactivar los botones de respuesta
     inputs.forEach(input => input.disabled = true);
 
     if (seleccion == correcta) {
         resultado.innerHTML = "✅ Correcto";
-        resultado.style.color = "green";
+        resultado.classList.add("correcto");
         actualizarClasificacion(nombre, 1);
     } else {
         resultado.innerHTML = "❌ Incorrecto";
-        resultado.style.color = "red";
+        resultado.classList.add("incorrecto");
     }
 
     // Mostrar clasificación después de contestar todas
