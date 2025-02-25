@@ -21,7 +21,7 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 400px;
+      max-width: 600px;
       text-align: center;
     }
     #testLinks {
@@ -58,19 +58,24 @@
     ul {
       list-style: none;
       padding: 0;
+      text-align: left;
     }
     li {
-      text-align: left;
       margin: 10px 0;
     }
     a {
       text-decoration: none;
       color: #007BFF;
       font-weight: bold;
-      display: block;
     }
     a:hover {
       text-decoration: underline;
+    }
+    .question-container {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
     }
   </style>
   <script>
@@ -91,6 +96,7 @@
       if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
         document.getElementById("testLinks").style.display = "block";
+        loadTestLinks();
         loadDailyQuestion();
       } else {
         alert("Código incorrecto. Inténtalo de nuevo.");
@@ -121,6 +127,23 @@
       return questionFiles[randomIndex];
     }
 
+    function loadTestLinks() {
+      const testLinksContainer = document.getElementById('testLinks');
+      testLinksContainer.innerHTML = '';
+
+      const testList = document.createElement('ul');
+      questionFiles.forEach(file => {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `#`;
+        link.textContent = `Ver preguntas desde ${file}`;
+        listItem.appendChild(link);
+        testList.appendChild(listItem);
+      });
+
+      testLinksContainer.appendChild(testList);
+    }
+
     function loadQuestion(file) {
       fetch(file)
         .then(response => {
@@ -132,13 +155,16 @@
         .then(data => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(data, 'text/html');
-          const questionContent = doc.querySelector('.container');
-          
-          if (questionContent) {
-            document.getElementById('testLinks').innerHTML = questionContent.innerHTML;
+          const questionForm = doc.querySelector('#quizForm');
+
+          if (questionForm) {
+            const questionContainer = document.createElement('div');
+            questionContainer.classList.add('question-container');
+            questionContainer.appendChild(questionForm);
+            document.body.appendChild(questionContainer);
           } else {
-            console.error('No se encontró el contenedor .container en el archivo.');
-            document.getElementById('testLinks').innerHTML = '<p>No se pudo encontrar la pregunta en el archivo.</p>';
+            console.error('No se encontró el formulario de preguntas en el archivo.');
+            document.getElementById('testLinks').innerHTML = '<p>No se pudo encontrar el formulario de preguntas en el archivo.</p>';
           }
         })
         .catch(error => {
@@ -151,12 +177,14 @@
       const lastQuestionDate = localStorage.getItem('lastQuestionDate');
       const today = new Date().toDateString();
 
+      // Si han pasado 24 horas desde la última pregunta, carga una nueva
       if (lastQuestionDate !== today) {
         const questionFile = getRandomQuestion();
         loadQuestion(questionFile);
-        localStorage.setItem('lastQuestionDate', today);
-        localStorage.setItem('lastQuestionFile', questionFile);
+        localStorage.setItem('lastQuestionDate', today); // Actualiza la fecha de la última pregunta
+        localStorage.setItem('lastQuestionFile', questionFile); // Guarda el archivo de la pregunta cargada
       } else {
+        // Si es el mismo día, muestra la pregunta previamente cargada
         const questionFile = localStorage.getItem('lastQuestionFile');
         loadQuestion(questionFile);
       }
@@ -173,20 +201,8 @@
       </div>
     </div>
 
-    <div id="testLinks">
-      <h1>PARTE COMÚN</h1>
-      <ul>
-        <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
-        <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
-        <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
-        <li><a href="COMUN_TEMA4.html">TEMA 4: La Ley de Salud de Extremadura. Estatuto del SES</a></li>
-      </ul>
-      <h1>PARTE ESPECÍFICA</h1>
-      <ul>
-        <li><a href="ESPEC_TEMA1.HTML">TEMA 1: Nociones básicas de la Asistencia Sanitaria</a></li>
-        <li><a href="ESPEC_TEMA2.HTML">TEMA 2: El Personal Subalterno: funciones del Celador. Funciones de vigilancia. Actuaciones del Celador con los familiares de los enfermos.</a></li>
-        <li><a href="ESPEC_TEMA11.HTML">TEMA 11: La Ley de Igualdad.</a></li>
-      </ul>
+    <div id="testLinks" style="display:none">
+      <!-- Aquí se mostrarán los enlaces de los archivos y una pregunta aleatoria -->
     </div>
   </div>
 </body>
