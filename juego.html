@@ -1,0 +1,29 @@
+<body>
+    <div class="container">
+        <h1>🎯 Juego de Preguntas</h1>
+
+        <div id="seleccionar-nombre">
+            <h2>Selecciona tu nombre:</h2>
+            <select id="nombre">
+                <option value="">-- Selecciona --</option>
+                <option value="ANA">ANA</option>
+                <option value="MAITE">MAITE</option>
+                <option value="MONICA">MONICA</option>
+                <option value="ALBERTO">ALBERTO</option>
+            </select>
+            <button onclick="iniciarJuego()">Empezar</button>
+        </div>
+
+        <div id="juego" style="display: none;">
+            <h2>📌 Responde las siguientes preguntas:</h2>
+            <div id="preguntas"></div>
+            <button id="ver-clasificacion" onclick="mostrarClasificacion()" style="display:none;">📊 Ver Clasificación</button>
+        </div>
+
+        <div id="clasificacion" style="display: none;">
+            <h2>🏆 Clasificación</h2>
+            <ul id="ranking"></ul>
+            <button onclick="reiniciarJuego()">🔄 Volver a jugar</button>
+        </div>
+    </div>
+</body>
