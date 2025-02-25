@@ -24,7 +24,7 @@
       max-width: 400px;
       text-align: center;
     }
-    #testLinks, #preguntaDelDia {
+    #testLinks, #dailyQuestion {
       display: none;
     }
     .input-group {
@@ -55,30 +55,6 @@
     h1 {
       text-align: center;
     }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      text-align: left;
-      margin: 10px 0;
-    }
-    a {
-      text-decoration: none;
-      color: #007BFF;
-      font-weight: bold;
-      display: block;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    #preguntaDelDia {
-      margin-bottom: 20px;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #f8f9fa;
-    }
   </style>
   <script>
     async function hashPassword(password) {
@@ -97,11 +73,33 @@
       if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
         document.getElementById("testLinks").style.display = "block";
-        document.getElementById("preguntaDelDia").style.display = "block";
-        localStorage.setItem("accesoPermitido", "true"); 
-        obtenerPreguntaDelDía();
+        document.getElementById("dailyQuestion").style.display = "block";
+        showDailyQuestion();
       } else {
         alert("Código incorrecto. Inténtalo de nuevo.");
+      }
+    }
+
+    function showDailyQuestion() {
+      const questions = [
+        "¿Cuál es el objetivo principal de la Constitución Española de 1978?",
+        "¿Qué derechos garantiza el Estatuto de Autonomía de Extremadura?",
+        "¿Cuál es la función principal del Personal Subalterno en un hospital?",
+        "¿Qué establece la Ley de Igualdad en el ámbito laboral?"
+      ];
+      
+      let today = new Date().toISOString().split("T")[0];
+      let storedDate = localStorage.getItem("questionDate");
+      let storedQuestion = localStorage.getItem("questionText");
+      
+      if (storedDate === today && storedQuestion) {
+        document.getElementById("dailyQuestion").innerText = "Pregunta del día: " + storedQuestion;
+      } else {
+        let randomIndex = Math.floor(Math.random() * questions.length);
+        let newQuestion = questions[randomIndex];
+        localStorage.setItem("questionDate", today);
+        localStorage.setItem("questionText", newQuestion);
+        document.getElementById("dailyQuestion").innerText = "Pregunta del día: " + newQuestion;
       }
     }
 
@@ -112,57 +110,7 @@
           checkPassword();
         }
       });
-
-      if (localStorage.getItem("accesoPermitido") === "true") {
-        document.getElementById("unlockSection").style.display = "none";
-        document.getElementById("testLinks").style.display = "block";
-        document.getElementById("preguntaDelDia").style.display = "block";
-        obtenerPreguntaDelDía();
-      }
     });
-
-    const archivos = [
-      "COMUN_TEMA1.html",
-      "COMUN_TEMA2.html",
-      "COMUN_TEMA3.html",
-      "COMUN_TEMA4.html",
-      "ESPEC_TEMA1.HTML",
-      "ESPEC_TEMA2.HTML",
-      "ESPEC_TEMA11.HTML"
-    ];
-
-    function obtenerPreguntaDelDía() {
-      const hoy = new Date().toISOString().split("T")[0];
-      const preguntaGuardada = localStorage.getItem("preguntaDelDia");
-      const fechaGuardada = localStorage.getItem("fechaPregunta");
-
-      if (preguntaGuardada && fechaGuardada === hoy) {
-        document.getElementById("preguntaDelDia").innerHTML = preguntaGuardada;
-        return;
-      }
-
-      const indice = new Date().getDate() % archivos.length;
-      const archivoElegido = archivos[indice];
-
-      fetch(archivoElegido)
-        .then(response => response.text())
-        .then(data => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(data, "text/html");
-          const pregunta = doc.querySelector("h2, h3, p");
-
-          const preguntaTexto = pregunta ? `<h2>Pregunta del Día</h2><p>${pregunta.innerHTML}</p>` : "<p>No se encontró una pregunta.</p>";
-          
-          localStorage.setItem("preguntaDelDia", preguntaTexto);
-          localStorage.setItem("fechaPregunta", hoy);
-          
-          document.getElementById("preguntaDelDia").innerHTML = preguntaTexto;
-        })
-        .catch(error => {
-          console.error("Error cargando la pregunta:", error);
-          document.getElementById("preguntaDelDia").innerHTML = "<p>Error al cargar la pregunta.</p>";
-        });
-    }
   </script>
 </head>
 <body>
@@ -175,23 +123,21 @@
       </div>
     </div>
 
-    <div id="preguntaDelDia"></div>
-
     <div id="testLinks">
       <h1>PARTE COMÚN</h1>
       <ul>
         <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
         <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
-        <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
-        <li><a href="COMUN_TEMA4.html">TEMA 4: La Ley de Salud de Extremadura. Estatuto del SES</a></li>
       </ul>
       <h1>PARTE ESPECÍFICA</h1>
       <ul>
         <li><a href="ESPEC_TEMA1.HTML">TEMA 1: Nociones básicas de la Asistencia Sanitaria</a></li>
-        <li><a href="ESPEC_TEMA2.HTML">TEMA 2: El Personal Subalterno: funciones del Celador.</a></li>
-        <li><a href="ESPEC_TEMA11.HTML">TEMA 11: La Ley de Igualdad.</a></li>
+        <li><a href="ESPEC_TEMA2.HTML">TEMA 2: Funciones del Celador</a></li>
       </ul>
     </div>
+    
+    <div id="dailyQuestion" class="container"></div>
   </div>
 </body>
 </html>
+
