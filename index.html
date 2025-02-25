@@ -72,52 +72,26 @@
     a:hover {
       text-decoration: underline;
     }
+    .option {
+      cursor: pointer;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin: 5px 0;
+      text-align: left;
+      transition: background 0.3s;
+    }
+    .option:hover {
+      background-color: #f0f0f0;
+    }
+    .correct {
+      background-color: #c8e6c9; /* Verde */
+    }
+    .incorrect {
+      background-color: #ffcdd2; /* Rojo */
+    }
   </style>
   <script>
-    const questionFiles = [
-      'COMUN_TEMA1.html',
-      'COMUN_TEMA2.html',
-      'COMUN_TEMA3.html',
-      'COMUN_TEMA4.html',
-      'ESPEC_TEMA1.HTML',
-      'ESPEC_TEMA2.HTML',
-      'ESPEC_TEMA11.HTML'
-    ];
-    
-    async function fetchRandomQuestion() {
-      const today = new Date().toISOString().split('T')[0];
-      const storedData = localStorage.getItem('dailyQuestion');
-      if (storedData) {
-        const { date, question } = JSON.parse(storedData);
-        if (date === today) {
-          displayQuestion(question);
-          return;
-        }
-      }
-      
-      const randomFile = questionFiles[Math.floor(Math.random() * questionFiles.length)];
-      try {
-        const response = await fetch(randomFile);
-        const text = await response.text();
-        const match = text.match(/\{.*?question.*?\}/gs);
-        if (match) {
-          const questions = match.map(q => JSON.parse(q));
-          const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
-          localStorage.setItem('dailyQuestion', JSON.stringify({ date: today, question: randomQuestion }));
-          displayQuestion(randomQuestion);
-        }
-      } catch (error) {
-        console.error('Error al obtener la pregunta:', error);
-      }
-    }
-
-    function displayQuestion(question) {
-      const questionContainer = document.getElementById('dailyQuestion');
-      questionContainer.innerHTML = `<h2>Pregunta del día</h2><p>${question.question}</p><ul>` + 
-        question.options.map(opt => `<li>${opt}</li>`).join('') + '</ul>';
-      questionContainer.style.display = 'block';
-    }
-
     async function hashPassword(password) {
       const encoder = new TextEncoder();
       const data = encoder.encode(password);
@@ -130,11 +104,12 @@
       var password = document.getElementById("password").value;
       var hashedInput = await hashPassword(password);
       var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f";
-      
+
       if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
         document.getElementById("testLinks").style.display = "block";
-        fetchRandomQuestion();
+        document.getElementById("dailyQuestion").style.display = "block";
+        loadQuestion();
       } else {
         alert("Código incorrecto. Inténtalo de nuevo.");
       }
@@ -148,6 +123,70 @@
         }
       });
     });
+
+    const questionFiles = [
+      "COMUN_TEMA1.html",
+      "COMUN_TEMA2.html",
+      "COMUN_TEMA3.html",
+      "COMUN_TEMA4.html",
+      "ESPEC_TEMA1.HTML",
+      "ESPEC_TEMA2.HTML",
+      "ESPEC_TEMA11.HTML"
+    ];
+
+    function getRandomQuestion() {
+      const randomFile = questionFiles[Math.floor(Math.random() * questionFiles.length)];
+      fetch(randomFile)
+        .then(response => response.text())
+        .then(text => {
+          const matches = text.match(/{[^}]+}/g);
+          if (matches && matches.length > 0) {
+            const randomQuestionIndex = Math.floor(Math.random() * matches.length);
+            const questionData = JSON.parse(matches[randomQuestionIndex]);
+            localStorage.setItem("dailyQuestion", JSON.stringify(questionData));
+            localStorage.setItem("questionDate", new Date().toISOString().split("T")[0]);
+            displayQuestion(questionData);
+          }
+        })
+        .catch(error => console.error("Error al cargar preguntas:", error));
+    }
+
+    function loadQuestion() {
+      const savedDate = localStorage.getItem("questionDate");
+      const today = new Date().toISOString().split("T")[0];
+
+      if (savedDate === today) {
+        const savedQuestion = JSON.parse(localStorage.getItem("dailyQuestion"));
+        if (savedQuestion) {
+          displayQuestion(savedQuestion);
+          return;
+        }
+      }
+
+      getRandomQuestion();
+    }
+
+    function displayQuestion(questionData) {
+      const questionContainer = document.getElementById("questionContainer");
+      questionContainer.innerHTML = `<p><strong>${questionData.question}</strong></p>`;
+
+      questionData.options.forEach((option, index) => {
+        const optionElement = document.createElement("div");
+        optionElement.classList.add("option");
+        optionElement.textContent = option;
+        optionElement.onclick = () => checkAnswer(index, questionData.correct, optionElement);
+        questionContainer.appendChild(optionElement);
+      });
+    }
+
+    function checkAnswer(selectedIndex, correctIndex, element) {
+      document.querySelectorAll(".option").forEach(opt => {
+        opt.onclick = null; // Deshabilita nuevas selecciones
+        opt.classList.add(selectedIndex === correctIndex ? "correct" : "incorrect");
+      });
+
+      element.innerHTML += selectedIndex === correctIndex ? " ✅" : " ❌";
+    }
   </script>
 </head>
 <body>
@@ -159,23 +198,22 @@
         <button onclick="checkPassword()">Desbloquear</button>
       </div>
     </div>
+
     <div id="testLinks">
       <h1>PARTE COMÚN</h1>
       <ul>
-        <li><a href="COMUN_TEMA1.html">TEMA 1</a></li>
-        <li><a href="COMUN_TEMA2.html">TEMA 2</a></li>
-        <li><a href="COMUN_TEMA3.html">TEMA 3</a></li>
-        <li><a href="COMUN_TEMA4.html">TEMA 4</a></li>
+        <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
+        <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
+        <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
       </ul>
-      <h1>PARTE ESPECÍFICA</h1>
-      <ul>
-        <li><a href="ESPEC_TEMA1.HTML">TEMA 1</a></li>
-        <li><a href="ESPEC_TEMA2.HTML">TEMA 2</a></li>
-        <li><a href="ESPEC_TEMA11.HTML">TEMA 11</a></li>
-      </ul>
-      <div id="dailyQuestion"></div>
+    </div>
+
+    <div id="dailyQuestion">
+      <h2>Pregunta del día</h2>
+      <div id="questionContainer"></div>
     </div>
   </div>
 </body>
 </html>
+
 
