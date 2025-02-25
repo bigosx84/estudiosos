@@ -1,196 +1,141 @@
-let juegoTerminado = false;
-let preguntasAleatorias = [];
-
-// Función para generar las 3 preguntas aleatorias
-function generarPreguntasAleatorias() {
-    const preguntasTotales = [
-        {
-            question: "1. ¿Cuántos capítulos componen el Título I de la Constitución?",
-            options: [
-                "a) Diez.",
-                "b) Diez, más cuatro disposiciones adicionales, nueve disposiciones transitorias, una disposición derogatoria y una disposición final.",
-                "c) El título I no tiene capítulos.",
-                "d) Cinco."
-            ],
-            correct: 3
-        },
-        {
-            question: "2. ¿Quién es el presidente de España?",
-            options: [
-                "a) Pedro Sánchez.",
-                "b) Mariano Rajoy.",
-                "c) Alberto Núñez Feijóo.",
-                "d) Felipe VI."
-            ],
-            correct: 1
-        },
-        {
-            question: "3. ¿Cuál es la capital de Francia?",
-            options: [
-                "a) Berlín.",
-                "b) Madrid.",
-                "c) París.",
-                "d) Londres."
-            ],
-            correct: 3
-        },
-        {
-            question: "4. ¿Cuál es el océano más grande del planeta?",
-            options: [
-                "a) Atlántico.",
-                "b) Pacífico.",
-                "c) Índico.",
-                "d) Ártico."
-            ],
-            correct: 2
-        },
-        {
-            question: "5. ¿Qué país tiene la mayor población del mundo?",
-            options: [
-                "a) India.",
-                "b) Estados Unidos.",
-                "c) China.",
-                "d) Brasil."
-            ],
-            correct: 3
-        },
-        // Añadir más preguntas si se desea
-    ];
-
-    // Seleccionamos 3 preguntas aleatorias
-    preguntasAleatorias = [];
-    while (preguntasAleatorias.length < 3) {
-        const pregunta = preguntasTotales[Math.floor(Math.random() * preguntasTotales.length)];
-        if (!preguntasAleatorias.includes(pregunta)) {
-            preguntasAleatorias.push(pregunta);
-        }
+const preguntas = [
+    {
+        question: "1. ¿Cuántos capítulos componen el Título I de la Constitución?",
+        options: [
+            "a) Diez.",
+            "b) Diez, más cuatro disposiciones adicionales, nueve disposiciones transitorias, una disposición derogatoria y una disposición final.",
+            "c) El título I no tiene capítulos.",
+            "d) Cinco."
+        ],
+        correct: 3
+    },
+    {
+        question: "2. ¿Cuál es la capital de España?",
+        options: ["a) Barcelona.", "b) Madrid.", "c) Valencia.", "d) Sevilla."],
+        correct: 1
+    },
+    {
+        question: "3. ¿Cuántos artículos tiene la Constitución Española?",
+        options: ["a) 169.", "b) 200.", "c) 300.", "d) 135."],
+        correct: 0
+    },
+    {
+        question: "4. ¿Quién fue el primer presidente del gobierno español tras la dictadura?",
+        options: ["a) Felipe González.", "b) Adolfo Suárez.", "c) José María Aznar.", "d) Mariano Rajoy."],
+        correct: 1
     }
+];
+
+// Guardar preguntas aleatorias cada 24 horas
+function obtenerPreguntasDelDía() {
+    let fechaGuardada = localStorage.getItem("fechaPreguntas");
+    let hoy = new Date().toDateString();
+
+    if (fechaGuardada !== hoy) {
+        let preguntasAleatorias = preguntas.sort(() => 0.5 - Math.random()).slice(0, 3);
+        localStorage.setItem("preguntasDiarias", JSON.stringify(preguntasAleatorias));
+        localStorage.setItem("fechaPreguntas", hoy);
+    }
+
+    return JSON.parse(localStorage.getItem("preguntasDiarias"));
 }
 
-// Función para comenzar el juego
-function comenzarJuego() {
-    if (juegoTerminado) {
-        alert('El juego ha terminado. Espera hasta el próximo día para jugar.');
+// Guardar la clasificación
+function obtenerClasificacion() {
+    let clasificacion = JSON.parse(localStorage.getItem("clasificacion")) || { ANA: 0, MAITE: 0, MONICA: 0, ALBERTO: 0 };
+    return clasificacion;
+}
+
+// Actualizar la clasificación
+function actualizarClasificacion(nombre, puntos) {
+    let clasificacion = obtenerClasificacion();
+    clasificacion[nombre] += puntos;
+    localStorage.setItem("clasificacion", JSON.stringify(clasificacion));
+}
+
+// Iniciar el juego
+function iniciarJuego() {
+    let nombre = document.getElementById("nombre").value;
+    if (!nombre) {
+        alert("Selecciona un nombre.");
         return;
     }
 
-    // Generamos las preguntas aleatorias
-    generarPreguntasAleatorias();
+    document.getElementById("seleccionar-nombre").style.display = "none";
+    document.getElementById("juego").style.display = "block";
     
-    // Desactivamos el botón de "Empezar"
-    document.getElementById('boton-empezar').disabled = true;
-    document.getElementById('mensaje-finish').style.display = 'none';
-    
-    // Aquí comienza el juego, mostrando las preguntas
-    mostrarPreguntas();
+    mostrarPreguntas(nombre);
 }
 
-// Función para mostrar las preguntas
-function mostrarPreguntas() {
-    const preguntasContainer = document.getElementById('preguntas-container');
-    preguntasContainer.innerHTML = '';
+function mostrarPreguntas(nombre) {
+    let preguntasDiarias = obtenerPreguntasDelDía();
+    let contenedor = document.getElementById("preguntas");
+    contenedor.innerHTML = "";
 
-    preguntasAleatorias.forEach((pregunta, index) => {
-        const divPregunta = document.createElement('div');
-        divPregunta.classList.add('pregunta');
-        
-        const preguntaHTML = `
-            <p>${pregunta.question}</p>
-            <ul>
-                ${pregunta.options.map((opcion, i) => `
-                    <li>
-                        <input type="radio" name="pregunta${index}" value="${i}">
-                        ${opcion}
-                    </li>
-                `).join('')}
-            </ul>
-        `;
+    preguntasDiarias.forEach((pregunta, index) => {
+        let div = document.createElement("div");
+        div.innerHTML = `<p>${pregunta.question}</p>`;
 
-        divPregunta.innerHTML = preguntaHTML;
-        preguntasContainer.appendChild(divPregunta);
+        pregunta.options.forEach((opcion, i) => {
+            let input = document.createElement("input");
+            input.type = "radio";
+            input.name = `pregunta-${index}`;
+            input.value = i;
+            input.onclick = () => verificarRespuesta(nombre, index, i, pregunta.correct);
+            
+            let label = document.createElement("label");
+            label.textContent = opcion;
+
+            div.appendChild(input);
+            div.appendChild(label);
+            div.appendChild(document.createElement("br"));
+        });
+
+        let resultado = document.createElement("p");
+        resultado.id = `resultado-${index}`;
+        div.appendChild(resultado);
+
+        contenedor.appendChild(div);
     });
-
-    // Añadir el botón para finalizar el juego
-    const botonFinalizar = document.createElement('button');
-    botonFinalizar.textContent = 'Finalizar';
-    botonFinalizar.onclick = finalizarJuego;
-    preguntasContainer.appendChild(botonFinalizar);
 }
 
-// Función para finalizar el juego
-function finalizarJuego() {
-    let puntuacion = 0;
+function verificarRespuesta(nombre, index, seleccion, correcta) {
+    let resultado = document.getElementById(`resultado-${index}`);
+    let inputs = document.getElementsByName(`pregunta-${index}`);
 
-    // Revisar las respuestas
-    preguntasAleatorias.forEach((pregunta, index) => {
-        const seleccionada = document.querySelector(`input[name="pregunta${index}"]:checked`);
-        
-        if (seleccionada && parseInt(seleccionada.value) === pregunta.correct) {
-            puntuacion++;
-        }
-    });
+    inputs.forEach(input => input.disabled = true);
 
-    // Mostrar la puntuación
-    alert(`Puntuación: ${puntuacion} de 3`);
-
-    // Marcar el juego como terminado
-    juegoTerminado = true;
-
-    // Guardar la fecha de juego
-    guardarFechaJuego();
-
-    // Mostrar la clasificación
-    mostrarClasificacion();
-
-    // Desactivar el botón de "Empezar"
-    document.getElementById('boton-empezar').disabled = true;
-}
-
-// Función para guardar la fecha del juego
-function guardarFechaJuego() {
-    const fechaActual = new Date();
-    localStorage.setItem('ultimaFechaJuego', fechaActual.toString());
-}
-
-// Función para mostrar la clasificación
-function mostrarClasificacion() {
-    const clasificacionContainer = document.getElementById('clasificacion');
-    clasificacionContainer.innerHTML = `
-        <h2>Clasificación</h2>
-        <ul>
-            <li>ANA: 3 puntos</li>
-            <li>MAITE: 2 puntos</li>
-            <li>MONICA: 1 punto</li>
-            <li>ALBERTO: 0 puntos</li>
-        </ul>
-    `;
-}
-
-// Función para verificar si el jugador puede jugar
-function verificarJuego() {
-    const ultimaFecha = localStorage.getItem('ultimaFechaJuego');
-    const fechaActual = new Date();
-
-    if (!ultimaFecha || (fechaActual - new Date(ultimaFecha)) > 24 * 60 * 60 * 1000) {
-        // Han pasado más de 24 horas, permitir jugar de nuevo
-        document.getElementById('boton-empezar').disabled = false;
-        document.getElementById('mensaje-finish').style.display = 'none';
-        juegoTerminado = false;  // Permitimos jugar de nuevo
+    if (seleccion == correcta) {
+        resultado.innerHTML = "✅ Correcto";
+        resultado.style.color = "green";
+        actualizarClasificacion(nombre, 1);
     } else {
-        // El jugador debe esperar 24 horas
-        document.getElementById('mensaje-finish').textContent = '¡El juego ha terminado! Vuelve mañana para jugar de nuevo.';
-        document.getElementById('mensaje-finish').style.display = 'block';
+        resultado.innerHTML = "❌ Incorrecto";
+        resultado.style.color = "red";
+    }
+
+    // Mostrar clasificación después de contestar todas
+    if (document.querySelectorAll("input:checked").length === 3) {
+        document.getElementById("ver-clasificacion").style.display = "block";
     }
 }
 
-// Función para reiniciar el juego manualmente
-function reiniciarPreguntas() {
-    generarPreguntasAleatorias();
-    juegoTerminado = false;
-    document.getElementById('boton-empezar').disabled = false;
-    document.getElementById('mensaje-finish').style.display = 'none';
-    mostrarPreguntas();
+function mostrarClasificacion() {
+    let clasificacion = obtenerClasificacion();
+    let ranking = document.getElementById("ranking");
+    ranking.innerHTML = "";
+
+    Object.entries(clasificacion).forEach(([nombre, puntos]) => {
+        let li = document.createElement("li");
+        li.textContent = `${nombre}: ${puntos} puntos`;
+        ranking.appendChild(li);
+    });
+
+    document.getElementById("juego").style.display = "none";
+    document.getElementById("clasificacion").style.display = "block";
 }
 
-// Verificamos si el jugador puede jugar
-verificarJuego();
+function reiniciarJuego() {
+    document.getElementById("clasificacion").style.display = "none";
+    document.getElementById("seleccionar-nombre").style.display = "block";
+}
