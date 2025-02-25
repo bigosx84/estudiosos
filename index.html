@@ -21,10 +21,10 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 500px;
+      max-width: 400px;
       text-align: center;
     }
-    #testLinks, #dailyQuestion {
+    #testLinks {
       display: none;
     }
     .input-group {
@@ -72,24 +72,6 @@
     a:hover {
       text-decoration: underline;
     }
-    .option {
-      cursor: pointer;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin: 5px 0;
-      text-align: left;
-      transition: background 0.3s;
-    }
-    .option:hover {
-      background-color: #f0f0f0;
-    }
-    .correct {
-      background-color: #c8e6c9; /* Verde */
-    }
-    .incorrect {
-      background-color: #ffcdd2; /* Rojo */
-    }
   </style>
   <script>
     async function hashPassword(password) {
@@ -103,16 +85,49 @@
     async function checkPassword() {
       var password = document.getElementById("password").value;
       var hashedInput = await hashPassword(password);
-      var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f"; // HASH CORRECTO
+
+      var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f";
 
       if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
         document.getElementById("testLinks").style.display = "block";
-        document.getElementById("dailyQuestion").style.display = "block";
-        loadQuestion();
+        loadRandomQuestion();
       } else {
         alert("Código incorrecto. Inténtalo de nuevo.");
       }
+    }
+
+    async function loadRandomQuestion() {
+      const files = [
+        'COMUN_TEMA1.html',
+        'COMUN_TEMA2.html',
+        'COMUN_TEMA3.html',
+        'COMUN_TEMA4.html',
+        'ESPEC_TEMA1.HTML',
+        'ESPEC_TEMA2.HTML',
+        'ESPEC_TEMA11.HTML'
+      ];
+
+      const randomFile = files[Math.floor(Math.random() * files.length)];
+      const response = await fetch(randomFile);
+      const text = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(text, 'text/html');
+      const scriptContent = doc.querySelector('script').textContent;
+      const questions = eval(scriptContent.match(/const questions = \[(.*?)\];/s)[0]);
+      const randomIndex = Math.floor(Math.random() * questions.length);
+      const randomQuestion = questions[randomIndex];
+      displayQuestion(randomQuestion);
+    }
+
+    function displayQuestion(question) {
+      const questionContainer = document.getElementById('randomQuestion');
+      questionContainer.innerHTML = `
+        <p>${question.question}</p>
+        <ul>
+          ${question.options.map((option, index) => `<li>${option} ${index === question.correct ? '(Correcta)' : ''}</li>`).join('')}
+        </ul>
+      `;
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -123,70 +138,6 @@
         }
       });
     });
-
-    const questionFiles = [
-      "COMUN_TEMA1.html",
-      "COMUN_TEMA2.html",
-      "COMUN_TEMA3.html",
-      "COMUN_TEMA4.html",
-      "ESPEC_TEMA1.html",
-      "ESPEC_TEMA2.html",
-      "ESPEC_TEMA11.html"
-    ];
-
-    function getRandomQuestion() {
-      const randomFile = questionFiles[Math.floor(Math.random() * questionFiles.length)];
-      fetch(randomFile)
-        .then(response => response.text())
-        .then(text => {
-          const matches = text.match(/{[^}]+}/g);
-          if (matches && matches.length > 0) {
-            const randomQuestionIndex = Math.floor(Math.random() * matches.length);
-            const questionData = JSON.parse(matches[randomQuestionIndex]);
-            localStorage.setItem("dailyQuestion", JSON.stringify(questionData));
-            localStorage.setItem("questionDate", new Date().toISOString().split("T")[0]);
-            displayQuestion(questionData);
-          }
-        })
-        .catch(error => console.error("Error al cargar preguntas:", error));
-    }
-
-    function loadQuestion() {
-      const savedDate = localStorage.getItem("questionDate");
-      const today = new Date().toISOString().split("T")[0];
-
-      if (savedDate === today) {
-        const savedQuestion = JSON.parse(localStorage.getItem("dailyQuestion"));
-        if (savedQuestion) {
-          displayQuestion(savedQuestion);
-          return;
-        }
-      }
-
-      getRandomQuestion();
-    }
-
-    function displayQuestion(questionData) {
-      const questionContainer = document.getElementById("questionContainer");
-      questionContainer.innerHTML = `<p><strong>${questionData.question}</strong></p>`;
-
-      questionData.options.forEach((option, index) => {
-        const optionElement = document.createElement("div");
-        optionElement.classList.add("option");
-        optionElement.textContent = option;
-        optionElement.onclick = () => checkAnswer(index, questionData.correct, optionElement);
-        questionContainer.appendChild(optionElement);
-      });
-    }
-
-    function checkAnswer(selectedIndex, correctIndex, element) {
-      document.querySelectorAll(".option").forEach(opt => {
-        opt.onclick = null; // Deshabilita nuevas selecciones
-        opt.classList.add(selectedIndex === correctIndex ? "correct" : "incorrect");
-      });
-
-      element.innerHTML += selectedIndex === correctIndex ? " ✅" : " ❌";
-    }
   </script>
 </head>
 <body>
@@ -205,17 +156,15 @@
         <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
         <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
         <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
+        <li><a href="COMUN_TEMA4.html">TEMA 4: La Ley de Salud de Extremadura. Estatuto del SES</a></li>
       </ul>
       <h1>PARTE ESPECÍFICA</h1>
       <ul>
-        <li><a href="ESPEC_TEMA1.html">TEMA 1: Introducción a la Sanidad</a></li>
-        <li><a href="ESPEC_TEMA2.html">TEMA 2: Técnicas y Procedimientos</a></li>
+        <li><a href="ESPEC_TEMA1.HTML">TEMA 1: Nociones básicas de la Asistencia Sanitaria</a></li>
+        <li><a href="ESPEC_TEMA2.HTML">TEMA 2: El Personal Subalterno: funciones del Celador. Funciones de vigilancia. Actuaciones del Celador con los familiares de los enfermos.</a></li>
+        <li><a href="ESPEC_TEMA11.HTML">TEMA 11: La Ley de Igualdad.</a></li>
       </ul>
-    </div>
-
-    <div id="dailyQuestion">
-      <h2>Pregunta del día</h2>
-      <div id="questionContainer"></div>
+      <div id="randomQuestion"></div>
     </div>
   </div>
 </body>
