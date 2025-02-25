@@ -21,7 +21,7 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
       text-align: center;
     }
     #testLinks, #dailyQuestion {
@@ -103,7 +103,7 @@
     async function checkPassword() {
       var password = document.getElementById("password").value;
       var hashedInput = await hashPassword(password);
-      var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f";
+      var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f"; // HASH CORRECTO
 
       if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
@@ -129,9 +129,9 @@
       "COMUN_TEMA2.html",
       "COMUN_TEMA3.html",
       "COMUN_TEMA4.html",
-      "ESPEC_TEMA1.HTML",
-      "ESPEC_TEMA2.HTML",
-      "ESPEC_TEMA11.HTML"
+      "ESPEC_TEMA1.html",
+      "ESPEC_TEMA2.html",
+      "ESPEC_TEMA11.html"
     ];
 
     function getRandomQuestion() {
@@ -205,6 +205,11 @@
         <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
         <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
         <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
+      </ul>
+      <h1>PARTE ESPECÍFICA</h1>
+      <ul>
+        <li><a href="ESPEC_TEMA1.html">TEMA 1: Introducción a la Sanidad</a></li>
+        <li><a href="ESPEC_TEMA2.html">TEMA 2: Técnicas y Procedimientos</a></li>
       </ul>
     </div>
 
