@@ -6,74 +6,74 @@
     <title>Formulario de Preguntas</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Arial", sans-serif;
             margin: 0;
-            padding: 0;
-            display: flex;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
         }
         .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 90%;
-            max-width: 600px;
-            overflow-y: auto;
-            max-height: 90vh;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .question {
             margin-bottom: 20px;
             padding: 15px;
-            background-color: #e9f5ff;
             border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
         }
         .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
             display: block;
             margin-bottom: 10px;
-            font-weight: bold;
-            color: #333;
         }
-        .question input[type="radio"] {
-            margin-right: 10px;
+        .options {
+            list-style: none;
+            padding: 0;
         }
-        .question label.option {
+        .option {
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
-            background-color: #f9f9f9;
-            padding: 5px;
-            border-radius: 4px;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
         }
-        .question label.option:hover {
-            background-color: #d0e7ff;
+        .option:hover {
+            background-color: #d9e8ff;
         }
-        .result {
-            margin-left: 10px;
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
             font-weight: bold;
         }
-        .correct::before {
-            content: '✔';
-            color: green;
-            margin-right: 5px;
-        }
-        .incorrect::before {
-            content: '✘';
-            color: red;
-            margin-right: 5px;
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <form id="quizForm">
-            <!-- Aquí se insertarán las preguntas -->
-        </form>
+        <form id="quizForm"></form>
     </div>
-
+    
     <script>
         const questions = [
 		    {
@@ -938,33 +938,34 @@
             label.textContent = q.question;
             questionDiv.appendChild(label);
 
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
             q.options.forEach((option, i) => {
-                const optionLabel = document.createElement('label');
-                optionLabel.classList.add('option');
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
                 const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
                 radio.type = 'radio';
                 radio.name = `question${index}`;
                 radio.value = i;
                 radio.addEventListener('change', () => {
-                    const result = optionLabel.querySelector('.result');
                     if (i === q.correct) {
-                        result.classList.add('correct');
-                        result.classList.remove('incorrect');
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
                     } else {
-                        result.classList.add('incorrect');
-                        result.classList.remove('correct');
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
                     }
                 });
-                optionLabel.appendChild(radio);
-                optionLabel.appendChild(document.createTextNode(option));
 
-                const result = document.createElement('span');
-                result.classList.add('result');
-                optionLabel.appendChild(result);
-
-                questionDiv.appendChild(optionLabel);
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
             });
 
+            questionDiv.appendChild(optionsList);
             form.appendChild(questionDiv);
         });
     </script>
