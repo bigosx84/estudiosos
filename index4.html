@@ -6,23 +6,20 @@
   <title>Acceso a los Tests</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #e9f5ff;
+      font-family: "Arial", sans-serif;
+      background-color: #eef3ff;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      padding: 10px;
+      padding: 20px;
     }
     .container {
-      background-color: #fff;
+      background-color: #e9f5ff;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 800px;
+      text-align: left;
     }
     #testLinks {
       display: none;
@@ -32,12 +29,13 @@
       gap: 10px;
     }
     input, button {
+      min-width: 120px;
+      white-space: nowrap;
       padding: 10px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
-      height: 40px;
     }
     input {
       flex: 1;
@@ -47,30 +45,117 @@
       color: white;
       border: none;
       cursor: pointer;
-      width: 100px;
+      width: 120px;
+    }
+    li:hover {
+      background-color: #b3d4fc;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+      background-color: #b3d4fc;
+      transform: scale(1.02);
     }
     button:hover {
       background-color: #0056b3;
     }
     h1 {
+      margin-bottom: 20px;
       text-align: center;
+      font-size: 22px;
+      background: linear-gradient(135deg, #4a90e2, #0056b3);
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-transform: uppercase;
+    }
+      font-size: 22px;
+      background-color: #4a90e2;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+      font-size: 20px;
     }
     ul {
       list-style: none;
       padding: 0;
+      margin-top: 15px;
+      display: block;
+      gap: 15px;
+    }
+      padding: 0;
+      margin-top: 10px;
+    }
+      padding: 0;
     }
     li {
       text-align: left;
+      background-color: #ffffff;
+      padding: 18px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+      background-color: #ffffff;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s, transform 0.2s;
+      margin-bottom: 15px;
+    }
+      background-color: #ffffff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s, transform 0.2s;
+      margin-bottom: 10px;
+    }
       margin: 10px 0;
     }
     a {
       text-decoration: none;
+      font-size: 18px;
       color: #007BFF;
       font-weight: bold;
       display: block;
+      padding: 10px;
+      transition: color 0.3s;
+    }
+      font-size: 20px;
+      color: #007BFF;
+      font-weight: bold;
+      display: block;
+      padding: 8px;
+      transition: color 0.3s;
+    }
+      font-size: 18px;
+      color: #007BFF;
+      font-weight: bold;
+      display: block;
+      padding: 5px;
+      transition: color 0.3s;
+    }
+      color: #007BFF;
+      font-weight: bold;
+      display: block;
+      font-size: 17px;
+      padding: 8px;
+      border-radius: 5px;
+      transition: background 0.3s;
     }
     a:hover {
+      text-decoration: none;
+      color: #ffffff;
+      background-color: #0056b3;
+      border-radius: 5px;
+      padding: 12px;
+      transition: all 0.3s ease;
+    }
       text-decoration: underline;
+      color: #0056b3;
+    }
+      background-color: #b3d4fc;
     }
   </style>
   <script>
@@ -85,7 +170,6 @@
     async function checkPassword() {
       var password = document.getElementById("password").value;
       var hashedInput = await hashPassword(password);
-
       var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f";
 
       if (hashedInput === correctHash) {
@@ -127,18 +211,16 @@
       <h1>Parte Específica</h1>
       <ul>
         <li><a href="ESPEC_TEMA1.HTML">TEMA 1: Nociones básicas de la Asistencia Sanitaria</a></li>
-        <li><a href="ESPEC_TEMA2.HTML">TEMA 2: El Personal Subalterno: funciones del Celador. Funciones de vigilancia. Actuaciones del Celador con los familiares de los enfermos.</a></li>
-        <li><a href="ESPEC_TEMA3.HTML">TEMA 3: Actuación en las habitaciones de los enfermos y las estancias comunes. Aseo del paciente.</a></li>
-        <li><a href="ESPEC_TEMA4.HTML">TEMA 4: El Celador en su relación con los enfermos. Traslado y movilidad de los mismos. Técnicas de movilización de pacientes. Actuación en la UCI.</a></li>
-        <li><a href="ESPEC_TEMA11.HTML">TEMA 11: La Ley de Igualdad.</a></li>
+        <li><a href="ESPEC_TEMA2.HTML">TEMA 2: El Personal Subalterno y funciones del Celador</a></li>
+        <li><a href="ESPEC_TEMA3.HTML">TEMA 3: Actuación en habitaciones y aseo del paciente</a></li>
+        <li><a href="ESPEC_TEMA4.HTML">TEMA 4: Traslado y movilidad de pacientes</a></li>
+        <li><a href="ESPEC_TEMA11.HTML">TEMA 11: La Ley de Igualdad</a></li>
       </ul>
       <h1>Simulacros</h1>
       <ul>
         <li><a href="simulacro.html">Simulacro aleatorio 70 preguntas</a></li>
-
       </ul>
     </div>
   </div>
 </body>
 </html>
-
