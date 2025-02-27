@@ -47,6 +47,10 @@
     }
     li:hover {
       background-color: #b3d4fc;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+      background-color: #b3d4fc;
       transform: scale(1.02);
     }
     button:hover {
@@ -54,6 +58,14 @@
     }
     h1 {
       text-align: center;
+      font-size: 22px;
+      background: linear-gradient(135deg, #4a90e2, #0056b3);
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-transform: uppercase;
+    }
       font-size: 22px;
       background-color: #4a90e2;
       color: white;
@@ -65,12 +77,24 @@
     ul {
       list-style: none;
       padding: 0;
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+      padding: 0;
       margin-top: 10px;
     }
       padding: 0;
     }
     li {
       text-align: left;
+      background-color: #ffffff;
+      padding: 18px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
       background-color: #ffffff;
       padding: 15px;
       border-radius: 5px;
@@ -89,6 +113,13 @@
     }
     a {
       text-decoration: none;
+      font-size: 18px;
+      color: #007BFF;
+      font-weight: bold;
+      display: block;
+      padding: 10px;
+      transition: color 0.3s;
+    }
       font-size: 20px;
       color: #007BFF;
       font-weight: bold;
@@ -112,6 +143,13 @@
       transition: background 0.3s;
     }
     a:hover {
+      text-decoration: none;
+      color: #ffffff;
+      background-color: #0056b3;
+      border-radius: 5px;
+      padding: 12px;
+      transition: all 0.3s ease;
+    }
       text-decoration: underline;
       color: #0056b3;
     }
