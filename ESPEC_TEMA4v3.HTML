@@ -9,50 +9,61 @@
             font-family: "Arial", sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: #f4f7fc;
             display: flex;
             justify-content: center;
         }
         .container {
             width: 100%;
             max-width: 800px;
-            background-color: #fff;
+            background-color: #ffffff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .question {
             margin-bottom: 20px;
             padding: 15px;
             border-radius: 8px;
-            background-color: #f1f3f5;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
         }
         .question label {
             font-size: 18px;
             font-weight: bold;
+            color: #2c3e50;
             display: block;
             margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
         }
         .option {
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
             font-size: 16px;
-            padding: 5px;
+            padding: 10px;
             border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
         }
         .option input[type="radio"] {
             margin-right: 10px;
         }
-        .option:hover {
-            background-color: #e3f2fd;
-        }
         .correct {
-            color: green;
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
             font-weight: bold;
         }
         .incorrect {
-            color: red;
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
             font-weight: bold;
         }
     </style>
@@ -3918,26 +3929,33 @@
             label.textContent = (index + 1) + ". " + q.question;
             questionDiv.appendChild(label);
 
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
             q.options.forEach((option, i) => {
-                const optionLabel = document.createElement('label');
-                optionLabel.classList.add('option');
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
                 const radio = document.createElement('input');
                 radio.type = 'radio';
                 radio.name = `question${index}`;
                 radio.value = i;
                 radio.addEventListener('change', () => {
                     if (i === q.correct) {
-                        optionLabel.classList.add('correct');
-                        optionLabel.classList.remove('incorrect');
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
                     } else {
-                        optionLabel.classList.add('incorrect');
-                        optionLabel.classList.remove('correct');
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
                     }
                 });
-                optionLabel.appendChild(radio);
-                optionLabel.appendChild(document.createTextNode(option));
-                questionDiv.appendChild(optionLabel);
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
             });
+
+            questionDiv.appendChild(optionsList);
             form.appendChild(questionDiv);
         });
     </script>
