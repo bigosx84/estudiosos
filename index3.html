@@ -6,22 +6,19 @@
   <title>Acceso a los Tests</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #e9f5ff;
+      font-family: "Arial", sans-serif;
+      background-color: #f4f7fc;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      padding: 10px;
+      padding: 20px;
     }
     .container {
-      background-color: #fff;
+      background-color: #ffffff;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 800px;
       text-align: center;
     }
     #testLinks {
@@ -37,7 +34,6 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
-      height: 40px;
     }
     input {
       flex: 1;
@@ -47,35 +43,35 @@
       color: white;
       border: none;
       cursor: pointer;
-      width: 100px;
+      width: 120px;
     }
     button:hover {
       background-color: #0056b3;
     }
     h1 {
       text-align: center;
+      font-size: 20px;
     }
     ul {
       list-style: none;
       padding: 0;
-      text-align: left;
     }
     li {
+      text-align: left;
       margin: 10px 0;
     }
     a {
       text-decoration: none;
       color: #007BFF;
       font-weight: bold;
+      display: block;
+      font-size: 17px;
+      padding: 8px;
+      border-radius: 5px;
+      transition: background 0.3s;
     }
     a:hover {
-      text-decoration: underline;
-    }
-    .question-container {
-      margin-top: 20px;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border-radius: 8px;
+      background-color: #d9e8ff;
     }
   </style>
   <script>
@@ -90,14 +86,11 @@
     async function checkPassword() {
       var password = document.getElementById("password").value;
       var hashedInput = await hashPassword(password);
-
       var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f";
 
       if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
         document.getElementById("testLinks").style.display = "block";
-        loadTestLinks();
-        loadDailyQuestion();
       } else {
         alert("Código incorrecto. Inténtalo de nuevo.");
       }
@@ -111,84 +104,6 @@
         }
       });
     });
-
-    const questionFiles = [
-      'COMUN_TEMA1.html',
-      'COMUN_TEMA2.html',
-      'COMUN_TEMA3.html',
-      'COMUN_TEMA4.html',
-      'ESPEC_TEMA1.HTML',
-      'ESPEC_TEMA2.HTML',
-      'ESPEC_TEMA11.HTML'
-    ];
-
-    function getRandomQuestion() {
-      const randomIndex = Math.floor(Math.random() * questionFiles.length);
-      return questionFiles[randomIndex];
-    }
-
-    function loadTestLinks() {
-      const testLinksContainer = document.getElementById('testLinks');
-      testLinksContainer.innerHTML = '';
-
-      const testList = document.createElement('ul');
-      questionFiles.forEach(file => {
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = `#`;
-        link.textContent = `Ver preguntas desde ${file}`;
-        listItem.appendChild(link);
-        testList.appendChild(listItem);
-      });
-
-      testLinksContainer.appendChild(testList);
-    }
-
-    function loadQuestion(file) {
-      fetch(file)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error al cargar el archivo');
-          }
-          return response.text();
-        })
-        .then(data => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(data, 'text/html');
-          const questionForm = doc.querySelector('#quizForm');
-
-          if (questionForm) {
-            const questionContainer = document.createElement('div');
-            questionContainer.classList.add('question-container');
-            questionContainer.appendChild(questionForm);
-            document.body.appendChild(questionContainer);
-          } else {
-            console.error('No se encontró el formulario de preguntas en el archivo.');
-            document.getElementById('testLinks').innerHTML = '<p>No se pudo encontrar el formulario de preguntas en el archivo.</p>';
-          }
-        })
-        .catch(error => {
-          console.error('Error al cargar la pregunta:', error);
-          document.getElementById('testLinks').innerHTML = '<p>Hubo un error al cargar la pregunta. Inténtalo nuevamente.</p>';
-        });
-    }
-
-    function loadDailyQuestion() {
-      const lastQuestionDate = localStorage.getItem('lastQuestionDate');
-      const today = new Date().toDateString();
-
-      // Si han pasado 24 horas desde la última pregunta, carga una nueva
-      if (lastQuestionDate !== today) {
-        const questionFile = getRandomQuestion();
-        loadQuestion(questionFile);
-        localStorage.setItem('lastQuestionDate', today); // Actualiza la fecha de la última pregunta
-        localStorage.setItem('lastQuestionFile', questionFile); // Guarda el archivo de la pregunta cargada
-      } else {
-        // Si es el mismo día, muestra la pregunta previamente cargada
-        const questionFile = localStorage.getItem('lastQuestionFile');
-        loadQuestion(questionFile);
-      }
-    }
   </script>
 </head>
 <body>
@@ -201,8 +116,26 @@
       </div>
     </div>
 
-    <div id="testLinks" style="display:none">
-      <!-- Aquí se mostrarán los enlaces de los archivos y una pregunta aleatoria -->
+    <div id="testLinks">
+      <h1>Parte Común</h1>
+      <ul>
+        <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
+        <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
+        <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
+        <li><a href="COMUN_TEMA4.html">TEMA 4: La Ley de Salud de Extremadura. Estatuto del SES</a></li>
+      </ul>
+      <h1>Parte Específica</h1>
+      <ul>
+        <li><a href="ESPEC_TEMA1.HTML">TEMA 1: Nociones básicas de la Asistencia Sanitaria</a></li>
+        <li><a href="ESPEC_TEMA2.HTML">TEMA 2: El Personal Subalterno y funciones del Celador</a></li>
+        <li><a href="ESPEC_TEMA3.HTML">TEMA 3: Actuación en habitaciones y aseo del paciente</a></li>
+        <li><a href="ESPEC_TEMA4.HTML">TEMA 4: Traslado y movilidad de pacientes</a></li>
+        <li><a href="ESPEC_TEMA11.HTML">TEMA 11: La Ley de Igualdad</a></li>
+      </ul>
+      <h1>Simulacros</h1>
+      <ul>
+        <li><a href="simulacro.html">Simulacro aleatorio 70 preguntas</a></li>
+      </ul>
     </div>
   </div>
 </body>
