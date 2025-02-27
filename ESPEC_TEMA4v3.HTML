@@ -14,8 +14,8 @@
             justify-content: center;
         }
         .container {
-            width: 100%;
-            max-width: 800px;
+            width: 90%;
+            max-width: 1200px;
             background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
@@ -49,6 +49,7 @@
             border: 1px solid #d1d8e0;
             margin-bottom: 8px;
             transition: background-color 0.3s;
+            width: 100%;
         }
         .option:hover {
             background-color: #d9e8ff;
@@ -3926,7 +3927,7 @@
             questionDiv.classList.add('question');
 
             const label = document.createElement('label');
-            label.textContent = (index + 1) + ". " + q.question;
+            label.textContent = q.question;
             questionDiv.appendChild(label);
 
             const optionsList = document.createElement('ul');
