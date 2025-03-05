@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [
+    {
+        "question": "1. ¿Cuál de las siguientes actuaciones, actividades, técnicas, etc., no está dentro de las prestaciones de la APS?",
+        "options": [
+            "a) Exploraciones Otorrinolaringológicas",
+            "b) Exploraciones Cardiovasculares: electrocardiografía, oscilometría y/o doppler",
+            "c) Tests psicoafectivos y sociales, de morbilidad y de calidad de vida.",
+            "d) Rehabilitación especializada."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "2. ¿Cuál de las siguientes actuaciones, actividades, técnicas, etc, no está dentro de las prestaciones de la APS?",
+        "options": [
+            "a) Cirugía Mayor ambulatoria",
+            "b) Curas y suturas.",
+            "c) Resucitación cardiopulmonar.",
+            "d) Infiltraciones."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "3. ¿Cuál/Cuáles de los siguientes no es/son una prestación/prestaciones de la APS en materia de Actividades de información y vigilancia en la protección de la salud?",
+        "options": [
+            "a) Vigilancia epidemiológica",
+            "b) Valoración de la situación de salud de la comunidad",
+            "c) Participación en el sistema de farmacovigilancia",
+            "d) Vacunación de pacientes infecciosos."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "4. ¿Cuál/Cuáles de los siguientes no es/son una prestación/prestaciones de la APS en materia de prevención, promoción de la salud, atención familiar y atención comunitaria?",
+        "options": [
+            "a) Vacunaciones en todos los grupos de edad",
+            "b) Promoción y educación para la salud",
+            "c) Quimioprofilaxis antibiótica en los contactos con pacientes infecciosos",
+            "d) Todas son propias en materia de prevención, promoción de la salud, atención familiar y atención comunitaria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "5. ¿Dónde se recogen las prestaciones de la Atención Primaria de Salud?",
+        "options": [
+            "a) En el R. D. 1030/2006 de 15 de septiembre, en el Anexo I las prestaciones de la APS y en el Anexo II las Prestaciones de la Atención Especializada.",
+            "b) En el Anexo II del R. D. 1030/2006 de 15 de septiembre.",
+            "c) En el Articulo II del R. D. 1030/2006 de 16 de septiembre.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. Con respecto a la prestación de Rehabilitación básica dentro de las prestaciones de la APS, señale la incorrecta:",
+        "options": [
+            "a) Debe ser por previa indicación médica",
+            "b) Se presta en régimen ambulatorio, pero incluyendo la asistencia domiciliaria si se considera necesaria por circunstancias clínicas o por limitaciones en la accesibilidad.",
+            "c) La Orientación/formación sanitaria al paciente o cuidador/a, en su caso también no forma parte de dicha prestación.",
+            "d) Sólo A y B son correctas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "7. Con respecto a la ZBS, señale la correcta:",
+        "options": [
+            "a) La población total de la zona debe estar siempre entre 5.000 y 25.000 habitantes.",
+            "b) En determinados casos pueden demarcarse zonas de salud de menos de 5.000 o de más de 25.000 habitantes.",
+            "c) El área de salud debe tener entre 5.000 y 25.000 habitantes.",
+            "d) Todas son incorrectas."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "8. Cuál o cuáles de las siguientes son funciones del Centro de Salud:",
+        "options": [
+            "a) El Centro de Salud no tiene funciones, ya que es un espacio físico; en el caso de la APS el que tiene funciones es el EAP.",
+            "b) Servir como centro de reunión entre la comunidad y los profesionales sanitarios.",
+            "c) Mejorar la organización administrativa de la atención de salud en su zona de influencia",
+            "d) B y C son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. Cuando la zona de salud está constituida por varios municipios se fijará un municipio cabecera cuya ubicación no será distante del resto de los municipios utilizando los medios de locomoción habituales de ese momento, un tiempo superior a:",
+        "options": [
+            "a) 1 Hora",
+            "b) 15 minutos",
+            "c) 30 minutos",
+            "d) 50 minutos"
+        ],
+        "correct": 2
+    },
+	    {
+        "question": "10. De las siguientes afirmaciones sobre los Centros de Salud, señale la incorrecta:",
+        "options": [
+            "a) centro de salud es la estructura física y funcional que posibilita el desarrollo de una atención primaria de salud coordinada",
+            "b) En el medio rural podrá existir un consultorio local en cada una de las localidades restantes que constituyan la zona, e igualmente en casco urbano cuando la situación lo requiera.",
+            "c) Todos los centros de salud contaran con la misma dotación de personal, con el fin de limar desigualdades entre zonas.",
+            "d) Todas son correctas"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "11. De los siguientes conceptos, cuál no está regulado por el RD 137/1984 sobre estructuras básicas de salud?",
+        "options": [
+            "a) Área de Salud",
+            "b) Zona de Salud",
+            "c) Centro de Salud",
+            "d) Equipo de Atención Primaria y Coordinador Médico."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "12. De los siguientes, ¿Cuál no se menciona expresamente como miembro del Equipo de Atención Primaria?",
+        "options": [
+            "a) Fisioterapeutas",
+            "b) Médicos Especialistas en Familia",
+            "c) Veterinarios y Farmacéuticos",
+            "d) Odontólogos"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "13. El Decreto 137/1984 regula:",
+        "options": [
+            "a) La Ley de Salud de Extremadura",
+            "b) La Ley de Cohesión y Calidad",
+            "c) Las Estructuras Básicas de Salud",
+            "d) Los derechos y deberes de los ciudadanos con respecto al Sistema Nacional de Salud."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "14. El Decreto que regula la cartera de servicios comunes del Sistema Nacional de Salud es:",
+        "options": [
+            "a) R. D. 1030/2006 de 15 de septiembre",
+            "b) R. D. 1080/2006 de 16 de septiembre",
+            "c) R. D. 55/2003 de 16 de diciembre",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "15. El marco territorial de la Zona de Salud será delimitado por",
+        "options": [
+            "a) El Estado",
+            "b) Las Autoridades Sanitarias",
+            "c) Las Corporaciones Locales",
+            "d) Las Comunidades Autónomas"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "16. En cuanto a la prestación de Atención paliativa a enfermos terminales, y en cuanto a las características de dichos pacientes, es falso que:",
+        "options": [
+            "a) Comprende la atención integral, individualizada y continuada de personas con enfermedad en situación avanzada",
+            "b) Los pacientes deben catalogarse como no susceptibles de recibir tratamientos con finalidad curativa y con una esperanza de vida limitada (en general, inferior a 6 meses)",
+            "c) No incluye las personas a ellos vinculadas.",
+            "d) Todas son Correctas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "17. En cuanto a las prestaciones de la Atención Primaria es incorrecto:",
+        "options": [
+            "a) Que están cubiertas tanto la Atención sanitaria a demanda, programada y urgente tanto en la consulta como en el domicilio del enfermo",
+            "b) Que Los procesos agudos y crónicos más prevalentes se han de atender de forma protocolizada.",
+            "c) Que está incluida la Indicación o prescripción y realización, en su caso, de procedimientos diagnósticos y terapéuticos, como por ejemplo la gammagrafía.",
+            "d) Ninguna es Correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "18. En cuanto al mapa sanitario de Extremadura, señale la incorrecta:",
+        "options": [
+            "a) Extremadura tiene 2 áreas de salud: Badajoz y Cáceres, divididas cada una de ellas en 4 Zonas de Salud, haciendo un total de 8 zonas de salud a nivel regional.",
+            "b) El Área de Salud de Badajoz es una de las 4 áreas de salud de la provincia de Badajoz",
+            "c) Entre las Zonas de Salud de Cáceres y de Badajoz se contabilizan un total de 113 zonas de salud",
+            "d) B y C son verdaderas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "19. Es función del centro de salud ...",
+        "options": [
+            "a) Albergar la estructura física de consultas y servicios asistenciales personales correspondientes a la población en que se ubica.",
+            "b) La asistencia ambulatoria especializada en consultas",
+            "c) La atención de la salud mental y asistencia psiquiátrica",
+            "d) La asistencia ambulatoria especializada en Hospital de día."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "20. Indique cuál de los siguientes criterios no son tenidos en cuenta a la hora de delimitar una Zona de Salud:",
+        "options": [
+            "a) Geográfico",
+            "b) Demográfico",
+            "c) Histórico",
+            "d) Social"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "21. La atención a la infancia dentro de la Atención Primaria, comprende",
+        "options": [
+            "a) La asistencia a los menores de 16 años e información y educación sanitaria a los interesados, vacunaciones y revisión del niño sano",
+            "b) La educación sanitaria y vacunaciones, exclusivamente",
+            "c) La asistencia a los menores de 14 años y revisión del niño sano, exclusivamente.",
+            "d) Todas son incorrectas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "22. Podemos citar como características de la APS:",
+        "options": [
+            "a) Primer eslabón de la cadena de asistencia sanitaria y el más cercano a la población.",
+            "b) Atención a la promoción de la salud, prevención de la enfermedad, tratamiento, curación y rehabilitación.",
+            "c) Sólo atiende al primer nivel de atención, o sea, tan solo a la prevención y promoción de la salud.",
+            "d) A y B son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "23. Según el Real Decreto 137/1984, la jornada de trabajo de los EAP es de",
+        "options": [
+            "a) 35 horas semanales",
+            "b) 40 horas semanales",
+            "c) 42 horas semanales",
+            "d) 40 horas semanales, debiendo responsabilizarse de los turnos de guardias que les correspondan, así como las asistencias domiciliarias necesarias."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "24. Según el R. D. 1030/2006 de 15 de septiembre y dentro de su contenido sobre las prestaciones sanitarias de la APS, en cuanto a la Atención a la salud mental, es cierto que:",
+        "options": [
+            "a) Se realiza en coordinación con los servicios de atención especializada.",
+            "b) Seguimiento de exclusiva por la APS de las personas con trastorno mental grave y prolongado.",
+            "c) Tan solo actúa a nivel de detección de problemas mentales.",
+            "d) Todas son falsas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "25. Según el RD 137/1984, la Jornada Laboral de los miembros del EAP será:",
+        "options": [
+            "a) La dedicación del personal sanitario del EAP será de treinta y cinco horas semanales, haciéndose cargo de la asistencia ambulatoria y domiciliaria, sin perjuicio de la mayor dedicación que pudiera corresponderle por su participación en los turnos para la asistencia continuada de urgencia.",
+            "b) Se establecerán turnos rotativos entre los miembros del Equipo para la asistencia continuada de urgencia, que en general, se centralizarán en el Centro de Salud durante todos los días de la semana.",
+            "c) La atención continuada será Exclusiva del Personal de Refuerzo o Personal de Atención Continuada.",
+            "d) Todas son correctas."
+        ],
+        "correct": 0
+    }
+]
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+
