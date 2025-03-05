@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [
+{
+    question: "1. [C. CAN. SA 2011] AL RECEPCIONAR UNA MERCANCÍA EN EL ALMACÉN DE SUMINISTROS, ¿QUÉ DATOS SE TOMAN PARA EL CONTROL DE PEDIDOS?",
+    options: [
+        "a) Nombre del transportista",
+        "b) Cantidad de bultos",
+        "c) Número de pedido y nombre del proveedor",
+        "d) Contaje de unidades"
+    ],
+    correct: 2
+},
+{
+    question: "2. [C. CAN. SA 2011] EL SERVICIO DE ASCENSORISTA CORRESPONDE AL CELADOR:",
+    options: [
+        "a) Siempre",
+        "b) Cuando sea preciso en función de las necesidades del servicio",
+        "c) Lo hace voluntariamente si se encuentra en el lugar",
+        "d) Nunca"
+    ],
+    correct: 1
+},
+{
+    question: "3. [C. CAN. SA 2011] EL TRANSPORTE DE MATERIAL DE PESO DENTRO DE LA FARMACIA ES FUNCIÓN DE:",
+    options: [
+        "a) El celador de farmacia",
+        "b) El celador de planta",
+        "c) El celador de almacén",
+        "d) El personal sanitario de farmacia"
+    ],
+    correct: 0
+},
+{
+    question: "4. [C. CAN. SA 2011] LA COMPROBACIÓN DE QUE LOS BULTOS SON LOS QUE CONSTAN EN EL ALBARÁN DE ENTREGA SE REALIZARÁ:",
+    options: [
+        "a) En el instante de la petición del material",
+        "b) Al recibir el material",
+        "c) Al realizar el inventario",
+        "d) En el momento de entrega del material a los distintos servicios"
+    ],
+    correct: 1
+},
+{
+    question: "5. [C. CAN. SA 2011] LOS DIAGNÓSTICOS, EXPLORACIONES Y TRATAMIENTO DE LOS ENFERMOS, PUEDEN SER COMENTADOS POR LOS CELADORES CON:",
+    options: [
+        "a) Los familiares de los enfermos",
+        "b) El propio enfermo",
+        "c) No harán comentarios sobre estos extremos",
+        "d) El médico"
+    ],
+    correct: 2
+},
+{
+    question: "6. [S. CANT. SA 2011] ¿CUÁL DE LAS SIGUIENTES ACCIONES NO PERTENECE A LAS ASIGNADAS AL CELADOR RESPECTO A LA ATENCIÓN A FAMILIARES?",
+    options: [
+        "a) Ofrecer información respecto al estado del enfermo",
+        "b) Desalojar a los acompañantes de los pacientes durante la visita médica",
+        "c) Controlar la vigencia y validez de los pases de visitas",
+        "d) Canalizar las quejas y reclamaciones"
+    ],
+    correct: 0
+},
+{
+    question: "7. [S. CANT. SA 2011] ¿CUÁL DE LAS SIGUIENTES FUNCIONES DEBE REALIZAR UN CELADOR?",
+    options: [
+        "a) Ayudar a la sujeción o movilización de los pacientes que lo precisen",
+        "b) Tramitar o conducir los documentos, correspondencia y objetos que les sean confiados por sus superiores. Se incluye mobiliario y aparatos",
+        "c) Darán cuenta a sus superiores de los desperfectos o anomalías en la limpieza y conservación del edificio",
+        "d) Todas son funciones del celador"
+    ],
+    correct: 3
+},
+{
+    question: "8. [S. CANT. SA 2011] ¿CUÁL DE LAS SIGUIENTES NO ES UNA FUNCIÓN PROPIA DE LOS CELADORES?",
+    options: [
+        "a) Servirán de ascensoristas cuando se les asigne especialmente este cometido o las necesidades del servicio lo requieran",
+        "b) Limpiarán la mesa y la sala de autopsias",
+        "c) Vigilarán el comportamiento de los enfermos y visitantes",
+        "d) Informarán a los familiares sobre el tratamiento de los enfermos"
+    ],
+    correct: 3
+},
+{
+    question: "9. [S. CANT. SA 2011] ¿CUÁL NO ES FUNCIÓN DEL CELADOR DE ANIMALARIO?",
+    options: [
+        "a) Alimentación de los animales",
+        "b) Vacunación de los animales",
+        "c) Aseo de los animales",
+        "d) Cuidado de los animales"
+    ],
+    correct: 1
+},
+{
+    question: "10. [S. CANT. SA 2011] ¿PUEDE EL CELADOR DE PUERTA COMENTAR CON UN VISITANTE EL ESTADO DE UN ENFERMO?",
+    options: [
+        "a) Sólo si el visitante es familiar del enfermo",
+        "b) Cuando así se lo haya dicho el Médico",
+        "c) En ningún caso",
+        "d) En ausencia del médico y el profesional de enfermería"
+    ],
+    correct: 2
+},
+{
+    question: "11. [S. CANT. SA 2011] ¿QUIÉN COMPROBARÁ QUE EL PERSONAL DE OFICIO Y SUBALTERNO CUMPLA EL HORARIO ESTABLECIDO?",
+    options: [
+        "a) El encargado de mantenimiento",
+        "b) El responsable de Área en turno de mañana, tarde y noche",
+        "c) La A y la B son correctas",
+        "d) El Jefe de Personal Subalterno"
+    ],
+    correct: 3
+},
+{
+    question: "12. [S. CANT. SA 2011] ¿QUIÉN REALIZA EL ASEO DEL PACIENTE DE MANERA HABITUAL?",
+    options: [
+        "a) Las enfermeras",
+        "b) Los celadores",
+        "c) Las auxiliares de enfermería",
+        "d) Los cuidadores"
+    ],
+    correct: 2
+},
+{
+    question: "13. [S. CANT. SA 2011] CUANDO SE REALIZA UNA AUTOPSIA, LA FUNCIÓN DEL CELADOR ES:",
+    options: [
+        "a) Ayudará al personal sanitario en la utilización del instrumental sobre el cadáver",
+        "b) Limpiará la propia sala y mesa de autopsia",
+        "c) Colaborará en la práctica de la autopsia en aquellas funciones auxiliares que no requieran hacer uso del instrumental sobre el cadáver",
+        "d) La B y la C son correctas"
+    ],
+    correct: 3
+},
+{
+    question: "14. [S. CANT. SA 2011] DENTRO DEL ALMACÉN NO ES FUNCIÓN DE LOS CELADORES:",
+    options: [
+        "a) Comprobación de los vales de suministros o pedidos internos",
+        "b) Notificación de la disminución o agotamiento de productos, a fin de tomar medidas para su reposición",
+        "c) Colocación de los productos almacenables en sus ubicaciones respectivas",
+        "d) Control del gasto del almacén de los diferentes servicios peticionarios"
+    ],
+    correct: 3
+},
+{
+    question: "15. [S. CANT. SA 2011] EL CELADOR PODRÁ CONTRATAR VERBALMENTE LA ADQUISICIÓN DE UN SUMINISTRO HOSPITALARIO:",
+    options: [
+        "a) Cuando se lo pida el médico de guardia de urgencias",
+        "b) Cuando se lo pida el jefe de la unidad al que va dirigido el suministro",
+        "c) Cuando al hacer el inventario detecte el stock agotado de un producto",
+        "d) No podrá contratar en ningún caso"
+    ],
+    correct: 3
+},
+{
+    question: "16. [S. CANT. SA 2011] EN LA EJECUCIÓN DE LA AUTOPSIA, ¿CUÁL DE ESTAS ACTUACIONES ES FUNCIÓN DEL CELADOR?",
+    options: [
+        "a) Dirigir la disección del cadáver",
+        "b) Limpiar el instrumental usado en la autopsia",
+        "c) Colaborar con el personal sanitario en el uso de instrumental sobre el cadáver",
+        "d) Desinfectar, preparar y colocar el instrumental y utilizarlo, cuando así se le requiera"
+    ],
+    correct: 1
+},
+{
+    question: "17. [S. CANT. SA 2011] EN UNA PLANTA DE HOSPITALIZACIÓN LA ENFERMERA LE PIDE AL CELADOR QUE HAGA UN TRASLADO DE UN ENFERMO AL SERVICIO DE AMBULANCIAS. ¿CÓMO ACTUARÁ EL CELADOR?",
+    options: [
+        "a) Esperará al conductor de la ambulancia porque él solo no puede",
+        "b) Llamará al ayudante de la ambulancia ya que es su función",
+        "c) Hará el traslado del enfermo, puesto que la enfermera es buena profesional y a veces ayuda al celador en otras funciones",
+        "d) Realizará el traslado ya que es una función recogida en el Estatuto de Personal no Sanitario"
+    ],
+    correct: 3
+},
+{
+    question: "18. [S. CANT. SA 2011] EN UNA UNIDAD DE PSIQUIATRÍA NO ES UN FUNCIÓN DEL CELADOR:",
+    options: [
+        "a) Avisar a las familias de los pacientes que no quieren asearse para que los aseen",
+        "b) Controlar el acceso y la circulación de las personas por la Unidad",
+        "c) Recoger medicación y otros productos de la Farmacia",
+        "d) Controlar el suministro de tabaco a los pacientes que lo tienen permitido en su tratamiento"
+    ],
+    correct: 0
+},
+{
+    question: "19. [S. CANT. SA 2011] ENTRE LAS FUNCIONES DE ASISTENCIA DE LOS CELADORES NO ESTÁ RECOGIDA:",
+    options: [
+        "a) Ayuda en el aseo de los pacientes hospitalizados",
+        "b) Levantar y sentar a los pacientes que lo precisen",
+        "c) Colocar tablas en las camas de los pacientes ingresados que lo precisen",
+        "d) Informar a los familiares del alta de los enfermos"
+    ],
+    correct: 3
+},
+{
+    question: "20. [S. CANT. SA 2011] ENTRE LAS FUNCIONES DEL JEFE DE PERSONAL SUBALTERNO ESTÁ:",
+    options: [
+        "a) Por delegación del Director de Gestión y Servicios Generales, ejercerá la jefatura del personal de celadores",
+        "b) Ejercerá el debido y discreto control de paquetes y bultos que lleven las personas ajenas a la Institución y que tengan acceso a la misma",
+        "c) Llevarán a cabo aquellas funciones de entidad análogas a las expuestas que le sean ordenadas por el Director de la Institución",
+        "d) Todas las anteriores son correctas"
+    ],
+    correct: 3
+},
+{
+    question: "21. [S. CANT. SA 2011] ENTRE LAS FUNCIONES PROPIAS DE UN CELADOR DE QUIRÓFANO NO ESTÁ CONTEMPLADA:",
+    options: [
+        "a) El transporte de muestras intraoperatorias al servicio de anatomía patológica",
+        "b) Trasladar a los pacientes desde la habitación a las zonas de quirófano",
+        "c) Informar, a los familiares que se lo soliciten, de la duración aproximada de la operación",
+        "d) Transporte de aparatos diagnósticos (Rx, Ecógrafo ... )"
+    ],
+    correct: 2
+},
+{
+    question: "22. [S. CANT. SA 2011] ENTRE LAS TAREAS PROPIAS DEL CELADOR EN ALMACÉN NO FIGURA:",
+    options: [
+        "a) Notificación de la disminución o agotamiento de productos, a fin de tomar medidas para su reposición",
+        "b) Colocación de los productos almacenables en sus ubicaciones respectivas",
+        "c) Entrega de productos no programados, en su caso, o urgentes",
+        "d) Realizar informes mensuales con la valoración económica de los movimientos del almacén"
+    ],
+    correct: 3
+},
+{
+    question: "23. [S. CANT. SA 2011] ES FUNCIÓN DEL CELADOR DE FARMACIA:",
+    options: [
+        "a) Recepción del material",
+        "b) Distribución de la medicación a las Unidades del Hospital",
+        "c) Preparación de alcohol",
+        "d) Todas son correctas"
+    ],
+    correct: 3
+},
+{
+    question: "24. [S. CANT. SA 2011] ES FUNCIÓN DEL CELADOR, EL TRASLADO DE:",
+    options: [
+        "a) El mobiliario",
+        "b) Sueros",
+        "c) Los aparatos",
+        "d) Todas las respuestas son correctas"
+    ],
+    correct: 3
+},
+{
+    question: "25. [S. CANT. SA 2011] HACER LOS SERVICIOS DE GUARDIAS DE CELADORES QUE CORRESPONDAN DENTRO DE LOS TURNOS QUE SE ESTABLEZCAN, SE RECOGE EN EL:",
+    options: [
+        "a) Artículo 14.2.1 del Estatuto Marco del personal estatutario de los servicios de salud",
+        "b) Artículo 14.1 del Estatuto de Personal Subalterno al Servicio de las Instituciones Sanitarias de la Seguridad Social",
+        "c) Artículo 14.2 del Estatuto de Personal no Sanitario al Servicio de las Instituciones Sanitarias de la Seguridad Social",
+        "d) Artículo 14.2 de la Ley General de Sanidad"
+    ],
+    correct: 2
+},
+{
+    question: "26. [S. CANT. SA 2011] LAS FUNCIONES DEL JEFE DE PERSONAL SUBALTERNO ESTÁN RECOGIDAS EN EL:",
+    options: [
+        "a) Artículo 14.3 del Estatuto de Personal Sanitario al Servicio de las Instituciones Sanitarias de la Seguridad Social",
+        "b) Artículo 14.2 de la Ley General de Sanidad",
+        "c) Artículo 14.1 del Estatuto de Personal no Sanitario al Servicio de las Instituciones Sanitarias de la Seguridad Social",
+        "d) Ninguna de las anteriores es correcta"
+    ],
+    correct: 2
+},
+{
+    question: "27. [S. CANT. SA 2011] LOS PEDIDOS DE LAS UNIDADES A LA FARMACIA LOS REALIZA:",
+    options: [
+        "a) El celador de farmacia",
+        "b) El farmacéutico",
+        "c) La supervisora",
+        "d) La auxiliar de enfermería"
+    ],
+    correct: 2
+},
+{
+    question: "28. [S. CANT. SA 2011] NO ES FUNCIÓN DEL CELADOR DE FARMACIA:",
+    options: [
+        "a) El traslado de carros unidosis a las Unidades asistenciales",
+        "b) Preparar los pedidos de sueros y su traslado a las Unidades peticionarias",
+        "c) La distribución individual de la medicación en los carros de unidosis",
+        "d) La custodia de la farmacia"
+    ],
+    correct: 2
+},
+{
+    question: "29. [S. CANT. SA 2011] NO ES FUNCIÓN DEL CELADOR:",
+    options: [
+        "a) Distribuir correspondencia",
+        "b) Realizar recados oficiales dentro y fuera de los centros de trabajo",
+        "c) Cumplimentar documentación",
+        "d) Franquear correspondencia"
+    ],
+    correct: 2
+},
+{
+    question: "30. [S. CANT. SA 2011] NO ES FUNCIÓN PROPIA DEL CELADOR:",
+    options: [
+        "a) Acompañar al personal de Enfermería cuando traslada niños ingresados fuera de las Unidades infantiles",
+        "b) Ayudar al personal de Enfermería cuando tiene que medicar o curar a pacientes que no colaboran (niños, enfermos mentales ... )",
+        "c) Hacer curas de heridas que no requieran radiografías ni suturas",
+        "d) Ayudar a situar a los pacientes en las mesas de exploraciones, de placas radiográficas, etc ..."
+    ],
+    correct: 2
+},
+{
+    question: "31. [S. CANT. SA 2011] POR MOTIVOS DE ORGANIZACIÓN HAY QUE CAMBIAR DOS MESAS ENTRE CONSULTAS, ¿CÓMO ACTUARÁN LOS CELADORES?",
+    options: [
+        "a) Realizarán el cambio lo antes posible",
+        "b) Harán el cambio cuando lo consideren oportuno",
+        "c) No lo harán por no ser su obligación",
+        "d) Excepcionalmente ayudarán a los trabajadores de mantenimiento"
+    ],
+    correct: 0
+},
+{
+    question: "32. [S. CANT. SA 2011] SEGÚN EL ARTÍCULO 14.1.4ª DEL ESTATUTO DE PERSONAL NO SANITARIO AL SERVICIO DE LAS INSTITUCIONES SANITARIAS DE LA SEGURIDAD SOCIAL, ¿QUIÉN VIGILARÁ PERSONALMENTE LA LIMPIEZA DE UN HOSPITAL?",
+    options: [
+        "a) El encargado de la empresa de limpieza",
+        "b) El Jefe de Personal Subalterno",
+        "c) El servicio de vigilancia del hospital",
+        "d) La B y la C son correctas"
+    ],
+    correct: 1
+},
+{
+    question: "33. [S. CANT. SA 2011] UN ACOMPAÑANTE ESTÁ DESCONTENTO CON LA ACTUACIÓN DE UN CELADOR Y DICE QUERER PRESENTAR UNA QUEJA. ¿A DÓNDE LE DIRIGES?",
+    options: [
+        "a) Al Encargado de celadores",
+        "b) Al Jefe de Personal Subalterno",
+        "c) Al Servicio de Admisión",
+        "d) Al servicio de atención al usuario"
+    ],
+    correct: 3
+},
+{
+    question: "34. [S. CANT. SA 2011] UN FAMILIAR DE UN FALLECIDO PIDE AL CELADOR INFORMACIÓN SOBRE LOS TRÁMITES A SEGUIR PARA SU ENTERRAMIENTO. ¿CÓMO ACTUARÁ?",
+    options: [
+        "a) Le dará el pésame y le indicará las funerarias que trabajan en el Hospital",
+        "b) Le indicará que pregunte a la Supervisora de la Unidad",
+        "c) Le pondrá en contacto con el Jefe de Personal Subalterno",
+        "d) Con amabilidad y respeto le informa sobre los trámites necesarios para el enterramiento"
+    ],
+    correct: 2
+},
+{
+    question: "35. [S. AR. SA] DURANTE EL TRASLADO DE UN ENFERMO SE ACABA EL SUERO DEL GOTERO QUE LLEVA PUESTO. EL CELADOR:",
+    options: [
+        "a) Tendrá que cerrar el dispositivo de paso, para que no entre aire",
+        "b) Lo comunicará a su inmediato superior",
+        "c) Lo comunicará al personal sanitario",
+        "d) Sustituirá la botella de suero"
+    ],
+    correct: 2
+},
+{
+    question: "36. [S. AR. SA] EL CELADOR QUE PRESTA SUS SERVICIOS EN URGENCIAS DEBERÁ:",
+    options: [
+        "a) Permitir el acceso sólo a las personas autorizadas para ello",
+        "b) Vigilar periódicamente la presión arterial de los enfermos",
+        "c) Recoger la información necesaria para abrir al enfermo la historia clínica",
+        "d) Coger los datos del paciente"
+    ],
+    correct: 0
+},
+{
+    question: "37. [S. AR. SA] EL FACULTATIVO VA A REALIZAR UNA PUNCIÓN LUMBAR Y LE PIDE AL CELADOR QUE ACUDA PARA AYUDARLO. EL CELADOR:",
+    options: [
+        "a) No acudirá alegando que es función exclusiva del personal sanitario",
+        "b) Sólo ayudará suministrándole el material necesario",
+        "c) Ayudará al facultativo",
+        "d) Ninguna de las respuestas anteriores es correcta"
+    ],
+    correct: 2
+},
+{
+    question: "38. [S. AR. SA] EL MÉDICO DE URGENCIAS NECESITA HACER UN E.C.G. A UN PACIENTE Y PRECISA PARA HACER ESA PRUEBA EL APARATO PORTÁTIL DE ELECTROS QUE CASUALMENTE ESTÁ EN LA PLANTA DE CARDIOLOGÍA DEL HOSPITAL. PIDE A UN CELADOR QUE SE ENCARGUE DEL TRASLADO:",
+    options: [
+        "a) El celador se niega, por ser una misión del personal de mantenimiento",
+        "b) Al ser un aparato muy delicado, debe ser el enfermero del servicio el que se encargue del traslado del aparato de electros",
+        "c) El celador no puede negarse, ya que es una misión específica del celador el traslado de aparatos de un servicio a otro",
+        "d) El traslado de aparatos delicados es misión específica del técnico correspondiente"
+    ],
+    correct: 2
+},
+{
+    question: "39. [S. AR. SA] EL TRASLADO DE LAS COMUNICACIONES VERBALES LAS REALIZARÁ EL CELADOR CUANDO SE LO INDIQUE:",
+    options: [
+        "a) El pinche",
+        "b) El calefactor",
+        "c) La auxiliar de enfermería",
+        "d) Cualquiera de los anteriores"
+    ],
+    correct: 2
+},
+{
+    question: "40. [S. AR. SA] EN CASO DE FALLECIMIENTO DE UN ENFERMO INGRESADO, EL CELADOR:",
+    options: [
+        "a) Traslada el cadáver al mortuorio e informa a la familia",
+        "b) Amortaja el cadáver, y lo traslada al mortuorio",
+        "c) Ayuda a amortajar el cadáver",
+        "d) Ayuda a amortajar, traslada el cadáver e informa a la familia"
+    ],
+    correct: 2
+},
+{
+    question: "41. [S. AR. SA] EN EL ÁREA DE REHABILITACIÓN, EL CELADOR:",
+    options: [
+        "a) Tendrá que tener conocimientos de movilización",
+        "b) Transporta al enfermo en silla si no puede caminar",
+        "c) Ayuda al fisioterapeuta en el movimiento de enfermos",
+        "d) Todas son correctas"
+    ],
+    correct: 3
+},
+{
+    question: "42. [S. AR. SA] EN EL SERVICIO DE QUIRÓFANO LLAMAN A UN CELADOR PARA SUJETAR UNA EXTREMIDAD Y ASÍ PODER PINTARLA:",
+    options: [
+        "a) El celador acudirá a sujetar",
+        "b) El celador acudirá y pintará",
+        "c) No es obligación del celador pintar miembros",
+        "d) Ninguna de las anteriores es correcta"
+    ],
+    correct: 0
+},
+{
+    question: "43. [S. AR. SA] FORMALIZADO UN PEDIDO, LA TAREA MÁS IMPORTANTE QUE REALIZA EL CELADOR DEL MUELLE DE DESCARGA ES:",
+    options: [
+        "a) Recibir las mercancías comprobando el número de bultos que indica el albarán",
+        "b) Colocar los artículos en las estanterías del almacén",
+        "c) Distribuir los pedidos a las plantas y servicios",
+        "d) Todas son correctas"
+    ],
+    correct: 0
+},
+{
+    question: "44. [S. AR. SA] HAY QUE TRASLADAR UNA MESA Y DOS SILLAS DE UNA CONSULTA A OTRA. EN ESTE CASO LOS CELADORES:",
+    options: [
+        "a) Harán el traslado lo antes posible",
+        "b) Harán el traslado cuando crean oportuno",
+        "c) Las respuestas A y B son falsas",
+        "d) No lo harán porque no les corresponde"
+    ],
+    correct: 0
+},
+{
+    question: "45. [S. AR. SA] LA PERIODICIDAD DE LA RECOGIDA DE HISTORIAS CLÍNICAS POR EL CELADOR SERÁ FIJADA POR:",
+    options: [
+        "a) La enfermera de guardia",
+        "b) El médico jefe del hospital",
+        "c) El director del hospital",
+        "d) El jefe del archivo central de historias clínicas"
+    ],
+    correct: 3
+},
+{
+    question: "46. [S. AR. SA] NO ES UNA TAREA DEL CELADOR ENCARGADO DEL ALMACÉN:",
+    options: [
+        "a) Distribuir los productos en las estanterías",
+        "b) Comprobar que los vales de pedido están cumplimentados correctamente",
+        "c) Conformar las facturas con los albaranes",
+        "d) Distribuir los pedidos internos"
+    ],
+    correct: 2
+},
+{
+    question: "47. [S. AR. SA] SE LE INDICA AL CELADOR QUE DEBE ACOMPAÑAR A UN PACIENTE DE URGENCIAS A REALIZARSE E.E.G.; EL CELADOR LO LLEVARÁ AL...",
+    options: [
+        "a) Servicio de Neurofisiología Clínica",
+        "b) Servicio de Rehabilitación",
+        "c) Servicio de Cardiología",
+        "d) Servicio de Radiodiagnóstico"
+    ],
+    correct: 0
+},
+{
+    question: "48. [S. AR. SA] SEGÚN EL ARTÍCULO 14.2.19 DEL ESTATUTO DE PERSONAL NO SANITARIO, ¿A QUÉ AYUDARÁN LOS CELADORES AL PERSONAL DE ENFERMERÍA?",
+    options: [
+        "a) A poner pañales",
+        "b) A colocar los enfermos para hacer una placa de Rx",
+        "c) A hacer las camas",
+        "d) A amortajar a los enfermos fallecidos, para su posterior traslado al mortuorio"
+    ],
+    correct: 3
+},
+{
+    question: "49. [S. AR. SA] SI UN FAMILIAR PIDE A UN CELADOR QUE LE PERMITA VER LA HISTORIA CLÍNICA DE SU PARIENTE ENFERMO:",
+    options: [
+        "a) Atenderá esta petición sin tardanza",
+        "b) Se lo facilitará si es una persona seria",
+        "c) Bajo ningún concepto le dejará verla",
+        "d) Se la cederá si es familiar de 1° Grado"
+    ],
+    correct: 2
+},
+{
+    question: "50. [S. AR. SA] UN ENFERMO VA A SER OPERADO DE URGENCIA Y NO HAY PELUQUERO. ¿A QUIÉN CORRESPONDE RASURARLO?",
+    options: [
+        "a) Si es enfermo masculino, al celador",
+        "b) El celador, no rasura",
+        "c) Indistintamente sea masculino o femenino, al celador",
+        "d) Ninguna es correcta"
+    ],
+    correct: 0
+},
+{
+    question: "51. [S. MUR. SA 2009] CUANDO SE TRASLADA A UN ENFERMO, SÓLO SE ABANDONARÁ A ÉSTE:",
+    options: [
+        "a) Cuando esté en el servicio de destino",
+        "b) Cuando la persona responsable se haga cargo de él",
+        "c) Cuando surja un traslado urgente",
+        "d) Cuando el enfermo preste su conformidad"
+    ],
+    correct: 1
+},
+{
+    question: "52. [SACYL 2008] LA PERSONA QUE HA DE COMPROBAR QUE LOS PAQUETES RECIBIDOS EN EL ALMACÉN SON LOS QUE FIGURAN EN EL ALBARÁN DE ENTREGA ES:",
+    options: [
+        "a) El Director de Gestión y Servicios Generales",
+        "b) El Jefe de Almacén",
+        "c) El Celador",
+        "d) El Controlador de Suministros"
+    ],
+    correct: 2
+},
+{
+    question: "53. [SACYL 2008] DENTRO DE LA ACTUACIÓN O FUNCIONES DE LOS CELADORES EN EL QUIRÓFANO, ¿CUÁL DE LAS SIGUIENTES NO ESTÁ CONTEMPLADA EN LA NORMATIVA?",
+    options: [
+        "a) Trasladar a los pacientes desde sus respectivas habitaciones a las zonas de quirófano",
+        "b) Transportar del almacén los aparatajes y utensilios necesarios en los quirófanos",
+        "c) Ayudar al personal de enfermería en la colocación y retirada del paciente en la mesa de operaciones",
+        "d) El cuidado, conservación y reposición de batas, sabanillas, toallas, etc."
+    ],
+    correct: 3
+},
+{
+    question: "54. [SACYL 2008] DESPUÉS DE REALIZADA UNA AUTOPSIA, LA LIMPIEZA DE LA SALA Y DE LA MESA DE AUTOPSIA CORRESPONDE:",
+    options: [
+        "a) Al celador",
+        "b) La mesa y material al técnico auxiliar de enfermería",
+        "c) La mesa y material al técnico auxiliar de enfermería, y la sala, al celador",
+        "d) La mesa y material al celador, y la sala, al personal de limpieza"
+    ],
+    correct: 0
+},
+{
+    question: "55. [SACYL 2008] EL CELADOR DEBE SABER QUE EL ACCESO A LAS UNIDADES DE HOSPITALIZACIÓN DE LAS PERSONAS VISITANTES:",
+    options: [
+        "a) Es un derecho del paciente",
+        "b) Es un derecho del familiar",
+        "c) Está condicionado a las necesidades asistenciales",
+        "d) Está condicionado a la persona que acceda a la Unidad Hospitalaria"
+    ],
+    correct: 2
+},
+{
+    question: "56. [SACYL 2008] EL TRASLADO Y MOVIMIENTO DE LOS PACIENTES CORRESPONDE:",
+    options: [
+        "a) Al celador del Servicio de Salud de Castilla y León",
+        "b) El traslado, a los celadores, y la movilidad, al celador y al personal sanitario",
+        "c) Al celador en colaboración con otros profesionales",
+        "d) Al personal sanitario"
+    ],
+    correct: 2
+},
+{
+    question: "57. [SACYL 2008] EN RELACIÓN CON LA HISTORIA CLÍNICA, EL CELADOR:",
+    options: [
+        "a) Podrá acceder libremente a ella",
+        "b) Solo podrá acceder a los datos de la Historia Clínica imprescindibles para realizar las funciones que tiene encomendadas",
+        "c) Podrá acceder previa autorización del personal médico",
+        "d) No podrá acceder nunca"
+    ],
+    correct: 1
+},
+{
+    question: "58. [SACYL 2008] LOS CELADORES AYUDARÁN A LA PRÁCTICA DE AUTOPSIAS EN AQUELLAS FUNCIONES AUXILIARES QUE NO REQUIERAN POR SU PARTE:",
+    options: [
+        "a) Hacer uso de elementos de protección, como guantes o mascarilla",
+        "b) Hacer uso de desinfectantes",
+        "c) Hacer uso de material de limpieza",
+        "d) Hacer uso de instrumental alguno sobre el cadáver"
+    ],
+    correct: 3
+},
+{
+    question: "59. [SACYL 2008] NO ES FUNCIÓN DE LOS CELADORES:",
+    options: [
+        "a) Ayudar al personal de enfermería a mover y trasladar a los enfermos encamados para lavarlos y hacer las camas",
+        "b) Amortajar a los enfermos fallecidos",
+        "c) Servir de ascensorista cuando se le asigne especialmente ese cometido",
+        "d) Ayudar a la práctica de autopsias en funciones auxiliares al patólogo"
+    ],
+    correct: 1
+},
+{
+    question: "60. [SACYL 2008] NO ES FUNCIÓN DEL CELADOR:",
+    options: [
+        "a) Recoger y distribuir correspondencia",
+        "b) Realizar recados oficiales dentro y fuera de los centros de trabajo",
+        "c) Cumplimentar documentación",
+        "d) Franquear correspondencia"
+    ],
+    correct: 2
+},
+{
+    question: "61. [SACYL 2008] NO ES FUNCIÓN DEL CELADOR:",
+    options: [
+        "a) La vigilancia, guardia y custodia de todo tipo de dependencias del Centro",
+        "b) Realizar recados oficiales dentro y fuera de los centros de trabajo",
+        "c) Informar y orientar a los enfermos",
+        "d) Realizar el traslado de enseres y mobiliario"
+    ],
+    correct: 2
+},
+{
+    question: "62. [SACYL 2008] NO ES UNA FUNCIÓN PROPIA DEL CELADOR DESTINADO EN EL SERVICIO DE FARMACIA:",
+    options: [
+        "a) El traslado de los carros unidosis de medicación a las distintas Unidades",
+        "b) La distribución individual de la medicación en los carros unidosis",
+        "c) Preparar, previas indicaciones del especialista de farmacia y de acuerdo con las solicitudes de las Unidades, los pedidos de sueros así como su traslado a las distintas Unidades",
+        "d) Todas aquellas funciones de colaboración y apoyo que le sean encomendadas por la supervisora y especialista del Servicio de Farmacia"
+    ],
+    correct: 1
+},
+{
+    question: "63. [SACYL 2008] UN CELADOR DESTINADO EN EL ALMACÉN DE FARMACIA ES REQUERIDO POR UN MÉDICO PARA QUE LE SUMINISTRE UN ANALGÉSICO, ¿CUÁL DEBE SER SU ACTUACIÓN?",
+    options: [
+        "a) Pasará la notificación al farmacéutico responsable",
+        "b) Se lo dará, notificándolo posteriormente al farmacéutico responsable",
+        "c) Se lo negará y avisará al jefe de personal subalterno",
+        "d) Se lo dará, pero se lo comunicará a la Supervisora de guardia"
+    ],
+    correct: 0
+},
+{
+    question: "64. [SACYL 2008] UN PACIENTE HA FALLECIDO. ¿QUIÉN AYUDA A LA ENFERMERA A AMORTAJARLO?",
+    options: [
+        "a) El auxiliar de enfermería",
+        "b) Los familiares",
+        "c) La supervisora",
+        "d) Ninguno de ellos"
+    ],
+    correct: 3
+},
+{
+    question: "65. [SACYL 2011] ¿PUEDE UN CELADOR NEGARSE A APLICAR ENEMAS DE LIMPIEZA A UN PACIENTE MASCULINO, CUANDO SE TRATE DE UN ENFERMO ENCAMADO?",
+    options: [
+        "a) No, si se lo ordena directamente el médico encargado del paciente",
+        "b) Sí, pues dicha función no es propia del celador de acuerdo con el estatuto",
+        "c) Sí, ya que sólo puede aplicar enemas en casos excepcionales en pacientes que no puedan realizarlo por sí mismos",
+        "d) No, si se hace bajo la supervisión de la enfermera responsable o supervisora de planta"
+    ],
+    correct: 1
+},
+{
+    question: "66. [SACYL 2011] ¿CUÁL DE LAS SIGUIENTES FUNCIONES LE CORRESPONDEN AL CELADOR DEL SERVICIO DE FARMACIA?",
+    options: [
+        "a) Excepcionalmente ayudará en la elaboración de preparados, solamente cuando su participación sea de mezcla de componentes previamente supervisados por el farmacéutico y siempre bajo su control",
+        "b) Trasladará los pedidos al servicio que lo solicite",
+        "c) Tendrá a su cargo el control y petición de barbitúricos y estupefacientes",
+        "d) Atenderá con carácter de urgencia la expedición del medicamento por orden del farmacéutico, ante la ausencia del personal autorizado"
+    ],
+    correct: 1
+},
+{
+    question: "67. [SACYL 2011] ¿CUÁL DE LAS SIGUIENTES OPCIONES NO ES CORRECTA?",
+    options: [
+        "a) En el turno de noche, la vigilancia externa del hospital, sólo será llevada a cabo por el vigilante de seguridad y en ningún caso por el celador",
+        "b) La vigilancia de las habitaciones de los enfermos para evitar el mal uso de las camas por parte de los acompañantes, es misión del celador",
+        "c) El celador velará continuamente por conseguir el mayor orden y silencio posible en todas las dependencias de la Institución",
+        "d) El cuidado de que las puertas estén cerradas por la noche, es misión del celador"
+    ],
+    correct: 0
+},
+{
+    question: "68. [SACYL 2011] CUANDO UN PACIENTE FALLECE, EL CELADOR SEGÚN SUS FUNCIONES, DEBE:",
+    options: [
+        "a) Amortajarlo y llevarlo al mortuorio",
+        "b) Amortajarlo y avisar para que lo lleven al mortuorio",
+        "c) Ayudar a amortajarlo y avisar para que lo lleven al mortuorio",
+        "d) Ayudar a amortajarlo y llevarlo al mortuorio"
+    ],
+    correct: 3
+},
+{
+    question: "69. [SACYL 2011] DE LAS SIGUIENTES FUNCIONES QUE DESEMPEÑA EL CELADOR, UNA DE ELLAS NO ES DE CARÁCTER EXCEPCIONAL:",
+    options: [
+        "a) Realizar labores de limpieza",
+        "b) Lavar y asear a los enfermos masculinos encamados o que no puedan realizarlo por sí mismos",
+        "c) Rasurar a los enfermos masculinos",
+        "d) Auxiliar en los quirófanos a los médicos, supervisora o enfermeras"
+    ],
+    correct: 3
+},
+{
+    question: "70. [SACYL 2011] DURANTE UNA INTERVENCIÓN QUIRÚRGICA, NO SE PUEDE PEDIR AL CELADOR:",
+    options: [
+        "a) El traslado al quirófano de aparatos de diagnóstico",
+        "b) El transporte de bolsas de plaquetas desde el Banco de Sangre al quirófano",
+        "c) La sujeción de un miembro que va a ser amputado",
+        "d) El uso del artroscopio para ayudar al traumatólogo mientras éste interviene una rodilla"
+    ],
+    correct: 3
+},
+{
+    question: "71. [SACYL 2011] EL CELADOR AYUDARÁ A LA ENFERMERA Y AUXILIAR DE ENFERMERÍA EN EL MOVIMIENTO DE LOS PACIENTES ENCAMADOS QUE VAN A SER ASEADOS. NO ES UNA ACTUACIÓN CORRECTA:",
+    options: [
+        "a) Explicar al paciente lo que se le va a hacer",
+        "b) Extremar las medidas de respeto a la intimidad del cuerpo",
+        "c) Utilizar los mecanismos que se hayan instalado para preservar la intimidad del paciente (biombos, cortinas, etc.)",
+        "d) Retirar la ropa de la cama y descubrir completamente al paciente para que la práctica del aseo se realice de la forma más cómoda"
+    ],
+    correct: 3
+},
+{
+    question: "72. [SACYL 2011] EL CELADOR DE UN CENTRO SANITARIO DEL SERVICIO DE SALUD DE CASTILLA Y LEÓN ADVIERTE QUE EN LA HABITACIÓN DE UN PACIENTE HAY UN VISITANTE SENTADO EN UNA CAMA DESOCUPADA. CORRESPONDE AL CELADOR:",
+    options: [
+        "a) Comunicar inmediatamente el incidente a la supervisora de la planta",
+        "b) No le dirá nada puesto que es una cama desocupada",
+        "c) Avisará al Servicio de Seguridad para que tome las medidas oportunas",
+        "d) Indicarle amablemente que no está permitido sentarse en las camas de los pacientes"
+    ],
+    correct: 3
+},
+{
+    question: "73. [SACYL 2011] EL CELADOR TRASLADA A UN PACIENTE, JUNTO CON SU HISTORIA CLÍNICA, PARA REALIZARLE UNA PRUEBA DIAGNÓSTICA. EL PACIENTE PIDE AL CELADOR QUE LE DEJE VER SU HISTORIA. ¿CUÁL SERÁ LA ACTITUD CORRECTA DEL CELADOR?",
+    options: [
+        "a) Se la da, puesto que acceder a la historia clínica es un derecho de todo paciente",
+        "b) No se la entregará, no está autorizado para ello",
+        "c) Se la entrega con la condición de que se lo comunique posteriormente a su médico",
+        "d) No le permite acceder a ella; el paciente no tiene derecho a acceder a su historia clínica"
+    ],
+    correct: 1
+},
+{
+    question: "74. [SACYL 2011] EL MÉDICO FORENSE SOLICITA AL CELADOR AYUDA DURANTE UNA AUTOPSIA; LE ENCARGA ASEAR EL CADÁVER, SERRAR EL CRÁNEO Y POSTERIORMENTE LIMPIAR LA SALA DE AUTOPSIAS. ¿QUÉ DEBE HACER EL CELADOR?",
+    options: [
+        "a) Todo menos serrar el cráneo",
+        "b) Todo, incluido serrar el cráneo ya que la sierra no se considera instrumental",
+        "c) Todo menos limpiar la sala, que es misión del personal de limpieza",
+        "d) Ninguna es correcta"
+    ],
+    correct: 0
+},
+{
+    question: "75. [SACYL 2011] EL TRASLADO DE UN PACIENTE DESDE LA HABITACIÓN DE UN HOSPITAL HASTA EL SERVICIO DE AMBULANCIAS, ES FUNCIÓN DE:",
+    options: [
+        "a) El celador",
+        "b) El técnico de transporte sanitario",
+        "c) El auxiliar de ambulancia",
+        "d) El auxiliar de ambulancia en colaboración con el celador"
+    ],
+    correct: 0
+},
+{
+    question: "76. [SACYL 2011] ¿EN QUÉ CIRCUNSTANCIAS EXCEPCIONALES PODRÍA EL CELADOR DESTINADO EN PSIQUIATRÍA ADMINISTRAR MEDICACIÓN A UN PACIENTE?",
+    options: [
+        "a) Cuando se lo ordene un médico",
+        "b) Cuando el paciente deba ser sedado con urgencia, debido a su estado alterado, ante la imposibilidad de ser sedado por el médico",
+        "c) Sólo y exclusivamente bajo la supervisión de la persona responsable o supervisora de planta",
+        "d) Nunca"
+    ],
+    correct: 3
+},
+{
+    question: "77. [SACYL 2011] EN RELACIÓN A LA CAPILLA DEL HOSPITAL, ¿CUÁL DE LAS SIGUIENTES FUNCIONES ES MISIÓN DEL CELADOR?",
+    options: [
+        "a) Realizar los preparativos necesarios para la celebración de la liturgia",
+        "b) La preparación y puesta a punto del sistema de megafonía",
+        "c) Trasladar el mobiliario existente en la misma en caso necesario",
+        "d) El celador no puede desempeñar ninguna función en la capilla"
+    ],
+    correct: 2
+},
+{
+    question: "78. [SACYL 2011] NO ES FUNCIÓN DEL CELADOR DE ALMACÉN:",
+    options: [
+        "a) La recepción cuantitativa y cualitativa de la mercancía",
+        "b) Comprobar que existe albarán",
+        "c) La petición de material a los proveedores",
+        "d) Distribuir los pedidos internos"
+    ],
+    correct: 2
+},
+{
+    question: "79. [SSIIBB 2009] ¿A QUIÉN CORRESPONDE EL TRANSPORTE DE MATERIAL DENTRO DE LA FARMACIA DE UN HOSPITAL?",
+    options: [
+        "a) Al celador",
+        "b) Al auxiliar de farmacia",
+        "c) Al celador encargado de turno",
+        "d) Al personal de enfermería"
+    ],
+    correct: 0
+},
+{
+    question: "80. [SSIIBB 2009] ¿DE QUÉ SE ENCARGAN LOS CELADORES DE UN HOSPITAL DESTINADOS EN LAS OFICINAS?",
+    options: [
+        "a) Principalmente del traslado de documentos y de la correspondencia de unas unidades a otras, tareas que deben llevar a cabo con la mayor diligencia",
+        "b) Del mantenimiento del mobiliario",
+        "c) Del traslado de documentos y de la correspondencia que impliquen salidas al exterior del centro sanitario",
+        "d) Las respuestas A y C son correctas"
+    ],
+    correct: 3
+},
+{
+    question: "81. [SSIIBB 2009] ¿DE QUIÉN ES LA OBLIGACIÓN DE MANTENER UN NÚMERO SUFICIENTE DE SILLAS DE RUEDAS Y DE CAMILLAS EN LA ENTRADA DEL SERVICIO DE URGENCIAS?",
+    options: [
+        "a) Del servicio de mantenimiento",
+        "b) De los celadores de hospitalización",
+        "c) Del jefe de personal subalterno",
+        "d) De los celadores de urgencias"
+    ],
+    correct: 3
+},
+{
+    question: "82. [SSIIBB 2009] ¿QUÉ INSTRUMENTOS DEBEN UTILIZAR LOS CELADORES EN UNA AUTOPSIA?",
+    options: [
+        "a) Solamente los autorizados por el facultativo",
+        "b) Solamente instrumentos no punzantes",
+        "c) El celador no puede usar ningún instrumento",
+        "d) El celador no está presente en las autopsias"
+    ],
+    correct: 2
+},
+{
+    question: "83. [SSIIBB 2009] DE ACUERDO CON EL ESTATUTO DE PERSONAL NO SANITARIO, ¿A QUIÉN CORRESPONDE LA VIGILANCIA NOCTURNA DEL EXTERIOR DEL EDIFICIO?",
+    options: [
+        "a) Al jefe de personal subalterno",
+        "b) Al vigilante de seguridad",
+        "c) Al celador",
+        "d) Todas las respuestas anteriores son correctas"
+    ],
+    correct: 2
+},
+{
+    question: "84. [SSIIBB 2009] DURANTE EL TRASLADO DE UN PACIENTE EN AMBULANCIA, EL CELADOR DE AMBULANCIA...",
+    options: [
+        "a) ... Debe ir sentado en el asiento existente al efecto junto al paciente",
+        "b) ... Debe ir sentado junto al conductor y orientarle, si es necesario, en las maniobras de conducción",
+        "c) ... Puede conducir la ambulancia en caso de necesidad",
+        "d) ... Debe dispensar medicación al paciente en el caso de que se lo solicite el personal de enfermería"
+    ],
+    correct: 0
+},
+{
+    question: "85. [SSIIBB 2009] DURANTE UNA AUTOPSIA, ¿CUÁL ES LA TAREA DEL CELADOR?",
+    options: [
+        "a) Colaborar con el personal sanitario en el uso del instrumental sobre el cadáver",
+        "b) Limpiar el instrumental usado en la autopsia",
+        "c) Desinfectar, preparar y colocar el instrumental y los equipos, y usarlos con el cadáver cuando se le solicite",
+        "d) Colaborar con el médico diseccionando el cadáver"
+    ],
+    correct: 1
+},
+{
+    question: "86. [SSIIBB 2009] EN UN SUPUESTO EN QUE EN LA ZONA DE PRIMER NIVEL DE ATENCIÓN A PACIENTES CRÍTICOS DE URGENCIAS SE VAYA A APLICAR EL DESFIBRILADOR A UN PACIENTE CON UNA PARADA CARDIORRESPIRATORIA, ¿CÓMO DEBE ACTUAR EN ESE MOMENTO EL CELADOR?",
+    options: [
+        "a) Debe sujetar fuertemente el abdomen del paciente",
+        "b) Debe sujetar fuertemente la cabeza del paciente",
+        "c) Debe sujetar fuertemente el tórax del paciente",
+        "d) No debe tocar al enfermo"
+    ],
+    correct: 3
+},
+{
+    question: "87. [SSIIBB 2009] EN UN SUPUESTO EN QUE SE AVISA AL CELADOR DE PLANTA DE QUE HAY QUE TRASLADAR A UN PACIENTE EN AMBULANCIA POR ORDEN MÉDICA Y EL TRASLADO DEBE HACERSE DESDE LA HABITACIÓN DEL PACIENTE HASTA EL HOSPITAL DE REFERENCIA. SEÑALE LA RESPUESTA CORRECTA:",
+    options: [
+        "a) El celador debe negarse a llevar a cabo el traslado, ya que solamente tiene entre sus funciones el traslado de pacientes dentro del recinto sanitario",
+        "b) Al tratarse de un traslado secundario, debe encargarse solamente el conductor de la ambulancia",
+        "c) El encargado de trasladar y acompañar al paciente es el equipo médico",
+        "d) El celador debe trasladar al paciente siguiendo siempre las indicaciones del personal facultativo para hacerlo de la manera más adecuada"
+    ],
+    correct: 3
+},
+{
+    question: "88. [SSIIBB 2009] ESTANDO EN LA UNIDAD DE VIGILANCIA INTENSIVA (U.V.I.), ¿DE QUIÉN PUEDE RECIBIR ÓRDENES UN CELADOR?",
+    options: [
+        "a) De los médicos",
+        "b) De los supervisores",
+        "c) De los enfermeros",
+        "d) Todas las respuestas anteriores son correctas"
+    ],
+    correct: 3
+},
+{
+    question: "89. [SSIIBB 2009] PARA MOVILIZAR Y TRASLADAR A UN PACIENTE ENCAMADO QUE, A CAUSA DE SUS DOLENCIAS, REQUIERA UN TRATO ESPECIAL PARA HACERLE LA CAMA, ¿A QUIÉN DEBEN AYUDAR LOS CELADORES?",
+    options: [
+        "a) A las enfermeras",
+        "b) A las auxiliares de enfermería",
+        "c) A las enfermeras y a las auxiliares de enfermería",
+        "d) Ninguna de las respuestas anteriores es correcta"
+    ],
+    correct: 2
+},
+{
+    question: "90. [SSIIBB 2009] SEGÚN EL ESTATUTO DEL PERSONAL NO SANITARIO, SI UN ENFERMERO PIDE AYUDA A UN CELADOR PARA HACER UNA CURA A UN PACIENTE...",
+    options: [
+        "a) ... El celador puede negarse si no sabe curar y no lo han formado para ello",
+        "b) ... El celador debe hacerlo cumpliendo todas las instrucciones del enfermero",
+        "c) ... El celador debe ayudarle dentro de sus funciones",
+        "d) ... El celador le ayudará, o no, según lo crea conveniente en ese momento"
+    ],
+    correct: 2
+},
+{
+    question: "91. [SSIIBB 2009] SEÑALE LA RESPUESTA CORRECTA EN CUANTO A LAS FUNCIONES DE UN CELADOR DE ALMACÉN:",
+    options: [
+        "a) Hacer el pedido de material fungible del almacén al proveedor",
+        "b) Entregar todo lo almacenado que le sea solicitado mediante un vale firmado debidamente por un superior responsable",
+        "c) Elaborar la memoria trimestral de movimientos del almacén",
+        "d) Todas las respuestas anteriores son correctas"
+    ],
+    correct: 1
+},
+{
+    question: "92. ¿Cuál de las siguientes categorías no es considerada dentro del grupo \"de oficio\"?",
+    options: [
+        "a) Mecánico",
+        "b) Jardinero",
+        "c) Fogoneros",
+        "d) Cocineros"
+    ],
+    correct: 2
+},
+{
+    question: "93. ¿Cuál de las siguientes no es una función excepcional del celador?",
+    options: [
+        "a) Lavar y asear a los enfermos masculinos encamados o que no puedan realizarlo por sí mismos, atendiendo a las indicaciones de las Supervisoras de planta o servicio o personas que las sustituyan legalmente en sus ausencias.",
+        "b) Realizar aquellas labores de limpieza que se les encomiende cuando su realización por el personal femenino no sea idónea o decorosa en orden a la situación, emplazamiento, dificultad de manejo, peso de los objetos o locales a limpiar.",
+        "c) Bañar a los enfermos masculinos cuando no puedan hacerlo por sí mismos, siempre de acuerdo con las instrucciones que reciban de las Supervisoras de plantas o servicios o personas que las sustituyan.",
+        "d) Todas son excepcionales"
+    ],
+    correct: 2
+},
+{
+    question: "94. ¿Cuál de los siguientes no pertenece a la Escala General del Grupo Subalterno?",
+    options: [
+        "a) Pinches",
+        "b) Limpiadoras",
+        "c) Lavanderas",
+        "d) Todas son correctas"
+    ],
+    correct: 3
+},
+{
+    question: "95. ¿Cuál es la función número 2 del celador según el artículo 14.2 de la OM de 5/7/71?",
+    options: [
+        "a) Servir de ascensoristas.",
+        "b) Hacer guardias",
+        "c) Trasladar documentos y objetos.",
+        "d) Vigilar las entradas de la institución."
+    ],
+    correct: 1
+},
+{
+    question: "96. ¿De qué habla la función 12 de los celadores?",
+    options: [
+        "a) Del traslado de enfermos",
+        "b) De la labor de vigilancia del celador.",
+        "c) De la función de ascensoristas",
+        "d) Ninguna es correcta."
+    ],
+    correct: 0
+},
+{
+    question: "97. ¿De qué habla la función 16 de los celadores?",
+    options: [
+        "a) Del rasurado de enfermos.",
+        "b) De las labores del celador en quirófano",
+        "c) De baño de los enfermos.",
+        "d) De la función del celador en autopsias."
+    ],
+    correct: 1
+},
+{
+    question: "98. ¿De qué tiene que encargarse el celador según la función número 8 contenida en el artículo 14.2 de la Orden Ministerial de 5 de julio de 1971?",
+    options: [
+        "a) Velar por conseguir el mayor orden y silencio",
+        "b) Dar cuenta a sus inmediatos superiores de los desperfectos o anomalías que encuentren en la limpieza y conservación del edificio y material.",
+        "c) Ayudar en la colocación y retirada de las cuñas para la recogida de excretas de dichos enfermos.",
+        "d) Ninguna es correcta."
+    ],
+    correct: 0
+},
+{
+    question: "99. La categoría de celador se encuadra en",
+    options: [
+        "a) Escala de personal Subalterno",
+        "b) Escala de servicio, grupo subalterno",
+        "c) Grupo subalterno, escala general.",
+        "d) Personal de servicio, grupo subalterno"
+    ],
+    correct: 2
+},
+{
+    question: "100. Una de las siguientes categorías forma parte del grupo \"de Servicios Especiales\" ¿Cuál?",
+    options: [
+        "a) Telefonistas",
+        "b) Cocineros",
+        "c) Jefes de Personal Subalterno",
+        "d) Limpiadoras"
+    ],
+    correct: 0
+}
+]
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
