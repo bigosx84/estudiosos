@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [
+      {
+        "question": "1. ¿Qué tipo de asistencia ofrece la Atención Especializada que no ofrece la Atención Primaria?",
+        "options": [
+            "a) Ambulatoria.",
+            "b) De internamiento.",
+            "c) De urgencia.",
+            "d) Pediátrica."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. Asume la representación oficial del Hospital (RD 521/87, de 15 de abril):",
+        "options": [
+            "a) El Director Gerente.",
+            "b) El Director Gerente del Servicio de Salud.",
+            "c) El Consejo de Dirección.",
+            "d) El Director Médico."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "3. Con carácter general, el acceso a la asistencia ambulatoria especializada se realizará:",
+        "options": [
+            "a) Por indicación del médico de atención primaria.",
+            "b) Por indicación del médico especialista.",
+            "c) A través de los servicios de urgencia.",
+            "d) Por cualquiera de los medios señalados."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. El acceso a los servicios hospitalarios de referencia se realizará:",
+        "options": [
+            "a) Por indicación del médico de atención primaria.",
+            "b) A través de los servicios de urgencia.",
+            "c) Por indicación de los demás servicios especializados.",
+            "d) Por cualquiera de los anteriores."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "5. El órgano colegiado de dirección del Hospital, integrado por cada uno de los titulares de cada División (RD 521/87, de 15 de abril) es:",
+        "options": [
+            "a) La Comisión de Dirección.",
+            "b) El Consejo de Dirección.",
+            "c) El Consejo de Administración.",
+            "d) La Junta Técnico-Asistencial."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. En la estructura de los Hospitales, las actividades de enfermería en el área de quirófanos están adscritas a:",
+        "options": [
+            "a) La Gerencia.",
+            "b) La División Médica.",
+            "c) Las Divisiones de Gestión y de Enfermería.",
+            "d) La División de Enfermería."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "7. Es un servicio quirúrgico especializado:",
+        "options": [
+            "a) Rehabilitación.",
+            "b) Neurología.",
+            "c) Neurocirugía.",
+            "d) Endocrinología."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "8. La atención sanitaria especializada comprende (Ley 16/2003, de 28 de mayo):",
+        "options": [
+            "a) La atención paliativa a enfermos terminales.",
+            "b) La atención a la salud mental.",
+            "c) La rehabilitación en pacientes con déficit funcional recuperable.",
+            "d) Todas las anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. La Comisión Central de Garantía de la Calidad del Hospital (RD 521/87, de 15 de abril) es:",
+        "options": [
+            "a) Un órgano de asesoramiento de la Dirección Médica.",
+            "b) Un órgano de asesoramiento de la Junta Técnico Asistencial.",
+            "c) Un organismo técnico de elaboración y trabajo en las áreas de calidad asistencial y adecuación tecnológica.",
+            "d) Todas las anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "10. La Comisión de Bienestar Social (RD 521/87, de 15 de abril) es un órgano:",
+        "options": [
+            "a) De participación comunitaria del Hospital.",
+            "b) De asesoramiento del Director Gerente del Hospital.",
+            "c) De la Dirección de Gestión y Servicios Generales.",
+            "d) Ninguna de las opciones anteriores es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "11. La Comisión de Dirección del Hospital se reunirá en sesión ordinaria (RD 521/87, de 15 de abril):",
+        "options": [
+            "a) Diariamente.",
+            "b) Semanalmente.",
+            "c) Mensualmente.",
+            "d) Con la periodicidad que determine el Reglamento de régimen interior."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "12. La hospitalización domiciliaria es desarrollada por personal sanitario:",
+        "options": [
+            "a) De Atención Primaria.",
+            "b) De ámbito hospitalario.",
+            "c) De las Unidades de Rehabilitación.",
+            "d) Ninguna de las opciones anteriores es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "13. Las Instituciones sanitarias que prestan asistencia especializada en régimen de internamiento se denominan:",
+        "options": [
+            "a) Centros de Especialidades.",
+            "b) Consultorios.",
+            "c) Hospitales.",
+            "d) Ambulatorios."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "14. Los Hospitales que, tras el pertinente convenio con la Universidad, quedan acreditados para impartir enseñanza universitaria de pregrado en Medicina y otras Ciencias de la Salud se denominan:",
+        "options": [
+            "a) Hospitales Clínicos.",
+            "b) Hospitales Generales Clínicos.",
+            "c) Hospitales Universitarios.",
+            "d) Facultades de Medicina."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "15. Los responsables de las Unidades asistenciales de la Dirección Médica del Hospital (RD 521/87, de 15 de abril) podrán tener el nivel de:",
+        "options": [
+            "a) Jefe de Servicio, de Sección y de Unidad.",
+            "b) Jefe de Servicio y de Sección.",
+            "c) Jefe de Servicio, de Departamento y de Área.",
+            "d) Jefe de Sector y de Servicio."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "16. No forma parte del contenido de la asistencia hospitalaria:",
+        "options": [
+            "a) Rehabilitación.",
+            "b) Consulta del niño sano.",
+            "c) Nutrición enteral.",
+            "d) Renovación de prótesis."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "17. Siempre que las condiciones del paciente lo permitan, la atención especializada se prestará:",
+        "options": [
+            "a) En consultas externas.",
+            "b) En hospital de día.",
+            "c) En régimen de internamiento.",
+            "d) Son correctas las opciones a y b."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. Un Hospital privado vinculado al sistema público:",
+        "options": [
+            "a) No se someterá al mismo control económico que uno público.",
+            "b) Se someterá al mismo control administrativo que uno público.",
+            "c) Debe establecer una atención sanitaria distinta que uno público.",
+            "d) Puede establecer una atención sanitaria distinta que uno público."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "19. Una de las características actuales de la Atención Especializada es:",
+        "options": [
+            "a) La concentración de competencias.",
+            "b) La centralización de competencias.",
+            "c) La descentralización de competencias.",
+            "d) El Servicio de cita previa."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "20. Una Institución sanitaria cerrada es:",
+        "options": [
+            "a) Un Centro de Especialidades.",
+            "b) Un Ambulatorio.",
+            "c) Un Hospital.",
+            "d) Un Hospital entre las 22 horas y las 8 horas del día siguiente."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "21. De las siguientes funciones enumeradas a continuación, di cual no se desarrolla en los centros hospitalarios:",
+        "options": [
+            "a) prevención de enfermedades",
+            "b) investigación",
+            "c) docencia",
+            "d) todas ellas son correctas"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "22. El Órgano de Gestión del Área de Salud es",
+        "options": [
+            "a) El Gerente del Área de Salud",
+            "b) El Director de Gestión del Área de Salud",
+            "c) El Consejo de Dirección del Área de Salud.",
+            "d) El Consejo de Salud de Área."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "23. La aprobación de la Memoria anual del Área de Salud es una función que corresponde a?",
+        "options": [
+            "a) Gerente de Área",
+            "b) Consejo lnterterritorial",
+            "c) Gerente del Servicio de Salud",
+            "d) Consejo de Dirección del Área"
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "24. Los responsables de la Unidades de Enfermería en los hospitales según la estructura del RD 521/87 de 15 de abril son:",
+        "options": [
+            "a) Los Directores de Enfermería",
+            "b) Los Coordinadores de Enfermería",
+            "c) Los Adjuntos de Enfermería",
+            "d) Los Supervisores de Enfermería."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "25. Los suministros y almacenes del Hospital son competencia de la:",
+        "options": [
+            "a) Dirección Gerencia.",
+            "b) Dirección Administrativa.",
+            "c) Dirección de Gestión y Servicios Generales",
+            "d) Dirección Económica y de Gestión"
+        ],
+        "correct": 2
+    }
+]
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+
