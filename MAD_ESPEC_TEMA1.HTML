@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [
+    {
+        question: "1. ¿Cuando en un sistema de atención a la salud hablamos de Atención Secundaria hacemos referencia:",
+        options: ["a) Al nivel más básico y elemental del sistema.", "b) A un nivel no básico sino especializado.", "c) A un nivel superespecializado del sistema.", "d) Ninguna respuesta es correcta."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "2. Señale la respuesta incorrecta respecto al concepto de Atención Primaria:",
+        options: ["a) Constituye el primer nivel de acceso ordinario de la población al Sistema Sanitario Público, y se caracteriza por prestar atención integral a la salud.", "b) En los servicios de Atención Primaria el usuario halla respuesta a sus problemas más habituales de salud y enfermedad, y sólo cuando el diagnóstico y tratamiento lo requieran y ya no pueda ser atendido con los medios de ese primer nivel, será derivado a la Atención Especializada.", "c) La Atención Primaria se desarrolla al principio de la década de los sesenta, como una reacción en contra del sistema sanitario básicamente hospitalario y curativo, especializado, costoso, tecnificado, y alejado del individuo.", "d) En los servicios de Atención Primaria el usuario halla respuesta a sus problemas más habituales de salud y enfermedad, y sólo cuando el diagnóstico y tratamiento lo requieran y ya no pueda ser atendido con los medios de ese primer nivel, será derivado a la Atención Especializada."],
+        correct: 2 // La respuesta correcta es la "c"
+    },
+    {
+        question: "3. ¿Dónde se realizó la Conferencia Internacional sobre Atención Primaria de Salud en la que se definió en su punto VI lo que debe entenderse por Atención Primaria?",
+        options: ["a) En Boston", "b) En Berlín", "c) En Kiev", "d) En Alma-Ata"],
+        correct: 3 // La respuesta correcta es la "d"
+    },
+    {
+        question: "4. Con carácter general, el acceso a la asistencia ambulatoria especializada se realizará por:",
+        options: ["a) Indicación del médico especialista.", "b) A través de los servicios de urgencia.", "c) Indicación del médico de atención primaria.", "d) Cualquiera de los enumerados anteriormente."],
+        correct: 2 // La respuesta correcta es la "c"
+    },
+    {
+        question: "5. La atención de urgencia en los hospitales se presta, a los pacientes no ingresados que sufran una situación clínica aguda que obligue a una atención inmediata de los servicios del hospital, durante:",
+        options: ["a) De lunes a viernes de 8 a 15 horas", "b) De lunes a viernes de 8 a 22 horas", "c) De lunes a viernes las 24 horas.", "d) Todos los días durante las veinticuatro horas."],
+        correct: 3 // La respuesta correcta es la "d"
+    },
+    {
+        question: "6. Conforme a lo establecido en el artículo 65 de la LGS, los hospitales quedan adscritos a:",
+        options: ["a) Un Distrito Sanitario", "b) Una Zona de Salud.", "c) Un Área de Salud.", "d) Una Demarcación Médica."],
+        correct: 2 // La respuesta correcta es la "c"
+    },
+    {
+        question: "7. Los Servicios jerarquizados de Especialidades que por sus características deban prestar asistencia sanitaria a más de un Área de Salud se denominan:",
+        options: ["a) Servicios de referencia", "b) Servicios comunes", "c) Servicios de área", "d) Servicios base."],
+        correct: 0 // La respuesta correcta es la "a"
+    },
+    {
+        question: "8. Los hospitales tienen como función primordial la de:",
+        options: ["a) Prestación de asistencia especializada.", "b) Promoción de la salud.", "c) Prevención de las enfermedades.", "d) Todas las respuestas son correctas."],
+        correct: 3 // La respuesta correcta es la "d"
+    },
+    {
+        question: "9. ¿Qué es una Zona de Salud (ZS) en Extremadura?",
+        options: ["a) Un área hospitalaria de referencia.", "b) El marco territorial y poblacional donde se presta la atención primaria.", "c) Un centro privado de salud en cada Comunidad.", "d) Un área específica para emergencias sanitarias."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "10. ¿Qué tipo de centros forman parte de la Atención Primaria en Extremadura?",
+        options: ["a) Hospitales y clínicas privadas", "b) Centros de salud, consultorios locales y unidades de apoyo.", "c) Solo los centros de planificación familiar.", "d) Solo hospitales comarcales."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "11. ¿Cuál es el centro de referencia dentro de una Zona de Salud?",
+        options: ["a) El centro de salud.", "b) El hospital más cercano.", "c) Los consultorios locales.", "d) La unidad de urgencias."],
+        correct: 0 // La respuesta correcta es la "a"
+    },
+    {
+        question: "12. ¿Cuál es la función principal de los consultorios locales?",
+        options: ["a) Realizar intervenciones quirúrgicas.", "b) Prestar atención sanitaria sin ser un centro de salud.", "c) Gestionar exclusivamente las emergencias médicas", "d) Supervisar la atención hospitalaria."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "13. ¿Quiénes integran el Equipo de Atención Primaria (EAP)?",
+        options: ["a) Personal sanitario y personal de gestión y servicios.", "b) Solo médicos y enfermeros.", "c) Exclusivamente personal administrativo.", "d) Solo celadores y fisioterapeutas."],
+        correct: 0 // La respuesta correcta es la "a"
+    },
+    {
+        question: "14. ¿Cuál es la misión principal del EAP?",
+        options: ["a) Organizar el transporte sanitario.", "b) Atender las necesidades de salud y resolver las que sean de su competencia.", "c) Coordinar las unidades de urgencias.", "d) Administrar la gestión financiera de los centros."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "15. ¿Qué profesionales forman parte del personal sanitario del EAP?",
+        options: ["a) Solo médicos de familia y pediatras.", "b) Médicos, pediatras, enfermeros, fisioterapeutas y otros especialistas sanitarios.", "c) Exclusivamente veterinarios y farmacéuticos.", "d) Solo médicos de urgencias."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "16. ¿Qué personal de gestión y servicios forma parte del EAP?",
+        options: ["a) Solo administrativos.", "b) Trabajadores sociales, auxiliares administrativos y celadores.", "c) Únicamente celadores.", "d) Solo directivos sanitarios."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "17. ¿Cuál es el método de trabajo dentro del EAP?",
+        options: ["a) Trabajo independiente de cada profesional.", "b) Trabajo en equipo bajo la dirección de la ZS.", "c) Supervisión directa del hospital de referencia.", "d) Evaluación exclusiva de la Gerencia del Área."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "18. ¿Cómo se organizan las actividades en el EAP?",
+        options: ["a) Sin planificación previa.", "b) Siguiendo protocolos basados en la evidencia.", "c) Con decisiones improvisadas.", "d) Según las normas del hospital de referencia."],
+        correct: 1 // La respuesta correcta es la "b"
+    },
+    {
+        question: "19. ¿Qué centros forman parte de las unidades de apoyo?",
+        options: ["a) Centros de planificación familiar, unidades de salud bucodental, unidades de radiología y equipos de conductas adictivas.", "b) Solo centros de urgencias.", "c) Centros de salud privados.", "d) Consultorios rurales."],
+        correct: 0 // La respuesta correcta es la "a"
+    },
+    {
+        question: "20. ¿En qué ciudad se encuentra el Hospital de Campo Arañuelo?",
+        options: ["a) Plasencia", "b) Navalmoral de la Mata", "c) Mérida", "d) Cáceres"],
+        correct: 1 // La respuesta correcta es la "b"
+    }
+	];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
