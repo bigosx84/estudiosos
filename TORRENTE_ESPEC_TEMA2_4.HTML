@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [
+{
+    question: "1. [MD - 2013] ¿Cuál es el objetivo último de todos los miembros del un equipo de salud?",
+    options: [
+        "a) La buena relación entre los miembros del equipo.",
+        "b) La curación de todas las patologías de los pacientes a los que atienden.",
+        "c) La mejora de la salud de la población.",
+        "d) Todas son ciertas."
+    ],
+    correct: 2
+},
+{
+    question: "2. [MD - 2013] El aprendizaje colaborativo se caracteriza por:",
+    options: [
+        "a) La interdependencia positiva entre las personas participantes en un equipo, quienes son responsables tanto de su propia formación como la del equipo en general.",
+        "b) Que en el aprendizaje, los miembros del equipo se pueden comunicar con libertad y se sienten valorados y motivados.",
+        "c) Que cada miembro asume voluntariamente el compromiso de aportar lo mejor de sí mismo.",
+        "d) Que cada persona se fía del buen hacer del resto de sus compañeros."
+    ],
+    correct: 0
+},
+{
+    question: "3. [MD - 2013] Entre los beneficios del funcionamiento en equipos de trabajo se encuentran:",
+    options: [
+        "a) Aumenta la carga de trabajo, ya que exige muchas reuniones.",
+        "b) El trabajo, la reflexión y la discusión conjunta producen mejores resultados que los aportes individuales.",
+        "c) Disminuye la motivación de los profesionales.",
+        "d) Mejora la calidad de los resultados, aunque con menor satisfacción percibida por el paciente y su familia."
+    ],
+    correct: 1
+},
+{
+    question: "4. [MD - 2013] La acción encaminada a impulsar el comportamiento de otras personas en una determinada dirección que se estima conveniente es:",
+    options: [
+        "a) Compromiso",
+        "b) Motivación-incentivación.",
+        "c) Confianza y empatía.",
+        "d) Valoración"
+    ],
+    correct: 1
+},
+{
+    question: "5. [MD - 2013] La complementariedad de un grupo se refiere a:",
+    options: [
+        "a) Que los diferentes miembros deben dominar todas las partes del proyecto que aspiran a realizar.",
+        "b) Que la labor que cada miembro del grupo desempeñe debe ser reconocida y valorada por el resto.",
+        "c) Que el trabajo en equipo exige una comunicación abierta entre todos sus miembros.",
+        "d) Que cada miembro asume voluntariamente el compromiso de aportar lo mejor de sí mismo."
+    ],
+    correct: 0
+},
+{
+    question: "6. [MD - 2013] La valoración en un grupo se refiere a que:",
+    options: [
+        "a) Es importante que entre los miembros del equipo exista una buena relación de trabajo y que cada uno confíe en el trabajo de los demás.",
+        "b) Exista empatía entre sus miembros.",
+        "c) La labor que cada miembro del grupo desempeñe debe ser reconocida y valorada por el resto, ser satisfactoria para él mismo.",
+        "d) Existan suficientes canales de comunicación que permitan a todos los miembros conocer los objetivos generales que guían su trabajo."
+    ],
+    correct: 2
+},
+{
+    question: "7. [MD - 2013] ¿Cuál de las siguientes afirmaciones sobre los grupos multidisciplinares son ciertas?",
+    options: [
+        "a) Normalmente se conoce en profundidad cuál es su funcionamiento.",
+        "b) Las dificultades que suelen aparecer en la mayoría de los casos tienen fácil solución.",
+        "c) Su constitución es rápida y se reserva para aquellas actividades en las que el nivel de complejidad es bajo.",
+        "d) Todas son falsas."
+    ],
+    correct: 3
+},
+{
+    question: "8. [MD - 2013] ¿Qué es el pensamiento de equipo?",
+    options: [
+        "a) Es la necesidad de que los miembros de un equipo piensen de manera similar en la mayor parte de los aspectos de la vida.",
+        "b) Es el proceso por el cual el equipo se reúne a pensar sobre un tema concreto con la finalidad de darle solución a un problema.",
+        "c) Es un proceso que se desarrolla a veces dentro de los equipos de trabajo que les lleva a tener una visión particular, propia, de la realidad.",
+        "d) Es el proceso por el que, tras un tiempo trabajando juntos, la mayor parte del equipo piensa de forma parecida en aspectos en los que anteriormente divergían."
+    ],
+    correct: 2
+},
+{
+    question: "9. [MD - 2013] ¿Qué es la sinergia?",
+    options: [
+        "a) La integración de elementos que da como resultado algo más grande que la simple suma de éstos.",
+        "b) La asociación de individuos que sacan provecho de la vida en común.",
+        "c) Un sistema en el que se concilian doctrinas diferentes.",
+        "d) Ninguna es cierta."
+    ],
+    correct: 0
+},
+{
+    question: "10. [MD - 2013] Con respecto a las jerarquías, es cierto que:",
+    options: [
+        "a) La organización en los grupos de trabajo es muy jerárquica.",
+        "b) En los equipos las jerarquías se diluyen.",
+        "c) En los equipos no es preciso establecer jerarquías.",
+        "d) a y b son correctas."
+    ],
+    correct: 3
+},
+{
+    question: "11. [MD - 2013] El número ideal de participantes en un equipo de salud es:",
+    options: [
+        "a) No existe un número ideal en su composición, pero en general se admite que deben ser grupos reducidos.",
+        "b) La cifra recomendada suele estar en torno a 10, aunque puede variar dependiendo de la función que cumplan.",
+        "c) Alrededor de 20.",
+        "d) a y b son correctas."
+    ],
+    correct: 3
+},
+{
+    question: "12. [MD - 2013] El trabajo en equipo implica:",
+    options: [
+        "a) La reunión de un conjunto de profesionales de características similares.",
+        "b) Un grupo de personas trabajando de manera coordinada en la ejecución de un proyecto, de cuyo resultado final es responsable todo el equipo a pesar de que cada uno desarrolle tareas diferentes.",
+        "c) La asociación de un grupo de profesionales de la misma categoría que trabaja en un mismo espacio físico.",
+        "d) b y c son ciertas."
+    ],
+    correct: 1
+},
+{
+    question: "13. [MD - 2013] La autoevaluación de un equipo sirve para:",
+    options: [
+        "a) Remarcar lo negativo del equipo.",
+        "b) Aumentar la eficacia del equipo.",
+        "c) Comprobar lo que se hace bien, sin sacar a luz lo negativo para que los integrantes del equipo no se sientan molestos.",
+        "d) Que el superior del equipo reprenda públicamente a quien no ha hecho bien su trabajo."
+    ],
+    correct: 1
+},
+{
+    question: "14. [MD - 2013] La dilución de responsabilidades en un equipo de trabajo se refiere a que:",
+    options: [
+        "a) Al tender a tomar las decisiones de forma colegiada, puede ocurrir que una respuesta necesaria se demore en el tiempo.",
+        "b) Si la responsabilidad cae sobre todo el grupo, puede ocurrir que determinadas actividades asistenciales no se realicen convenientemente y no se sepa exactamente quién es el responsable.",
+        "c) El individualismo o la falta de visión de conjunto de uno de los miembros puede afectar al trabajo de todos ellos.",
+        "d) b y c son ciertas."
+    ],
+    correct: 1
+},
+{
+    question: "15. [MD - 2013] Las actividades que no precisan hacerse en equipo y pueden ser llevadas a cabo de forma autónoma, se caracterizan por:",
+    options: [
+        "a) Tener considerable complejidad.",
+        "b) Poder realizarse de forma autónoma por un solo profesional.",
+        "c) Ser tareas poco importantes.",
+        "d) Todas son ciertas."
+    ],
+    correct: 1
+},
+{
+    question: "16. [MD - 2013] Los objetivos de un equipo deben ser:",
+    options: [
+        "a) Realistas.",
+        "b) Alcanzables.",
+        "c) Conocidos por todos.",
+        "d) Todas son ciertas."
+    ],
+    correct: 3
+},
+{
+    question: "17. [MD - 2013] Respecto a los roles disfuncionales, es falso que:",
+    options: [
+        "a) El crítico es una persona destructiva, todo le parece mal pero no aporta soluciones.",
+        "b) El pícaro se aprovecha de manera sutil del resto de los compañeros. Su aportación al equipo es nula y suele terminar deteriorando el ambiente de trabajo.",
+        "c) El negativo tiene una visión negativa y tortuosa de todo lo que le rodea. No le parece bien lo que se hace pero tampoco considera que se pueda hacer otra cosa.",
+        "d) El genio es el que siempre está dispuesto a probar cosas nuevas que suelen ser poco permanentes."
+    ],
+    correct: 3
+},
+{
+    question: "18. [MD - 2013] Respecto a los roles y responsabilidades de los integrantes de un equipo, es cierto que:",
+    options: [
+        "a) Sólo los superiores deben conocer los roles de cada miembro del equipo.",
+        "b) Las responsabilidades no se derivan de los roles de cada integrante.",
+        "c) Cada integrante debe ser consciente de sus habilidades, comprendiendo qué se espera de él.",
+        "d) Todas son ciertas."
+    ],
+    correct: 2
+},
+{
+    question: "19. [MD - 2013] Todas las siguientes, excepto una, son etapas por las que se pasa en la puesta en marcha de un equipo de trabajo, señala cuál:",
+    options: [
+        "a) Inicio.",
+        "b) Acoplamiento.",
+        "c) Abandono del líder.",
+        "d) Primeras dificultades."
+    ],
+    correct: 2
+},
+{
+    question: "20. [MD - 2013] ¿Cuáles de las siguientes son características que debe reunir un líder?",
+    options: [
+        "a) Decisión, iniciativa y responsabilidad.",
+        "b) Integridad moral y aptitud para el trato.",
+        "c) Actividad, vigor físico y capacidad de trabajo.",
+        "d) Todas son ciertas."
+    ],
+    correct: 3
+},
+{
+    question: "21. [MD - 2013] ¿Cuál de los siguientes es un rol funcional de mantenimiento?",
+    options: [
+        "a) El activador.",
+        "b) El intelectual.",
+        "c) El gracioso.",
+        "d) El colaborador."
+    ],
+    correct: 2
+},
+{
+    question: "22. [MD - 2013] ¿Qué caracteriza a los roles funcionales de producción?",
+    options: [
+        "a) Son todos aquellos comportamientos que contribuyen al desarrollo del grupo y a la productividad.",
+        "b) Son aquellos comportamientos orientados a la satisfacción de los intereses individuales y suelen expresar las dificultades por las que pasa el equipo.",
+        "c) Son aquellos comportamientos que contribuyen a que el grupo continúe unido mediante la creación de una atmósfera agradable para los miembros.",
+        "d) Pueden llamarse también roles funcionales de mantenimiento."
+    ],
+    correct: 0
+}
+]
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
