@@ -10,7 +10,9 @@
       background-color: #eef3ff;
       display: flex;
       justify-content: center;
-      padding: 20px;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
     .container {
       background-color: #e9f5ff;
@@ -19,15 +21,17 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       width: 90%;
       max-width: 800px;
-      text-align: left;
+      text-align: center;
     }
     .input-group {
       display: flex;
+      justify-content: center;
       gap: 10px;
+      margin-top: 20px;
     }
     input, button {
-      min-width: 120px;
-      padding: 10px;
+      min-width: 150px;
+      padding: 12px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -111,6 +115,7 @@
 <body>
   <div class="container">
     <div id="unlockSection">
+      <h1>Acceso a los Tests</h1>
       <p>Introduce el código para acceder:</p>
       <div class="input-group">
         <input type="password" id="password">
@@ -149,4 +154,5 @@
   </div>
 </body>
 </html>
+
 
