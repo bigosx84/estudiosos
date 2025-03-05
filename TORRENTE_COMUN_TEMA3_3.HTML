@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [   
+   {
+        "question": "1. [SAS - 2009] La renuncia a la condición de personal estatutario, en los casos en que no exista un expediente disciplinario abierto, deberá ser solicitada por el interesado con una antelación mínima a su efectividad de:",
+        "options": [
+            "a) En cualquier momento",
+            "b) 15 días",
+            "c) Tiene carácter voluntario y no está sometida a preaviso",
+            "d) Un mes"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. [SAS - 2009] Según el art. 21 del estatuto marco, cuál de los siguientes no es un motivo para perder la condición de personal estatutario:",
+        "options": [
+            "a) La renuncia",
+            "b) La liberación sindical",
+            "c) La jubilación",
+            "d) La sanción disciplinaria firme de separación del servicio"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "3. [SAS - 2009] Entre los siguientes derechos individuales que le reconoce el estatuto marco al personal estatutario cuál de ellos no tiene tal carácter:",
+        "options": [
+            "a) La estabilidad en el empleo",
+            "b) El respeto a la dignidad e intimidad personal en el trabajo",
+            "c) La formación continuada adecuada a la función desempeñada",
+            "d) La inamovilidad del puesto de trabajo"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "4. [SAS - 2009] Entre las siguientes respuestas señale cuál de ellas no se refiere a un derecho colectivo:",
+        "options": [
+            "a) La libre sindicación",
+            "b) La huelga",
+            "c) Disponer de servicios de prevención",
+            "d) Todas las respuestas anteriores son derechos colectivos"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "5. [SAS - 2009 - SPA] Según el estatuto marco del personal estatutario de los servicios de salud, el personal no sanitario pasa a denominarse:",
+        "options": [
+            "a) Personal Estatutario de Gestión y Servicios",
+            "b) Personal subalterno",
+            "c) Personal de Servicios Especiales",
+            "d) Personal de servicios"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. [SAS - 2009 - SPA] Al incorporarse al almacén, y para mejorar en su profesión, reclama una formación continua y adecuada basándose en que:",
+        "options": [
+            "a) La formación es un derecho y un deber del trabajador",
+            "b) La formación es recomendable",
+            "c) No ha recibido formación alguna desde que se incorporó al hospital",
+            "d) Porque es algo que así viene recogido en la Constitución"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "7. [SAS - 2009 - SPA] El derecho a la formación continuada, se encuentra dentro de los derechos que el estatuto marco denomina:",
+        "options": [
+            "a) Derechos colectivos",
+            "b) Derechos individuales",
+            "c) Derechos genéricos",
+            "d) Derechos específicos"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "8. [SAS - 2009 - SPB] Cuando el estatuto marco señala que el profesional, entre los derechos individuales, tiene derecho al descanso necesario, se está refiriendo a que se debe garantizar:",
+        "options": [
+            "a) La limitación de la jornada",
+            "b) Las vacaciones periódicas retribuidas",
+            "c) Los permisos reglamentarios",
+            "d) Todas son correctas"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. [SAS - 2009 - SPB] No es un derecho colectivo del personal estatutario recogido en el estatuto marco:",
+        "options": [
+            "a) La libre sindicación",
+            "b) La actividad sindical",
+            "c) La libertad de expresión",
+            "d) Disponer de servicios de prevención"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "10. [SAS - 2009 - SPB] [Modificada 2024] Un celador trabaja ocasionalmente en el hospital pero aún no tiene la plaza en propiedad. En la actualidad tiene un nombramiento de cuatro meses de duración de los cuales ya han transcurrido dos. Según el tipo y duración de su nombramiento, es:",
+        "options": [
+            "a) Personal estatutario",
+            "b) Personal estatutario interino",
+            "c) Personal de gestión y servicios",
+            "d) Personal estatutario eventual"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "11. [SAS - 2009 - SPB] De acuerdo con el título exigido para su ingreso, los celadores pertenecen al:",
+        "options": [
+            "a) Personal de formación profesional",
+            "b) Personal de servicios",
+            "c) Personal de hostelería y servicios",
+            "d) Otro personal"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "12. [SAS - 2009 - SPB] El derecho a la formación continuada, se encuentra dentro de los derechos que el estatuto marco denomina:",
+        "options": [
+            "a) Derechos colectivos",
+            "b) Derechos individuales",
+            "c) Derechos genéricos",
+            "d) Derechos específicos"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "13. [SESCAM - 2010 - TM] Según el estatuto marco, ¿cuál de las siguientes afirmaciones no constituye un derecho del personal estatutario?",
+        "options": [
+            "a) A la formación continuada adecuada a la función desempeñada ...",
+            "b) A mantener debidamente actualizados los conocimientos y aptitudes necesarios para el correcto ejercicio de la profesión ...",
+            "c) A recibir protección eficaz en materia de seguridad y salud en el trabajo ...",
+            "d) A la jubilación en los términos y condiciones establecidas en las normas en cada caso aplicables"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "14. [SESCAM - 2010 - TM] [Modificada 2024] Los nombramientos de personal estatutario temporal podrán ser:",
+        "options": [
+            "a) De interinidad y de carácter eventual",
+            "b) Sólo de interinidad",
+            "c) De interinidad, de carácter eventual o de sustitución",
+            "d) De carácter eventual o de sustitución"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "15. [SESCAM - 2010 - TM] De acuerdo con lo establecido en el estatuto marco, no es un derecho del personal estatutario:",
+        "options": [
+            "a) La percepción puntual de las retribuciones e indemnizaciones por razón del servicio",
+            "b) La estabilidad en el empleo",
+            "c) La formación continuada adecuada a la función desempeñada",
+            "d) Ser identificados por su nombre y categoría profesional por los usuarios del Sistema Nacional de Salud"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "16. [SESCAM - 2010 - TM] La pena de inhabilitación especial para la correspondiente profesión supondrá la pérdida de la condición de personal estatutario fijo, cuando dicha pena exceda de:",
+        "options": [
+            "a) 3 años",
+            "b) 5 años",
+            "c) 6 años",
+            "d) 5 años y 1 día"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "17. [SESCAM - 2010 - TM] La renuncia a la condición de personal estatutario de los servicios de salud tiene carácter de:",
+        "options": [
+            "a) Acto irrenunciable que no podrá ser solicitada por el interesado",
+            "b) Acto voluntario que deberá ser solicitado por el interesado con una antelación mínima de 15 días a la fecha en que se desee hacer efectiva",
+            "c) Acto voluntario que deberá ser solicitado por el interesado con una antelación mínima de 20 días a la fecha en que se desee hacer efectiva",
+            "d) Acto involuntario que deberá ser solicitado por un representante del interesado con antelación mínima de 10 días"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "18. [SESCAM - 2010 - TM] ¿Cómo define la relación estatutaria el estatuto marco?",
+        "options": [
+            "a) Una relación administrativa",
+            "b) Una relación social",
+            "c) Una relación laboral",
+            "d) Una relación funcionarial especial"
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "19. [SAS - 2009] [Modificada 2024] La Ley 55/2003 del estatuto marco de personal estatutario de los servicios de salud, en su capítulo II, clasifica al personal:",
+        "options": [
+            "a) Personal Estatutario Sanitario, Personal No Sanitario, Personal Fijo y Personal Contratado",
+            "b) Personal Estatutario Sanitario, Personal Estatutario de Gestión y Servicios, Personal Estatutario Fijo, Interino y Sustituto.",
+            "c) Médicos, Enfermeras, Administrativos y Celadores-Conductores",
+            "d) Estatutario Sanitario Médico, Estatutario Sanitario Enfermero y Estatutario No Sanitario"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "20. [SAS - 2009] [Modificada 2024] El personal estatutario con nombramiento de carácter interino, se denomina:",
+        "options": [
+            "a) Personal Estatutario Fijo discontinuo",
+            "b) Personal Estatutario de gestión y servicios",
+            "c) Personal Estatutario Temporal",
+            "d) Personal Estatutario Sanitario"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "21. [SAS - 2009] Según el art. 17, del estatuto marco, el personal estatutario de los servicios de salud, tiene derecho a:",
+        "options": [
+            "a) Cumplir el régimen sobre visitas",
+            "b) Mantener la confidencialidad de la información",
+            "c) Cumplir las instrucciones de sus superiores jerárquicos",
+            "d) Al descanso necesario, mediante la limitación de la jornada, las vacaciones periódicas retribuidas y permisos en los términos que se establezcan"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "22. [SAS - 2009] Entre las siguientes causas de extinción de la condición de personal estatutario fijo, señale aquella en la que se puede recuperar la condición anterior:",
+        "options": [
+            "a) La incapacidad permanente",
+            "b) La renuncia",
+            "c) La sanción firme de separación del servicio",
+            "d) La jubilación"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "23. [SESCAM - 2010 - TM] Se acreditará para prolongar su permanencia en servicio activo hasta cumplir, como máximo, los 70 años de edad:",
+        "options": [
+            "a) La motivación profesional necesaria",
+            "b) La facultad profesional necesaria",
+            "c) La certificación profesional necesaria",
+            "d) La capacidad funcional necesaria"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "24. [SESCAM - 2010 - TM] ¿De qué fecha es la ley del estatuto marco del personal estatutario de los servicios de salud?",
+        "options": [
+            "a) 16 de diciembre de 2001",
+            "b) 26 de diciembre de 2001",
+            "c) 16 de diciembre de 2003",
+            "d) 26 de diciembre de 2003"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "25. [SESCAM - 2010 - TM] No es causa de la extinción de la condición de personal estatutario fijo:",
+        "options": [
+            "a) La renuncia",
+            "b) La incapacidad total transitoria",
+            "c) La sanción disciplinaria firme de separación del servicio",
+            "d) La jubilación"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "26. [SESCAM - 2010 - TM] Según el estatuto marco, la jubilación forzosa, ¿a qué edad se declarará?",
+        "options": [
+            "a) Al cumplir los 65 años",
+            "b) Al cumplir los 67 años",
+            "c) Al cumplir los 70 años",
+            "d) Al cumplir los 60 años"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "27. [SACYL - 2006] La falta de incorporación al servicio, institución o centro dentro del plazo, cuando sea imputable al interesado o no obedezca a causas justificadas producirá:",
+        "options": [
+            "a) El decaimiento de su derecho a obtener la condición de personal estatutario fijo como consecuencia de ese concreto proceso selectivo",
+            "b) La excedencia forzosa",
+            "c) El que se dejen sin efecto las actuaciones realizadas",
+            "d) La suspensión provisional del derecho a obtener la condición de personal estatutario fijo como consecuencia de ese concreto proceso selectivo"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "28. [SESCAM - 2010 - TT] El personal estatutario sanitario con formación universitaria se clasifica en:",
+        "options": [
+            "a) Licenciados sanitarios y diplomados sanitarios",
+            "b) Licenciados sanitarios, Licenciados con título de Especialista en Ciencias de la Salud y Diplomados sanitarios",
+            "c) Licenciados sanitarios, Licenciados con título de Especialista en Ciencias de la Salud, Diplomados con título de Especialista en Ciencias de la Salud y Diplomados sanitarios",
+            "d) Licenciados con título de Especialista en Ciencias de la Salud y Diplomados con título de Especialista en Ciencias de la Salud"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "29. [SESCAM - 2010 - TT] De conformidad con lo establecido en el artículo 22 del estatuto marco, la renuncia a la condición de personal estatutario:",
+        "options": [
+            "a) Tiene carácter voluntario y deberá ser solicitada por el interesado con una antelación mínima de 15 días a la fecha en que se desee hacer efectiva",
+            "b) Tiene carácter obligatorio y deberá ser solicitada por el interesado con una antelación máxima de 15 días a la fecha en que se desee hacer efectiva",
+            "c) Tiene carácter voluntario y no deberá ser solicitada por el interesado",
+            "d) No se puede renunciar a la condición de personal estatutario"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "30. [SESCAM - 2010 - TT] ¿Cuándo le será aplicable el régimen general del personal estatutario fijo al personal estatutario temporal?",
+        "options": [
+            "a) En los contratos cuya duración sea superior a un año",
+            "b) Nunca",
+            "c) En cuanto sea adecuado a la naturaleza de su condición",
+            "d) Siempre"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "31. [SESCAM - 2010 - TT] [Modificada 2024] Según el artículo 9 bis del Estatuto Marco, ¿por cuál de las siguientes causas cesará el personal sustituto?",
+        "options": [
+            "a) Por la finalización del plazo establecido y recogido expresamente en el nombramiento.",
+            "b) Por la finalización de la causa que originó el nombramiento.",
+            "c) Las opciones A) y B) son correctas.",
+            "d) Cuando la persona a la que sustituya pierda su derecho a la reincorporación a la misma plaza o función."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "32. [SESCAM - 2010 - TT] El personal estatutario no tiene el siguiente derecho individual:",
+        "options": [
+            "a) A que sea respetada su dignidad e intimidad personal",
+            "b) A ejercer la profesión con lealtad y eficacia",
+            "c) A la movilidad voluntaria, promoción interna y desarrollo profesional",
+            "d) Al descanso necesario, vacaciones y permisos"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "33. [SESCAM - 2010 - TT] ¿Cuál de los siguientes deberes del personal estatutario es falso?",
+        "options": [
+            "a) Ser identificado por su nombre y categoría profesional",
+            "b) Prestar colaboración profesional cuando así sea requerido",
+            "c) Mantener la debida reserva y confidencialidad",
+            "d) Al encuadramiento en el régimen de la seguridad social"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "34. [SESCAM - 2010 - TT] Según el estatuto marco, ¿cuál de las siguientes afirmaciones no constituye un derecho del personal estatutario?",
+        "options": [
+            "a) A la formación continuada adecuada a la función desempeñada ...",
+            "b) A mantener debidamente actualizados los conocimientos y aptitudes necesarios para el correcto ejercicio de la profesión ...",
+            "c) A recibir protección eficaz en materia de seguridad y salud en el trabajo ...",
+            "d) A la jubilación en los términos y condiciones establecidas en las normas en cada caso aplicables"
+        ],
+        "correct": 1
+    },
+	    {
+        "question": "35. [SACYL - 2006] ¿Cuántos estatutos de personal preconstitucional ha derogado el estatuto marco?",
+        "options": [
+            "a) Ninguno",
+            "b) Dos",
+            "c) Tres",
+            "d) Uno"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "36. [SERMAS - 2006] El estatuto marco del personal estatutario de los servicios de salud es aplicable:",
+        "options": [
+            "a) Exclusivamente al personal sanitario funcionario y al personal sanitario laboral que preste servicios en los Centros del Sistema Nacional de Salud",
+            "b) Al personal estatutario que desempeña su función en los Centros e Instituciones Sanitarias de los Servicios de Salud de las Comunidades Autónomas",
+            "c) Al personal estatutario que desempeña su función en los Centros e Instituciones Sanitarias de los Servicios Sanitarios de la Administración General del Estado",
+            "d) Al personal estatutario que desempeña su función en los Centros e Instituciones Sanitarias de los Servicios de Salud de las Comunidades Autónomas o en los Centros y Servicios Sanitarios de la Administración General del Estado"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "37. [SERGAS - 2009] ¿Cuándo cesará obligatoriamente el personal estatutario interino?",
+        "options": [
+            "a) Cuando se incorpore personal fijo",
+            "b) Cuando la plaza resulte amortizada",
+            "c) Cuando se supriman las funciones que motivaron su nombramiento",
+            "d) Las respuestas A) y B) son correctas"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "38. [SERMAS - 2006] El artículo 5 del estatuto marco indica que el personal estatutario de los servicios de salud se clasifica en:",
+        "options": [
+            "a) En personal sanitario y personal de gestión y servicios",
+            "b) En personal fijo y personal temporal",
+            "c) En personal universitario, personal con formación profesional y otro tipo de personal",
+            "d) Atendiendo a la función desarrollada, al nivel del título exigido para el ingreso y al tipo de su nombramiento"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "39. [SACYL - 2008] El personal estatutario, atendiendo a la función desarrollada, se clasifica en:",
+        "options": [
+            "a) Personal estatutario sanitario y personal estatutario no sanitario",
+            "b) Personal estatutario sanitario facultativo y personal estatutario sanitario no facultativo",
+            "c) Personal estatutario facultativo y personal de gestión y servicios",
+            "d) Personal estatutario sanitario y personal estatutario de gestión y servicios"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "40. [IB-SASLUD - 2009] El Capítulo V del estatuto marco del personal estatutario de los servicios de salud establece como causa o causas de la extinción de la condición de personal estatutario fijo:",
+        "options": [
+            "a) La sanción firme de suspensión de funciones",
+            "b) La jubilación",
+            "c) Excedencia voluntaria",
+            "d) Todas las respuestas son correctas"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "41. [IB-SASLUD - 2009] ¿A quién es aplicable el estatuto marco del personal estatutario de los servicios de salud?",
+        "options": [
+            "a) Exclusivamente al personal sanitario funcionario y al personal sanitario laboral que presta servicios en los centros del Sistema Nacional de Salud",
+            "b) Al personal estatutario que desempeña su función en los centros y en las instituciones sanitarias de los servicios de salud de las comunidades autónomas",
+            "c) Al personal estatutario que desempeña su función en los centros y en las instituciones sanitarias de los servicios sanitarios de la Administración General del Estado",
+            "d) Al personal estatutario que desempeña su función en los centros y en las instituciones sanitarias de los servicios de salud de las comunidades autónomas o en los centros y servicios sanitarios de la Administración General del Estado"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "42. [IB-SASLUD - 2009] ¿Con qué antelación mínima debe solicitar la persona interesada la renuncia a la condición de personal estatutario?",
+        "options": [
+            "a) Cinco días antes de la fecha en que quiera que se haga efectiva",
+            "b) Diez días antes de la fecha en que quiera que se haga efectiva",
+            "c) Quince días antes de la fecha en que quiera que se haga efectiva",
+            "d) Veinte días antes de la fecha en que quiera que se haga efectiva"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "43. [OSAKIDETZA-MOD.A-PART1-2006] El estatuto marco en su capítulo XI regula:",
+        "options": [
+            "a) El régimen disciplinario",
+            "b) Las retribuciones",
+            "c) La jornada de trabajo, permisos y licencias",
+            "d) Situaciones del personal estatutario"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "44. [OSAKIDETZA-MOD.A-PART1-2006] ¿Cuál es el ámbito de aplicación del estatuto marco?",
+        "options": [
+            "a) El personal que desempeñe su función en los Centros e Instituciones Sanitarias de los Servicios de Salud de las Comunidades Autónomas o en los Centros y Servicios Sanitarios de la Administración General del Estado",
+            "b) El personal que desempeñe su función en los Centros e Instituciones Sanitarias de los Servicios de Salud de las Comunidades Autónomas",
+            "c) El personal estatutario que desempeñe su función en los Centros e Instituciones Sanitarias de los Servicios de la Administración General del Estado",
+            "d) El personal estatutario que desempeñe su función en los Centros e Instituciones Sanitarias de los Servicios de Salud de las Comunidades Autónomas o en los Centros y Servicios Sanitarios de la Administración General del Estado"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "45. [OSAKIDETZA-MOD.A-PART1-2006] La norma jurídica que aprueba el estatuto marco del personal estatutario de los servicios de salud, es:",
+        "options": [
+            "a) La Ley 55/2003, de 17 de Diciembre, publicada el 18 de Diciembre",
+            "b) La Ley 55/2003, de 15 de Diciembre, publicada el 16 de Diciembre",
+            "c) La Ley 55/2003, de 16 de Diciembre, publicada el 17 de Diciembre",
+            "d) La Ley 55/2002, de 16 de Diciembre, publicada el 17 de Diciembre"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "46. [OSAKIDETZA-2008_2] Algunos artículos de la ley 55/2003 se han visto modificados tras la aprobación de:",
+        "options": [
+            "a) La Ley Orgánica 3/2007, de 22 de marzo, para la Igualdad Efectiva de Mujeres y Hombres",
+            "b) La Ley 30/2007, de 30 de octubre de Contratos del Sector Público",
+            "c) La Ley 2/2007 del Personal Laboral de los Servicios de Salud",
+            "d) La Ley 47/2007 del Personal Directivo de los Servicios de Salud"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "47. [OSAKIDETZA-2008_2] Señale la respuesta incorrecta. El personal estatutario de los servicios de salud se clasifica atendiendo:",
+        "options": [
+            "a) A la función desarrollada",
+            "b) Al servicio provincial al que se adscriba",
+            "c) Al nivel del título exigido para el ingreso",
+            "d) Al tipo de su nombramiento"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "48. [OSAKIDETZA-2008_2] Señale la opción incorrecta. El personal estatutario de los servicios de salud ostenta los siguientes derechos individuales:",
+        "options": [
+            "a) A la percepción puntual de las retribuciones e indemnizaciones por razón del servicio en cada caso establecidas",
+            "b) A la formación continuada adecuada a la función desempeñada y al reconocimiento de su cualificación profesional en relación con dichas funciones",
+            "c) A la reunión",
+            "d) Al descanso necesario, mediante la limitación de la jornada, las vacaciones periódicas retribuidas y permisos en los términos que se establezcan"
+        ],
+        "correct": 2
+    },
+	    {
+        "question": "49. [OSAKIDETZA-2008_2] Respecto a la separación del servicio como sanción disciplinaria del personal estatutario:",
+        "options": [
+            "a) Conllevará el traslado forzoso con cambio de localidad",
+            "b) Conllevará la pérdida de la condición de personal estatutario",
+            "c) Sólo se impondrá por la comisión de faltas graves",
+            "d) Sólo se impondrá por la comisión de faltas leves"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "50. [OSAKIDETZA-2006-parte 2] ¿Qué supone la sanción de separación del servicio?",
+        "options": [
+            "a) La pérdida de la condición de personal estatutario fijo",
+            "b) El cumplimiento de la sanción, pero se mantiene la condición de personal estatutario fijo",
+            "c) La pérdida del puesto que se ocupa y el pase a excedencia obligatoria",
+            "d) Ninguna de las anteriores"
+        ],
+        "correct": 0
+}
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
