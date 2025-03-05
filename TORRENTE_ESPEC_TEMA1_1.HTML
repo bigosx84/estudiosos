@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [
+{
+    question: "1. Según el Decreto 47/2023 de 10 de mayo, por el que se aprueba el Reglamento General de Organización y Funcionamiento de la Atención Primaria de Salud de la Comunidad Autónoma de Extremadura, las funciones correspondientes a la dirección de la zona de salud serán asumidas por quienes ostenten:",
+    options: [
+        "a) La Coordinación Médica",
+        "b) La responsabilidad del personal de enfermería del EAP",
+        "c) El puesto de responsable de Atención Directa",
+        "d) La coordinación en el EAP"
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "2. Según el Decreto 47/2023 de 10 de mayo, ¿en qué plazo desde la entrada en vigor de la norma tienen que redactar y aprobar un Reglamento de Régimen Interno las zonas de salud?",
+    options: [
+        "a) 1 mes",
+        "b) 3 meses",
+        "c) 1 año",
+        "d) 6 meses"
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "3. Según el Decreto 47/2023 de 10 de mayo, el marco territorial y poblacional de la APS, donde la población recibe la prestación sanitaria mediante el acceso directo, y en la que se ha de proporcionar una atención continuada, integral y permanente a través de los/las profesionales integrantes del EAP es:",
+    options: [
+        "a) El Equipo de Atención Primaria",
+        "b) El Centro de Atención Primaria",
+        "c) El Centro de Salud",
+        "d) La Zona de Salud"
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "4. Según el Decreto 47/2023 de 10 de mayo, por el que se aprueba el Reglamento General de Organización y Funcionamiento de la Atención Primaria de Salud de la Comunidad Autónoma de Extremadura, las funciones correspondientes a la subdirección de la zona de salud serán asumidas por:",
+    options: [
+        "a) Los o las responsables de enfermería",
+        "b) La coordinación médica",
+        "c) El puesto de responsable de Atención Directa",
+        "d) La coordinación en el EAP"
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "5. El soporte físico y funcional donde se presta la atención sanitaria al individuo, a la comunidad, y en los que se desarrollan las funciones propias de la atención primaria, facilitando el trabajo en equipo del personal sanitario y de gestión y servicios de la ZS.",
+    options: [
+        "a) Centro de Salud",
+        "b) Zona de Salud",
+        "c) Equipo de Atención Primaria",
+        "d) Ninguna es correcta"
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "6. ¿Cuál de las siguientes no es una unidad de apoyo según el Reglamento de la Atención Primaria de Extremadura?",
+    options: [
+        "a) Consultorios locales",
+        "b) Unidades Medicalizadas de Emergencia",
+        "c) Equipos de Salud Mental",
+        "d) Ninguna opción de las declaradas es una Unidad de Apoyo."
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "7. A parte de las unidades de apoyo declaradas en el Reglamento de la Atención Primaria de Extremadura, ¿podrían existir otras unidades de apoyo?",
+    options: [
+        "a) Sí, definiéndose por Resolución de la Dirección Gerencia del SES",
+        "b) Sí, definiéndose por Resolución de la Gerencia del Área de salud correspondiente",
+        "c) Sólo si se modifica el propio reglamento.",
+        "d) No, serían en tal caso otras unidades del SES pertenecientes a la Atención Primaria de Salud o relacionadas y coordinadas con esta."
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "8. ¿Cuál de los siguientes no es un centro de atención primaria según el artículo 4 del Reglamento de Atención Primaria de Extremadura?",
+    options: [
+        "a) Centros de las unidades de apoyo",
+        "b) Consultorios Locales",
+        "c) Otras unidades de la atención primaria.",
+        "d) Centros de Salud"
+    ],
+    correct: 2 // La respuesta correcta es la "c"
+},
+{
+    question: "9. Según el Decreto 47/2023 de 10 de mayo, ¿qué debe existir en cada zona de salud como centro de referencia del resto de los centros de atención primaria de la zona de salud?",
+    options: [
+        "a) Un Hospital de área",
+        "b) Un Centro de salud",
+        "c) Un Equipo de Atención Primaria",
+        "d) Un Director de zona"
+    ],
+    correct: 1 // La respuesta correcta es la "b"
+},
+{
+    question: "10. Según el Decreto 47/2023 de 10 de mayo, ¿qué centros sanitarios no tienen la consideración de centro de salud, pero proporciona atención sanitaria en el ámbito de la Atención Primaria de Salud?",
+    options: [
+        "a) Los consultorios locales",
+        "b) Las Unidades de Apoyo",
+        "c) Otras unidades de la Atención Primaria",
+        "d) Todas son correctas"
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "11. Según el artículo 5 del Reglamento contenido en el Anexo 1 del Decreto 47/2023 de 10 de mayo, ¿Quién forma el Equipo Atención Primaria?",
+    options: [
+        "a) Un conjunto multidisciplinar de profesionales pertenecientes al SES",
+        "b) Un conjunto de profesionales que pueden o no depender del SES",
+        "c) Un conjunto de profesionales sanitarios y no sanitarios",
+        "d) Enfermeras, médicos, farmacéuticos, veterinarios, biólogos, personal administrativo, matronas, fisioterapeutas, técnicos en cuidados auxiliares de enfermería y celadores"
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "12. Según el Reglamento contenido en el Anexo I del Decreto 47/2023 de 10 de mayo, ¿dónde debe constituirse un EAP?",
+    options: [
+        "a) En los Centros de Atención Primaria",
+        "b) En los Centros de Salud y Consultorios locales",
+        "c) En cada uno de los centros de salud",
+        "d) Ninguna es correcta"
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "13. Según el artículo 5 del Reglamento contenido en el Anexo 1 del Decreto 47/2023 de 10 de mayo, la estructura y dotación de recursos materiales y humanos de cada EAP dependerá en cada caso:",
+    options: [
+        "a) De criterios de funcionalidad y de las necesidades sociales y sanitarias",
+        "b) De criterios de funcionalidad y presupuesto, además de las necesidades sanitarias",
+        "c) De criterios de dispersión geográfica y poblacional, así como de las necesidades sociales y sanitarias del Centro de Salud",
+        "d) De criterios sociales, geográficos y demográficos"
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "14. Según el Reglamento de la Atención Primaria de Extremadura, el EAP organizará su funcionamiento siguiendo los principios de:",
+    options: [
+        "a) Economía y seguridad",
+        "b) Efectividad y productividad",
+        "c) Eficiencia y subsidiaridad",
+        "d) Eficacia y complementariedad"
+    ],
+    correct: 2 // La respuesta correcta es la "c"
+},
+{
+    question: "15. Según el Reglamento de la Atención Primaria, en Extremadura, la debida distribución de roles de cada miembro del EAP determina que cada actividad sea realizada por:",
+    options: [
+        "a) el/la profesional cuyas funciones deontológicas incluyan dicha actividad.",
+        "b) el/la profesional que la resuelva de forma más eficiente y aportando valor añadido.",
+        "c) el/la profesional de mayor rango que esté disponible en cada momento.",
+        "d) el/la profesional que la resuelva de forma más rápida."
+    ],
+    correct: 1 // La respuesta correcta es la "b"
+},
+{
+    question: "16. Según el Reglamento de la Atención Primaria en Extremadura, el EAP se organiza bajo la guía de:",
+    options: [
+        "a) La dirección y subdirección de zona",
+        "b) La coordinación del Equipo y del responsable de Enfermería.",
+        "c) El Consejo de Salud de la Zona.",
+        "d) La Gerencia del área de salud y sus responsables de Atención Primaria (Direcciones Médicas y de Enfermería)."
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "17. Señale la correcta respecto de quiénes forman parte del EAP según el reglamento de Atención Primaria de Extremadura:",
+    options: [
+        "a) Personal sanitario: personal de medicina de familia, de pediatría, de farmacia, de veterinaria, enfermeros/as y enfermeros/as especialistas, personal de terapia ocupacional y personal de grupo auxiliar de función administrativa, así como aquel otro que en su momento se determine.",
+        "b) Personal de gestión y servicios: personal de trabajo social, técnico medio sanitario en cuidados auxiliares de enfermería y celador, así como aquel otro que en su momento se determine.",
+        "c) Las opciones A) y B) son correctas.",
+        "d) Ninguna es correcta."
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "18. Según el reglamento de Atención Primaria de Extremadura, las unidades de apoyo que resulten necesarias se determinarán en función de:",
+    options: [
+        "a) Criterios geográficos, demográficos, epidemiológicos y asistenciales.",
+        "b) Criterios geográficos, demográficos y sociales.",
+        "c) Criterios geográficos, demográficos, asistenciales y de vías y medios de comunicación.",
+        "d) La comarcalización existente."
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "19. Las unidades de apoyo a la atención primaria ejercerán sus funciones en:",
+    options: [
+        "a) La zona de salud donde esté ubicada.",
+        "b) Las zonas de salud que se incluyan en su ámbito de actuación.",
+        "c) El ámbito geográfico y poblacional del Área de Salud.",
+        "d) El Centro de Salud del que dependan en la zona de salud."
+    ],
+    correct: 1 // La respuesta correcta es la "b"
+},
+{
+    question: "20. Señale la correcta respecto de quiénes forman parte de las unidades de apoyo según el reglamento de Atención Primaria de Extremadura:",
+    options: [
+        "a) Personal sanitario: personal de medicina de familia, de psicología clínica, enfermeros/as y enfermeros/as especialistas, personal de odontología, de higiene dental, fisioterapia, personal técnico medio sanitario en cuidados auxiliares de enfermería y personal técnico superior especialista en radiodiagnóstico, así como aquel otro que en su momento se determine.",
+        "b) Personal de gestión y servicio: personal de trabajo social y de grupo auxiliar de función administrativa, así como aquel otro que en su momento se determine.",
+        "c) Las opciones A) y B) son correctas.",
+        "d) Ninguna es correcta."
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "21. Según el reglamento de Atención Primaria de Extremadura, la estructura y dotación de recursos materiales y humanos de las unidades de apoyo dependerá, en cada caso, de:",
+    options: [
+        "a) Criterios de funcionalidad y de las necesidades sociales y sanitarias.",
+        "b) Criterios geográficos, demográficos, epidemiológicos y asistenciales.",
+        "c) Criterios geográficos, demográficos, asistenciales y de vías y medios de comunicación.",
+        "d) La comarcalización existente."
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "22. Según el reglamento de Atención Primaria de Extremadura, ¿cuál de las siguientes no es considerada como 'otras unidades del SES pertenecientes a la APS o relacionadas y coordinadas con ésta'?",
+    options: [
+        "a) Las Unidades Medicalizadas de Emergencias y el sector sanitario del Centro de Atención de Urgencias y Emergencias 112 de Extremadura.",
+        "b) Unidades del Dolor.",
+        "c) Equipos de Soporte de Cuidados Paliativos.",
+        "d) Unidades de Radiología."
+    ],
+    correct: 3 // La respuesta correcta es la "d"
+},
+{
+    question: "23. ¿Cuál de las siguientes no es una unidad de apoyo según el Reglamento de la Atención Primaria de Extremadura?",
+    options: [
+        "a) Equipos de soporte de cuidados paliativos.",
+        "b) Centros de Planificación Familiar.",
+        "c) Unidades de Salud Bucodental.",
+        "d) Unidades de Radiología."
+    ],
+    correct: 0 // La respuesta correcta es la "a"
+},
+{
+    question: "24. De entre los siguientes recursos de Atención Primaria, ¿cuáles son unidades de Atención sanitaria con áreas de intervención específicas, que complementan a la atención primaria, mejoran su resolución y la accesibilidad a pruebas e intervenciones, dotadas de los recursos técnicos y profesionales necesarios?",
+    options: [
+        "a) Los consultorios locales dependientes de un centro de salud en cualquier zona de salud.",
+        "b) Las unidades de apoyo a la atención primaria.",
+        "c) Las consideradas como 'otras unidades de la atención primaria' existentes en un área de salud.",
+        "d) Las Unidades Medicalizadas de Emergencia."
+    ],
+    correct: 1 // La respuesta correcta es la "b"
+},
+{
+    question: "25. ¿De quién dependen funcionalmente las unidades Medicalizadas de Emergencias y el sector sanitario del Centro de Atención de Urgencias y Emergencias 112 de Extremadura?",
+    options: [
+        "a) Dirección Médica de Atención Primaria de las Áreas de Salud.",
+        "b) Dirección de Atención Primaria de las Áreas de Salud.",
+        "c) La Gerencia de Atención Primaria del Área de Salud.",
+        "d) La Dirección de Atención Sanitaria del Área de Salud."
+    ],
+    correct: 1 // La respuesta correcta es la "b"
+}
+];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
