@@ -21,100 +21,58 @@
       max-width: 800px;
       text-align: left;
     }
-    #testLinks {
-      display: none;
-    }
     .input-group {
       display: flex;
       gap: 10px;
     }
     input, button {
       min-width: 120px;
-      white-space: nowrap;
       padding: 10px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
     }
-    input {
-      flex: 1;
-    }
     button {
       background-color: #007BFF;
       color: white;
       border: none;
       cursor: pointer;
-      width: 120px;
-    }
-    li:hover {
-      background-color: #b3d4fc;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    }
-      background-color: #b3d4fc;
-      transform: scale(1.02);
     }
     button:hover {
       background-color: #0056b3;
     }
-    h1 {
-      margin-bottom: 30px;
-      margin-top: 30px;
-      margin-bottom: 20px;
+    h1, h2 {
       text-align: center;
       font-size: 22px;
       background: linear-gradient(135deg, #4a90e2, #0056b3);
       color: white;
       padding: 12px;
       border-radius: 8px;
-      margin-top: 20px;
       text-transform: uppercase;
+      margin-top: 20px;
     }
-      font-size: 22px;
-      background-color: #4a90e2;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-    }
-      font-size: 20px;
+    h2 {
+      font-size: 18px;
+      background: #0056b3;
+      margin-top: 15px;
     }
     ul {
-      margin-bottom: 30px;
       list-style: none;
-      padding: 0;
-      margin-top: 15px;
-      display: block;
-      gap: 15px;
-    }
-      padding: 0;
-      margin-top: 10px;
-    }
       padding: 0;
     }
     li {
-      text-align: left;
       background-color: #ffffff;
-      padding: 18px;
+      padding: 12px;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s, box-shadow 0.2s;
-    }
-      background-color: #ffffff;
-      padding: 15px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: background 0.3s, transform 0.2s;
-      margin-bottom: 15px;
-    }
-      background-color: #ffffff;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: background 0.3s, transform 0.2s;
       margin-bottom: 10px;
     }
-      margin: 10px 0;
+    li:hover {
+      background-color: #b3d4fc;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
     }
     a {
       text-decoration: none;
@@ -122,43 +80,12 @@
       color: #007BFF;
       font-weight: bold;
       display: block;
-      padding: 10px;
-      transition: color 0.3s;
-    }
-      font-size: 20px;
-      color: #007BFF;
-      font-weight: bold;
-      display: block;
-      padding: 8px;
-      transition: color 0.3s;
-    }
-      font-size: 18px;
-      color: #007BFF;
-      font-weight: bold;
-      display: block;
-      padding: 5px;
-      transition: color 0.3s;
-    }
-      color: #007BFF;
-      font-weight: bold;
-      display: block;
-      font-size: 17px;
-      padding: 8px;
-      border-radius: 5px;
-      transition: background 0.3s;
     }
     a:hover {
-      text-decoration: none;
       color: #ffffff;
       background-color: #0056b3;
       border-radius: 5px;
-      padding: 12px;
-      transition: all 0.3s ease;
-    }
-      text-decoration: underline;
-      color: #0056b3;
-    }
-      background-color: #b3d4fc;
+      padding: 10px;
     }
   </style>
   <script>
@@ -169,12 +96,10 @@
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
     }
-
     async function checkPassword() {
       var password = document.getElementById("password").value;
       var hashedInput = await hashPassword(password);
       var correctHash = "b1556dea32e9d0cdbfed038fd7787275775ea40939c146a64e205bcb349ad02f";
-
       if (hashedInput === correctHash) {
         document.getElementById("unlockSection").style.display = "none";
         document.getElementById("testLinks").style.display = "block";
@@ -182,15 +107,6 @@
         alert("Código incorrecto. Inténtalo de nuevo.");
       }
     }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      document.getElementById("password").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          checkPassword();
-        }
-      });
-    });
   </script>
 </head>
 <body>
@@ -202,16 +118,27 @@
         <button onclick="checkPassword()">Desbloquear</button>
       </div>
     </div>
-
-    <div id="testLinks">
+    <div id="testLinks" style="display:none;">
       <h1>Parte Común</h1>
+      <h2>Academia Abel</h2>
       <ul>
         <li><a href="COMUN_TEMA1.html">TEMA 1: La Constitución Española de 1978</a></li>
         <li><a href="COMUN_TEMA2.html">TEMA 2: El Estatuto de Autonomía de Extremadura</a></li>
         <li><a href="COMUN_TEMA3.html">TEMA 3: El Estatuto Marco del Personal Estatutario</a></li>
         <li><a href="COMUN_TEMA4.html">TEMA 4: La Ley de Salud de Extremadura. Estatuto del SES</a></li>
       </ul>
+      <h2>Academia Torrente</h2>
+      <ul>
+        <li><a href="COMUN_B_TEMA1.html">TEMA 1: Constitución Española</a></li>
+        <li><a href="COMUN_B_TEMA2.html">TEMA 2: Estatuto de Autonomía</a></li>
+      </ul>
+      <h2>Academia MAD</h2>
+      <ul>
+        <li><a href="COMUN_B_TEMA1.html">TEMA 1: Constitución Española</a></li>
+        <li><a href="COMUN_B_TEMA2.html">TEMA 2: Estatuto de Autonomía</a></li>
+      </ul>
       <h1>Parte Específica</h1>
+      <h2>Academia Abel</h2>
       <ul>
         <li><a href="ESPEC_TEMA1.HTML">TEMA 1: Nociones básicas de la Asistencia Sanitaria</a></li>
         <li><a href="ESPEC_TEMA2.HTML">TEMA 2: El Personal Subalterno y funciones del Celador</a></li>
@@ -219,9 +146,14 @@
         <li><a href="ESPEC_TEMA4.HTML">TEMA 4: Traslado y movilidad de pacientes</a></li>
         <li><a href="ESPEC_TEMA11.HTML">TEMA 11: La Ley de Igualdad</a></li>
       </ul>
+      <h2>Academia Torrente</h2>
+      <ul>
+        <li><a href="ESPEC_B_TEMA1.html">TEMA 1: Asistencia Sanitaria</a></li>
+        <li><a href="ESPEC_B_TEMA2.html">TEMA 2: Funciones del Celador</a></li>
+      </ul>
       <h1>Simulacros</h1>
       <ul>
-        <li><a href="simulacro.html">Simulacro aleatorio 70 preguntas</a></li>
+        <li><a href="simulacro.html">Aleatorio 70 preguntas</a></li>
       </ul>
     </div>
   </div>
