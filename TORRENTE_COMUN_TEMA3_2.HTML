@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [
+	    {
+        "question": "1. [MAD - 2017] ¿Qué ley aprobó el vigente Estatuto Marco del personal estatutario de los servicios de salud?",
+        "options": [
+            "a) La Ley 46/1989, de 12 de abril.",
+            "b) La Ley 55/2003, de 16 de diciembre.",
+            "c) La Ley 44/2003, de 21 de noviembre.",
+            "d) La Ley 47/2005, de 30 de noviembre."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. [ATB - 2024] ¿En qué artículo del Estatuto Marco se enuncia el Personal estatutario temporal?",
+        "options": [
+            "a) Artículo 9.",
+            "b) Artículo 9 bis.",
+            "c) A y B son correctas.",
+            "d) Artículo 8."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "3. [MAD - 2017] ¿Qué tipo de nombramiento se expedirá para el personal estatutario cuando resulte necesario atender las funciones de personal fijo o temporal, durante los períodos de vacaciones, permisos y demás ausencias de carácter temporal que comporten la reserva de la plaza?",
+        "options": [
+            "a) El nombramiento de carácter eventual.",
+            "b) El nombramiento de carácter interino.",
+            "c) El nombramiento de sustitución.",
+            "d) El nombramiento de carácter transitorio."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "4. [ATB - 2024] Según la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, señale la opción incorrecta sobre cuando se acordará la finalización de la relación estatutaria descrita en el primer apartado del artículo 9 bis (además de por las previstas en el artículo 21):",
+        "options": [
+            "a) Por la cobertura de la plaza que se desempeñe por personal estatutario fijo a través de cualquiera de los procedimientos legalmente establecidos",
+            "b) Por la finalización del plazo establecido y recogido expresamente en el nombramiento",
+            "c) Por la finalización de la causa que originó el nombramiento.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "5. [MAD - 2017] Indique cuál de los siguientes es un derecho colectivo del personal estatutario de los servicios de salud:",
+        "options": [
+            "a) Al encuadramiento en el Régimen General de la Seguridad Social, con los derechos y obligaciones que de ello se derivan.",
+            "b) A la jubilación en los términos y condiciones establecidas en las normas en cada caso aplicables.",
+            "c) A la actividad sindical.",
+            "d) A la formación continuada adecuada a la función desempeñada y al reconocimiento de su cualificación profesional en relación a dichas funciones."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "6. [MAD - 2017] El derecho del personal estatutario de los servicios de salud a la representación y participación en la determinación de las condiciones de trabajo, es un derecho:",
+        "options": [
+            "a) Colectivo.",
+            "b) Individual.",
+            "c) Mixto.",
+            "d) Especial."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "7. [MAD - 2017] El personal estatutario de los servicios de salud se clasifica atendiendo a:",
+        "options": [
+            "a) Al tipo de su nombramiento.",
+            "b) Al nivel del título exigido para el ingreso.",
+            "c) La función desarrollada.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "8. [MAD - 2017, modificada 2024] Los nombramientos de personal estatutario temporal podrán ser:",
+        "options": [
+            "a) De sustitución.",
+            "b) De interinidad.",
+            "c) De carácter eventual.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "9. [MAD - 2017, modificada 2024] ¿Qué tipo de nombramiento se expedirá para el personal estatutario temporal cuando por razones expresamente justificadas de necesidad y urgencia, son nombrados como tales con carácter temporal para el desempeño de funciones propias de estatutarios?",
+        "options": [
+            "a) El nombramiento de carácter eventual.",
+            "b) El nombramiento de carácter interino.",
+            "c) El nombramiento de sustitución.",
+            "d) El nombramiento de carácter transitorio."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "10. [MAD - 2017, modificada 2024] ¿De cuántos artículos consta la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud?",
+        "options": [
+            "a) 79.",
+            "b) 80.",
+            "c) 83.",
+            "d) 87."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "11. [MAD - 2017] ¿Qué tipo de nombramiento se expedirá para el personal estatutario temporal para el desempeño de una plaza vacante de los centros o servicios de salud, cuando sea necesario atender las correspondientes funciones?",
+        "options": [
+            "a) El nombramiento de carácter eventual.",
+            "b) El nombramiento de carácter interino.",
+            "c) El nombramiento de sustitución.",
+            "d) El nombramiento de carácter transitorio."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "12. [MAD - 2017] Indique cuál de los siguientes no es un derecho individual del personal estatutario de los servicios de salud:",
+        "options": [
+            "a) A la reunión.",
+            "b) A recibir asistencia y protección de las Administraciones públicas y servicios de salud en el ejercicio de su profesión o en el desempeño de sus funciones.",
+            "c) A la acción social en los términos y ámbitos subjetivos que se determinen en las normas, acuerdos o convenios aplicables.",
+            "d) A la movilidad voluntaria, promoción interna y desarrollo profesional, en la forma en que prevean las disposiciones en cada caso aplicables."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "13. [MAD - 2017] El personal estatutario de los servicios de salud viene obligado a:",
+        "options": [
+            "a) Cumplir con diligencia las instrucciones recibidas de sus superiores jerárquicos en relación con las funciones propias de su nombramiento, y colaborar leal y activamente en el trabajo en equipo.",
+            "b) Respetar la Constitución, el Estatuto de Autonomía correspondiente y el resto del ordenamiento jurídico.",
+            "c) Prestar colaboración profesional cuando así sea requerido por las autoridades como consecuencia de la adopción de medidas especiales por razones de urgencia o necesidad.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "14. [MAD - 2017] La jubilación forzosa del personal estatutario de los servicios de salud se declarará al cumplir el interesado la edad de:",
+        "options": [
+            "a) 55 años.",
+            "b) 63 años.",
+            "c) 65 años.",
+            "d) 67 años."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "15. [MAD - 2017] El derecho del personal estatutario de los servicios de salud a ser informado de las funciones, tareas, cometidos, programación funcional y objetivos asignados a su unidad, centro o institución, y de los sistemas establecidos para la evaluación del cumplimiento de los mismos, es un derecho:",
+        "options": [
+            "a) Colectivo.",
+            "b) Individual.",
+            "c) Mixto.",
+            "d) Especial."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "16. [MAD - 2017] Siempre que quede acreditado que reúne la capacidad funcional necesaria para ejercer la profesión o desarrollar las actividades correspondientes a su nombramiento, el interesado podrá solicitar voluntariamente prolongar su permanencia en servicio activo hasta cumplir, como máximo:",
+        "options": [
+            "a) 67 años.",
+            "b) 70 años.",
+            "c) 73 años.",
+            "d) 75 años."
+        ],
+        "correct": 1
+    },
+	    {
+        "question": "17. [MAD - 2017] ¿Cómo se efectúa la clasificación del personal estatutario de gestión y servicios, en función del título exigido para el ingreso?",
+        "options": [
+            "a) Personal de formación universitaria, personal de formación profesional y personal de formación básica.",
+            "b) Personal de formación universitaria superior, personal de formación media y personal de formación básica.",
+            "c) Personal de formación universitaria, personal de formación técnica y otro personal.",
+            "d) Personal de formación universitaria, personal de formación profesional y otro personal."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. [MAD - 2017] ¿Cómo se denomina a quienes ostenten la condición de personal estatutario en virtud de nombramiento expedido para el ejercicio de profesiones o actividades profesionales sanitarias, cuando se exija una concreta titulación de formación profesional?",
+        "options": [
+            "a) Personal de formación profesional.",
+            "b) Personal de formación técnica.",
+            "c) Personal de formación no universitaria.",
+            "d) Personal Técnico Superior."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "19. [MAD - 2017, modificada 2024] ¿Qué tipo de nombramiento se expedirá para el personal estatutario para la prestación de servicios complementarios de una reducción de jornada ordinaria?",
+        "options": [
+            "a) El nombramiento de carácter eventual.",
+            "b) El nombramiento de carácter interino.",
+            "c) El nombramiento de sustitución.",
+            "d) El nombramiento de carácter transitorio."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "20. [MAD - 2017] Señale uno de los derechos individuales que ostenta el personal estatutario de los servicios de salud:",
+        "options": [
+            "a) A la libre sindicación.",
+            "b) A la huelga.",
+            "c) A la negociación colectiva.",
+            "d) A recibir protección eficaz en materia de seguridad y salud en el trabajo."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "21. [MAD - 2017] La selección del personal estatutario fijo se efectuará con carácter general a través del sistema de:",
+        "options": [
+            "a) Concurso.",
+            "b) Oposición.",
+            "c) Concurso-oposición.",
+            "d) Libre designación."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "22. [MAD - 2017] ¿Cuál de las siguientes no es una de las causas de extinción de la condición de personal estatutario fijo?",
+        "options": [
+            "a) La pérdida de la nacionalidad en todo caso.",
+            "b) La renuncia.",
+            "c) La incapacidad permanente.",
+            "d) La pena principal o accesoria de inhabilitación absoluta y en su caso, la especial para empleo o cargo público o para el ejercicio de la correspondiente profesión."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "23. [MAD - 2017] ¿Cuándo supone la sanción disciplinaria de separación del servicio, la pérdida de la condición de personal estatutario?",
+        "options": [
+            "a) Desde su notificación.",
+            "b) Cuando se dicte.",
+            "c) Cuando se publica.",
+            "d) Cuando adquiera carácter firme."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "24. [MAD - 2017] Supondrá la pérdida de la condición de personal estatutario la pena de inhabilitación especial para la correspondiente profesión, siempre que esta exceda de:",
+        "options": [
+            "a) Dos años.",
+            "b) Tres años.",
+            "c) Cinco años.",
+            "d) Seis años."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "25. [MAD - 2017] La jubilación del personal estatutario de los servicios de salud puede ser:",
+        "options": [
+            "a) Anticipada u ordinaria.",
+            "b) Parcial o total.",
+            "c) Flexible, por incapacidad u ordinaria.",
+            "d) Forzosa o voluntaria."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "26. [MAD - 2017] Procederá la prórroga en el servicio activo, a instancia del interesado, cuando, en el momento de cumplir la edad de jubilación forzosa, le resten:",
+        "options": [
+            "a) Dos años o menos de cotización para causar pensión de jubilación.",
+            "b) Cuatro años o menos de cotización para causar pensión de jubilación.",
+            "c) Cinco años o menos de cotización para causar pensión de jubilación.",
+            "d) Seis años o menos de cotización para causar pensión de jubilación."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "27. [MAD - 2017] Señale la respuesta incorrecta respecto a la pérdida de la condición de personal estatutario fijo de los servicios de salud:",
+        "options": [
+            "a) La pérdida de la nacionalidad española, o de la de otro Estado tomada en consideración para el nombramiento, determina la pérdida de la condición de personal estatutario, salvo que simultáneamente se adquiera la nacionalidad de otro Estado que otorgue el derecho a acceder a tal condición.",
+            "b) La renuncia a la condición de personal estatutario inhabilita para obtener nuevamente dicha condición.",
+            "c) La pena de inhabilitación absoluta, cuando hubiera adquirido firmeza, produce la pérdida de la condición de personal estatutario.",
+            "d) La sanción disciplinaria firme de separación del servicio supondrá la pérdida de la condición de personal estatutario fijo de los servicios de salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "28. [MAD - 2017] Uno de los deberes que el personal estatutario de los servicios de salud viene obligado a cumplir es:",
+        "options": [
+            "a) Ejercer la profesión o desarrollar el conjunto de las funciones que correspondan a su nombramiento, plaza o puesto de trabajo con lealtad, eficacia y con observancia de los principios técnicos, científicos, éticos y deontológicos que sean aplicables.",
+            "b) Mantener debidamente actualizados los conocimientos y aptitudes necesarios para el correcto ejercicio de la profesión o para el desarrollo de las funciones que correspondan a su nombramiento, a cuyo fin los centros sanitarios facilitarán el desarrollo de actividades de formación continuada.",
+            "c) Cumplir el régimen de horarios y jornada, atendiendo a la cobertura de las jornadas complementarias que se hayan establecido para garantizar de forma permanente el funcionamiento de las instituciones, centros y servicios.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "29. [MAD - 2017] Señale cuál de los siguientes no es uno de los requisitos necesarios para adquirir la condición de personal estatutario fijo de los servicios de salud:",
+        "options": [
+            "a) Nombramiento conferido por el órgano competente.",
+            "b) Superación de las pruebas de selección.",
+            "c) Publicación en el Boletín Oficial del Estado (BOE) o de la Comunidad Autónoma respectiva.",
+            "d) Incorporación, previo cumplimiento de los requisitos formales en cada caso establecidos, a una plaza del servicio, institución o centro que corresponda en el plazo determinado en la convocatoria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "30. [MAD - 2017, modificada 2024] ¿Qué tipo de nombramiento se expedirá vinculado a la cobertura de exención de guardias, por razón de edad, o enfermedad?",
+        "options": [
+            "a) El nombramiento de carácter eventual.",
+            "b) El nombramiento de carácter interino.",
+            "c) El nombramiento de sustitución.",
+            "d) El nombramiento de sustitución parcial."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "31. [MAD - 2017] La ordenación del régimen del personal estatutario de los servicios de salud se rige, entre otros, por el siguiente principio o criterio establecido por el artículo 4 de la Ley 55/2003:",
+        "options": [
+            "a) Estabilidad en el empleo y en el mantenimiento de la condición de personal estatutario fijo.",
+            "b) Libre circulación del personal estatutario en el conjunto del Sistema Nacional de Salud.",
+            "c) Planificación eficiente de las necesidades de recursos y programación periódica de las convocatorias.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "32. [MAD - 2017] ¿Qué principios rigen el acceso a la condición de personal estatutario?",
+        "options": [
+            "a) Publicidad, objetividad, mérito y capacidad.",
+            "b) Igualdad, mérito, publicidad y transparencia.",
+            "c) Igualdad, mérito, capacidad y publicidad.",
+            "d) Publicidad, transparencia, capacidad y publicidad."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "33. [MAD - 2017, modificada 2024] Al personal definido en los artículos 9 y 9 bis del Estatuto Marco, ¿le será aplicable el régimen general del personal estatutario fijo?",
+        "options": [
+            "a) En cuanto sea adecuado a la naturaleza de su condición temporal y al carácter de su nombramiento.",
+            "b) salvo aquellos derechos inherentes a la condición de personal estatutario fijo.",
+            "c) A y B son correctas.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "34. [MAD - 2017] El personal de formación profesional se divide en:",
+        "options": [
+            "a) Técnicos superiores y Técnicos.",
+            "b) Técnicos superiores, Técnicos de grado medio y Técnicos.",
+            "c) Técnicos superiores, Técnicos de grado medio y Personal de Apoyo.",
+            "d) Técnicos y Auxiliares."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "35. [MAD - 2017] El derecho del personal estatutario de los servicios de salud a disponer de servicios de prevención y de órganos representativos en materia de seguridad laboral, es un derecho:",
+        "options": [
+            "a) Colectivo.",
+            "b) Individual.",
+            "c) Mixto.",
+            "d) Especial."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "36. [MAD - 2017] La renuncia a la condición de personal estatutario tiene el carácter de acto voluntario y deberá ser solicitada por el interesado con una antelación mínima de:",
+        "options": [
+            "a) 7 días a la fecha en que se desee hacer efectiva.",
+            "b) 10 días a la fecha en que se desee hacer efectiva.",
+            "c) 15 días a la fecha en que se desee hacer efectiva.",
+            "d) 20 días a la fecha en que se desee hacer efectiva."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "37. [MAD - 2017] ¿Qué Título de la Ley 55/2003, de 16 de diciembre, regula la adquisición y pérdida de la condición de personal estatutario fijo?",
+        "options": [
+            "a) El Título V.",
+            "b) El Título IV.",
+            "c) El Título III.",
+            "d) Ninguna respuesta es correcta."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "38. [MAD - 2017, modificada 2024] ¿Cuándo se acordará el cese del personal estatutario interino?",
+        "options": [
+            "a) Por la cobertura de la plaza que se desempeñe por personal estatutario fijo a través de cualquiera de los procedimientos legalmente establecidos.",
+            "b) Por razones de carácter organizativo que den lugar a la supresión o amortización de la plaza o puesto ocupado.",
+            "c) Por la finalización del plazo establecido y recogido expresamente en el nombramiento o la causa que originó el nombramiento.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "39. [MAD - 2017] ¿Cómo se denomina el personal estatutario que, una vez superado el correspondiente proceso selectivo, obtiene un nombramiento para el desempeño con carácter permanente de las funciones que de tal nombramiento se deriven?",
+        "options": [
+            "a) Personal estatutario definitivo.",
+            "b) Personal estatutario permanente.",
+            "c) Personal estatutario fijo.",
+            "d) Personal estatutario eventual."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "40. [ATB - 2024] Transcurridos tres años desde el nombramiento del personal estatutario interino se producirá el fin de la relación de interinidad ...",
+        "options": [
+            "a) Y la vacante solo podrá ser ocupada por personal estatutario fijo.",
+            "b) La a), salvo que en el correspondiente proceso selectivo no se haya cubierto la plaza en cuestión.",
+            "c) La b), en cuyo caso se podrá efectuar otro nombramiento de personal estatutario interino.",
+            "d) La b), en cuyo caso podrá continuar el mismo interino."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "41. [S.CANT.S - 2011 - MA] Según la Ley 55/2003, de 16 de diciembre, del estatuto marco del personal estatutario de los servicios de salud, el personal que, una vez superado el correspondiente proceso selectivo, obtiene un nombramiento para el desempeño con carácter permanente de las funciones que de tal nombramiento se deriven, se denomina:",
+        "options": [
+            "a) Personal estatutario fijo.",
+            "b) Personal estatutario temporal.",
+            "c) Personal definitivamente estatutario.",
+            "d) Personal estatutario afuncionaríado."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "42. [OSAKIDETZA (SVS) - 2009 - MA] Señale la opción incorrecta. El personal estatutario de los servicios de salud ostenta los siguientes derechos individuales:",
+        "options": [
+            "a) A la percepción puntual de las retribuciones e indemnizaciones por razón del servicio en cada caso establecidas.",
+            "b) A la formación continuada adecuada a la función desempeñada y al reconocimiento de su cualificación profesional en relación con dichas funciones.",
+            "c) A la reunión.",
+            "d) Al descanso necesario, mediante la limitación de la jornada, las vacaciones periódicas retribuidas y permisos en los términos que se establezcan."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "43. [OSAKIDETZA (SVS) - 2009 - MA] Los/las celadores/as estaban regulados por estatutos preconstitucionales, por ello era necesario actualizar y adaptar su régimen jurídico. ¿Por medio de qué Ley se lleva a cabo dicha actualización y adaptación?",
+        "options": [
+            "a) Ley 55/2003, de 16 de diciembre.",
+            "b) Ley 3/2003, de 12 de enero.",
+            "c) Ley 5/2002, de 30 de diciembre.",
+            "d) Ley 4/2000, de 15 de noviembre."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "44. [SAS - 2009] Según establece el art. 8 de la Ley 55/2003, de 16 de diciembre, del estatuto marco de los servicios de salud, es personal estatutario fijo:",
+        "options": [
+            "a) El que una vez superado el correspondiente proceso selectivo, obtiene un nombramiento para el desempeño, con carácter permanente, de las funciones que de tal nombramiento se deriven.",
+            "b) Todo el personal al servicio de los Servicios de Salud.",
+            "c) El personal que realice una prestación de servicios determinados de naturaleza temporal, coyuntural o extraordinaria.",
+            "d) El personal en posesión de un contrato laboral indefinido."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "45. [SAS - 2009] La categoría profesional de celador está comprendida dentro del grupo de:",
+        "options": [
+            "a) Personal de gestión y servicios.",
+            "b) Personal no estatutario.",
+            "c) Personal estatutario sanitario.",
+            "d) Personal estatutario de formación profesional."
+        ],
+        "correct": 0
+    },
+	    {
+        "question": "46. [SAS - 2009] Según el estatuto marco, la condición de personal estatutario fijo se adquiere, con carácter general, a través del sistema de:",
+        "options": [
+            "a) Oposición",
+            "b) Concurso-oposición",
+            "c) Concurso",
+            "d) Pruebas selectivas"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "47. [SAS - 2009] Según el art. 5 del estatuto marco, el personal estatutario se clasifica atendiendo a: (señale la respuesta incorrecta)",
+        "options": [
+            "a) La función desarrollada",
+            "b) El nivel del título exigido para el ingreso",
+            "c) El tipo de nombramiento",
+            "d) El expediente laboral"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "48. [SAS - 2009] En relación con los derechos y deberes regulados en el estatuto marco, no se considera un derecho colectivo:",
+        "options": [
+            "a) La huelga",
+            "b) La actividad sindical",
+            "c) La reunión",
+            "d) La estabilidad en el empleo"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "49. [SAS - 2009] La Ley 55/2003 del estatuto marco de personal estatutario de los servicios de salud es de aplicación:",
+        "options": [
+            "a) Al personal estatutario que integra las profesiones sanitarias",
+            "b) Al personal estatutario que desempeña su función en los centros e instituciones sanitarias de los servicios de salud",
+            "c) Al personal funcionario de los servicios de salud de las Comunidades Autónomas",
+            "d) Al personal sanitario, excluyendo el personal de gestión y servicios"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "50. [SAS - 2009] Según el estatuto marco del personal estatutario de los servicios de salud, la jubilación forzosa se declarará:",
+        "options": [
+            "a) Al cumplir los 65 años de edad",
+            "b) Al cumplir 60 años de edad y 25 de servicios prestados",
+            "c) Al cumplir 70 años de edad",
+            "d) Sólo existe jubilación voluntaria al cumplir 65 años de edad"
+        ],
+        "correct": 0
+    }
+	];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
