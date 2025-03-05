@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+const questions = [
+{
+    question: "1. ¿Cuál de las siguientes medidas higiénicas es imprescindible para el trato con un enfermo con carácter general?",
+    options: [
+        "A) Utilizar ropa aséptica.",
+        "B) Uso de gorro y mascarilla.",
+        "C) Uso de calzas.",
+        "D) Ninguna de las anteriores."
+    ],
+    correct: 3
+},
+{
+    question: "2. ¿A qué grupo de personal pertenece el jefe de cocina y comedor?",
+    options: [
+        "A) Subalterno.",
+        "B) De oficio.",
+        "C) Técnico.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 3
+},
+{
+    question: "3. ¿A quién dice el Estatuto que los Celadores ayudarán al movimiento y traslado de los enfermos encamados que requieran un trato especial en razón de sus dolencias para hacerles las camas?",
+    options: [
+        "A) Al personal Sanitario general.",
+        "B) Al personal Sanitario Facultativo.",
+        "C) A las enfermeras y ayudantes de Planta.",
+        "D) No lo especifica."
+    ],
+    correct: 2
+},
+{
+    question: "4. ¿Cómo debe ser el trato con los familiares del enfermo?",
+    options: [
+        "A) Es un deber orientar a los familiares sobre el estado de un paciente.",
+        "B) Con la máxima corrección posible, respetando su dignidad e intimidad.",
+        "C) Un trato cordial y alegre, pudiendo informar sobre los tratamientos.",
+        "D) Todas son correctas."
+    ],
+    correct: 1
+},
+{
+    question: "5. ¿Cuál de las siguientes es una de las funciones del celador?",
+    options: [
+        "A) Darán cuenta a sus superiores de los desperfectos o anomalías que encontraran en la limpieza y conservación del edifico y material.",
+        "B) Darán cuenta a sus inmediatos superiores de los desperfectos o anomalías que encontraran en la conservación del edificio y material.",
+        "C) Darán cuenta a sus inmediatos superiores de los desperfectos que encontraran en la limpieza y conservación del edificio, equipos y material.",
+        "D) Darán cuenta a sus inmediatos superiores de los desperfectos o anomalías que encontraran en la limpieza y conservación del edificio y material."
+    ],
+    correct: 3
+},
+{
+    question: "6. ¿Cuál de los siguientes pertenece al grupo de personal de Servicios especiales?",
+    options: [
+        "a) Gobernantas.",
+        "b) Controladores de suministros.",
+        "c) Profesores de logofonía y logopedia.",
+        "d) Maestro industrial."
+    ],
+    correct: 0
+},
+{
+    question: "7. ¿Cuándo dice textualmente el estatuto que el Celador lavará y aseará a los enfermos masculinos encamados o que no puedan hacerlo por sí mismos?",
+    options: [
+        "A) En caso de ausencia del peluquero.",
+        "B) Cuando requieran un trato especial en razón de sus dolencias.",
+        "C) Excepcionalmente.",
+        "D) Ninguna de las anteriores es textual."
+    ],
+    correct: 2
+},
+{
+    question: "8. ¿Cuándo puede un celador de quirófano entrar en el mismo?",
+    options: [
+        "A) Solamente durante una intervención.",
+        "B) Solamente para ayudar al personal de quirófano que lo requiera.",
+        "C) El celador nunca puede entrar en el quirófano mientras dure la intervención.",
+        "D) Ninguna de las respuestas anteriores es cierta."
+    ],
+    correct: 3
+},
+{
+    question: "9. ¿Cuántas visitas como máximo podrán estar al mismo tiempo en las habitaciones de un paciente?",
+    options: [
+        "A) 2.",
+        "B) 3.",
+        "C) 4.",
+        "D) No podrán coincidir ninguna."
+    ],
+    correct: 0
+},
+{
+    question: "10. ¿De qué habla la función 16 de los celadores?",
+    options: [
+        "a) Del rasurado de enfermos.",
+        "b) De las labores del celador en quirófano",
+        "c) De baño de los enfermos.",
+        "d) De la función del celador en autopsias."
+    ],
+    correct: 1
+},
+{
+    question: "11. ¿En qué casos trasladará el celador restos de miembros amputados al horno crematorio?",
+    options: [
+        "A) Cuando éstos estén infectados.",
+        "B) Cuando los familiares no quieran hacerse cargo de los mismos.",
+        "C) El celador sólo traslada cadáveres al mortuorio, no miembros.",
+        "D) Cuando tenga autorización del cirujano."
+    ],
+    correct: 3
+},
+{
+    question: "12. ¿Es función del celador reponer las botellas de oxígeno?",
+    options: [
+        "A) No, es una función del personal de enfermería.",
+        "B) No.",
+        "C) Sí, siempre que exista estación centralizada.",
+        "D) Sí, si no existe estación centralizada."
+    ],
+    correct: 1
+},
+{
+    question: "13. ¿Qué debe hacer el celador de urgencias de un hospital cuando recibe a un enfermo que padece una fractura de tibia?",
+    options: [
+        "A) Avisará al J. P. S.",
+        "B) Proporcionarle un par de muletas para que entre caminando apoyado en ellas.",
+        "C) Colocarlo en una silla de ruedas que disponga de soporte adecuado para inmovilizar la pierna afectada",
+        "D) Nada de lo anteriormente expuesto."
+    ],
+    correct: 3
+},
+{
+    question: "14. ¿Qué función no es competencia del celador en la planta de hospitalización?",
+    options: [
+        "A) Ayudar a levantar al paciente.",
+        "B) Ayudar a acostar al paciente.",
+        "C) Bañar a los enfermos masculinos que no puedan hacerlo por sí mismos.",
+        "D) Dar la comida a los enfermos que no puedan hacerlo por sí mismos."
+    ],
+    correct: 3
+},
+{
+    question: "15. ¿Qué medidas de higiene adoptará el celador ante un enfermo general?",
+    options: [
+        "A) Uniforme aséptico.",
+        "B) Calzas y mascarilla.",
+        "C) Uniforme normal.",
+        "D) Mascarilla y gorro."
+    ],
+    correct: 2
+},
+{
+    question: "16. ¿Quién cuidará del orden del edificio, dando cuenta al Administrador de los desperfectos o alteraciones que encuentren?",
+    options: [
+        "A) El celador.",
+        "B) El J. P. S.",
+        "C) Cualquier trabajador del centro.",
+        "D) Cualquiera de los anteriores."
+    ],
+    correct: 1
+},
+{
+    question: "17. ¿Quién deberá trasladar dentro de una Institución Sanitaria los aparatos o mobiliarios de unos servicios a otros?",
+    options: [
+        "A) Los celadores.",
+        "B) Los carpinteros.",
+        "C) El personal de mantenimiento.",
+        "D) Todos los anteriores."
+    ],
+    correct: 0
+},
+{
+    question: "18. ¿Quién ejerce la jefatura de los celadores?",
+    options: [
+        "A) El Director Gerente.",
+        "B) El Administrador.",
+        "C) El Jefe de Personal Subalterno.",
+        "D) Cualquiera de los anteriores."
+    ],
+    correct: 2
+},
+{
+    question: "19. ¿Sobre cuál de los siguientes el celador, \"especialmente\" no informará ni hará comentarios a los familiares y visitantes?",
+    options: [
+        "A) Tratamientos",
+        "B) Pronósticos",
+        "C) Diagnósticos",
+        "D) Exploraciones."
+    ],
+    correct: 1
+},
+{
+    question: "20. A las 24 horas necesitamos rasurar a un enfermo que va a ser sometido a una intervención quirúrgica no programada, ¿Debe efectuar el rasurado la enfermera?",
+    options: [
+        "A) Sí, si el enfermo es masculino.",
+        "B) a, c y d son incorrectas.",
+        "C) No, es función del peluquero.",
+        "D) No, es función del celador si es programada y está presente el peluquero."
+    ],
+    correct: 1
+},
+{
+    question: "21. A un hospital de la Seguridad Social llega un paciente que no es beneficiario de la misma, el celador de puerta:",
+    options: [
+        "A) Actuará de la misma manera que si fuese beneficiario de la Seguridad Social.",
+        "B) Deberá consultar primero al Servicio de admisión.",
+        "C) Sólo le atenderá si viene en ambulancia.",
+        "D) Deberá indicarle que no se le puede atender en ese Hospital."
+    ],
+    correct: 0
+},
+{
+    question: "22. Corresponderá a los celadores \"evitar que los visitantes deambulen por los pasillos y dependencias más de lo necesario para llegar al lugar donde concretamente se dirijan\":",
+    options: [
+        "A) Sí, en todos los casos.",
+        "B) Esta función no corresponde a los celadores.",
+        "C) Sí, pero fuera de las horas de visita.",
+        "D) Sí, pero únicamente cuando se trate de zonas no autorizadas."
+    ],
+    correct: 0
+},
+{
+    question: "23. Cuando sea necesario habilitar provisionalmente una cama en una sala de hospital que ya tiene completas todas las camas de que dispone, según el argot hospitalario, se realizará:",
+    options: [
+        "A) Un cuadro balcánico.",
+        "B) Una crujía.",
+        "C) No podrá habilitarse una cama más puesto que la sala ya está completa.",
+        "D) No existe un nombre especial."
+    ],
+    correct: 1
+},
+{
+    question: "24. De las siguientes tareas, ¿Cuáles son propias del celador?",
+    options: [
+        "A) Vigilar la entrada de víveres en la institución.",
+        "B) Tener a su cargo el buscapersonas.",
+        "C) Depositar las basuras en los contenedores del exterior del edificio.",
+        "D) Trasladar los cadáveres al mortuorio."
+    ],
+    correct: 3
+},
+{
+    question: "25. De los siguientes sitios, ¿en cuál, el celador debe llevar un dosímetro?",
+    options: [
+        "A) Quirófanos.",
+        "B) Urgencias.",
+        "C) Planta de infecciosos.",
+        "D) Rayos."
+    ],
+    correct: 3
+},
+{
+    question: "26. El celador de quirófanos, debe vestir en los mismos:",
+    options: [
+        "A) Mascarilla, gorro, calzas y pijama distinto del uniforme habitual de los celadores del hospital.",
+        "B) Mascarilla, gorro, zuecos y pijama distinto del uniforme habitual del hospital.",
+        "C) Mascarilla, zuecos y pijama distinto del uniforme habitual del hospital.",
+        "D) Mascarilla, gorro, calzas y el uniforme habitual de los celadores del hospital."
+    ],
+    correct: 0
+},
+{
+    question: "27. El celador deberá ser dotado de un dosímetro personal:",
+    options: [
+        "A) Para utilizarlo en momentos de emergencia.",
+        "B) Cuando esté destinado en un servicio de terapéutica física.",
+        "C) Cuando esté en contacto con enfermos contagiosos.",
+        "D) Cuando esté destinado en un servicio de radiodiagnóstico."
+    ],
+    correct: 3
+},
+{
+    question: "28. El celador destinado en el servicio de información, habrá de tener perfecto conocimiento de:",
+    options: [
+        "A) Las camas libres que en cada momento existan en el centro.",
+        "B) La ubicación de todos los servicios del centro, así como los nombres y apellidos de los responsables.",
+        "C) La ubicación de todos los servicios del centro.",
+        "D) Los tipos de intervenciones quirúrgicas que se realizan en el centro."
+    ],
+    correct: 2
+},
+{
+    question: "29. El celador destinado en el servicio de Rayos X ¿debe colaborar en la preparación del chasis y manejo de los aparatos?",
+    options: [
+        "A) Sí, si así se lo indican.",
+        "B) Sí.",
+        "C) No.",
+        "D) No, salvo que haya alguien adecuado."
+    ],
+    correct: 2
+},
+{
+    question: "30. El celador, dentro de un hospital, forma parte del personal:",
+    options: [
+        "A) De Oficios.",
+        "B) Interino.",
+        "C) Sanitario.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 3
+},
+{
+    question: "31. El celador, se abstendrá de hacer comentarios con los familiares y visitantes de los enfermos, sobre:",
+    options: [
+        "A) Diagnóstico, exploraciones y tratamientos que se estén realizando a los mismos.",
+        "B) Indicar dónde quedan las plantas del hospital.",
+        "C) Informar sobre hospedería.",
+        "D) Informar del horario de visitas."
+    ],
+    correct: 0
+},
+{
+    question: "32. El celador, tiene entre otras funciones encomendadas:",
+    options: [
+        "A) Vigilar la limpieza de la institución.",
+        "B) Lavar y asear a los enfermos encamados que no puedan hacerlo por sí mismos.",
+        "C) Cuidar del orden del edificio.",
+        "D) Todas son funciones suyas."
+    ],
+    correct: 1
+},
+{
+    question: "33. El deber de informar a los familiares de los fallecidos en la institución sobre los trámites precisos para llevar a cabo los enterramientos corresponde a:",
+    options: [
+        "A) El médico, jefe del servicio donde haya fallecido el enfermo.",
+        "B) El celador, en colaboración con la supervisora de la planta donde se produjo el óbito.",
+        "C) El Jefe de Personal Subalterno, que en caso necesario les pondrá en contacto con la oficina administrativa correspondiente para completar dicha información.",
+        "D) Al personal de enfermería a través de la enfermera jefe o persona que legalmente sustituya."
+    ],
+    correct: 2
+},
+{
+    question: "34. El estatuto de Personal No Sanitario, es efectivo desde:",
+    options: [
+        "A) 5 julio de 1.971.",
+        "B) 26 de abril de 1.973.",
+        "C) 23 de Diciembre de 1.966.",
+        "D) 1 de mayo de 1971."
+    ],
+    correct: 3
+},
+{
+    question: "35. El grupo de personal subalterno, se divide según el E. P. N. S en:",
+    options: [
+        "A) 3 escalas.",
+        "B) 2 escalas.",
+        "C) 1 escala general, y otra escala de oficio.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 1
+},
+{
+    question: "36. El mantenimiento de las bajadas de aguas pluviales en un hospital, es función de:",
+    options: [
+        "A) Pintores.",
+        "B) Calefactores.",
+        "C) Albañiles.",
+        "D) Fontaneros."
+    ],
+    correct: 2
+},
+{
+    question: "37. El médico forense solicita la ayuda del celador para la práctica de una autopsia; le encarga lavar la cabeza, con agua y jabón, serrar el hueso del cráneo y limpiar posteriormente la sala de autopsias. ¿Qué deberá hacer el celador?",
+    options: [
+        "A) Nada, porque no hay médico forense en los hospitales.",
+        "B) Todo, porque es obligación ayudar en la sala de autopsias.",
+        "C) Todo menos limpiar la sala de autopsias, que le corresponde hacerlo a las limpiadoras.",
+        "D) Todo menos serrar el cráneo."
+    ],
+    correct: 3
+},
+{
+    question: "38. El rasurado de los pacientes según el estatuto, requiere la presencia del celador:",
+    options: [
+        "A) Cuando se trata del mismo sexo que el celador.",
+        "B) Sólo en casos de urgencia.",
+        "C) Nunca y bajo ningún concepto, está obligado a rasurar.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 3
+},
+{
+    question: "39. El traslado de los cadáveres al mortuorio, será una función de:",
+    options: [
+        "A) Excepcional del celador.",
+        "B) El personal masculino sanitario.",
+        "C) Los celadores en todos los casos.",
+        "D) Empleados del juzgado, en caso de que haya que realizarle al cadáver una autopsia judicial."
+    ],
+    correct: 2
+},
+{
+    question: "40. El traslado y movimiento de los enfermos encamados que requieren un trato especial en razón de sus dolencias para hacerles las camas, es función:",
+    options: [
+        "A) Del celador.",
+        "B) De las Diplomadas Universitarias de Enfermería.",
+        "C) De las Auxiliares de Enfermería.",
+        "D) De todos los anteriores."
+    ],
+    correct: 3
+},
+{
+    question: "41. El uniforme del celador de puerta en una institución será de color:",
+    options: [
+        "A) Blanco.",
+        "B) Azul.",
+        "C) Gris.",
+        "D) Verde."
+    ],
+    correct: 0
+},
+{
+    question: "42. En caso de tener que lavar y asear a un enfermo ¿De quién debe recibir el celador la petición de prestar ese servicio?",
+    options: [
+        "A) De nadie, ya que no es obligación de un celador.",
+        "B) De la supervisora de planta.",
+        "C) De la Auxiliar de Enfermería.",
+        "D) Son correctas b y c."
+    ],
+    correct: 1
+},
+{
+    question: "43. En la cocina, el control de la despensa, corresponde a:",
+    options: [
+        "A) El celador.",
+        "B) Al cocinero.",
+        "C) Al pinche de cocina.",
+        "D) A la gobernanta."
+    ],
+    correct: 1
+},
+{
+    question: "44. En la planta donde usted está destinado le dicen que hay que llevar una bala de oxígeno con carro que tienen allí, a otra planta:",
+    options: [
+        "A) Avisa al mecánico para que lo haga.",
+        "B) Llama a talleres.",
+        "C) Trasladará la bala de oxígeno.",
+        "D) Ninguna es cierta."
+    ],
+    correct: 2
+},
+{
+    question: "45. En los quirófanos, ¿Quién moverá el aparato de RX?",
+    options: [
+        "A) El celador.",
+        "B) La enfermera de quirófano.",
+        "C) El técnico especialista.",
+        "D) El A. T. S de quirófano."
+    ],
+    correct: 0
+},
+{
+    question: "46. ¿En qué circunstancias, puede un celador realizar una cura?",
+    options: [
+        "A) Si se lo ordena el médico.",
+        "B) Bajo la supervisión de un A. T. S.",
+        "C) Si el personal de enfermería se encontrara ocupado.",
+        "D) En ningún caso."
+    ],
+    correct: 3
+},
+{
+    question: "47. En un hospital, ¿podrán ser intercambiables entre los familiares y amigos las tarjetas de visita?",
+    options: [
+        "A) Sí.",
+        "B) No.",
+        "C) Sí, si lo autoriza la enfermera de planta.",
+        "D) Sí, si lo autoriza el servicio de admisión."
+    ],
+    correct: 0
+},
+{
+    question: "48. Es función de los celadores:",
+    options: [
+        "A) Hacer los turnos de guardia que se establezcan.",
+        "B) Realizar excepcionalmente la limpieza del centro.",
+        "C) A y b son correctas.",
+        "D) Dar de comer a los enfermos en situaciones especiales."
+    ],
+    correct: 0
+},
+{
+    question: "49. Es función propia del celador:",
+    options: [
+        "A) Depositar basura en los contenedores.",
+        "B) Lavar y asear a los enfermos del centro.",
+        "C) Vigilar el alumbrado interior y exterior del edificio.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 3
+},
+{
+    question: "50. Es necesario llevar al servicio de rayos X a un enfermo ingresado en la planta de hospitalización, ¿Qué celador deberá trasladarlo al citado servicio?",
+    options: [
+        "A) El celador de Rayos.",
+        "B) El celador de hospitalización.",
+        "C) El celador correo.",
+        "D) Cualquiera de ellos."
+    ],
+    correct: 0
+},
+{
+    question: "51. Está expresamente indicado que los Celadores tramitarán o conducirán sin tardanza:",
+    options: [
+        "A) Documentos.",
+        "B) Objetos que les sean confiados por sus superiores.",
+        "C) Comunicaciones verbales.",
+        "D) Todas las anteriores son correctas."
+    ],
+    correct: 3
+},
+{
+    question: "52. Estando de servicio en la zona de quirófanos, es requerido para que proceda a quitar la escayola del brazo de un enfermo, a cuyo efecto le han entregado el correspondiente instrumental, ¿Qué debe hacer?",
+    options: [
+        "A) Es un cometido, que no pueden ordenarle, por no ser de su competencia.",
+        "B) Debe realizarlo bajo la supervisión del personal sanitario.",
+        "C) Ha de realizarlo según se le ha enseñado al adiestrarle para ello.",
+        "D) Ha de realizarlo con la ayuda de la enfermera."
+    ],
+    correct: 0
+},
+{
+    question: "53. Estando fuera de servicio, va al ambulatorio donde trabaja y un compañero que dice que le sustituya un rato, porque tiene que ir a otro servicio:",
+    options: [
+        "A) Atiende el favor pedido porque es amigo suyo.",
+        "B) Atiende el favor pedido por compañerismo.",
+        "C) Atiende el favor pedido porque dispone de tiempo.",
+        "D) Ninguna es cierta."
+    ],
+    correct: 3
+},
+{
+    question: "54. Estando usted, en la planta de Medicina Interna en endocrinología, observa que unos familiares entran en la habitación de un paciente con una caja, y al pasar a la habitación comprueba que contiene embutidos y fiambres, usted:",
+    options: [
+        "A) Piensa \"pobre paciente, pasará mucha hambre\".",
+        "B) Les advierte que esa medicación puede afectar a la terapéutica e informa al jefe de servicio de Medicina Interna.",
+        "C) Les advierte que sólo pueden traer alimentos incluidos en el régimen del paciente informando de la situación a la Supervisora de Planta.",
+        "D) Informa de la situación a la Supervisora de Planta."
+    ],
+    correct: 3
+},
+{
+    question: "55. La atención sanitaria a la infancia se prestará a menores de:",
+    options: [
+        "A) 12 años.",
+        "B) 14 años.",
+        "C) 16 años.",
+        "D) 9 años."
+    ],
+    correct: 1
+},
+{
+    question: "56. La documentación clínica que portan los ocupantes de la ambulancia referente a un politraumatizado al llegar al hospital, el celador la deberá entregar sin ninguna dilación:",
+    options: [
+        "A) La unidad administrativa de admisión.",
+        "B) La supervisora de urgencias.",
+        "C) Jefe de Personal Subalterno.",
+        "D) Médico de guardia."
+    ],
+    correct: 3
+},
+{
+    question: "57. La edad mínima para entrar a visitar a los enfermos en un hospital, es:",
+    options: [
+        "A) 13 años.",
+        "B) 14 años (edad pediátrica).",
+        "C) 12 años.",
+        "D) 18 años."
+    ],
+    correct: 2
+},
+{
+    question: "58. La enfermera encargada de la planta de psiquiatría, comunica al celador de puerta que un enfermo psiquiátrico se ha escapado, pidiéndole que lo busque ¿Qué deberá de hacer el celador?",
+    options: [
+        "A) Buscar al citado paciente.",
+        "B) Comunicarlo al Jefe de Personal Subalterno.",
+        "C) Cerrar las puertas de entrada y salida, y buscar al paciente.",
+        "D) No es función del celador de puerta buscar a ese paciente."
+    ],
+    correct: 1
+},
+{
+    question: "59. La función de auxiliar directamente al médico en consultas, corresponde a:",
+    options: [
+        "A) Auxiliar de Enfermería.",
+        "B) A. T. S.",
+        "C) Celador.",
+        "D) Médico ayudante."
+    ],
+    correct: 1
+},
+{
+    question: "60. La recepción y control de los envíos de combustible, es función de:",
+    options: [
+        "A) Fogonero.",
+        "B) Calefactor.",
+        "C) Mecánico.",
+        "D) Ingeniero Técnico."
+    ],
+    correct: 1
+},
+{
+    question: "61. La zona de aparcamiento de vehículos cuando exista en un hospital:",
+    options: [
+        "A) No es misión del celador vigilarla.",
+        "B) Es una función exclusiva del personal de vigilancia.",
+        "C) De no existir personal de vigilancia, puede encomendársele esta función al celador.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 2
+},
+{
+    question: "62. Las actividades de los celadores, son dirigidas, coordinadas y evaluadas, por:",
+    options: [
+        "A) La comisión de Dirección.",
+        "B) La División Médica.",
+        "C) La gerencia.",
+        "D) La División de Gestión y Servicios Generales."
+    ],
+    correct: 3
+},
+{
+    question: "63. Las funciones del Celador expresan textualmente que: \"Cuando por circunstancias especiales concurrentes en el enfermo no pueda éste ser movido solo por la Enfermera o Ayudante de Planta ...\"",
+    options: [
+        "A) Bañarán a los enfermos cuando no puedan hacerlo por sí mismos, siempre de acuerdo con las instrucciones que reciban de las Supervisoras de planta.",
+        "B) Ayudará en la colocación y retirada de cuñas para la recogida de excretas de dichos enfermos.",
+        "C) Lavarán y asearán a los enfermos encamados o que no puedan realizarlo por sí mismos.",
+        "D) Ninguna de las anteriores se corresponde textualmente con lo preguntado."
+    ],
+    correct: 1
+},
+{
+    question: "64. Las funciones del Celador, están recogidas dentro del Estatuto del Personal No Sanitario, en el artículo:",
+    options: [
+        "A) 13.",
+        "B) 14.",
+        "C) 14.2",
+        "D) Ninguna es correcta."
+    ],
+    correct: 2
+},
+{
+    question: "65. Las funciones del celador, vienen recogidas en el Estatuto de Personal Sanitario No-Facultativo, en el artículo:",
+    options: [
+        "A) 12.",
+        "B) 14.",
+        "C) 14.2",
+        "D) Ninguna es correcta."
+    ],
+    correct: 3
+},
+{
+    question: "66. Las funciones del celador, vienen recogidas en:",
+    options: [
+        "A) Real Decreto Ley 3/87 de 11 de Septiembre.",
+        "B) Estatuto de Personal No Sanitario.",
+        "C) Ley Orgánica de 5 de julio de 1.971.",
+        "D) b y c son correctas."
+    ],
+    correct: 1
+},
+{
+    question: "67. Lo primero que debe verificar un celador cuando traslade un enfermo al quirófano, es:",
+    options: [
+        "A) Que esté rasurada la zona a operar.",
+        "B) Que los informes correspondan al enfermo.",
+        "C) Que el enfermo lleve la mascarilla puesta.",
+        "D) No es función del celador, realizar verificaciones, tan solo trasladarlo."
+    ],
+    correct: 1
+},
+{
+    question: "68. Los celadores cuidarán que no se introduzcan en ... más que aquellos paquetes autorizados por la Dirección.",
+    options: [
+        "A) Las habitaciones de los enfermos.",
+        "B) En los servicios complementarios.",
+        "C) Las instituciones.",
+        "D) Los centros de la Seguridad Social."
+    ],
+    correct: 2
+},
+{
+    question: "69. Los celadores realizarán excepcionalmente:",
+    options: [
+        "A) Funciones auxiliares en la práctica de autopsias que requieran por su parte hacer uso de instrumental sobre el cadáver.",
+        "B) Aquellas labores de limpieza que se les encomiende.",
+        "C) Labores de vigilancia nocturna.",
+        "D) Son correctas a y b."
+    ],
+    correct: 1
+},
+{
+    question: "70. Los celadores realizarán todas aquellas funciones similares a las específicamente expuestas, y que:",
+    options: [
+        "A) Sean compatibles con sus funciones.",
+        "B) Les sean encomendadas por sus superiores.",
+        "C) Favorezcan el orden y silencio en la institución.",
+        "D) Les sean encomendadas por sus inmediatos superiores."
+    ],
+    correct: 1
+},
+{
+    question: "71. Los celadores velarán por conseguir el mayor orden y silencio:",
+    options: [
+        "A) Posible.",
+        "B) Lo harán continuamente.",
+        "C) Las dos anteriores son correctas.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 2
+},
+{
+    question: "72. Los celadores y el Jefe de Personal Subalterno pertenecen:",
+    options: [
+        "A) A la misma escala y distinto grupo.",
+        "B) Al mismo grupo y categoría.",
+        "C) Al mismo grupo y escala.",
+        "D) A la misma categoría y distinto grupo."
+    ],
+    correct: 2
+},
+{
+    question: "73. Los telefonistas, están considerados como:",
+    options: [
+        "A) Personal de oficio.",
+        "B) Personal especializado.",
+        "C) Personal técnico.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 3
+},
+{
+    question: "74. No es función de los conductores:",
+    options: [
+        "A) El traslado de enfermos.",
+        "B) Llevar correspondencia cuando sea urgente.",
+        "C) Vigilar que los vehículos no se queden sin gasolina.",
+        "D) La limpieza de las ambulancias."
+    ],
+    correct: 3
+},
+{
+    question: "75. No es tarea propia del celador:",
+    options: [
+        "A) Vigilar la distribución de las comidas.",
+        "B) Vigilar el comportamiento de las visitas.",
+        "C) Cuidar que se cumplan las normas establecidas.",
+        "D) Limpiar las jaulas de los animales en los laboratorios de experimentación."
+    ],
+    correct: 0
+},
+{
+    question: "76. No es tarea propia del celador:",
+    options: [
+        "A) Vigilar la distribución de las comidas.",
+        "B) Vigilar el comportamiento de las visitas.",
+        "C) Cuidar que se cumplan las normas establecidas.",
+        "D) Limpiar las jaulas de los animales en los laboratorios experimentales."
+    ],
+    correct: 0
+},
+{
+    question: "77. No pertenece a la escala de Servicios, del personal Subalterno:",
+    options: [
+        "A) Pinches.",
+        "B) Celadores.",
+        "C) Planchadoras.",
+        "D) Fogoneros."
+    ],
+    correct: 1
+},
+{
+    question: "78. Se le ordena efectuar la limpieza de los autoclaves de la central de esterilización ¿Cómo deberá proceder?",
+    options: [
+        "A) No es cometido del celador y por tanto no se le puede ordenar.",
+        "B) Para realizarlo necesita la ayuda de un técnico en la materia.",
+        "C) Debe realizarlo con arreglo a las normas que al efecto se le habrán entregado.",
+        "D) Por razones de seguridad ha de hacerlo con otro celador."
+    ],
+    correct: 0
+},
+{
+    question: "79. Señala cuál de las siguientes funciones no corresponde al celador:",
+    options: [
+        "A) Arreglo, conservación y mantenimiento de los jardines.",
+        "B) Limpieza de la urbanización y vigilancia de los exteriores durante el día.",
+        "C) Atención del alumbrado interior y exterior del edificio.",
+        "D) Todas las indicadas en los apartados anteriores."
+    ],
+    correct: 3
+},
+{
+    question: "80. Será una función propia del celador destinado en el servicio de quirófanos auxiliar en aquellas tareas que le sean encomendadas por los médicos, supervisoras o enfermeras:",
+    options: [
+        "A) En ningún caso, por el peligro que entraña.",
+        "B) Sí, pero únicamente cuando les sea ordenado por los cirujanos.",
+        "C) Efectivamente, es una función que viene recogida en su estatuto.",
+        "D) Solamente colabora en labores auxiliares con el anestesista, en orden al movimiento de aparatos e instrumentos."
+    ],
+    correct: 2
+},
+{
+    question: "81. Si a un celador le preguntan por un enfermo que no está en la habitación porque le han llevado a hacer unas pruebas para descartar una apendicitis, ¿Qué información le dará?",
+    options: [
+        "A) Que se dirijan al Director Médico.",
+        "B) Que están descartando una apendicitis.",
+        "C) Que le pregunten al Director Enfermería.",
+        "D) Que está en consulta."
+    ],
+    correct: 3
+},
+{
+    question: "82. Si está usted de celador de urgencias y sueña que han llamado al timbre ¿Qué hará?",
+    options: [
+        "A) Esperar a que llamen otra vez.",
+        "B) No soñar.",
+        "C) Abrir la puerta.",
+        "D) Avisar al doctor."
+    ],
+    correct: 2
+},
+{
+    question: "83. Si le indican que avise al médico para la sala de partos, ¿A qué especialista debe dirigirse?",
+    options: [
+        "A) Al tocólogo.",
+        "B) Al estomatólogo.",
+        "C) Al pediatra.",
+        "D) Al neonatólogo."
+    ],
+    correct: 0
+},
+{
+    question: "84. Si un celador observa que los visitantes de un enfermo se sientan en las camas de la habitación en donde se encuentra ingresado:",
+    options: [
+        "A) Guardará la discreción adecuada.",
+        "B) Les advertirá correctamente que no deben hacerlo, explicándole las razones higiénicas y de respeto al enfermo que lo motivan.",
+        "C) Pondrá el hecho en conocimiento de la Enfermera de la planta.",
+        "D) No dirá nada porque el asunto no es de su incumbencia."
+    ],
+    correct: 1
+},
+{
+    question: "85. Si un Mecánico no cumple con el horario establecido, deberá rendir cuentas a:",
+    options: [
+        "A) El Maestro Industrial.",
+        "B) El Ingeniero Técnico industrial.",
+        "C) Al Director de Gestión.",
+        "D) Ninguna es correcta."
+    ],
+    correct: 3
+},
+{
+    question: "86. Tendrán a su cargo los animales utilizados en quirófanos experimentales y laboratorios, a quienes cuidarán y mantendrán limpias las jaulas y les asearan.",
+    options: [
+        "A) Esta función no corresponde al personal subalterno.",
+        "B) Sí, siempre que sea por indicación expresa.",
+        "C) Sí, pero en ningún caso los alimentará, dado su carácter experimental.",
+        "D) En los quirófanos experimentales sí, pero en los laboratorios se encargan los Técnicos de Laboratorio."
+    ],
+    correct: 1
+},
+{
+    question: "87. Trabajar en equipo significa:",
+    options: [
+        "A) Que tienen que ir siempre dos celadores juntos para movilizar a los pacientes.",
+        "B) Una forma de participación en el trabajo compartiendo objetivos.",
+        "C) Que los miembros de la unidad, se lleven muy bien entre ellos.",
+        "D) Es la toma de decisiones, a través de las órdenes recibidas."
+    ],
+    correct: 1
+},
+{
+    question: "88. Un celador que padezca en un momento dado una enfermedad contagiosa, pero que no le impide realizar su trabajo, tendrá:",
+    options: [
+        "A) Que ser destinado a un servicio que no tenga contactos personales.",
+        "B) Que ser necesariamente aislado, debido a su alto riesgo.",
+        "C) Que ser dado de baja.",
+        "D) Podrá controlar las visitas."
+    ],
+    correct: 2
+},
+{
+    question: "89. Un celador que realiza el turno de noche en el servicio de urgencia de un hospital, observa que el letrero luminoso que señaliza la entrada a ese servicio no funciona ¿Cuál será su actuación?",
+    options: [
+        "A) Pondrá en conocimiento a su inmediato superior dicha anomalía.",
+        "B) Ante la importancia de la avería, por ser vital la señalización, lo notificará directamente al servicio de mantenimiento.",
+        "C) No tiene obligación de informar, por cuanto esta responsabilidad compromete al servicio de vigilancia.",
+        "D) Antes de dar conocimiento de la avería, por la razón señalada, tratará de subsanarlo por él mismo."
+    ],
+    correct: 0
+},
+{
+    question: "90. Un celador recibe orden de su superior para trasladar una comunicación verbal al especialista de otorrinolaringología, ¿Cuál será su actuación?",
+    options: [
+        "A) Realizarán esta función, si no son celadores de autopsias o quirófanos.",
+        "B) Conducirá la comunicación sin tardanza al especialista indicado.",
+        "C) Conducirá la comunicación siempre que sea escrita.",
+        "D) No lo hará, ya que no es misión del celador."
+    ],
+    correct: 1
+},
+{
+    question: "91. Un visitante le pregunta por la planta donde está ingresada una mujer que ha dado a luz, la dirigirá a:",
+    options: [
+        "A) Pediatría.",
+        "B) Ginecología.",
+        "C) Obstetricia.",
+        "D) Neurocirugía."
+    ],
+    correct: 2
+},
+{
+    question: "92. Una ambulancia llega al servicio de urgencias con una accidentada (fractura de columna vertebral), al llegar al citado servicio, ¿Quién tendrá que acudir a la entrada para recibirla?",
+    options: [
+        "A) El Auxiliar administrativo de admisión de urgencias.",
+        "B) Por tratarse de una fractura, el médico y la enfermera.",
+        "C) La enfermera.",
+        "D) El celador."
+    ],
+    correct: 3
+},
+{
+    question: "93. Una de las siguientes no es una competencia recogida en el Estatuto:",
+    options: [
+        "a) Ordenación farmacéutica.",
+        "b) Ferias internacionales.",
+        "c) La gestión de la asistencia sanitaria de la Seguridad Social, de acuerdo con lo previsto en el número 17 del apartado 1 del artículo 149 de la Constitución, reservándose el Estado la alta inspección conducente al cumplimiento de la función a la que se refiere este precepto.",
+        "d) Planes regionales de implantación o reestructuración de sectores económicos."
+    ],
+    correct: 3
+},
+{
+    question: "94. Una persona acude al servicio de urgencias diciendo que afuera hay un individuo en el suelo que necesita ayuda urgente, en este caso el celador:",
+    options: [
+        "A) Le dice que lo acerque para que lo vea el médico.",
+        "B) Le facilita una silla de ruedas para que traslade al enfermo.",
+        "C) Se cerciorará de los hechos e informará de inmediato al personal sanitario siguiendo sus instrucciones para movilizar al paciente.",
+        "D) Le indicará que llame al 061."
+    ],
+    correct: 2
+},
+{
+    question: "95. Una vez que ha llegado una ambulancia al servicio de urgencias con un accidentado, ¿qué hará usted como celador?",
+    options: [
+        "A) Indicar al personal de la ambulancia el lugar al que tienen que transportar a la accidentada.",
+        "B) Ayudar al personal de la ambulancia a transportar a la accidentada.",
+        "C) Trasladar a la accidentada en camilla al interior del hospital.",
+        "D) Vigilar que el personal de la ambulancia realice su trabajo."
+    ],
+    correct: 2
+},
+{
+    question: "96. Uno de los siguientes, no pertenece al personal de oficio, ¿cuál?",
+    options: [
+        "A) Albañiles.",
+        "B) Jardineros.",
+        "C) Fogoneros.",
+        "D) Conductores."
+    ],
+    correct: 2
+},
+{
+    question: "97. Usted es celador de un hospital, donde está ingresado un conocido suyo, y casualmente en la planta escucha a unos facultativos hablar del pronóstico de su dolencia, posteriormente usted entra a interesarse por él y:",
+    options: [
+        "A) Sabiendo que el pronóstico es grave, se abstiene de comentar nada de lo que ha oído.",
+        "B) Los familiares le preguntan si usted sabe algo, pero les dice que deben preguntar al facultativo responsable.",
+        "C) Los familiares le preguntan, y usted no les comenta nada, independientemente de su pronóstico.",
+        "D) Todas las respuestas son válidas."
+    ],
+    correct: 1
+},
+{
+    question: "98. Vigilar la central térmica y calorífica, ¿es función del celador?",
+    options: [
+        "A) Sí.",
+        "B) No, es del fontanero.",
+        "C) No, es del calefactor.",
+        "D) Excepcionalmente sí."
+    ],
+    correct: 2
+},
+{
+    question: "99. Vigilar y controlar que las comidas de una institución sanitaria cerrada se sirvan durante los horarios previstos, es función de:",
+    options: [
+        "A) La enfermera.",
+        "B) La gobernanta.",
+        "C) El jefe de cocina.",
+        "D) La supervisora de planta."
+    ],
+    correct: 1
+},
+{
+    question: "100. Vigilará personalmente la limpieza de la Institución, es una función de:",
+    options: [
+        "A) El celador.",
+        "B) La gobernanta.",
+        "C) El Jefe de Personal Subalterno.",
+        "D) La limpiadora."
+    ],
+    correct: 2
+}
+]
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
