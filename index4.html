@@ -80,10 +80,15 @@
   </style>
   <script>
     function showSection(sectionId) {
-      document.querySelectorAll('.test-section').forEach(section => {
+      const section = document.getElementById(sectionId);
+      if (section.style.display === 'block') {
         section.style.display = 'none';
-      });
-      document.getElementById(sectionId).style.display = 'block';
+      } else {
+        document.querySelectorAll('.test-section').forEach(section => {
+          section.style.display = 'none';
+        });
+        section.style.display = 'block';
+      }
     }
   </script>
 </head>
