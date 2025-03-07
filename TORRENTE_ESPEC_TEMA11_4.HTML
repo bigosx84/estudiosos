@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .question label.option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .question label.option:hover {
+            background-color: #d0e7ff;
+        }
+        .result {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .correct::before {
+            content: '✔';
+            color: green;
+            margin-right: 5px;
+        }
+        .incorrect::before {
+            content: '✘';
+            color: red;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm">
+            <!-- Aquí se insertarán las preguntas -->
+        </form>
+    </div>
+
+    <script>
+const questions = [ 
+    {
+        "question": "1. Se define como 'dirección electrónica, disponible para los ciudadanos a través de redes de telecomunicaciones, cuya titularidad corresponde a una Administración Pública, o bien a una o varios organismos públicos o entidades de Derecho Público en el ejercicio de sus competencias':",
+        "options": [
+            "a) Sede electrónica.",
+            "b) Administración electrónica.",
+            "c) Página web de una Administración Pública.",
+            "d) Portal electrónico."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "2. Los medios o soportes en que se almacenen documentos, deberán contar con medidas de seguridad que garanticen (señala la incorrecta):",
+        "options": [
+            "a) La integridad y autenticidad de los documentos almacenados.",
+            "b) La confidencialidad y la calidad de los documentos almacenados.",
+            "c) La protección y la conservación de los documentos almacenados.",
+            "d) El acceso libre a los documentos almacenados."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "3. Respecto a los sistemas de identificación de las Administraciones Públicas regulados en el artículo 40 de la ley 40/2015:",
+        "options": [
+            "a) Cada Administración Pública adoptará las medidas adecuadas para facilitar la verificación de sus sellos electrónicos.",
+            "b) Se entenderá identificada la Administración Pública respecto de la información que se publique como propia en su portal de internet.",
+            "c) La relación de sellos electrónicos será accesible por medios electrónicos.",
+            "d) Todas las opciones de respuesta son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "4. Los documentos electrónicos que contengan actos administrativos que afecten a derechos o intereses de los particulares deberán conservarse en soportes de esta naturaleza:",
+        "options": [
+            "a) En el mismo formato a partir del que se originó el documento o en papel.",
+            "b) En cualquier formato que asegure la identidad e integridad de la información necesaria para reproducirlo, incluyendo el mismo formato a partir del que se originó.",
+            "c) En el formato que decidan los particulares.",
+            "d) Todas las opciones de respuesta son correctas, según las circunstancias."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "5. Señala los principios establecidos en el art. 38 de la Ley 40/2015, de 1 de octubre, de Régimen Jurídico del Sector Público, a los que deben sujetarse las Administraciones Públicas al determinar las condiciones e instrumentos de creación de las sedes electrónicas:",
+        "options": [
+            "a) Transparencia, publicidad, seguridad, calidad, competencia y coordinación.",
+            "b) Transparencia, publicidad, responsabilidad, calidad, seguridad, disponibilidad, accesibilidad, neutralidad e interoperabilidad.",
+            "c) Responsabilidad, seguridad, calidad, disponibilidad, desconcentración, accesibilidad e interoperabilidad.",
+            "d) Transparencia, jerarquía, publicidad, responsabilidad, calidad, seguridad, disponibilidad, accesibilidad y neutralidad."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "6. Las Administraciones Públicas podrán identificarse mediante el uso de:",
+        "options": [
+            "a) Un sello electrónico basado en un certificado electrónico reconocido o cualificado que reúna los requisitos exigidos por la legislación de firma electrónica.",
+            "b) Un sello electrónico basado en un certificado electrónico reconocido o cualificado que reúna los requisitos exigidos por la legislación de protección de datos.",
+            "c) Cualquier sistema electrónico basado en un certificado electrónico reconocido o cualificado que reúna los requisitos exigidos por la legislación de firma electrónica.",
+            "d) Cualquier sistema electrónico basado en un certificado electrónico reconocido o cualificado que reúna los requisitos exigidos por la legislación de protección de datos."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "7. Los medios o soportes en que se almacenen documentos asegurarán (señala la incorrecta):",
+        "options": [
+            "a) La identificación de los usuarios.",
+            "b) El control de accesos.",
+            "c) El cumplimiento de las garantías previstas en la legislación de protección de datos.",
+            "d) La recuperación y conservación en un plazo razonable de los documentos electrónicos producidos por las administraciones públicas que así lo requieran."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "8. ¿Qué deberá garantizar cada Administración Pública respecto de su sede electrónica?",
+        "options": [
+            "a) La identificación del órgano titular de la sede, así como los medios disponibles para la formulación de sugerencias.",
+            "b) La identificación del órgano titular de la sede, así como los medios electrónicos para la formulación de sugerencias y quejas.",
+            "c) La identificación del órgano titular de la sede, así como los medios disponibles para la formulación de sugerencias y quejas.",
+            "d) La identificación del registro electrónico de la sede, así como los medios disponibles para la formulación de sugerencias y quejas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "9. Según dispone el art. 44 de la Ley 40/2015, de 1 de octubre, las condiciones y garantías por las que se regirá el intercambio electrónico de datos en entorno cerrado, cuando los participantes pertenezcan a distintas Administraciones, se establecerá:",
+        "options": [
+            "a) Mediante convenio suscrito entre aquellas.",
+            "b) Por las normas que dicte la de superior nivel jerárquico.",
+            "c) Por las normas internas de cada una de ellas.",
+            "d) Por las normas que se establezcan reglamentariamente."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "10. En el contexto del funcionamiento electrónico del sector público, se entiende por actuación administrativa automatizada:",
+        "options": [
+            "a) Cualquier acto o actuación realizada íntegramente a través de medios electrónicos por una Administración Pública en el marco de un procedimiento administrativo y en la que haya intervenido de forma directa un empleado público.",
+            "b) Cualquier acto o actuación realizada íntegramente o en parte a través de medios electrónicos por una Administración Pública en el marco de un procedimiento administrativo y en la que no haya intervenido de forma directa un empleado público.",
+            "c) Cualquier acto o actuación realizada íntegramente a través de medios electrónicos por una Administración Pública en el marco de un procedimiento administrativo y en la que no haya intervenido de forma directa un empleado público.",
+            "d) Cualquier acto o actuación realizada íntegramente o en parte a través de medios electrónicos por una Administración Pública en el marco de un procedimiento administrativo y en la que haya intervenido de forma directa un empleado público."
+        ],
+        "correct": 2
+    },
+	    {
+        "question": "11. Según lo previsto en el artículo 46 de la Ley 40/2015, de 1 de octubre de Régimen Jurídico de Sector Público, los documentos utilizados en las actuaciones administrativas se almacenarán:",
+        "options": [
+            "A) Siempre por medios electrónicos.",
+            "B) Siempre en papel.",
+            "C) Indistintamente por medios electrónicos o papel.",
+            "D) Por medios electrónicos salvo cuando no sea posible."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "12. La publicación en las sedes electrónicas de informaciones, servicios y transacciones:",
+        "options": [
+            "a) Respetará los principios de accesibilidad y uso de acuerdo con las normas establecidas al respecto, estándares cerrados y, en su caso, aquellos otros que sean de uso generalizado por los ciudadanos.",
+            "b) Respetará los principios de accesibilidad y uso de acuerdo con las normas establecidas al respecto, estándares abiertos y, en su caso, aquellos otros que sean de uso generalizado por los ciudadanos.",
+            "c) Respetará los principios de accesibilidad y uso de acuerdo con las normas establecidas al respecto, estándares cerrados y, en su caso, aquellos otros que sean de uso generalizado por las Administraciones.",
+            "d) Respetará los principios de accesibilidad y uso de acuerdo con las normas establecidas al respecto, estándares abiertos y, en su caso, aquellos otros que sean de uso generalizado por las Administraciones."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "13. ¿Qué conlleva el establecimiento de una sede electrónica?",
+        "options": [
+            "a) Conlleva la responsabilidad de los usuarios respecto de la integridad, veracidad y actualización de la información y los servicios a los que pueda accederse a través de la misma.",
+            "b) Conlleva la responsabilidad de su titular respecto de la integridad y actualización de la información y los servicios a los que pueda accederse a través de la misma.",
+            "c) Conlleva la responsabilidad de su titular respecto de la integridad, veracidad y actualización de la información y los servicios a los que pueda accederse a través de la misma.",
+            "d) Conlleva la responsabilidad respecto de la veracidad y actualización de la información y los servicios a los que pueda accederse a través de la misma."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "14. Los medios o soportes en que se almacenen documentos, deberán contar con medidas de seguridad, de acuerdo con lo previsto en:",
+        "options": [
+            "a) El Esquema Nacional de Seguridad.",
+            "b) El Consejo de Ministros.",
+            "c) El Punto de Acceso General electrónico de la Administración.",
+            "d) El Esquema Nacional de Interoperabilidad."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "15. Cada Administración Pública determinará las condiciones e instrumentos de creación de las sedes electrónicas con sujeción a los principios de (señale el incorrecto):",
+        "options": [
+            "a) Neutralidad.",
+            "b) Lealtad.",
+            "c) Disponibilidad.",
+            "d) Transparencia."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "16. Las sedes electrónicas utilizarán, para identificarse y garantizar una comunicación segura con las mismas:",
+        "options": [
+            "a) Certificados reconocidos o cualificados de autenticación de sitio web o medio equivalente.",
+            "b) Firma electrónica de autenticación de sitio web o medio equivalente.",
+            "c) Sello electrónico de Administración Pública o código seguro de verificación.",
+            "d) Cualquiera de los indicados entre las opciones de respuesta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "17. En el ejercicio de la competencia en la actuación administrativa automatizada, cada Administración Pública podrá determinar los supuestos de utilización de los siguientes sistemas de firma electrónica:",
+        "options": [
+            "a) Certificados reconocidos o cualificados de autenticación de sitio web o medio equivalente.",
+            "b) Firma electrónica de autenticación de sitio web o medio equivalente.",
+            "c) Sello electrónico de Administración Pública o código seguro de verificación.",
+            "d) Cualquiera de los indicados entre las opciones de respuesta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "18. Se entiende en la ley 40/2015 como 'portal de internet':",
+        "options": [
+            "a) La sede electrónica cuya titularidad corresponda a una Administración Pública, organismo público o entidad de Derecho Público que permite el acceso a través de internet a la información publicada y, en su caso, al punto de acceso electrónico correspondiente.",
+            "b) Aquella dirección electrónica, disponible para los ciudadanos a través de redes de telecomunicaciones, cuya titularidad corresponde a una Administración Pública, o bien a una o varios organismos públicos o entidades de Derecho Público en el ejercicio de sus competencias.",
+            "c) Aquella sede electrónica, disponible para los ciudadanos a través de redes de telecomunicaciones, cuya titularidad corresponde a una Administración Pública, o bien a una o varios organismos públicos o entidades de Derecho Público en el ejercicio de sus competencias.",
+            "d) El punto de acceso electrónico cuya titularidad corresponda a una Administración Pública, organismo público o entidad de Derecho Público que permite el acceso a través de internet a la información publicada y, en su caso, a la sede electrónica correspondiente."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "19. ¿Cómo se identifica una Administración Pública respecto de la información que se publique como propia en su portal de internet?",
+        "options": [
+            "a) De ninguna forma especial, ya que se entenderá identificada.",
+            "b) A través de sello electrónico o código seguro de verificación.",
+            "c) A través de firma electrónica o sello electrónico.",
+            "d) A través de la sede electrónica."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "20. Indique cuál de los siguientes datos no se incluye obligatoriamente, de acuerdo con lo establecido en el artículo 10.1 de la ley 40/2015, de 1 de octubre, de Régimen Jurídico del Sector Público, en el sello electrónico de una administración pública:",
+        "options": [
+            "a) El número de identificación fiscal.",
+            "b) La denominación correspondiente.",
+            "c) En todo caso, la identidad de la persona titular.",
+            "d) Todos los indicados en las opciones de respuesta deben aparecer siempre en el sello electrónico."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "21. En caso de actuación administrativa automatizada, indique qué deberá indicarse o establecerse previamente (señale la respuesta incorrecta):",
+        "options": [
+            "a) El órgano u órganos competentes, según los casos, para la definición de las especificaciones, programación, mantenimiento, supervisión y control de calidad.",
+            "b) El órgano que debe ser considerado responsable a efectos de sugerencias y quejas.",
+            "c) El órgano u órganos competentes, para, en su caso, la auditoría del sistema de información y de su código fuente.",
+            "d) El órgano que debe ser considerado responsable a efectos de impugnación."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "22. El código seguro de verificación utilizado por una Administración Pública permitirá en todo caso:",
+        "options": [
+            "a) La comprobación de la sede electrónica utilizada mediante el acceso al documento correspondiente.",
+            "b) La comprobación de la sede electrónica utilizada mediante el acceso al portal de internet correspondiente.",
+            "c) La comprobación de la integridad del documento mediante el acceso a la sede electrónica correspondiente.",
+            "d) La comprobación de la integridad del documento mediante el acceso al portal de internet correspondiente."
+        ],
+        "correct": 2
+    },
+	    {
+        "question": "23. En relación con la firma electrónica del personal al servicio de las Administraciones Públicas:",
+        "options": [
+            "a) Cada Administración Pública determinará los sistemas de firma electrónica que debe utilizar su personal.",
+            "b) Los sistemas de firma electrónica a utilizar podrán identificar de forma conjunta al titular del puesto de trabajo o cargo y a la Administración u órgano en la que presta sus servicios.",
+            "c) Los sistemas de firma electrónica podrán referirse sólo al número de identificación profesional del empleado público.",
+            "d) Todas las opciones de respuesta son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "24. Según dispone el art. 44 de la Ley 40/2015, de 1 de octubre, las condiciones y garantías por las que se regirá el intercambio electrónico de datos en entorno cerrado, cuando los participantes pertenezcan a una misma Administración Pública:",
+        "options": [
+            "a) Se establecerá mediante convenio suscrito entre aquellas.",
+            "b) Se establecerá por las normas que dicte el superior jerárquico común a ambos órganos.",
+            "c) Se determinarán por la propia Administración.",
+            "d) Se establecerá por las normas que se establezcan reglamentariamente."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "25. Con el fin de favorecer la interoperabilidad y posibilitar la verificación automática de la firma electrónica de los documentos electrónicos, cuando una Administración utilice sistemas de firma electrónica distintos de aquellos basados en certificado electrónico reconocido o cualificado, para remitir o poner a disposición de otros órganos, organismos públicos, entidades de Derecho Público o Administraciones la documentación firmada electrónicamente:",
+        "options": [
+            "a) Podrá superponer un sello electrónico basado en un certificado electrónico reconocido o cualificado.",
+            "b) Podrá superponer un código seguro de verificación.",
+            "c) Deberá superponer un sello electrónico basado en un certificado electrónico reconocido o cualificado.",
+            "d) Deberá superponer un código seguro de verificación."
+        ],
+        "correct": 0
+    }
+		];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	

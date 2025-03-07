@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .question label.option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .question label.option:hover {
+            background-color: #d0e7ff;
+        }
+        .result {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .correct::before {
+            content: '✔';
+            color: green;
+            margin-right: 5px;
+        }
+        .incorrect::before {
+            content: '✘';
+            color: red;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm">
+            <!-- Aquí se insertarán las preguntas -->
+        </form>
+    </div>
+
+    <script>
+const questions = [ 
+     {
+        "question": "1. ¿Cuál de las siguientes es la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura?",
+        "options": [
+            "a) Ley 8/2010, de 23 de marzo.",
+            "b) Ley 8/2011, de 23 de marzo.",
+            "c) Ley 18/2011, de 25 de marzo.",
+            "d) Ley 23/2011, de 8 de marzo."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. ¿Cuál de los siguientes no es un principio general de actuación de los poderes públicos de Extremadura para lograr los objetivos de la Ley de igualdad entre mujeres y hombres y contra la violencia de género de Extremadura?",
+        "options": [
+            "a) La igualdad de trato y oportunidades entre mujeres y hombres.",
+            "b) La ruptura de la brecha de género en la Sociedad de la Información, el Conocimiento y la Imaginación.",
+            "c) El respeto a la diversidad y a la diferencia y la eliminación de roles y estereotipos en función del sexo.",
+            "d) El reconocimiento de la maternidad como un valor personal."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "3. ¿Cuál es la Ley 8/2011 de 23 de marzo de Extremadura?",
+        "options": [
+            "a) Ley de Igualdad entre Mujeres y Hombres.",
+            "b) Ley contra la Violencia de Género en Extremadura.",
+            "c) A) y B) son correctas.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "4. ¿Cuándo entró en vigor la Ley de igualdad entre mujeres y hombres y contra la violencia de género en Extremadura?",
+        "options": [
+            "a) Al día siguiente de su publicación en el Diario Oficial de Extremadura.",
+            "b) El 26 de marzo de 2011.",
+            "c) El 13 de abril de 2011, al día siguiente de su publicación en el BOE.",
+            "d) A) y B) son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "5. ¿Cuándo fue publicada la Ley de igualdad entre mujeres y hombres y contra la violencia de género en Extremadura?",
+        "options": [
+            "a) BOE nº 88, 13-Abr-2011 / DOE nº 59, 25-Mar-2011.",
+            "b) BOE nº 90, 13-Abr-2011 / DOE nº 59, 25-Mar-2011.",
+            "c) BOE nº 88, 13-Abr-2011 / DOE nº 69, 25-Mar-2011.",
+            "d) BOE nº 78, 13-Abr-2011 / DOE nº 47, 25-Mar-2011."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. ¿Cuántos artículos tiene la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura?",
+        "options": [
+            "a) 100 artículos.",
+            "b) 91 artículos.",
+            "c) 106 artículos.",
+            "d) 166 artículos."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "7. ¿Qué nombre recibe el Título Preliminar de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura?",
+        "options": [
+            "a) Ninguno.",
+            "b) Disposiciones Generales.",
+            "c) Principios Rectores.",
+            "d) Derechos y Deberes sobre Violencia de Género."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "8. Al efecto de conseguir su objeto, la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura...",
+        "options": [
+            "a) Establece los principios generales a los que se somete la actuación de los poderes públicos de Extremadura en materia de igualdad entre mujeres y hombres y en la erradicación de la violencia de género.",
+            "b) Regula las medidas y recursos dirigidos a promover y garantizar la efectiva igualdad de oportunidades y de trato en todos los ámbitos de la vida. En particular, establece las acciones orientadas a favorecer la autonomía personal y a fortalecer la posición social, laboral, económica y política de las mujeres.",
+            "c) Establece medidas integrales para la sensibilización, prevención y detección de la violencia de género, con la finalidad de erradicarla de la sociedad. También se reconocen a las mujeres que la sufren y a su núcleo familiar los derechos de atención, asistencia, protección y recuperación integral.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. El artículo 3 de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura, trata de",
+        "options": [
+            "a) Principios Rectores.",
+            "b) Principios generales.",
+            "c) Disposiciones Generales.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "10. El principio de 'interseccionalidad', hace referencia a:",
+        "options": [
+            "a) A la interacción que se produce entre el género y otros factores de discriminación.",
+            "b) A la unión entre la discriminación de género percibida y los mecanismos para contrarrestarla.",
+            "c) A la discriminación que se produce exclusivamente cuando la mujer es de otra etnia, raza o una determinada condición socio-económica o cultural.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "11. El Título II de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura, se denomina:",
+        "options": [
+            "a) Medidas para la promoción de la igualdad de género por la junta de Extremadura.",
+            "b) Disposiciones generales.",
+            "c) Integración de la perspectiva de género en las políticas públicas.",
+            "d) Medidas para la integración de la perspectiva de género en las políticas públicas y en la normativa."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "12. El Título II de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura, se divide:",
+        "options": [
+            "a) En dos secciones.",
+            "b) En tres capítulos.",
+            "c) No se divide, tan solo contiene artículos correlativos.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "13. En el ámbito territorial de la Comunidad Autónoma de Extremadura ¿A quién es de aplicación la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura a tenor de su contenido?",
+        "options": [
+            "a) En particular, será de aplicación a las personas físicas y jurídicas, en los términos establecidos en la presente Ley.",
+            "b) En los términos establecidos en la Ley a la Administración de la Comunidad Autónoma de Extremadura y sus organismos autónomos, a las empresas de la Junta de Extremadura, a los consorcios, fundaciones y demás entidades con personalidad jurídica propia en los que sea mayoritaria la representación directa de la Junta de Extremadura, así como a las entidades que integran la Administración Local, sus organismos autónomos, consorcios, fundaciones y demás entidades con personalidad jurídica propia en los que sea mayoritaria la representación directa de dichas entidades.",
+            "c) A la Universidad de Extremadura, a todas las entidades que realicen actividades educativas y de formación cualquiera que sea su tipo, nivel y grado, y a las entidades privadas que suscriban contratos o convenios de colaboración con las Administraciones Públicas de Extremadura o sean beneficiarias de ayudas o subvenciones concedidas por ellas.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "14. La igualdad de trato entre mujeres y hombres, la igualdad de oportunidades, la ruptura de la brecha de género en la Sociedad de la Información, el respeto a la diversidad y a la diferencia, la eliminación de roles y estereotipos en función del sexo, el reconocimiento de la maternidad como un valor social y el fomento de la corresponsabilidad, son según la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura:",
+        "options": [
+            "a) Derechos.",
+            "b) Deberes.",
+            "c) Principios Generales.",
+            "d) Principios Rectores."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "15. La Ley de igualdad entre mujeres y hombres y contra la violencia de género en Extremadura es:",
+        "options": [
+            "a) ley 18/2011, de 25 de marzo.",
+            "b) ley 1/2011, de 23 de marzo.",
+            "c) ley 8/2011, de 25 de marzo.",
+            "d) ley 8/2011, de 23 de marzo."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "16. Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura establece como 'representación equilibrada'",
+        "options": [
+            "a) Aquella situación que garantice la presencia de mujeres y hombres de forma que, en el conjunto de personas a que se refiera, cada sexo no supere el cincuenta por ciento.",
+            "b) Paridad en la designación de representantes, que conlleva que a cada representante masculino hay que corresponder con la designación de una representante femenina.",
+            "c) A y B son correctas.",
+            "d) Aquella situación que garantice la presencia de mujeres y hombres de forma que, en el conjunto de personas a que se refiera, cada sexo ni supere el sesenta por ciento ni sea menos del cuarenta por ciento."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "17. Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura establece que se entiende por 'acoso por razón de sexo'",
+        "options": [
+            "a) La situación en que se produce cualquier comportamiento verbal, no verbal o físico de índole sexual, con el propósito o el efecto de atentar contra la dignidad de una persona, en particular cuando se crea un entorno intimidatorio, hostil, degradante, humillante u ofensivo.",
+            "b) La situación en que se produce un comportamiento relacionado con el sexo de una persona, con el propósito o el efecto de atentar contra la dignidad de la persona y crear un entorno intimidatorio, hostil, degradante, humillante u ofensivo.",
+            "c) La situación de desigualdad y las relaciones de poder de los hombres sobre las mujeres, se ejerce sobre éstas por parte de quienes sean o hayan sido sus cónyuges o de quienes estén o hayan estado ligados a ellas por relaciones similares de afectividad, aún sin convivencia.",
+            "d) Todas son correctas."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "18. Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura establece que se entiende por 'acoso sexual'",
+        "options": [
+            "a) La situación en que se produce cualquier comportamiento verbal, no verbal o físico de índole sexual, con el propósito o el efecto de atentar contra la dignidad de una persona, en particular cuando se crea un entorno intimidatorio, hostil, degradante, humillante u ofensivo.",
+            "b) La A), pero sólo cuando es comportamiento físico.",
+            "c) La B) siempre y cuando sea en ambiente laboral.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "19. Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura establece que se entiende por 'violencia de género'",
+        "options": [
+            "a) Aquella violencia que, como manifestación de la discriminación, la situación de desigualdad y las relaciones de poder de los hombres sobre las mujeres, se ejerce sobre éstas por parte de quienes sean o hayan sido sus cónyuges o de quienes estén o hayan estado ligados a ellas por relaciones similares de afectividad, aún sin convivencia.",
+            "b) La A), de conformidad con la Ley Orgánica 1/2004, de 28 de diciembre, de Medidas de Protección Integral contra la Violencia de género.",
+            "c) La B), siempre que conlleve un daño físico grave o muy grave y afecte al normal desarrollo de la personalidad, la libertad y la igualdad de la persona.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "20. Para avanzar hacia una sociedad extremeña más libre, justa, democrática y solidaria, la Ley 8/2011 de 23 de marzo, tiene por objeto",
+        "options": [
+            "a) Hacer efectivo el derecho de igualdad de trato y oportunidades entre mujeres y hombres en la Comunidad Autónoma de Extremadura.",
+            "b) Combatir de modo integral la violencia de género.",
+            "c) A) y B) son correctas.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "21. Según la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura ¿Qué es discriminación directa?",
+        "options": [
+            "a) La discriminación que se produce por contacto directo entre las personas, sin mediar documentos, comunicaciones ni otro tipo de contacto telemático.",
+            "b) La situación en que se encuentra una persona que, en atención a su sexo, sea, haya sido o pudiera ser tratada de manera menos favorable que otra en situación homóloga.",
+            "c) El mantenimiento de una situación de discriminación activa contra la mujer.",
+            "d) Todas son correctas."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "22. Según la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura ¿Qué es discriminación indirecta?",
+        "options": [
+            "a) La situación en que la aplicación de una disposición, criterio o práctica aparentemente neutros pone a las personas de un sexo en desventaja particular con respecto a las personas del otro.",
+            "b) La A), salvo que la aplicación de dicha disposición, criterio o práctica pueda justificarse objetivamente en atención a una finalidad legítima, y que los medios para alcanzar dicha finalidad sean necesarios y adecuados.",
+            "c) A y B son incorrectas.",
+            "d) La discriminación no telemática de personas en razón a su género."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "23. Según la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura, se entiende que cualquier tipo de trato desfavorable relacionado con el embarazo, la maternidad o la paternidad constituye",
+        "options": [
+            "a) Una razón de discriminación tolerable.",
+            "b) Discriminación directa por razón de sexo.",
+            "c) Discriminación indirecta.",
+            "d) Discriminación exclusiva de género femenino."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "24. Según su artículo 1, ¿cuál es el objeto de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura?",
+        "options": [
+            "a) Hacer efectivo el derecho de igualdad de trato y oportunidades entre mujeres y hombres en la Comunidad Autónoma de Extremadura.",
+            "b) Combatir de modo integral la violencia de género, para avanzar hacia una sociedad extremeña más libre, justa, democrática y solidaria.",
+            "c) Cumplir el mandato constitucional recogido en los artículos 1.1 (igualdad), 14 (igualdad ante la Ley) y 9 (igualdad efectiva).",
+            "d) A y B son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "25. Señale la opción incorrecta al respecto de que 'Los Poderes Públicos adoptarán medidas específicas a favor de las mujeres para corregir situaciones patentes de desigualdad de hecho respecto de los hombres'",
+        "options": [
+            "a) Se denomina Acción Positiva.",
+            "b) Dichas medidas habrán de ser razonables y proporcionadas en relación con el objetivo perseguido.",
+            "c) Su fin es hacer efectivo el derecho constitucional a la igualdad.",
+            "d) Todas son incorrectas."
+        ],
+        "correct": 3
+    }
+		];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	
