@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .question label.option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .question label.option:hover {
+            background-color: #d0e7ff;
+        }
+        .result {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .correct::before {
+            content: '✔';
+            color: green;
+            margin-right: 5px;
+        }
+        .incorrect::before {
+            content: '✘';
+            color: red;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm">
+            <!-- Aquí se insertarán las preguntas -->
+        </form>
+    </div>
+
+    <script>
+const questions = [ 
+ {
+        "question": "1. La Ley de Salud de Extremadura se aprobó en el año:",
+        "options": [
+            "a) 2001.",
+            "b) 2002.",
+            "c) 2003.",
+            "d) 2004."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "2. El órgano colegiado de consulta y participación que tiene como objetivo general la mejora de la actuación sanitaria en el área de salud, se denomina:",
+        "options": [
+            "a) Director de Salud de Área.",
+            "b) Gerencia de Área.",
+            "c) Consejo de Salud de Área.",
+            "d) Consejo de Dirección."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "3. El marco territorial y poblacional de la atención primaria donde se recibe la prestación sanitaria mediante el acceso directo de la población, y en el que se ha de tener la capacidad de proporcionar una atención continuada, integral y permanente, a través de los profesionales integrantes del Equipo de Atención Primaria se denomina:",
+        "options": [
+            "a) Zona de salud.",
+            "b) Gerencia de Área.",
+            "c) Área de salud.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. ¿Cuántos representantes de los municipios del área de salud, elegidos por y entre ellos componen el Consejo de Dirección de Área?",
+        "options": [
+            "a) Cuatro.",
+            "b) Tres.",
+            "c) Dos.",
+            "d) Uno."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "5. ¿Quién actúa como Vicepresidente en el Consejo de Dirección de Área?",
+        "options": [
+            "a) El Gerente del Área.",
+            "b) El Director de Salud de Área.",
+            "c) El Secretario.",
+            "d) Un representante del Servicio Extremeño de Salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "6. ¿A quién le corresponde establecer los criterios generales de actuación en política sanitaria del área de salud?",
+        "options": [
+            "a) Al Consejo de Dirección de Área.",
+            "b) A la Gerencia de Área.",
+            "c) Al Consejo de Salud de Área.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "7. El Sistema Sanitario Público de Extremadura, a través de las Administraciones Públicas en el ámbito de sus respectivas competencias, desarrolla las siguientes actuaciones:",
+        "options": [
+            "a) De salud pública.",
+            "b) De asistencia sanitaria.",
+            "c) De docencia e investigación.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "8. Todos los núcleos dispondrán de un consultorio local cuando su población sea superior a:",
+        "options": [
+            "a) 100 habitantes.",
+            "b) 50 habitantes.",
+            "c) 25 habitantes.",
+            "d) No se indica el número exacto."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "9. ¿A quién le corresponde realizar el diagnóstico de salud de la Zona?",
+        "options": [
+            "a) Al Equipo de Atención Especializada.",
+            "b) Al Equipo de Urgencias.",
+            "c) Al Equipo de Atención Primaria.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "10. El Reglamento General de Organización y Funcionamiento de la Atención Primaria de Salud de la Comunidad Autónoma de Extremadura, se aprobó en el año 2023 con rango de:",
+        "options": [
+            "a) Ley.",
+            "b) Decreto.",
+            "c) Resolución.",
+            "d) Orden."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "11. Son Centros de Atención Primaria:",
+        "options": [
+            "a) Los consultorios locales.",
+            "b) Los centros de salud.",
+            "c) Los centros de las unidades de apoyo a la atención primaria.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "12. En cada Zona de Salud habrá:",
+        "options": [
+            "a) Un Centro de Salud.",
+            "b) Un Equipo de Atención Primaria.",
+            "c) Las respuestas a) y b) son correctas.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "13. Entre las funciones de la Atención Primaria de Salud no se encuentra:",
+        "options": [
+            "a) Funciones asistenciales, de cuidados y de atención a la persona usuaria.",
+            "b) Funciones de formación, docencia e investigación.",
+            "c) Funciones de registro y gestión.",
+            "d) Funciones de atención indirecta."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "14. El Hospital Materno Infantil pertenece al:",
+        "options": [
+            "a) Complejo Hospitalario de Mérida.",
+            "b) Complejo Hospitalario de Plasencia.",
+            "c) Complejo Hospitalario Universitario de Cáceres.",
+            "d) Complejo Hospitalario Universitario de Badajoz."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "15. El Hospital Tierra de Barros pertenece al:",
+        "options": [
+            "a) Complejo Hospitalario de Mérida.",
+            "b) Complejo Hospitalario de Plasencia.",
+            "c) Complejo Hospitalario Universitario de Cáceres.",
+            "d) Complejo Hospitalario Universitario de Badajoz."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "16. El Hospital San Pedro de Alcántara pertenece al:",
+        "options": [
+            "a) Complejo Hospitalario de Mérida.",
+            "b) Complejo Hospitalario de Plasencia.",
+            "c) Complejo Hospitalario Universitario de Cáceres.",
+            "d) Complejo Hospitalario Universitario de Badajoz."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "17. El Presidente del Consejo de Dirección de Área es:",
+        "options": [
+            "a) El Director de Salud de Área.",
+            "b) El Gerente del Área.",
+            "c) Director de Salud de Área.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "18. La Junta de Extremadura determinará la estructura y funcionamiento de los órganos del área de salud:",
+        "options": [
+            "a) Por Ley Orgánica.",
+            "b) Por Ley.",
+            "c) Por Decreto Legislativo.",
+            "d) Reglamentariamente."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "19. En relación con la atención especializada, señale la respuesta incorrecta:",
+        "options": [
+            "a) Se prestará en los hospitales.",
+            "b) Se prestará en otros centros extrahospitalarios de la red asistencial.",
+            "c) En el marco territorial de cada área de salud existirá un hospital de área de titularidad pública.",
+            "d) La Junta de Extremadura a través de su Presidente, establecerá un sistema de servicios de referencia dentro de la Comunidad Autónoma."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "20. El Equipo de Atención Primaria organizará su funcionamiento siguiendo los principios de:",
+        "options": [
+            "a) Eficacia y centralización.",
+            "b) Eficiencia y seguridad.",
+            "c) Eficacia y complementariedad.",
+            "d) Eficiencia y subsidiariedad."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "21. Para la dirección y coordinación de las acciones y dispositivos de Salud Pública de la Administración Sanitaria, en el ámbito del área de salud, se nombrará, por el titular de la Consejería competente en materia sanitaria:",
+        "options": [
+            "a) Un Director de Salud de Área.",
+            "b) Un Gerente de Área.",
+            "c) Un Consejo de Salud de Área.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "22. ¿Cuántos representantes del SES compondrán el Consejo de Dirección de Área?",
+        "options": [
+            "a) Seis.",
+            "b) Cinco.",
+            "c) Cuatro.",
+            "d) Tres."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "23. El Centro de Urgencias y Emergencias de Extremadura, coordinará las llamadas de urgencias y emergencias sanitarias que se produzcan en la región a través del número:",
+        "options": [
+            "a) 061.",
+            "b) 062.",
+            "c) 112.",
+            "d) 016."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "24. ¿Cuál es la estructura física fundamental de la Atención Especializada?",
+        "options": [
+            "a) El Centro de Salud.",
+            "b) El Centro de Especialidades.",
+            "c) El Consultorio local.",
+            "d) El Hospital."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "25. Los hospitales tienen como función primordial la de:",
+        "options": [
+            "a) Prestación de la asistencia especializada.",
+            "b) Promoción de la salud.",
+            "c) Prevención de las enfermedades.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "26. Los servicios y actividades de los hospitales se agrupan en las siguientes divisiones:",
+        "options": [
+            "a) Gerencia, División Médica, División de Enfermería y División de Gestión y Servicios Generales.",
+            "b) Secretaría, División Médica, División de Enfermería y División de Gestión.",
+            "c) Secretaría, División Técnica, División Médica y División de Enfermería.",
+            "d) Gerencia, Secretaría, División Médica y División de Gestión y Servicios Generales."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "27. ¿Cuál es el órgano unipersonal de dirección y gestión de cada División?",
+        "options": [
+            "a) El Director Técnico General de la División.",
+            "b) El Director de la División.",
+            "c) El Gerente.",
+            "d) El Secretario."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "28. ¿De quién dependen orgánica y funcionalmente los Directores de las Divisiones Médica, de Enfermería y de Gestión y de Servicios Generales?",
+        "options": [
+            "a) Del Director Gerente.",
+            "b) Del Secretario General.",
+            "c) Del Director Médico del Área de Salud.",
+            "d) Del Subdirector Técnico General."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "29. ¿A quién corresponde la representación del hospital y la superior autoridad y responsabilidad dentro del mismo?",
+        "options": [
+            "a) Al Director Gerente.",
+            "b) Al Director Médico.",
+            "c) Al Director de Gestión y Personal.",
+            "d) Al Director de Enfermería."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "30. ¿Cuál de las siguientes áreas de actividad no quedan adscritas a la Gerencia del hospital?",
+        "options": [
+            "a) Control de gestión.",
+            "b) Admisión.",
+            "c) Recepción e información.",
+            "d) Gestión económica."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "31. ¿A qué División queda adscrita el área de orden interno y seguridad, y obras y mantenimiento?",
+        "options": [
+            "a) A la División de Gestión y Servicios Generales.",
+            "b) A la División de Enfermería.",
+            "c) A la División Médica.",
+            "d) A la Gerencia."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "32. ¿Quién preside la Comisión de Dirección en los hospitales en los que no existe Director Gerente?",
+        "options": [
+            "a) El Director de Enfermería.",
+            "b) El Director Médico.",
+            "c) El Director de Personal.",
+            "d) El Subdirector Gerente."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "33. ¿Con qué periodicidad se reúne la Comisión de Dirección?",
+        "options": [
+            "a) Anualmente.",
+            "b) Semestralmente.",
+            "c) Trimestralmente.",
+            "d) Semanalmente."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "34. ¿Cuál es el órgano colegiado de asesoramiento de la Comisión de Dirección del hospital, en lo relativo a actividad asistencial, así como de participación de los profesionales en el mecanismo de toma de decisiones que afecten a sus actividades?",
+        "options": [
+            "a) La Comisión de Bienestar Social.",
+            "b) La Junta Técnico-Asistencial.",
+            "c) La Comisión Central de Garantía de la Calidad.",
+            "d) El Consejo Nacional de Asistencia Sanitaria."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "35. ¿Cuántas veces se reúne como mínimo la Junta Técnico-Asistencial?",
+        "options": [
+            "a) Seis veces al año.",
+            "b) Cinco veces al año.",
+            "c) Tres veces al año.",
+            "d) Dos veces al año."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "36. Señale la respuesta correcta respecto a la Comisión Central de Garantía de la Calidad:",
+        "options": [
+            "a) Los miembros de las Comisiones Clínicas no deben superar el número de seis.",
+            "b) Los miembros de las Comisiones Clínicas serán nombrados por la Junta Técnico-Asistencial, a propuesta de la Dirección Médica.",
+            "c) Es el organismo técnico de elaboración y trabajo en las áreas de Calidad Asistencial y Adecuación Tecnológica.",
+            "d) Actúa como órgano de asesoramiento temporal a la Dirección Médica y a la Junta Técnico-Asistencial."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "37. ¿Cuántos vocales en representación de los órganos de participación social integran la Comisión de Bienestar Social?",
+        "options": [
+            "a) Ocho.",
+            "b) Seis.",
+            "c) Cinco.",
+            "d) Tres."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "38. Los responsables de las unidades asistenciales con rango inferior al de Servicio tienen la denominación de:",
+        "options": [
+            "a) Supervisores.",
+            "b) Encargados de Sección.",
+            "c) Jefes de Sección.",
+            "d) Delegados de División."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "39. ¿Cómo se denominan las Instituciones Sanitarias de asistencia especializada por excelencia, donde se presta no solo asistencia en régimen de internamiento sino también ambulatorio, de urgencias e incluso domiciliario?",
+        "options": [
+            "a) Ambulatorios.",
+            "b) Centros de Diagnóstico y Tratamiento.",
+            "c) Hospitales.",
+            "d) Unidades de Salud Especializada."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "40. La Ley 37/1962 cataloga a los hospitales, en razón a su ámbito en:",
+        "options": [
+            "a) Nacionales, regionales, provinciales y locales.",
+            "b) Hospitales generales y especiales.",
+            "c) Básicos, generales y especiales.",
+            "d) Comarcales, locales, zonales y regionales."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "41. El conjunto de hospitales, independientemente del Organismo a quien corresponda su titularidad y regencia, constituye:",
+        "options": [
+            "a) El Sistema Nacional Hospitalario.",
+            "b) El Programa Nacional Hospitalario.",
+            "c) La Red Hospitalaria Nacional.",
+            "d) El Sistema Público de Hospitales."
+        ],
+        "correct": 2
+    },
+	    {
+        "question": "42. Señala cuál de las siguientes características diferencia la Atención Especializada de la Atención Primaria:",
+        "options": [
+            "a) Se presta en régimen ambulatorio.",
+            "b) Ofrece asistencia de urgencias.",
+            "c) Son medios materiales y humanos del sistema de salud puestos a disposición de la población, para atender al individuo, la familia y la comunidad en sus problemas de salud.",
+            "d) Ofrece asistencia en régimen de internamiento."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "43. Según la Ley 10/2001, de 28 de junio, de Salud de Extremadura, se configura como la demarcación territorial del Sistema Sanitario Público de Extremadura:",
+        "options": [
+            "a) La zona de salud.",
+            "b) El área de salud.",
+            "c) Los centros de salud.",
+            "d) Los centros de atención especializada."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "44. La aprobación y modificación de los límites territoriales de las áreas de salud corresponde a:",
+        "options": [
+            "a) La Consejería de Salud y Servicios Sociales.",
+            "b) El Organismo Autónomo Servicio Extremeño de Salud.",
+            "c) La Junta de Extremadura, oído el Consejo Extremeño de Salud.",
+            "d) El Consejero con competencias en materia de sanidad."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "45. Señale la respuesta incorrecta en relación con la Zona de salud:",
+        "options": [
+            "a) La zona de salud es el marco territorial y poblacional de la atención especializada donde se recibe la prestación sanitaria mediante el acceso directo de la población y en el que se ha de tener la capacidad de proporcionar una atención continuada, integral y permanente, a través de los profesionales integrantes del equipo de atención especializada.",
+            "b) La aprobación y modificación de los límites territoriales de las zonas de salud corresponde a la Junta de Extremadura.",
+            "c) Las zonas de salud serán delimitadas atendiendo a factores geográficos, demográficos, socioeconómicos, epidemiológicos, laborales, culturales, de vías y medios de comunicación, disponiendo de una cabecera en la que se ubicará un Centro de Salud, como estructura física y funcional, que dará soporte a las actividades comunes de los profesionales del equipo de atención primaria, así como a las actuaciones sanitarias de la propia localidad.",
+            "d) Dispondrá de una cabecera en la que se ubicará un centro de salud, como estructura física y funcional."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "46. Es una actuación de salud pública del Sistema Sanitario Público de Extremadura, a través de las Administraciones Públicas:",
+        "options": [
+            "a) Atención primaria de salud, de carácter integral y en colaboración con los servicios sociales de su ámbito, así como la atención continuada propia de dicho nivel asistencial.",
+            "b) Atención especializada en régimen domiciliario, ambulatorio y de hospitalización, así como la atención continuada correspondiente.",
+            "c) Atención sociosanitaria, especialmente a los enfermos crónicos, en coordinación con los servicios sociales.",
+            "d) Promoción y protección de los hábitos de vida saludables entre la población y atención a los grupos sociales de mayor riesgo y, en especial, a niños, jóvenes, discapacitados, y ancianos."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "47. ¿Quién establecerá presupuestos específicos que aseguren el desarrollo de las actividades de investigación y docencia del Sistema Sanitario Público de Extremadura?",
+        "options": [
+            "a) El propio Sistema Sanitario Público de Extremadura.",
+            "b) La Administración Sanitaria Regional.",
+            "c) Las Administraciones Públicas de Extremadura.",
+            "d) La Escuela de Estudios de Ciencias de la Salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "48. Señale la respuesta correcta en relación con las actividades de formación del Sistema Sanitario Público de Extremadura:",
+        "options": [
+            "a) La Junta de Extremadura velará, para que la formación de los profesionales de la salud se adecue a las necesidades del Sistema Sanitario Público de Extremadura.",
+            "b) Los programas de formación de los centros universitarios, o con función universitaria, deberán ser objeto de coordinación entre la Universidad y las Administraciones Públicas de Extremadura, de acuerdo con sus respectivas competencias.",
+            "c) La estructura asistencial del Sistema Sanitario Público de Extremadura deberá ser utilizada para la formación continuada de los trabajadores sanitarios.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "49. Dispondrán de un consultorio local:",
+        "options": [
+            "a) Todos los núcleos de población superior a veinte habitantes.",
+            "b) Todos los núcleos de población superior a cincuenta habitantes.",
+            "c) Todos los núcleos de población superior a veinticinco habitantes.",
+            "d) Todos los núcleos de población superior a cuarenta habitantes."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "50. ¿Dónde se prestará la atención especializada?",
+        "options": [
+            "a) En los centros de salud.",
+            "b) En los hospitales.",
+            "c) En los centros extrahospitalarios de la red asistencial.",
+            "d) Las respuestas b) y c) son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "51. Para conseguir la máxima operatividad y eficacia en el funcionamiento de los servicios de atención primaria, las áreas de salud se dividen en:",
+        "options": [
+            "a) Centros Atención Primaria.",
+            "b) Zonas de salud.",
+            "c) Centros de Atención Especializada.",
+            "d) Consejos de Salud de Área."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "52. El Consejo de Dirección de Área estará compuesto, entre otros, por:",
+        "options": [
+            "a) Tres representantes del Servicio Extremeño de Salud en el área.",
+            "b) Cuatro representantes del Servicio Extremeño de Salud en el área.",
+            "c) Cinco representantes del Servicio Extremeño de Salud en el área.",
+            "d) Seis representantes del Servicio Extremeño de Salud en el área."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "53. El Sistema Sanitario Público de Extremadura, a través de las Administraciones Públicas en el ámbito de sus respectivas competencias, desarrolla determinadas actuaciones, entre las que no se encuentra:",
+        "options": [
+            "a) De docencia e investigación.",
+            "b) De formación.",
+            "c) De salud laboral.",
+            "d) De promoción escolar."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "54. ¿Quién establecerá, oído el Consejo Extremeño de Salud, los sistemas de evaluación de la calidad de las prestaciones y servicios sanitarios?",
+        "options": [
+            "a) El Consejo de Salud de Área.",
+            "b) La Consejería competente en materia de sanidad.",
+            "c) El Consejo de Dirección de Área.",
+            "d) La Gerencia de Área."
+        ],
+        "correct": 1
+    },
+	    {
+        "question": "54. ¿Quién establecerá, oído el Consejo Extremeño de Salud, los sistemas de evaluación de la calidad de las prestaciones y servicios sanitarios?",
+        "options": [
+            "a) El Consejo de Salud de Área.",
+            "b) La Consejería competente en materia de sanidad.",
+            "c) El Consejo de Dirección de Área.",
+            "d) La Gerencia de Área."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "55. El Sistema sanitario Público de Extremadura dispondrá de los recursos necesarios para prestar una atención sociosanitaria:",
+        "options": [
+            "a) Eficiente.",
+            "b) De calidad.",
+            "c) Efectiva.",
+            "d) Rentable."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "56. Señale la respuesta incorrecta. El personal al servicio del Sistema Sanitario Público de Extremadura estará formado por:",
+        "options": [
+            "a) El personal de la Administración de la Comunidad Autónoma de Extremadura que preste sus servicios en el Sistema Sanitario Público de Extremadura.",
+            "b) El personal de otras Administraciones Públicas que se adscriba para prestar servicios en el Sistema Sanitario Público de Extremadura.",
+            "c) El personal que se incorpore al mismo de acuerdo con la normativa vigente.",
+            "d) El personal de la Administración de la Comunidad Autónoma de Extremadura que preste sus servicios en otro Sistema Sanitario."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "57. La gestión y administración de los recursos y ejecución de los programas del área de salud se realizará de forma:",
+        "options": [
+            "a) Descentralizada.",
+            "b) Centralizada.",
+            "c) Coordinada.",
+            "d) Deslocalizada."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "58. El órgano de gestión y coordinación de los recursos del área de salud es:",
+        "options": [
+            "a) El Consejo de Dirección de Área.",
+            "b) La Gerencia de Área.",
+            "c) El Consejo de Salud de Área.",
+            "d) El Director de Salud de Área."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "59. El órgano colegiado de participación y coordinación entre las corporaciones locales y el equipo de atención primaria es:",
+        "options": [
+            "a) El Consejo de Salud de Zona.",
+            "b) El Consejo de Salud de Área.",
+            "c) La Dirección de Salud de Área.",
+            "d) El hospital."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "60. El Sistema Sanitario Público de Extremadura desarrolla las siguientes actividades de salud pública:",
+        "options": [
+            "a) Asistencia psiquiátrica.",
+            "b) Control y mejora de la calidad de la asistencia sanitaria en todos sus niveles.",
+            "c) Promoción y protección de la salud alimentaria.",
+            "d) Ejecución de los programas específicos de protección frente a factores de riesgo, así como los programas de prevención de las deficiencias, tanto congénitas como adquiridas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "61. El Sistema Sanitario Público de Extremadura está compuesto por los centros, servicios y establecimientos sanitarios:",
+        "options": [
+            "a) Públicos integrados en el Servicio Extremeño de Salud o adscritos al mismo.",
+            "b) De organismos, empresas públicas o cualesquiera otras entidades públicas admitidas en derecho, adscritos a la Administración Sanitaria de la Junta de Extremadura.",
+            "c) De las Corporaciones locales, y cualesquiera otras Administraciones territoriales intracomunitarias.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "62. El personal al servicio del Sistema Sanitario Público de Extremadura estará formado por:",
+        "options": [
+            "a) El personal de la Administración de la Comunidad Autónoma de Extremadura que no preste sus servicios en el Sistema Sanitario Público de Extremadura.",
+            "b) El personal de otras empresas sanitarias privadas que se adscriba para prestar servicios en Extremadura.",
+            "c) El personal que se incorpore al mismo de acuerdo con la normativa vigente.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "63. El Sistema Sanitario Público de Extremadura se ordena en demarcaciones territoriales denominadas:",
+        "options": [
+            "a) Áreas de salud.",
+            "b) Áreas de servicios.",
+            "c) Hospitales.",
+            "d) Centros de salud."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "64. La aprobación y modificación de los límites territoriales de las áreas de salud corresponde a:",
+        "options": [
+            "a) El Consejo Extremeño de Salud, oído la Junta de Extremadura.",
+            "b) La Junta de Extremadura, oído el Consejo Extremeño de Salud.",
+            "c) El Delegado del Gobierno.",
+            "d) Al Ministerio de Sanidad y Consumo."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "65. El Consejo de Salud de Área es el órgano:",
+        "options": [
+            "a) De dirección.",
+            "b) Colegiado de participación con carácter consultivo.",
+            "c) De gestión de los recursos del área de salud.",
+            "d) De coordinación, existiendo al frente del mismo un Gerente de Área."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "66. En el Consejo de Dirección de Área, el Director de Salud de Área actuará como:",
+        "options": [
+            "a) Presidente.",
+            "b) Vicepresidente.",
+            "c) Consejero.",
+            "d) Delegado."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "67. Dependerá de la Comisión Central de Garantía de la Calidad, la comisión clínica de:",
+        "options": [
+            "a) Inspección Hospitalaria, Profilaxis y Política Antibiótica.",
+            "b) Historias Clínicas, Tejidos y Mortalidad.",
+            "c) Farmacia y Terapéutica.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "68. La aprobación y modificación de los límites territoriales de las zonas de salud corresponde a:",
+        "options": [
+            "a) Al Director de Salud de Área.",
+            "b) La Junta de Extremadura.",
+            "c) Al Consejo de Salud de Área.",
+            "d) Al Gobierno de España."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "69. Los Vocales electos por votación directa de la Junta Técnico-Asistencial, lo serán elegidos por un período de:",
+        "options": [
+            "a) Seis meses.",
+            "b) Un año.",
+            "c) Dos años.",
+            "d) Cuatro años."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "70. El Sistema Sanitario Público de Extremadura desarrolla las siguientes actividades de salud pública:",
+        "options": [
+            "a) Atención sociosanitaria, especialmente a los enfermos crónicos, en coordinación con los servicios sociales.",
+            "b) Promoción y protección de la salud laboral, y prevención de los factores de riesgo en este ámbito.",
+            "c) Atención primaria de salud, de carácter integral y en colaboración con los servicios sociales de su ámbito, así como la atención continuada propia de dicho nivel asistencial.",
+            "d) Atención especializada en régimen domiciliario, ambulatorio y de hospitalización, así como la atención continuada correspondiente."
+        ],
+        "correct": 1
+    },
+	    {
+        "question": "71. El Sistema Sanitario Público de Extremadura desarrolla las siguientes actividades de asistencia sanitaria:",
+        "options": [
+            "a) Ejecución de los programas específicos de protección frente a factores de riesgo, así como los programas de prevención de las deficiencias, tanto congénitas como adquiridas.",
+            "b) Prevención y protección de la salud frente a cualquier otro factor de riesgo, en especial la prevención de deficiencias.",
+            "c) Policía sanitaria mortuoria.",
+            "d) Control de la publicidad sanitaria."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "72. De conformidad con lo dispuesto en la normativa básica estatal, corresponderá a la Administración Sanitaria Pública de Extremadura:",
+        "options": [
+            "a) La supervisión de la formación que, en materia de prevención y promoción de la salud laboral, deba recibir el personal sanitario actuante en los servicios de prevención autorizados.",
+            "b) La elaboración y divulgación de estudios, investigaciones y estadísticas relacionadas con la salud de los trabajadores.",
+            "c) Las funciones encomendadas por la legislación vigente respecto a las incapacidades laborales, en coordinación con otras entidades competentes en dicha materia.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "73. Los servicios sanitarios en Extremadura se ordenarán en los siguientes niveles, que actuarán bajo criterios de coordinación y cooperación:",
+        "options": [
+            "a) Atención primaria y Atención especializada, tanto en el ámbito hospitalario como extrahospitalario.",
+            "b) Atención sanitaria y Atención social, tanto en el ámbito hospitalario como extrahospitalario.",
+            "c) Atención personal y Atención sanitaria.",
+            "d) Las respuestas a) y c) con correctas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "74. El personal sanitario del equipo de atención primaria, ostentará las funciones inspectoras y de control del cumplimiento de la normativa vigente en materia sanitaria que reglamentariamente se determinen. Cuando actúe en el ejercicio de dichas funciones tendrá la consideración de:",
+        "options": [
+            "a) Inspectores.",
+            "b) Personal sanitario superior.",
+            "c) Autoridad sanitaria.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "75. La Ley 10/2001, de 28 de junio, de Salud de Extremadura, establece la organización pública de los servicios sanitarios bajo la denominación de:",
+        "options": [
+            "a) Atención sociosanitaria.",
+            "b) Sistema Sanitario Público de Extremadura (SSPE).",
+            "c) Atención especializada.",
+            "d) Las respuestas a) y b) son correctas."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "76. El marco territorial de la Atención Primaria, donde desarrollan las actividades sanitarias los Equipos de Atención Primaria, se denominan:",
+        "options": [
+            "a) Hospitales.",
+            "b) Áreas sociosanitarias.",
+            "c) Zonas de salud.",
+            "d) Ambulatorios."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "77. Se puede definir como “el conjunto de medios materiales y humanos de un Sistema de Salud, puestos a disposición de la población para atender al individuo y a la comunidad en sus problemas de salud”:",
+        "options": [
+            "a) La Atención Primaria.",
+            "b) La Atención Sociosanitaria.",
+            "c) La Atención Hospitalaria.",
+            "d) La Atención Ambulatoria."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "78. La Atención Especializada (AE) incluye asistencia en:",
+        "options": [
+            "a) Régimen domiciliario.",
+            "b) Hospitalización.",
+            "c) Rehabilitación.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "79. Son elementos necesarios para que exista coordinación asistencial:",
+        "options": [
+            "a) Conexión de los servicios sanitarios, mediante la transferencia de información y el manejo de los pacientes.",
+            "b) Existencia de un objetivo común, en el que se debe tener en cuenta las perspectivas de todos los implicados, para que no existan objetivos contrapuestos.",
+            "c) Sincronización entre las partes implicadas para que la atención sanitaria se lleve a cabo en el momento y en el lugar adecuado.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "80. El área de salud extenderá su acción a una población comprendida entre:",
+        "options": [
+            "a) 150.000 y 200.000 habitantes.",
+            "b) 200.000 y 250.000 habitantes.",
+            "c) 250.000 y 300.000 habitantes.",
+            "d) 100.000 y 150.000 habitantes."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "81. La población protegida por la Seguridad Social a atender en cada zona de salud podrá oscilar entre:",
+        "options": [
+            "a) 5.000 y 25.000 habitantes.",
+            "b) 10.000 y 25.000 habitantes.",
+            "c) 5.000 y 30.000 habitantes.",
+            "d) 15.000 y 20.000 habitantes."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "82. Cuando la zona de salud esté constituida por más de un municipio, el municipio cabecera no distará del resto de los municipios con los medios habituales de locomoción más de:",
+        "options": [
+            "a) 15 minutos.",
+            "b) 20 minutos.",
+            "c) 25 minutos.",
+            "d) 30 minutos."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "83. La estructura física fundamental de la atención especializada es:",
+        "options": [
+            "a) El centro de especialidad.",
+            "b) El hospital.",
+            "c) Los servicios de referencia.",
+            "d) El centro de salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "84. La estructura física fundamental de la atención primaria es:",
+        "options": [
+            "a) El consultorio.",
+            "b) El hospital.",
+            "c) Los servicios de referencia.",
+            "d) El centro de salud."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "85. El SSPE se ordena en áreas de salud, para prestar:",
+        "options": [
+            "a) Atención Primaria.",
+            "b) Atención Especializada.",
+            "c) Atención sociosanitaria.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "86. Cada provincia tendrá como mínimo:",
+        "options": [
+            "a) Una zona de salud.",
+            "b) Un hospital.",
+            "c) Un área de salud.",
+            "d) Un centro de salud."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "87. El mapa sanitario de Extremadura fue aprobado por el Decreto:",
+        "options": [
+            "a) 166/2005, de 5 de julio.",
+            "b) 180/2017 de 31 de octubre.",
+            "c) 20/2021 de 20 de mayo.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "88. ¿Cuántas áreas de salud hay en Extremadura?",
+        "options": [
+            "a) 5.",
+            "b) 10.",
+            "c) 8.",
+            "d) 12."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "89. El marco fundamental para el desarrollo de los programas de promoción de la salud y prevención de la enfermedad lo constituye:",
+        "options": [
+            "a) El área de salud.",
+            "b) La zona de salud.",
+            "c) El hospital.",
+            "d) El centro de salud."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "90. ¿Cuál de los siguientes no es un órgano de gobierno y participación en el área de salud?",
+        "options": [
+            "a) El Consejo de Dirección de Área.",
+            "b) La Gerencia de Área.",
+            "c) El Consejo de Salud de Área.",
+            "d) El Consejo de Salud de Zona."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "91. Cuando la zona de salud esté constituida por varios municipios se fijará un:",
+        "options": [
+            "a) Municipio principal.",
+            "b) Municipio cabecera.",
+            "c) Municipio primario.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "92. ¿Cuántas zonas de salud hay en Extremadura?",
+        "options": [
+            "a) 100.",
+            "b) 113.",
+            "c) 83.",
+            "d) 120."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "93. La atención especializada se presta en régimen:",
+        "options": [
+            "a) Domiciliario.",
+            "b) Ambulatorio.",
+            "c) De hospitalización.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "94. Con la finalidad de atender las necesidades de investigación, documentación, capacitación y formación del personal sanitario que presta sus servicios en la Comunidad Autónoma, la Junta de Extremadura dispondrá de:",
+        "options": [
+            "a) Una Escuela de Estudios de Ciencias de la Salud.",
+            "b) Una Universidad Pública.",
+            "c) Un Hospital Universitario.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "95. Participando de los niveles de atención primaria y especializada, se prestará la atención a:",
+        "options": [
+            "a) Las urgencias y emergencias sanitarias y a la atención sociosanitaria.",
+            "b) La cirugía mayor ambulatoria.",
+            "c) La salud pública y a la formación.",
+            "d) La docencia y a la investigación."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "96. El primer nivel de acceso ordinario de la población al sistema sanitario lo constituye:",
+        "options": [
+            "a) La atención especializada.",
+            "b) La atención primaria.",
+            "c) La atención sociosanitaria.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "97. Las Unidades de Salud Bucodental y los Centros de Planificación Familiar pertenecen a:",
+        "options": [
+            "a) La atención especializada.",
+            "b) La atención primaria.",
+            "c) La atención sociosanitaria.",
+            "d) La atención en salud laboral."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "98. En cada área de salud:",
+        "options": [
+            "a) Existirá un hospital de área de titularidad pública.",
+            "b) Podrá disponer de otros hospitales públicos, que conformarán con el hospital de área un complejo hospitalario.",
+            "c) Los centros de especialidades quedarán vinculados al hospital de área.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "99. La atención de urgencias y emergencias, se prestará en el ámbito de la atención primaria:",
+        "options": [
+            "a) A través de los puntos de atención continuada, dependientes de los centros de salud.",
+            "b) A través de los complejos y centros hospitalarios que se determinen responsables de ofertar la asistencia a urgencias médicas.",
+            "c) A través de los centros de atención sociosanitaria designados por la Junta de Extremadura.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "100. ¿Cuántas áreas de salud hay en la provincia de Badajoz?",
+        "options": [
+            "a) 4.",
+            "b) 10.",
+            "c) 8.",
+            "d) 12."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "101. ¿Cuántas áreas de salud hay en la provincia de Cáceres?",
+        "options": [
+            "a) 12.",
+            "b) 10.",
+            "c) 8.",
+            "d) 4."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "102. El artículo 64 de la Ley General de Sanidad determina que el Centro de Salud tendrá como función/es:",
+        "options": [
+            "a) Albergar la estructura física de consultas y servicios asistenciales personales correspondientes a la población en que se ubica.",
+            "b) Albergar los recursos materiales precisos para la realización de las exploraciones complementarias de que se pueda disponer en la zona.",
+            "c) Mejorar la organización administrativa de la atención de salud en su zona de influencia.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "103. El conjunto de actuaciones con participación de la comunidad, orientadas a la detección y priorización de sus necesidades y problemas de salud, identificando los recursos comunitarios disponibles, priorizando las intervenciones y elaborando programas orientados a mejorar la salud de la comunidad, en coordinación con otros dispositivos sociales y educativos, se denomina:",
+        "options": [
+            "a) Atención familiar.",
+            "b) Atención comunitaria.",
+            "c) Atención social.",
+            "d) Prevención y promoción de la salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "104. La Zona de Salud delimita una Zona Médica, y está constituida por:",
+        "options": [
+            "a) Un solo Partido Médico, sin separación en distritos.",
+            "b) Dos Partidos Médicos, sin separación en distritos.",
+            "c) Tres Partidos Médicos, sin separación en distritos.",
+            "d) Cuatro Partidos Médicos, sin separación en distritos."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "105. El número de médicos del Equipo de Atención Primaria estará en función de:",
+        "options": [
+            "a) La población a atender.",
+            "b) La población del Municipio.",
+            "c) El número de Hospitales.",
+            "d) El número de Centros de Salud."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "106. Los Servicios Jerarquizados de Especialidades que por sus características deban prestar asistencia sanitaria a más de un Área de Salud se denominarán:",
+        "options": [
+            "a) Servicios de asistencia polivalente.",
+            "b) Servicios generales.",
+            "c) Servicios de referencia.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "107. ¿En qué ámbito prestarán cobertura de asistencia especializada los Servicios Jerarquizados de Especialidades existentes en los hospitales?",
+        "options": [
+            "a) En el ámbito territorial que se determine específicamente para cada hospital.",
+            "b) En el ámbito del Área de Salud a la que esté adscrito el hospital.",
+            "c) En el ámbito territorial de 100 km.",
+            "d) En un ámbito poblacional de 30.000 habitantes."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "108. El acceso a los servicios hospitalarios se efectuará:",
+        "options": [
+            "a) Una vez que las posibilidades de diagnóstico y tratamiento de los servicios de atención primaria hayan sido superadas.",
+            "b) En los casos de urgencia vital.",
+            "c) Cuando la distancia a los mismos sea inferior a la de los servicios de atención primaria.",
+            "d) Las respuestas a) y b) son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "109. De las siguientes divisiones de un hospital, ¿cuál puede no existir?",
+        "options": [
+            "a) División Médica.",
+            "b) División de Enfermería.",
+            "c) División de Gestión y Servicios Generales.",
+            "d) División Gerencia."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "110. El área de Atención al paciente es un área de actividad adscrita a:",
+        "options": [
+            "a) La Gerencia.",
+            "b) La División Médica.",
+            "c) La División de Enfermería.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 0
+    },
+	    {
+        "question": "111. El área de Documentación y archivo clínico está adscrita a la división:",
+        "options": [
+            "a) Médica.",
+            "b) De Enfermería.",
+            "c) De Gestión y Servicios Generales.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "112. De las siguientes áreas de actividad, indique cuál está adscrita a la División Médica del hospital:",
+        "options": [
+            "a) Medicina.",
+            "b) Cirugía.",
+            "c) Pediatría.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "113. ¿Quién sustituye al Director Gerente, cuando no hubiera Subdirector Gerente en los casos de vacante, ausencia o enfermedad?",
+        "options": [
+            "a) El Director Médico.",
+            "b) El Director de Gestión y Servicios Generales.",
+            "c) Cualquiera de los Subdirectores.",
+            "d) El Director de Enfermería."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "114. Quedan adscritas a la División de Enfermería del hospital, las áreas de:",
+        "options": [
+            "a) Quirófanos.",
+            "b) Consultas externas.",
+            "c) Urgencias.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "115. El orden interno y seguridad, ¿a qué división corresponde?",
+        "options": [
+            "a) A la División Médica.",
+            "b) A la División de Enfermería.",
+            "c) A la División de Gestión y Servicios Generales.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "116. ¿Cuál de las siguientes áreas de actividad no se encuentran adscritas a la División de Gestión y Servicios Generales?",
+        "options": [
+            "a) Suministros.",
+            "b) Obras y mantenimiento.",
+            "c) Servicios centrales.",
+            "d) Hostelería."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "117. Cuando las necesidades de la gestión así lo aconsejen, podrán crearse los puestos de:",
+        "options": [
+            "a) Subdirector Gerente.",
+            "b) Subdirectores de División.",
+            "c) Las respuestas a) y b) son correctas.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "118. ¿Quién presidirá la Comisión de Dirección del Hospital?",
+        "options": [
+            "a) El Director Gerente.",
+            "b) El Director Médico.",
+            "c) El Director de Enfermería.",
+            "d) El Subdirector Gerente."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "119. Los servicios de Asesoría Jurídica y Política de Personal en los casos de hospitales en los que no exista la Gerencia quedarán adscritos a:",
+        "options": [
+            "a) La División de Gestión y Servicios Generales.",
+            "b) La División de Enfermería.",
+            "c) La División Médica.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "120. Corresponde a la Comisión de Dirección:",
+        "options": [
+            "a) Estudiar los objetivos sanitarios y los planes económicos del hospital, instrumentando programas de dirección por objetivos.",
+            "b) Realizar el seguimiento de las actividades de los servicios y unidades del hospital.",
+            "c) El análisis y propuestas sobre el presupuesto anual del hospital y la política de personal.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "121. Es un órgano colegiado de asesoramiento a los órganos de Dirección del hospital:",
+        "options": [
+            "a) La Junta Técnico-Asistencial.",
+            "b) La Comisión de Bienestar Social.",
+            "c) La Comisión Central de Garantía de la Calidad.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "122. Indique la respuesta incorrecta. Compondrán la Junta Técnico-Asistencial:",
+        "options": [
+            "a) El Director Médico.",
+            "b) Un Médico Residente.",
+            "c) El Director Gerente.",
+            "d) Los Subdirectores Médicos."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "123. Según la Ley 10/2001, de 28 de junio de Salud de Extremadura, la atención sanitaria está dividida en:",
+        "options": [
+            "a) Un único nivel asistencial.",
+            "b) Dos niveles asistenciales: atención primaria y atención especializada.",
+            "c) Tres niveles asistenciales: atención primaria, atención especializada y atención hospitalaria.",
+            "d) Cuatro niveles asistenciales: atención primaria, atención especializada, atención de urgencias y atención hospitalaria."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "124. A los efectos de la Ley 10/2001, de 28 de junio de Salud de Extremadura, promover el establecimiento de mecanismos que permita, una vez superadas las posibilidades diagnósticas y terapéuticas existentes en el ámbito de la Comunidad Autónoma, acceder a los recursos asistenciales fuera de esta, corresponde:",
+        "options": [
+            "a) Al Gobierno de la Nación.",
+            "b) A la Consejería responsable en materia de sanidad.",
+            "c) Al Consejo de Gobierno de la Junta de Extremadura.",
+            "d) Al Área de Salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "125. Atendiendo al artículo 44.1 de la Ley 10/2001, de 28 de junio de Salud de Extremadura, ¿quién velará para que la formación de los profesionales de la salud se adecúe a las necesidades del Sistema Sanitario de Extremadura?",
+        "options": [
+            "a) La Junta de Extremadura.",
+            "b) La Consejería competente en Sanidad.",
+            "c) Los Centros Universitarios.",
+            "d) La Escuela de Salud Pública."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "126. Según la Ley 10/2001, de 28 de junio de Salud de Extremadura, en el Consejo de Dirección de Área, ¿quién actuará como presidente?",
+        "options": [
+            "a) El Gerente de Área.",
+            "b) El Director de Salud.",
+            "c) El Consejero competente en materia de salud.",
+            "d) El Director Gerente del Servicio Extremeño de Salud."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "127. A los efectos de la Ley 10/2001, de 28 de junio de Salud de Extremadura, el Sistema Público de Extremadura desarrolla las siguientes actividades de salud pública:",
+        "options": [
+            "a) Asistencia psiquiátrica.",
+            "b) Prestación de productos farmacéuticos, terapéuticos, diagnósticos y auxiliares necesarios para promover, conservar o restablecer la salud.",
+            "c) Atención a drogodependientes.",
+            "d) Promoción y protección de la salud en relación con los productos farmacológicos, y prevención de los factores de riesgo en este ámbito."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "128. Conforme a la Ley 10/2001, de 28 de junio de Salud de Extremadura, ¿quién es el responsable de la coordinación, impulso y control de las actividades relacionadas con la Administración y la Salud Pública en el marco de las líneas de actuación formuladas en el Plan de Salud de Extremadura?",
+        "options": [
+            "a) El Gerente de Área de Salud.",
+            "b) El Director de Salud de Área.",
+            "c) El Director Gerente del Servicio Extremeño de Salud.",
+            "d) El Consejero competente en materia de sanidad."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "129. Según establece la Ley 10/2001, de 28 de junio de Salud de Extremadura, la estructura y funcionamiento de los órganos del Área de Salud se determinará reglamentariamente por:",
+        "options": [
+            "a) El Consejero competente en materia de sanidad.",
+            "b) La Junta de Extremadura.",
+            "c) El Director Gerente del Servicio Extremeño de Salud.",
+            "d) El Gerente de cada Área de Salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "130. Conforme a la Ley 10/2001, de 28 de junio de Salud de Extremadura, la aprobación y modificación de los límites territoriales de las áreas de salud corresponde:",
+        "options": [
+            "a) Al Presidente de la Junta de Extremadura, oído el Consejo Extremeño de Salud.",
+            "b) Al Consejero competente en materia de sanidad, oído el Consejo Extremeño de Salud.",
+            "c) Al Director Gerente del Servicio Extremeño de Salud, oído el Consejo Extremeño de Salud.",
+            "d) A la Junta de Extremadura, oído el Consejo Extremeño de Salud."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "131. Según el artículo 62 de la Ley 14/1986, de 25 de abril, General de Sanidad, para la delimitación de las zonas básicas de salud, no se tendrá en cuenta:",
+        "options": [
+            "a) Las distancias mínimas de las agrupaciones de población.",
+            "b) El grado de concentración o dispersión de las poblaciones.",
+            "c) Las características epidemiológicas de la zona.",
+            "d) Las instalaciones y recursos sanitarios de la zona."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "132. Según la Ley General de Sanidad, las áreas de salud serán dirigidas por un órgano propio, donde debieran participar las corporaciones locales con una representación no inferior al:",
+        "options": [
+            "a) 25 %.",
+            "b) 30 %.",
+            "c) 40 %.",
+            "d) 15 %."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "133. ¿Cuál de las siguientes respuestas no se corresponde con la composición del Consejo de Dirección de Área?",
+        "options": [
+            "a) El Gerente del área será su Presidente.",
+            "b) Habrá cuatro representantes de los municipios del área de salud, elegidos por y entre ellos.",
+            "c) Habrá cuatro representantes del Servicio Extremeño de salud en el área, que serán los responsables de las áreas relacionadas con los recursos humanos.",
+            "d) El Director de salud del área actuará como Secretario."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "134. Según la Ley de Salud de Extremadura, ¿cuál de las siguientes es una “Actividad de Asistencia Sanitaria” desarrollada por el Sistema Sanitario Público de Extremadura?",
+        "options": [
+            "a) Desarrollo de los programas de atención a los grupos de población de mayor riesgo.",
+            "b) Promoción y protección de la salud escolar.",
+            "c) Promoción y protección de la salud alimentaria.",
+            "d) Prevención de los factores de riesgo y protección de la salud frente a las sustancias susceptibles de generar dependencia."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "135. ¿Qué requisito exige la Ley de Salud de Extremadura para que un núcleo de población disponga de consultorio local?",
+        "options": [
+            "a) Tener más de 50 habitantes.",
+            "b) Tener más de 500 habitantes.",
+            "c) Que esté a más de 25 kilómetros del centro de salud de referencia.",
+            "d) Tener Ayuntamiento."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "136. Uno de los siguientes no es un órgano de gobierno y participación en el área de salud:",
+        "options": [
+            "a) El Consejo de Dirección de Área.",
+            "b) La Gerencia de Área.",
+            "c) El Consejo de Salud de Área.",
+            "d) La Dirección de Salud."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "137. Uno de los siguientes no es un órgano directivo de la Gerencia de Área:",
+        "options": [
+            "a) El Consejo de Dirección de Área.",
+            "b) La Dirección de Atención Sanitaria.",
+            "c) La Dirección de Régimen Económico.",
+            "d) La Dirección de Recursos Humanos."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "138. ¿Quién nombra al titular de la Dirección de Salud?",
+        "options": [
+            "a) El titular de la Dirección de Salud será nombrado por el Consejero competente en materia sanitaria, a propuesta del Director Gerente del Servicio Extremeño de Salud.",
+            "b) El titular de la Dirección de Salud será nombrado por el Director Gerente del Servicio Extremeño de Salud, a propuesta del Consejero competente en materia sanitaria.",
+            "c) El titular de la Dirección de Salud será nombrado por el Gerente de Área, a propuesta del Director Gerente del Servicio Extremeño de Salud.",
+            "d) El titular de la Dirección de Salud será nombrado por el Director de Atención Sanitaria, a propuesta del Director Gerente del Servicio Extremeño de Salud."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "139. En aquellas Áreas de Salud donde no exista la Dirección de Atención Sanitaria, sus funciones serán realizadas por:",
+        "options": [
+            "a) La Gerencia de Área.",
+            "b) La Dirección de Salud.",
+            "c) La Dirección de Régimen Económico.",
+            "d) La Dirección de Recursos Humanos."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "140. Uno de los siguientes no es un órgano de la Dirección de Atención Sanitaria:",
+        "options": [
+            "a) Dirección Médica de Atención Primaria.",
+            "b) Dirección de Enfermería de Atención Primaria.",
+            "c) Dirección Médica de Atención Especializada.",
+            "d) Dirección de Recursos Humanos."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "141. ¿Quién es el Presidente del Consejo de Salud de Área?",
+        "options": [
+            "a) El Director de Salud del Área.",
+            "b) El Gerente del Área de Salud.",
+            "c) El Director Gerente del SES.",
+            "d) El Consejero competente en materia sanitaria."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "142. ¿Quién es el Vicepresidente del Consejo de Salud de Área?",
+        "options": [
+            "a) El Director de Salud del Área.",
+            "b) El Gerente del Área de Salud.",
+            "c) El Director Gerente del SES.",
+            "d) El Consejero competente en materia sanitaria."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "143. ¿Cuántos representantes de las organizaciones de consumidores y usuarios más representativas en el ámbito de la Comunidad Autónoma de Extremadura forman parte del Consejo de Salud de Área?",
+        "options": [
+            "a) 1.",
+            "b) 2.",
+            "c) 3.",
+            "d) 5."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "144. Los miembros del Consejo de Salud de Área serán nombrados por un periodo máximo de:",
+        "options": [
+            "a) 1 año.",
+            "b) 2 años.",
+            "c) 3 años.",
+            "d) 4 años."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "145. El Consejo de Salud de Área deberá reunirse, como mínimo, una vez cada:",
+        "options": [
+            "a) 3 meses.",
+            "b) 6 meses.",
+            "c) 9 meses.",
+            "d) Año."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "146. Los acuerdos del Consejo de Salud de Área, deberán adoptarse por:",
+        "options": [
+            "a) Mayoría simple de los miembros presentes.",
+            "b) Mayoría simple de los miembros que lo componen.",
+            "c) Mayoría absoluta de los miembros presentes.",
+            "d) Mayoría absoluta de los miembros que lo componen."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "147. Decreto por el que se aprueba el Reglamento General de Organización y Funcionamiento de la Atención Primaria de Salud de la Comunidad Autónoma de Extremadura:",
+        "options": [
+            "a) Decreto 47/2023, de 10 de mayo.",
+            "b) Decreto 137/1984, de 11 de enero.",
+            "c) Decreto 67/1996, de 21 de mayo.",
+            "d) Decreto 58/2024, de 6 de junio."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "148. Es el marco territorial y poblacional de la APS, donde la población recibe la prestación sanitaria mediante el acceso directo:",
+        "options": [
+            "a) Área de Salud.",
+            "b) Centro de Salud.",
+            "c) Zona de Salud.",
+            "d) Unidades de Apoyo."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "149. Son centros de atención primaria:",
+        "options": [
+            "a) Los centros de salud.",
+            "b) Los consultorios locales.",
+            "c) Los centros de las unidades de apoyo a la atención primaria.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "150. Es el centro de referencia del resto de los centros de atención primaria de la Zona de Salud:",
+        "options": [
+            "a) El hospital.",
+            "b) El consultorio local.",
+            "c) El centro de salud.",
+            "d) La unidad de apoyo a la atención primaria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "151. ¿Cuántos Equipos de Atención Primaria se constituirán en cada Zona de Salud?",
+        "options": [
+            "a) 1.",
+            "b) 2.",
+            "c) 3.",
+            "d) 4."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "152. El Equipo de Atención Primaria organizará su funcionamiento siguiendo los principios de:",
+        "options": [
+            "a) Eficiencia y de subsidiariedad.",
+            "b) Eficacia y solidaridad.",
+            "c) Eficacia y eficiencia.",
+            "d) Solidaridad y subsidiariedad."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "153. Forman parte del Equipo de Atención Primaria:",
+        "options": [
+            "a) Personal sanitario y personal de gestión y servicios.",
+            "b) Personal sanitario, personal no sanitario, y personal de gestión y servicios.",
+            "c) Personal sanitario y personal no sanitario.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "154. Una de las siguientes no es una unidad de apoyo a la Atención Primaria de Salud:",
+        "options": [
+            "a) Los Centros de Planificación Familiar.",
+            "b) Los Equipos de Conductas Adictivas.",
+            "c) Las Unidades de Salud Bucodental.",
+            "d) Las Unidades de trastornos en la Conducta Alimentaria."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "155. Forman parte de las unidades de apoyo a la Atención Primaria de Salud:",
+        "options": [
+            "a) Personal sanitario y personal de gestión y servicios.",
+            "b) Personal sanitario, personal no sanitario, y personal de gestión y servicios.",
+            "c) Personal sanitario y personal no sanitario.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "156. Son unidades pertenecientes a la Atención Primaria de Salud o relacionadas y coordinadas con esta:",
+        "options": [
+            "a) Unidades Medicalizadas de Emergencias.",
+            "b) Unidades del Dolor.",
+            "c) Equipos de Soporte de Cuidados Paliativos.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "157. Una de las siguientes funciones no corresponde a la Atención Primaria de Salud:",
+        "options": [
+            "a) Funciones asistenciales, de cuidados y de atención a la persona usuaria.",
+            "b) Funciones de salud pública y salud comunitaria.",
+            "c) Funciones de formación, docencia e investigación.",
+            "d) Funciones de información, y estrategias en salud."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "158. Las actividades relacionadas con la salud comunitaria, se desarrollan en sus tres niveles que son:",
+        "options": [
+            "a) Individual, grupal y colectivo.",
+            "b) Individual, grupal y comunitario.",
+            "c) Individual, colectivo y comunitario.",
+            "d) Grupal, colectivo y comunitario."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "159. ¿Quiénes son los tres protagonistas de la comunidad?",
+        "options": [
+            "a) La/s administración/es, los recursos profesionales y técnicos, y la ciudadanía.",
+            "b) El médico, la enfermera y el paciente.",
+            "c) El médico, la enfermera y el ciudadano.",
+            "d) Los centros sanitarios, los profesionales y los pacientes."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "160. En relación con la formación continuada dentro de las funciones de formación, docencia e investigación de la Atención Primaria de Salud, cada profesional tiene:",
+        "options": [
+            "a) El derecho y el deber de participar, en la faceta docente y en la discente.",
+            "b) El derecho de participar en la faceta docente y discente, pero no el deber.",
+            "c) El deber de participar en la faceta docente y discente, pero no el derecho.",
+            "d) El derecho y el deber de participar en la faceta docente pero no discente."
+        ],
+        "correct": 0
+    },
+	    {
+        "question": "161. En relación con el trabajo en equipo en la Atención Primaria de Salud, la unidad básica asistencial es la compuesta por:",
+        "options": [
+            "a) El/la profesional de medicina de familia o pediatría, el/la Trabajador/a social y el/la enfermero/a.",
+            "b) El/la profesional de medicina de familia o pediatría y el/la enfermero/a.",
+            "c) El/la profesional de medicina de familia o pediatría, el/la Veterinario/a y el/la enfermero/a.",
+            "d) El/la profesional de medicina de familia, el/la Veterinario/a y el/la enfermero/a."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "162. En Atención Primaria de Salud para realizar una gestión integral a la demanda se habilitarán agendas tipos que deberán ser:",
+        "options": [
+            "a) Flexibles y de calidad.",
+            "b) Amplias y flexibles.",
+            "c) Amplias y de calidad.",
+            "d) Confidenciales y de calidad."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "163. Una de las siguientes no es un área funcional de trabajo en la Atención Primaria de Salud:",
+        "options": [
+            "a) Área asistencial.",
+            "b) Área de salud pública.",
+            "c) Área de estrategia para los programas de salud.",
+            "d) Área de salud comunitaria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "164. Es el área responsable de la primera interacción con la ciudadanía:",
+        "options": [
+            "a) Área asistencial.",
+            "b) Área de salud pública.",
+            "c) Área de información, administración y atención a la población.",
+            "d) Área de salud comunitaria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "165. Señale la respuesta incorrecta en relación con la distribución del horario en Atención Primaria de Salud:",
+        "options": [
+            "a) En el centro de salud y consultorios locales de la ZS, la actividad ordinaria se desarrollará los días laborables de lunes a viernes, principalmente en horario de mañana.",
+            "b) En las localidades con población inferior a 500 personas, podrá autorizarse un número menor de días de actividad ordinaria, con un mínimo de dos consultas por semana.",
+            "c) En las localidades con población inferior a 500 personas, podrá autorizarse un número menor de días de actividad ordinaria, con un mínimo de tres consultas por semana.",
+            "d) Se garantizará la difusión del horario de funcionamiento de los centros sanitarios y de las consultas, así como la localización de los/las profesionales si se tienen que ausentar del centro de atención primaria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "166. El comité de dirección de cada Equipo de Atención Primaria estará integrado como mínimo por:",
+        "options": [
+            "a) Un representante de medicina, un representante de los/las enfermeros/as y un representante del personal administrativo.",
+            "b) Un representante de medicina, y un representante de los/las enfermeros/as.",
+            "c) Un representante de medicina, y un representante del personal administrativo.",
+            "d) Un representante de los/las enfermeros/as y un representante del personal administrativo."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "167. ¿Quiénes podrán optar al nombramiento para ocupar la dirección de la zona de salud?",
+        "options": [
+            "a) El personal sanitario perteneciente a los grupos A1 o A2.",
+            "b) El personal de gestión y servicio perteneciente a los grupos A1 o A2.",
+            "c) El personal sanitario o de gestión y servicio perteneciente a los grupos A1 o A2.",
+            "d) Cualquier miembro del Equipo de Atención Primaria."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "168. Es el conjunto de normas, reglas y procedimientos de actuación con el que deberán dotarse los/las profesionales de la Zona de Salud:",
+        "options": [
+            "a) Protocolos Normalizados de Trabajo.",
+            "b) Reglamento de Régimen Interno.",
+            "c) Protocolos Internos de Actuación.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "169. Señale la respuesta incorrecta sobre el Reglamento de Régimen Interno (RRI):",
+        "options": [
+            "a) Será aplicable y de obligado cumplimiento para todo/a profesional que desempeñe su actividad en la ZS.",
+            "b) En el caso de profesionales que ejerzan su actividad en más de una ZS, les será de aplicación el RRI de la ZS que determine el Coordinador del Equipo de Atención Primaria.",
+            "c) El RRI de las Unidades de Apoyo (en caso de que exista), deberá estar en consonancia con el RRI de la ZS donde se ubique.",
+            "d) Cada profesional tiene el derecho y el deber de conocer el RRI."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "170. En el Reglamento de Régimen Interno (RRI) se establecerá la periodicidad de las reuniones del equipo, esta será:",
+        "options": [
+            "a) Cuando se consideren oportunas, fijándose un mínimo de una reunión al trimestre y la obligatoriedad de asistencia.",
+            "b) Como mínimo una reunión al semestre y la obligatoriedad de asistencia.",
+            "c) Como mínimo una reunión anual y la obligatoriedad de asistencia.",
+            "d) Como mínimo una reunión semestral, no siendo obligatoria la asistencia de todos los miembros del equipo."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "171. ¿Quién elabora la propuesta del Reglamento de Régimen Interno (RRI)?",
+        "options": [
+            "a) El Coordinador del Equipo de Atención Primaria.",
+            "b) El Director Gerente del SES.",
+            "c) El Comité de Dirección.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "172. Señale la respuesta incorrecta en relación con la elaboración y aprobación del Reglamento de Régimen Interno de la zona de salud:",
+        "options": [
+            "a) Tras elaborar la propuesta, esta se entregará a cada integrante del equipo para que se hagan aportaciones, teniendo, al menos, quince días de plazo para ello.",
+            "b) Una vez trascurrido el plazo, se convocará a todo el personal para debatir y aceptar o denegar las alegaciones aportadas.",
+            "c) El proyecto de RRI deberá contar con la conformidad expresa de la mayoría del equipo y será enviado a la Gerencia de Área para su aprobación o denegación definitiva.",
+            "d) Cada nuevo integrante del equipo deberá conocer y asumir el RRI de la Zona de Salud."
+        ],
+        "correct": 0
+    },
+	    {
+        "question": "173. El Reglamento de Régimen Interno podrá ser modificado, parcial o totalmente, cuando:",
+        "options": [
+            "a) Cambien el director y subdirector de zona de salud.",
+            "b) Tengan lugar cambios normativos que requieran su adecuación o circunstancias que, a juicio del comité de dirección, justifiquen la necesidad de modificar el calendario, horario u otros contenidos del mismo.",
+            "c) Lo soliciten, al menos, el 50 % de los/las profesionales que dependan funcionalmente de la ZS, a la dirección de zona, que dará curso a esta solicitud.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "174. Es el servicio que, en el ámbito de la APS, con los recursos, actividades y prestaciones previstas en el Plan de Salud, garantiza de forma coordinada y ordenada, la atención sanitaria permanente a la población:",
+        "options": [
+            "a) Atención continuada asistencial.",
+            "b) Atención Sanitaria.",
+            "c) Atención Comunitaria.",
+            "d) Atención en Salud Pública."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "175. La atención continuada asistencial se podrá prestar en:",
+        "options": [
+            "a) Los Puntos de Atención Continuada (PAC), que, ubicados en el CS de la zona, prestarán asistencia a la población de toda la ZS.",
+            "b) Los Puntos de Atención Continuada Accesorios (PAC accesorios), que, ubicados en algún consultorio local de la ZS, prestarán asistencia a la población de la localidad donde se ubiquen.",
+            "c) Los Puntos Unificados de Atención Continuada, que, ubicados en un CS o en un CAP destinado al efecto, prestarán asistencia a la población asignada de varias zonas de salud contiguas.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "176. Los posibles cambios en los turnos que pudieran acordarse entre los profesionales de la Atención Continuada Asistencial habrán de comunicarse por escrito con una antelación mínima de:",
+        "options": [
+            "a) 24 horas.",
+            "b) 48 horas.",
+            "c) 72 horas.",
+            "d) 15 días."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "177. El personal que realiza la atención continuada asistencial se ubicará en:",
+        "options": [
+            "a) Un PAC.",
+            "b) Un PAC accesorio o PAC unificado.",
+            "c) Podrá desplazarse al lugar donde se encuentre el/la paciente, siempre que esté justificado, para realizar la asistencia.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "178. ¿Quién elabora los calendarios con los turnos de Atención Continuada?",
+        "options": [
+            "a) El Coordinador del Equipo de Atención Primaria.",
+            "b) La Dirección de la Zona de Salud o persona en quien esta delegue.",
+            "c) La Gerencia de Área.",
+            "d) La Dirección Médica de Atención Primaria."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "179. ¿Dónde se remitirá la propuesta del calendario con los turnos de Atención Continuada para su aprobación?",
+        "options": [
+            "a) Al Coordinador del Equipo de Atención Primaria.",
+            "b) A la Dirección de la Zona de Salud.",
+            "c) A la Gerencia de Área.",
+            "d) A la Dirección Médica de Atención Primaria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "180. En el calendario con los turnos de Atención Continuada no debe figurar uno de los siguientes aspectos:",
+        "options": [
+            "a) El tipo de asistencia sanitaria.",
+            "b) La asignación nominal de los turnos de atención continuada.",
+            "c) El mes, el día, el horario de funcionamiento y la ubicación de los PAC, especificando la localidad, la dirección, el teléfono de contacto y cualquier otra información que se estime necesaria.",
+            "d) Los núcleos de población atendidos."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "181. Al objeto de dar la máxima publicidad del servicio de atención continuada, la dirección de la ZS dispondrá lo necesario para que la población tenga información sobre este tipo de atención, especificando el día, el horario de funcionamiento, el lugar, el domicilio y el teléfono de contacto. Esta información deberá estar expuesta, al menos, en:",
+        "options": [
+            "a) El centro de salud.",
+            "b) El centro de salud y en los consultorios locales.",
+            "c) El centro de salud, en los consultorios locales y en todos los Ayuntamientos y oficinas de farmacia de la ZS.",
+            "d) El centro de salud, en los consultorios locales y en todos los Ayuntamientos y oficinas de farmacia de la ZS, así como en los medios generales de difusión que determine el SES."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "182. El registro de la actividad de atención continuada se realizará de forma obligatoria a través:",
+        "options": [
+            "a) Del sistema de información establecido por el SES, en todos los casos.",
+            "b) Del sistema de información establecido por el SES, salvo que técnicamente no sea posible, en cuyo caso no se registrará.",
+            "c) Del sistema de información establecido por el SES, salvo que técnicamente no sea posible, en cuyo caso se recogerán los datos en formato papel y se completarán y registrarán en el sistema de información establecido en cuanto sea posible.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "183. Los calendarios de los turnos de atención continuada de salud pública se confeccionarán, con frecuencia:",
+        "options": [
+            "a) Trimestral.",
+            "b) Semestral.",
+            "c) Trimestral o semestral.",
+            "d) Anual."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "184. Real Decreto por el que se aprueba el Reglamento sobre Estructura, Organización y Funcionamiento de los Hospitales gestionados por el Instituto Nacional de la Salud:",
+        "options": [
+            "a) Real Decreto 47/2023, de 10 de mayo.",
+            "b) Real Decreto 521/1987, de 15 de abril.",
+            "c) Real Decreto 67/1996, de 21 de mayo.",
+            "d) Real Decreto 58/2024, de 6 de junio."
+        ],
+        "correct": 1
+    }
+		];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	
