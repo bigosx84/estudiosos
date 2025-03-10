@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+    {
+        "question": "1. El Estatuto de Autonomía de Extremadura fue aprobado por:",
+        "options": [
+            "a) Las Cortes Generales por la Ley 1/83, de 25 de febrero.",
+            "b) Las Cortes Generales por la Ley Orgánica 1/83, de 25 de febrero.",
+            "c) La Asamblea de Extremadura por la Ley 1/83, de 25 de febrero.",
+            "d) La Asamblea de Extremadura por la Ley Orgánica 1/83, de 25 de febrero."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. La última de las reformas del Estatuto de Autonomía se realizó por:",
+        "options": [
+            "a) Ley Orgánica 12/1999, de 6 de mayo.",
+            "b) Ley Orgánica 4/2002, de 11 de junio.",
+            "c) Ley Orgánica 1/2011 de 28 de enero.",
+            "d) Ley Orgánica 1/2011 de 24 de marzo."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "3. El Estatuto de Autonomía de Extremadura consta de:",
+        "options": [
+            "a) Un Título Preliminar, 7 Títulos, 7 Disposiciones Adicionales, 1 Disposición Derogatoria y una disposición Final.",
+            "b) Un Título Preliminar, 7 Títulos, 6 Disposiciones Adicionales y una disposición Final.",
+            "c) Un Título Preliminar, 6 Títulos, 2 Disposiciones Adicionales, 1 Disposición Derogatoria y una disposición Final.",
+            "d) Un Título Preliminar, 9 Títulos, 4 Disposiciones Adicionales y una disposición Final."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. Las Instituciones de Extremadura se tratan en el:",
+        "options": [
+            "a) Título Preliminar.",
+            "b) Título I.",
+            "c) Título II.",
+            "d) Título III."
+        ],
+        "correct": 2
+    },
+	    {
+        "question": "5. El Título IV trata de:",
+        "options": [
+            "a) La Junta de Extremadura",
+            "b) La organización judicial.",
+            "c) La organización territorial.",
+            "d) Economía y Hacienda."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "6. El Título Preliminar del Estatuto de Autonomía se desarrolla a lo largo de los:",
+        "options": [
+            "a) Cinco primeros artículos.",
+            "b) Seis primeros artículos",
+            "c) Siete primeros artículos",
+            "d) Nueve primeros artículos."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "7. Los Poderes de la Comunidad Autónoma de Extremadura emanan:",
+        "options": [
+            "a) De la Constitución y del Estatuto.",
+            "b) Del Estado, de la Constitución y del Estatuto.",
+            "c) Del Pueblo, de la Constitución y del Estatuto.",
+            "d) De la Constitución española."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "8. Son elementos diferenciales de Extremadura, y han de orientar la actuación de los poderes públicos:",
+        "options": [
+            "a) La vitalidad de su reciente identidad colectiva, la calidad de su medio ambiente y su patrimonio cultural, así como el predominio del mundo rural.",
+            "b) Su proyección en Portugal e Iberoamérica.",
+            "c) Los condicionantes históricos de su desarrollo socioeconómico y la baja densidad de su población y su dispersión, entendida como dificultad relativa de acceso a los servicios y equipamientos generales.",
+            "d) Todos los anteriores."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. De acuerdo con el Estatuto, gozan de la condición política de extremeños:",
+        "options": [
+            "a) Los ciudadanos españoles que, de acuerdo con las Leyes generales del Estado, tengan vecindad administrativa en cualquiera de los municipios de Extremadura.",
+            "b) Los ciudadanos españoles residentes en el extranjero que hayan tenido la última vecindad administrativa en Extremadura y acrediten esta condición en la correspondiente representación diplomática de España.",
+            "c) Los descendientes inscritos como españoles, si así lo solicitan en la forma que determina una Ley del Estado.",
+            "d) Todos ellos."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "10. De acuerdo con el artículo 7, los poderes públicos regionales:",
+        "options": [
+            "a) Ejercerán sus atribuciones con las finalidades primordiales de promover las condiciones de orden social, político, cultural o económico, para que la libertad y la igualdad de los extremeños, entre sí y con el resto de los españoles y europeos, sean reales y efectivas.",
+            "b) Perseguirán un modelo de desarrollo social capitalista y cuidarán de la preservación y mejora de la calidad medioambiental y la biodiversidad de la región, con especial atención a sus ecosistemas característicos, como la dehesa.",
+            "c) Favorecerán medidas para el gasto energético y apoyarán la generación de energías renovables.",
+            "d) Velarán por la especial protección de aquellos sectores de población con especiales necesidades de cualquier tipo."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "11. El Estatuto de Autonomía recoge la Asamblea de Extremadura en el:",
+        "options": [
+            "a) Capítulo I del Título II.",
+            "b) Capítulo II del Título II.",
+            "c) Capítulo I del Título I.",
+            "d) Capítulo III del Título III."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "12. De acuerdo con el artículo 16.2, corresponde a la Asamblea de Extremadura:",
+        "options": [
+            "a) Realizar los Presupuestos de la Comunidad Autónoma y autorizar el recurso al crédito público, en los términos del Título VI de este Estatuto.",
+            "b) Ejercer el control de los medios de comunicación social dependientes de la Comunidad Autónoma.",
+            "c) Designar de entre los diputados de la Asamblea a los diputados a que se refiere el artículo 69.5 de la Constitución tras las elecciones autonómicas.",
+            "d) Todas las anteriores."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "13. Los miembros de la Asamblea de Extremadura serán elegidos por sufragio universal, libre, igual, directo y secreto, de acuerdo con criterios de representación proporcional:",
+        "options": [
+            "a) Siendo un número entre 50 y 70.",
+            "b) En número máximo de 65.",
+            "c) Siendo un número entre 65 y 70.",
+            "d) En número máximo de 60."
+        ],
+        "correct": 1
+    },
+	    {
+        "question": "14. La sesión constitutiva de la Asamblea electa será convocada por el Presidente cesante dentro de los:",
+        "options": [
+            "a) Diez días siguientes a la celebración de las elecciones.",
+            "b) Quince días siguientes a la celebración de las elecciones.",
+            "c) Veinte días siguientes a la celebración de las elecciones.",
+            "d) Treinta días siguientes a la celebración de las elecciones."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "15. En todo caso, las iniciativas legislativas que se presenten por la vía deberán estar avaladas por al menos:",
+        "options": [
+            "a) 35.000 firmas acreditadas del censo para las elecciones a la Asamblea.",
+            "b) 40.000 firmas acreditadas del censo para las elecciones a la Asamblea.",
+            "c) 45.000 firmas acreditadas del censo para las elecciones a la Asamblea.",
+            "d) 50.000 firmas acreditadas del censo para las elecciones a la Asamblea."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "16. La Presidencia se trata en el Estatuto de la Autonomía en el:",
+        "options": [
+            "a) Capítulo II del Título I.",
+            "b) Capítulo II del Título II.",
+            "c) Capítulo II del Título III.",
+            "d) Capítulo III del Título II."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "17. El candidato a Presidente de la Junta de Extremadura es propuesto por el:",
+        "options": [
+            "a) Anterior Presidente de la Comunidad Autónoma.",
+            "b) Rey",
+            "c) El Presidente de la Asamblea de Extremadura.",
+            "d) El grupo político con mayor representación."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "18. El candidato propuesto presentará su programa a la Asamblea dentro de:",
+        "options": [
+            "a) Los 15 días siguientes a su designación.",
+            "b) El mes siguiente a su designación.",
+            "c) Los 7 días siguientes a su designación.",
+            "d) Los 10 días siguientes a su designación."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "19. Como Presidente de la Junta de Extremadura le corresponde al Presidente:",
+        "options": [
+            "a) Ejercer la representación de Extremadura en sus relaciones con las instituciones del Estado, con otras Comunidades Autónomas y con las demás administraciones públicas y en el ámbito internacional cuando proceda.",
+            "b) Asegurar en el ámbito de la Comunidad Autónoma el respeto al orden constitucional y al resto del ordenamiento jurídico, adoptando las medidas que fuesen necesarias en el marco de las competencias que le son propias.",
+            "c) Establecer de acuerdo con su programa político, las directrices generales de la acción de gobierno e impulsar, dirigir y coordinar la acción del mismo.",
+            "d) Convocar elecciones a la Asamblea de Extremadura, la sesión constitutiva de esta y en su caso, disolverla en los términos previstos en este Estatuto."
+        ],
+        "correct": 2
+    },
+	{
+    "question": "20. Si la Asamblea negara su confianza al Presidente de la Junta, éste presentará su dimisión ante aquélla, cuyo Presidente convocará, la sesión plenaria para la elección de nuevo Presidente, en el plazo máximo de:",
+    "options": [
+        "a) Cinco días.",
+        "b) Diez días.",
+        "c) Quince días.",
+        "d) Un mes."
+    ],
+    "correct": 2
+}
+        ];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
