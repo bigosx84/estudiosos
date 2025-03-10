@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+    {
+        "question": "1. El antequirófano pertenece a la zona quirúrgica:",
+        "options": [
+            "a) Sin limitación de acceso.",
+            "b) Semilimitada.",
+            "c) Limitada.",
+            "d) Prohibida."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "2. ¿Qué tipo de agentes utiliza más frecuentemente la asepsia para conseguir matar y eliminar los microorganismos?",
+        "options": [
+            "a) Agentes mecánicos.",
+            "b) Agentes físicos.",
+            "c) Agentes biológicos.",
+            "d) Agentes químicos."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "3. ¿Cuándo dirías que existe enfermedad infecciosa?",
+        "options": [
+            "a) Cuando se produce la invasión y entrada en el organismo humano de agentes extraños vivos.",
+            "b) Cuando el agente infeccioso crece y prolifera invadiendo tejidos y células del organismo.",
+            "c) Cuando el agente infeccioso coloniza un órgano, aparato o la globalidad de nuestra corporalidad.",
+            "d) Cuando aparecen signos y síntomas como consecuencia de la infección."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "4. ¿Cómo se denomina la desinfección que se realiza cuando se ha producido el alta del paciente y las circunstancias lo indican?",
+        "options": [
+            "a) Desinfección definitiva.",
+            "b) Desinfección final.",
+            "c) Desinfección concurrente.",
+            "d) Desinfección altísima."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "5. ¿Cómo se denomina la técnica de desinfección que consiste en sumergir en agua a la temperatura de ebullición el material que se quiere desinfectar?",
+        "options": [
+            "a) Hervido",
+            "b) Pasteurización",
+            "c) Uperización",
+            "d) Técnica UHT"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. ¿Qué tiempo requiere el glutaraldehído al 2% para que lleve a cabo una desinfección por inmersión del material objeto de dicho procedimiento?",
+        "options": [
+            "a) 1h",
+            "b) 10h",
+            "c) 20 minutos",
+            "d) 30 segundos"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "7. ¿A qué presión irá el autoclave de material si se utiliza a 120 °C?",
+        "options": [
+            "a) 1 atmósfera.",
+            "b) 2 atmósferas.",
+            "c) 3 atmósferas.",
+            "d) 4 atmósferas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "8. ¿Cuál de las siguientes ventajas e inconvenientes del autoclave es falsa?",
+        "options": [
+            "a) Es un medio de esterilizar barato, sencillo, rápido y eficaz.",
+            "b) Es aplicable a una gran gama de materiales.",
+            "c) Las altas temperaturas de la técnica desestructura el material.",
+            "d) Son correctas todas las respuestas anteriores."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. ¿Qué material de estos no puede esterilizarse en autoclave?",
+        "options": [
+            "a) Guantes de goma.",
+            "b) Bateas metálicas.",
+            "c) Ropa.",
+            "d) Envase de medios de cultivo."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "10. ¿En cuál de estas técnicas de esterilización no son utilizados los métodos químicos?",
+        "options": [
+            "a) En óxido de etileno",
+            "b) En glutaraldehído.",
+            "c) En formol.",
+            "d) En el flameado."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "11. El tipo de interacción agente/huésped en la que existe beneficio para ambos se denomina:",
+        "options": [
+            "a) Simbiosis",
+            "b) Comensalismo",
+            "c) Parasitismo",
+            "d) Infección"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "12. El tipo de interacción agente/huésped en la que el agente obtiene beneficio a partir del huésped se denomina:",
+        "options": [
+            "a) Simbiosis",
+            "b) Comensalismo",
+            "c) Parasitismo",
+            "d) Infección"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "13. El agente etiológico depende de varios factores para tener capacidad de producir enfermedad en el ser humano, entre estos factores no se encuentra:",
+        "options": [
+            "a) Patogenicidad.",
+            "b) Tipo de ADN.",
+            "c) Contagiosidad.",
+            "d) Virulencia."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "14. La capacidad para multiplicarse el agente causal en los tejidos dando o no lugar a la enfermedad se denomina:",
+        "options": [
+            "a) Infectividad.",
+            "b) Contagiosidad.",
+            "c) Virulencia.",
+            "d) ADN."
+        ],
+        "correct": 0
+    },
+	{
+  "questions": [
+    {
+      "question": "15. La habilidad de un agente causal para producir reacción inmunológica local o general se denomina:",
+      "options": [
+        "a) Virulencia",
+        "b) Infectividad",
+        "c) Contagiosidad",
+        "d) Inmunogenicidad"
+      ],
+      "correct": 3
+    },
+    {
+      "question": "16. No es un eslabón de la cadena epidemiológica:",
+      "options": [
+        "a) Reservorio",
+        "b) Fuente",
+        "c) Mecanismo de transmisión",
+        "d) Estado inmunológico"
+      ],
+      "correct": 3
+    },
+    {
+      "question": "17. Entre las características del reservorio animal no se encuentra:",
+      "options": [
+        "a) En la mayoría de los casos la transmisión se termina en el animal, no se transmite a hombres.",
+        "b) Los casos son esporádicos o agrupados en pequeños brotes, pero algunas zoonosis producen epidemias.",
+        "c) Las lesiones y síntomas son parecidas en hombres y en animales.",
+        "d) La enfermedad se suele presentar en personas que están en contacto con animales y sus productos."
+      ],
+      "correct": 0
+    },
+    {
+      "question": "18. El principal mecanismo de las barreras higiénicas físicas es:",
+      "options": [
+        "a) El lavado de manos.",
+        "b) El uso de guantes.",
+        "e) El uso de batas.",
+        "d) El uso de mascarillas."
+      ],
+      "correct": 0
+    },
+    {
+      "question": "19. Los residuos del Grupo V, productos químicos que consisten en, o contienen, sustancias peligrosas, código LER 18 01 06* o 18 02 05*, según se trate, respectivamente, de servicios médicos o veterinarios son de tipo:",
+      "options": [
+        "a) A.",
+        "b) B.",
+        "e) C.",
+        "d) d."
+      ],
+      "correct": 0
+    },
+    {
+      "question": "20. Los residuos incluidos en el grupo III también podrán ser eliminados como si se tratara de residuos sanitarios del grupo II siempre que:",
+      "options": [
+        "a) Se transporten en los contenedores adecuados.",
+        "b) Se haya procedido a una desinfección O esterilización mediante vapor de agua caliente a presión.",
+        "e) No hayan sido manipulados previamente.",
+        "d) Sean incinerados separadamente."
+      ],
+      "correct": 1
+    }
+
+
+        ];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
