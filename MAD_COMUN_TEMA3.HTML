@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+     {
+        "question": "1. El personal estatutario con nombramiento expedido para el ejercicio de una profesión o especialidad sanitaria se denomina:",
+        "options": [
+            "a) Personal sanitario.",
+            "b) Otro personal.",
+            "c) Personal de mantenimiento.",
+            "d) Personal de gestión y servicios."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "2. El personal estatutario con nombramiento expedido para el desempeño de funciones de gestión o para el desempeño de profesiones u oficios que no tengan carácter sanitario se denomina:",
+        "options": [
+            "a) Personal universitario.",
+            "b) Personal de gestión y servicios.",
+            "c) Personal directivo.",
+            "d) Personal administrativo."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "3. Según establece el art. 8 de la Ley 55/2003, de 16 de diciembre, del Estatuto Marco de los Servicios de Salud, es personal estatutario fijo:",
+        "options": [
+            "a) El que, una vez superado el correspondiente proceso selectivo, obtiene un nombramiento para el desempeño, con carácter permanente, de las funciones que de tal nombramiento se deriven.",
+            "b) Todo el personal al servicio de los Servicios de Salud.",
+            "c) El personal que realice una prestación de servicios determinados de naturaleza temporal, coyuntural o extraordinaria.",
+            "d) El personal en posesión de un contrato laboral indefinido."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. Conforme al artículo 9.1 del Estatuto Marco (en redacción dada por el Real Decreto-ley 12/2022, de 5 de julio, por el que se modifica la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud) los nombramientos del Personal Estatutario Temporal de los Servicios de Salud serán:",
+        "options": [
+            "a) Únicamente de Personal Estatutario Sanitario.",
+            "b) Personal Estatutario Contratado.",
+            "c) De interinidad.",
+            "d) Como Personal Laboral."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "5. Conforme a lo dispuesto en el artículo 2.2 de la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, en lo no previsto en la misma serán aplicables al personal estatutario:",
+        "options": [
+            "a) Las disposiciones y principios generales sobre función pública de la Administración correspondiente.",
+            "b) Las disposiciones de derecho laboral, dictadas al amparo del artículo 149.3 de la Constitución.",
+            "c) Las disposiciones sobre función pública de la Administración del Estado, en todo caso, conforme a lo dispuesto en el artículo 149.3 de la Constitución.",
+            "d) El convenio colectivo del personal laboral al servicio de la Administración correspondiente."
+        ],
+        "correct": 0
+    },
+	    {
+        "question": "6. Conforme al artículo 6.2 de la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, atendiendo al nivel académico del título exigido para el ingreso, el personal estatutario sanitario de formación profesional se divide en:",
+        "options": [
+            "a) Técnicos sanitarios y Auxiliares de Enfermería.",
+            "b) Técnicos superiores y Técnicos.",
+            "c) Técnicos superiores y Técnicos de gestión.",
+            "d) Técnicos especialistas y Técnicos."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "7. La categoría profesional de Celador está comprendida dentro del grupo de:",
+        "options": [
+            "a) Personal de gestión y servicios.",
+            "b) Personal no estatutario.",
+            "c) Personal estatutario sanitario.",
+            "d) Personal estatutario de formación profesional."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "8. Es personal Estatutario Sanitario:",
+        "options": [
+            "a) El que ejerce una profesión o especialidad sanitaria.",
+            "b) El que ostenta esta condición en virtud de nombramiento expedido para el ejercicio de una profesión o especialización sanitaria.",
+            "c) El que desempeña una categoría clasificada como sanitaria.",
+            "d) Quien ejerza una profesión sanitaria sin ostentar la condición de funcionario."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "9. El personal Estatutario de Gestión y Servicio se clasifica en función del título exigido para el ingreso en:",
+        "options": [
+            "a) Personal de formación universitaria, personal de formación profesional y otro personal.",
+            "b) Personal universitario, personal de formación profesional y personal subalterno.",
+            "c) Personal licenciado universitario, personal de administración y personal auxiliar.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "10. El Estatuto Marco del Personal Estatutario de los Servicios de Salud está regulado por:",
+        "options": [
+            "a) Una Ley orgánica.",
+            "b) Una Ley ordinaria.",
+            "c) Un Real Decreto.",
+            "d) Un Reglamento."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "11. No constituye un derecho individual del personal estatutario:",
+        "options": [
+            "a) La estabilidad en el empleo.",
+            "b) La movilidad voluntaria.",
+            "c) El descanso necesario.",
+            "d) La negociación colectiva."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "12. El régimen de derechos del personal estatutario será aplicable al personal temporal:",
+        "options": [
+            "a) En la medida en que la naturaleza del derecho lo permita.",
+            "b) En todo caso.",
+            "c) En ningún caso.",
+            "d) Solo cuando así se establezca en su nombramiento."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "13. En relación con los derechos y deberes regulados en el Estatuto Marco, no se considera un derecho colectivo:",
+        "options": [
+            "a) La huelga.",
+            "b) La actividad sindical.",
+            "c) La reunión.",
+            "d) La estabilidad en el empleo."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "14. Entre los siguientes derechos que le reconoce el Estatuto Marco al personal estatutario, ¿cuál de ellos no tiene el carácter de derecho individual?",
+        "options": [
+            "a) La estabilidad en el empleo.",
+            "b) El respeto a la dignidad e intimidad personal en el trabajo.",
+            "c) La formación continuada adecuada a la función desempeñada.",
+            "d) La inamovilidad del puesto de trabajo."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "15. El personal estatutario de los servicios de salud tiene el deber de:",
+        "options": [
+            "a) Participar en la elaboración de los convenios colectivos.",
+            "b) Realizar sus funciones fuera del horario y jornada habitual.",
+            "c) Realizar actividades sindicales.",
+            "d) Respetar la Constitución, el Estatuto de Autonomía correspondiente y el resto del ordenamiento jurídico."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "16. Según el Estatuto Marco del Personal Estatutario de los Servicios de Salud, ¿cuál de los siguientes es un derecho colectivo?",
+        "options": [
+            "a) Derecho a la percepción puntual de las retribuciones e indemnizaciones por razón del servicio en cada caso establecidas.",
+            "b) Derecho a la libre sindicación.",
+            "c) Derecho a la movilidad voluntaria, promoción interna y desarrollo profesional, en la forma en que prevean las disposiciones en cada caso aplicables.",
+            "d) Derecho a la jubilación en los términos y condiciones establecidas en las normas en cada caso aplicables."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "17. Conforme al artículo 5 de la Ley 55/2003, de 16 de diciembre, el personal estatutario de los Servicios de Salud, se clasifica con diferentes criterios, atendiendo:",
+        "options": [
+            "a) A la función desarrollada; al nivel del título exigido para su ingreso; y al tipo de contrato.",
+            "b) Al nivel del título exigido para su ingreso; y al tipo de nombramiento.",
+            "c) A su carácter de propietario, interino o eventual.",
+            "d) A la función desarrollada; al nivel del título exigido para su ingreso; y al tipo de nombramiento."
+        ],
+        "correct": 3
+    },
+	    {
+        "question": "18. En el supuesto de existencia de plaza vacante, son estatutarios interinos los que, por razones expresamente justificadas de necesidad y urgencia, son nombrados como tales con carácter temporal para el desempeño de funciones propias de estatutarios, cuando no sea posible su cobertura por personal estatutario fijo, durante un plazo máximo de:",
+        "options": [
+            "a) Dos años.",
+            "b) Tres años.",
+            "c) Cuatro años.",
+            "d) Seis años."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "19. La Ley 55/2003 del Estatuto Marco de Personal Estatutario de los Servicios de Salud es de aplicación:",
+        "options": [
+            "a) Al personal estatutario que integra las profesiones sanitarias.",
+            "b) Al personal estatutario que desempeña su función en los centros e Instituciones sanitarias de los servicios de salud.",
+            "c) Al personal funcionario de los servicios de salud de las Comunidades Autónomas.",
+            "d) Al personal funcionario, excluyendo el personal de gestión y servicios."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "20. El Estatuto Marco del personal estatutario considera a este personal como titular de una relación:",
+        "options": [
+            "a) Funcionarial común.",
+            "b) Laboral común.",
+            "c) Estatutaria de la Seguridad Social.",
+            "d) Funcionarial especial."
+        ],
+        "correct": 3
+    }
+
+        ];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
