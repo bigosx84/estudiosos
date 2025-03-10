@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+     {
+        "question": "1. ¿En qué se fundamenta la Constitución Española?",
+        "options": [
+            "a) En un Estado Social y Democrático de Derecho",
+            "b) En la indisoluble unidad de la Nación Española",
+            "c) En la independencia de los poderes del Estado",
+            "d) En la organización territorial del Estado"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. Según el artículo 3 de la CE, el castellano es la lengua oficial del Estado y todos los españoles:",
+        "options": [
+            "a) Tienen el deber de usar y el derecho de conocer el castellano.",
+            "b) Tienen el derecho y el deber de conocer el castellano.",
+            "c) Tienen el derecho y el deber de conocer el castellano.",
+            "d) Tienen el derecho de conocer y usar el castellano."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "3. La Constitución Española reconoce y garantiza el derecho a la autonomía:",
+        "options": [
+            "a) De las nacionalidades que la integran",
+            "b) De las regiones que la integran",
+            "c) De las Comunidades Autónomas que la integran.",
+            "d) De las nacionalidades y regiones que la integran."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "4. El Preámbulo de la Constitución:",
+        "options": [
+            "a) Tiene en sí carácter de norma jurídica.",
+            "b) Es una declaración de intenciones, destinada a interpretar lo que se quiere alcanzar con el contenido normativo de la Constitución.",
+            "c) Se trata de un texto sin fuerza jurídica de obligar.",
+            "d) Las respuestas b) y c) son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "5. Señala la respuesta correcta, respecto de la aprobación, ratificación y publicación de la Constitución Española:",
+        "options": [
+            "a) Aprobada por las Cortes el 31 de octubre de 1978, ratificada por el pueblo en referéndum el 6 de diciembre de 1978 y publicada el 29 de diciembre de 1978.",
+            "b) Aprobada por las Cortes el 30 de octubre de 1978, ratificada por el pueblo en referéndum el 16 de diciembre de 1978 y publicada el 27 de diciembre de 1978.",
+            "c) Aprobada por las Cortes el 31 de octubre de 1978, ratificada por el pueblo en referéndum el 16 de diciembre de 1978 y publicada el 29 de diciembre de 1978.",
+            "d) Aprobada por las Cortes el 10 de octubre de 1978, ratificada por el pueblo en referéndum el 6 de diciembre de 1978 y publicada el 29 de diciembre de 1978."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. ¿En qué parte de la Carta Magna se establece la exposición de motivos que impulsan la norma constitucional y los objetivos que con ella se pretenden alcanzar?",
+        "options": [
+            "a) En el Título Preliminar.",
+            "b) En el Preámbulo.",
+            "c) En el Título I.",
+            "d) En el Título II."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "7. La Constitución Española fue sancionada por:",
+        "options": [
+            "a) El Rey.",
+            "b) El Presidente del Congreso.",
+            "c) Las Cortes Generales.",
+            "d) El Presidente del Gobierno."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "8. ¿Cuáles de los siguientes españoles de origen pueden ser privados de su nacionalidad?",
+        "options": [
+            "a) Exclusivamente los miembros de grupos terroristas.",
+            "b) Los miembros de grupos terroristas y los que atenten contra el Rey u otro miembro de la Casa Real.",
+            "c) Los que atenten contra un miembro de la Familia Real o del Gobierno de la Nación.",
+            "d) Ningún español de origen podrá ser privado de su nacionalidad."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. Según la CE son fundamentos del orden político y la paz social:",
+        "options": [
+            "a) La dignidad de la persona, los derechos inviolables que le son inherentes y el respeto a la ley.",
+            "b) La dignidad de la persona, el desarrollo limitado de la personalidad y el respeto a la ley.",
+            "c) El respeto a la ley, a los reglamentos administrativos y demás disposiciones legales.",
+            "d) La dignidad de la persona, los derechos inviolables que le son inherentes, el libre desarrollo de su personalidad, el respeto a la ley y a los derechos de los demás."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "10. ¿Cuál de los siguientes es considerado por la CE como uno de los valores superiores del ordenamiento jurídico?",
+        "options": [
+            "a) La jerarquía normativa.",
+            "b) El pluralismo político.",
+            "c) La publicidad normativa.",
+            "d) La equidad."
+        ],
+        "correct": 1
+    },
+	    {
+        "question": "11. La forma política del Estado español es:",
+        "options": [
+            "a) Democracia parlamentaria.",
+            "b) Gobierno parlamentario.",
+            "c) Monarquía parlamentaria.",
+            "d) República democrática."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "12. La parte de la CE que regula la estructura de los principales órganos del Estado recibe el nombre de:",
+        "options": [
+            "a) Parte dogmática.",
+            "b) Parte orgánica.",
+            "c) Parte estatal.",
+            "d) Parte estructural."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "13. Según la CE, la soberanía nacional:",
+        "options": [
+            "a) Corresponde a las Cortes Generales, al estar compuestas por los representantes del pueblo.",
+            "b) Corresponde al Rey.",
+            "c) Reside en el pueblo español.",
+            "d) Corresponde al Gobierno de la Nación elegido directamente por el pueblo."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "14. ¿En qué parte de la Carta Magna se señalan los valores superiores del ordenamiento jurídico?",
+        "options": [
+            "a) En el Preámbulo.",
+            "b) En el Título Preliminar.",
+            "c) En el Título I.",
+            "d) Ninguna respuesta es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "15. ¿Cuál de las siguientes es una de las características de nuestra Constitución de 1978?",
+        "options": [
+            "a) Consensuada.",
+            "b) Corta.",
+            "c) Conservadora.",
+            "d) Originalidad."
+        ],
+        "correct": 0
+    },
+	    {
+        "question": "16. Son el fundamento del orden político y de la paz social:",
+        "options": [
+            "a) El libre desarrollo de la personalidad.",
+            "b) Los derechos inviolables que les son inherentes.",
+            "c) El respeto a la ley y a los derechos de los demás.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "17. ¿Qué quedará excluido de extradición?",
+        "options": [
+            "a) Los delitos criminales.",
+            "b) Los delitos políticos.",
+            "c) Los actos de terrorismo.",
+            "d) Ninguno"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "18. ¿Qué debe ser democrático, a tenor de lo dispuesto en la Constitución Española, en los sindicatos de trabajadores y las asociaciones empresariales?",
+        "options": [
+            "a) Su funcionamiento.",
+            "b) Su estructura interna.",
+            "c) Su funcionamiento y estructura interna.",
+            "d) Sus órganos asamblearios."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "19. ¿De cuántos Capítulos consta el Título I de la CE de 1978?",
+        "options": [
+            "a) De tres.",
+            "b) De cinco.",
+            "c) De dos.",
+            "d) De cuatro."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "20. El derecho a la propiedad en nuestra Constitución es un Derecho:",
+        "options": [
+            "a) Inherente a la condición humana.",
+            "b) Absoluto.",
+            "c) Que está limitado por la función social de la misma.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 2
+    }
+        ];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
