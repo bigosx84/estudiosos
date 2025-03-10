@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+    {
+        "question": "1. Según el Decreto 47/2023, ¿cuál es una función común de todo el personal de Atención Primaria?",
+        "options": [
+            "a) Realizar diagnósticos médicos.",
+            "b) Participar en actividades preventivas y promoción de la salud.",
+            "c) Aprobar el presupuesto del centro de salud.",
+            "d) Elaborar nuevas leyes sanitarias."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. ¿En qué situaciones debe participar el personal de Atención Primaria en actividades de salud pública?",
+        "options": [
+            "a) Solo en emergencias hospitalarias.",
+            "b) Cuando haya brotes epidémicos, epidemias o pandemias.",
+            "c) En situaciones de epidemias, pandemias y brotes epidémicos.",
+            "d) Solo en consultas programadas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "3. ¿Cómo debe organizarse el trabajo dentro del Equipo de Atención Primaria?",
+        "options": [
+            "a) Aplicando la metodología de trabajo en equipo.",
+            "b) Cada profesional trabaja de manera independiente.",
+            "c) Solo los médicos toman decisiones.",
+            "d) Sin necesidad de coordinación entre áreas."
+        ],
+        "correct": 0
+    },
+	    {
+        "question": "4. ¿Qué función tiene el personal de Atención Primaria en relación con la Administración Sanitaria?",
+        "options": [
+            "a) Participar en la elaboración y ejecución de programas y procesos asistenciales.",
+            "b) Gestionar el pago de los empleados sanitarios.",
+            "c) Decidir el presupuesto anual del centro.",
+            "d) Aprobar normas administrativas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "5. ¿Qué función cumple el personal de Atención Primaria respecto a los servicios sociales?",
+        "options": [
+            "a) Coordinarse con servicios sociales y de atención a la dependencia.",
+            "b) Solo atender casos de emergencia social.",
+            "c) Derivar pacientes sin más intervención.",
+            "d) Realizar trámites administrativos."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. ¿Qué tarea desempeña el celador en la recepción del centro de salud?",
+        "options": [
+            "a) Atender telefónicamente a los usuarios.",
+            "b) Gestionar la historia clínica de los pacientes.",
+            "c) Realizar prescripciones médicas.",
+            "d) Organizar reuniones médicas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "7. ¿Cómo colabora el celador con la unidad administrativa del centro?",
+        "options": [
+            "a) Registrando datos de los pacientes en los sistemas informáticos.",
+            "b) Gestionando la contabilidad del centro.",
+            "c) Supervisando la medicación de los pacientes.",
+            "d) Elaborando protocolos de actuación médica."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "8. ¿En qué situaciones debe actuar el celador para canalizar a los pacientes?",
+        "options": [
+            "a) Tanto en horario normal como en el turno de atención continuada.",
+            "b) Solo durante emergencias.",
+            "c) Únicamente en horario de mañana.",
+            "d) Nunca, esa función corresponde a los médicos."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "9. ¿Qué actividad realiza el celador en el traslado de pacientes?",
+        "options": [
+            "a) Ayudar en la movilidad de personas con dificultades",
+            "b) Diagnosticar problemas de movilidad.",
+            "c) Realizar tratamientos fisioterapéuticos.",
+            "d) Evaluar la gravedad de las enfermedades."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "10. ¿Qué garantiza la atención continuada asistencial en APS?",
+        "options": [
+            "a) La atención sanitaria permanente a la población",
+            "b) Servicios médicos privados de urgencia",
+            "c) Atención solo en hospitales",
+            "d) Un servicio exclusivo para emergencias."
+        ],
+        "correct": 0
+    },
+	    {
+        "question": "11. ¿Cuándo deberán ayudar los/as celadores en la práctica de autopsias?",
+        "options": [
+            "a) Cuando el Jefe de Servicio no tenga ayudante.",
+            "b) Cuando le sea ordenado por la Supervisora de planta.",
+            "c) Deberá negarse porque no es función propia de su puesto.",
+            "d) Cuando sus funciones no requieran hacer uso del instrumental sobre el cadáver."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "12. ¿En qué artículo del Estatuto de Personal no sanitario vienen recogidas las funciones del celador?",
+        "options": [
+            "a) Artículo 12.1",
+            "b) Artículo 13.2",
+            "c) Artículo 14.3",
+            "d) Artículo 14.2"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "13. ¿Quién debe encomendar a los/as celadores/as que bañen a los enfermos masculinos encamados o que no puedan realizarlo por sí mismos?",
+        "options": [
+            "a) El Jefe de Personal Subalterno.",
+            "b) Las Supervisoras de planta o servicio o personas que las sustituyan.",
+            "c) El/la enfermero/a de planta.",
+            "d) El personal auxiliar de enfermería."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "14. ¿De quién es la responsabilidad de la vigilancia nocturna de la Institución, tanto del interior como del exterior del edificio, del que cuidarán estén cerradas las puertas de servicios complementarios?",
+        "options": [
+            "a) Del celador/a.",
+            "b) Del jefe del servicio.",
+            "c) Del vigilante de seguridad.",
+            "d) De la empresa contratada para tal fin."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "15. ¿Quién delegará sus funciones en el jefe de personal subalterno?",
+        "options": [
+            "a) La supervisora de enfermería.",
+            "b) El Jefe de Subalternos.",
+            "c) El Director de Gestión y Servicios Generales.",
+            "d) El Jefe de Personal de Oficio."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "16. La lista de espera en cuanto a disponibilidad de camas en un hospital se actualizará:",
+        "options": [
+            "a) Constantemente.",
+            "b) Cada tres días.",
+            "c) Cada semana.",
+            "d) Cada mes."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "17. ¿Qué función de estas no desempeña la Unidad de Admisión de urgencias en la recepción y registro de los pacientes?",
+        "options": [
+            "a) Datos de filiación del paciente (nombre y apellidos, edad, sexo, domicilio...)",
+            "b) Persona que lo remite a urgencias: médico de familia, especialista, autoridad o por propia iniciativa.",
+            "c) Motivo de la urgencia.",
+            "d) Fecha del alta y causa de la misma: curación, alta voluntaria, traslado a otro centro, defunción u otras causas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. ¿Qué tipo de asistencia se lleva a cabo en las consultas externas del Hospital reciban o no después el régimen de hospitalización?",
+        "options": [
+            "a) Asistencia Primaria.",
+            "b) Asistencia Especializada.",
+            "c) Asistencia Ambulatoria.",
+            "d) Asistencia Derivada."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "19. ¿Por qué Plan se regirá la Admisión de Consultas en un Hospital?",
+        "options": [
+            "a) Se regirá por el Plan de Organización de las Consultas Externas.",
+            "b) Se regirá por el Plan de Organización de las Consultas Internas.",
+            "c) Se regirá por el Plan de Organización de las Consultas de Urgencias.",
+            "d) Se regirá por el Plan de Organización de las Consultas Externas, Internas y de Urgencias."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "20. ¿De quién depende y está adscrito por normativa el Servicio de Atención al Paciente (SAP) a nivel hospitalario?",
+        "options": [
+            "a) De la División Médica.",
+            "b) De la Gerencia.",
+            "c) De la División de Enfermería.",
+            "d) Del Servicio Provincial de Salud."
+        ],
+        "correct": 1
+    }
+
+
+        ];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
