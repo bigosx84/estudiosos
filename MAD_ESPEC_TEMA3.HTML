@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+    {
+        "question": "1. ¿Cómo se denomina también a la cama ortopédica o traumatológica?",
+        "options": [
+            "a) Cama de Judet.",
+            "b) Potro ginecológico.",
+            "c) Somier.",
+            "d) Bouchat."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "2. El marco triangular de Balkan lo posee la cama:",
+        "options": [
+            "a) Ortopédica de Judet.",
+            "b) Bouchat.",
+            "c) De levitación.",
+            "d) Electrocircular o de Striker."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "3. ¿Qué tipo de cama está indicada para pacientes que sufren fracturas de las extremidades?",
+        "options": [
+            "a) Cama ortopédica de Judet.",
+            "b) Cama hospitalaria.",
+            "c) Cama de levitación.",
+            "d) Cama Electrocircular o de Striker."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. El denominado potro se emplea para:",
+        "options": [
+            "a) Encarnar a quemados.",
+            "b) Exploración ginecológica.",
+            "c) Encamar a pacientes con UPP.",
+            "d) Encamar a enfermos con grandes traumatismos."
+        ],
+        "correct": 1
+    },
+	    {
+        "question": "5. El armazón para el volteo Foster se emplea:",
+        "options": [
+            "a) Facilitar al paciente la respiración.",
+            "b) Facilitar el cambio postural.",
+            "c) Evitar infecciones micóticas.",
+            "d) Para liberar el estrés al paciente."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "6. Una de las siguientes normas no es correcta para realizar el aseo de un paciente encamado. Indica cuál:",
+        "options": [
+            "a) Mantener la habitación a una temperatura adecuada.",
+            "b) Preparar el material necesario y tenerlo a mano.",
+            "c) Colocar al paciente en la posición más cómoda posible.",
+            "d) Ventilar la habitación durante el baño."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "7. Señala, de los siguientes materiales, cuál de ellos no sería material de protección para el baño:",
+        "options": [
+            "a) Hule.",
+            "b) Toallas.",
+            "c) Manta de baño.",
+            "d) Biombo."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "8. ¿Qué tipo de pinza debe llevarse entre el material para el lavado?",
+        "options": [
+            "a) Pinza de Sengstaken-Blakemore (SSB).",
+            "b) Pinza de Replogle.",
+            "c) Pinza de Kocher.",
+            "d) Pinza de Kelly."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "9. En relación con el procedimiento del aseo de un paciente encamado:",
+        "options": [
+            "a) Lo último que lavaremos será la región perineal.",
+            "b) Comenzaremos por el abdomen, tórax y mamas.",
+            "c) En la zona de la cara, cuello y orejas se comenzará por el cuello.",
+            "d) Las extremidades inferiores se lavan de abajo hacia arriba."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "10. En los pacientes con venóclisis o traumatismo en un miembro, el miembro afectado debe ser:",
+        "options": [
+            "a) Dejado sin vestir hasta la recuperación.",
+            "b) El primero en ser desvestido.",
+            "c) El primero en ser vestido.",
+            "d) El último en ser vestido."
+        ],
+        "correct": 2
+    },
+	{
+    "question": "11. La distribución de los extintores de incendio será tal que el recorrido máximo horizontal, desde cualquier punto del sector de incendio, que deba ser considerado origen de evacuación, hasta el extintor, no supere:",
+    "options": [
+        "a) 30 m",
+        "b) 20 m",
+        "c) 15 m",
+        "d) 10 m"
+    ],
+    "correct": 2
+},
+	    {
+        "question": "12. Según la norma UNE-EN 2, ¿qué clase de agente extintor debemos utilizar en fuegos derivados de la utilización de ingredientes para cocinar (aceites y grasas animales o vegetales o animales)en los aparatos de cocina?",
+        "options": [
+            "a) Clase F.",
+            "b) Clase B.",
+            "c) Clase C.",
+            "d) Clase A."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "13. Los extintores móviles están diseñados para ser transportados y accionados a mano, están montados sobre ruedas y tienen una masa total de:",
+        "options": [
+            "a) 20 kg.",
+            "b) inferior a 20 kg.",
+            "c) Más de 20 kg.",
+            "d) Igual o inferior a 20 kg."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "14. Señala la respuesta correcta respecto de los sistemas de bocas de incendio equipadas (BIE):",
+        "options": [
+            "a) Se situarán siempre a una distancia máxima de 5 m de las salidas del sector de incendio, medida sobre un recorrido de evacuación, sin que constituyan obstáculo para la evacuación.",
+            "b) Para las BIE con manguera semirrígida o manguera plana, la separación máxima entre cada BIE y su más cercana será de 30 m.",
+            "c) Para facilitar su manejo, la longitud máxima de la manguera de las BIE con manguera plana será de 30 m y con manguera semirrígida será de 20 m.",
+            "d) La longitud máxima de las mangueras que se utilicen en estas BIE de alta presión será de 50 m."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "15. A la hora de hacer uso de un extintor portátil debemos:",
+        "options": [
+            "a) Dirigir el chorro a las llamas nunca a su base.",
+            "b) En caso de espacios abiertos acercarse al fuego en la dirección contraria del viento.",
+            "c) Antes de dirigir el chorro a la zona en llamas, realizar una pequeña descarga de comprobación de salida del agente extintor.",
+            "d) Acercarse al fuego dejando como mínimo cinco metros de distancia hasta él."
+        ],
+        "correct": 2
+    },
+	   {
+        "question": "16. ¿A quién corresponde elegir el método de traslado de los enfermos?",
+        "options": [
+            "a) Al personal de extinción de incendios.",
+            "b) Al o a la supervisor/a de la Unidad, en todo caso.",
+            "c) Al facultativo responsable de la Unidad.",
+            "d) A los/las celadores/as"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "17. ¿Cuántos celadores para cada montacamas se destinarán para la utilización del mismo desde el interior en caso de alerta?",
+        "options": [
+            "a) Uno/una",
+            "b) Dos.",
+            "c) Tres",
+            "d) Cuatro."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "18. ¿Quién designa al director del Plan de Actuación en Emergencias como persona responsable única, con autoridad y capacidad de gestión?",
+        "options": [
+            "a) La Administración Pública competente para otorgar la licencia o permiso determinante para la explotación o inicio de la actividad.",
+            "b) El titular de la actividad",
+            "c) Un técnico especializado en emergencias.",
+            "d) El Centro de Coordinación de Atención de Emergencias de Protección Civil."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "19. ¿Ante qué tipo de señal nos encontraremos si tiene forma de rectangular o cuadrada, con un pictograma blanco sobre fondo verde?",
+        "options": [
+            "a) Ante una señal de prohibición.",
+            "b) Ante una señal de socorro o salvamento.",
+            "c) Ante una señal de advertencia.",
+            "d) Ante una señal de obligación."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "20. ¿Qué método de traslado de enfermos es seguro y confortable para los pacientes pero muy lento y complicado, necesita que las vías de evacuación sean amplias y se necesita un gran esfuerzo físico?",
+        "options": [
+            "a) Por arrastre directo.",
+            "b) Por arrastre por colchón.",
+            "c) Por levantamiento.",
+            "d) Por arrastre con silla."
+        ],
+        "correct": 1
+    }
+
+
+        ];
+
+ const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
