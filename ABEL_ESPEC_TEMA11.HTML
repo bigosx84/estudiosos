@@ -1,0 +1,1205 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [		
+    {
+    "question": "1. La situación en que se encuentra una persona que, en atención a su sexo, sea, haya sido o pudiera ser tratada de manera menos favorable que otra en situación homóloga se denomina:",
+    "options": [
+      "a) Discriminación directa.",
+      "b) Discriminación indirecta.",
+      "c) Acción positiva.",
+      "d) Acoso por razón de sexo."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "2. La igualdad efectiva de mujeres y hombres a nivel estatal se encuentra regulada a través de:",
+    "options": [
+      "a) Una Ley.",
+      "b) Una Ley Orgánica.",
+      "c) Un Real Decreto Legislativo.",
+      "d) Un Real Decreto."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "3. Con el fin de hacer efectivo el derecho constitucional a la igualdad, los Poderes Públicos adoptarán medidas específicas a favor de las mujeres para corregir situaciones patentes de desigualdad de hecho respecto de los hombres, en base al principio de:",
+    "options": [
+      "a) Fomento de la corresponsabilidad.",
+      "b) Reconocimiento de la maternidad.",
+      "c) Integración de la perspectiva de género.",
+      "d) Acción positiva."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "4. ¿Qué principio general de actuación comprende las técnicas de análisis y planificación que tienen en cuenta la interacción que se produce entre el género y otros factores de discriminación, con el objetivo de atender a la diversidad de las mujeres, mediante la puesta en marcha de mecanismos antidiscriminación de acción integral?",
+    "options": [
+      "a) Representación equilibrada.",
+      "b) Interseccionalidad.",
+      "c) Integración de la perspectiva de género.",
+      "d) Impulso de la efectividad del principio de igualdad."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "5. Señala la respuesta correcta:",
+    "options": [
+      "a) Se garantizará la representación equilibrada de hombres y mujeres en el nombramiento de titulares de órganos directivos de la Administración de la Comunidad Autónoma de Extremadura cuya designación corresponda al Consejo de Gobierno.",
+      "b) Se garantizará la representación equilibrada de hombres y mujeres en el nombramiento de titulares de órganos superiores de la Administración de la Comunidad Autónoma de Extremadura cuya designación corresponda al Presidente de la Junta.",
+      "c) Se garantizará la representación paritaria de hombres y mujeres en el nombramiento de titulares de órganos directivos de la Administración de la Comunidad Autónoma de Extremadura cuya designación corresponda al Consejo de Gobierno.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "6. ¿De cuántos Títulos consta la Ley 8/2011, de 23 de marzo?",
+    "options": [
+      "a) De siete Títulos.",
+      "b) De seis Títulos.",
+      "c) De cinco Títulos.",
+      "d) De cuatro Títulos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "7. La Ley 8/2011, de 23 de marzo, se publicó en el DOE:",
+    "options": [
+      "a) El 25 de marzo de 2011.",
+      "b) El 26 de marzo de 2011.",
+      "c) El 23 de marzo de 2011.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "8. ¿Cuál es la ley que regula la igualdad entre mujeres y hombres y contra la violencia de género en Extremadura?",
+    "options": [
+      "a) Ley 18/2011, de 16 de abril.",
+      "b) Ley Orgánica 1 /2004, de 28 de diciembre.",
+      "c) Ley 8/2011, de 23 de marzo.",
+      "d) Ley Orgánica 5/2005, de 23 enero."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. La situación en que la aplicación de una disposición, criterio o práctica aparentemente neutros pone a las personas de un sexo en desventaja particular con respecto a las personas del otro, recibe el nombre de:",
+    "options": [
+      "a) Discriminación directa.",
+      "b) Discriminación indirecta.",
+      "c) Discriminación trasversal.",
+      "d) Discriminación neutra."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "10. La situación en que se produce cualquier comportamiento verbal, no verbal o físico de índole sexual, con el propósito o el efecto de atentar contra la dignidad de una persona, en particular cuando se crea un entorno intimidatorio, hostil, degradante, humillante u ofensivo se denomina:",
+    "options": [
+      "a) Maltrato.",
+      "b) Acoso sexual.",
+      "c) Acoso por razón de sexo.",
+      "d) Discriminación indirecta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "11. El término recogido en la ley 8/2011, de 23 de marzo denominado como “Representación equilibrada” significa que se debe garantizar la presencia de mujeres y hombres de forma que, en el conjunto de personas a que se refiera, cada sexo:",
+    "options": [
+      "a) Ni supere el sesenta por ciento ni sea menos del cuarenta por ciento.",
+      "b) Ni supere el setenta por ciento ni sea menos del cuarenta por ciento.",
+      "c) Ni supere el ochenta por ciento ni sea menos del treinta por ciento.",
+      "d) 50 % cada sexo."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "12. ¿Qué Título de la Ley 8/2011, de 23 de marzo recoge la integración de la perspectiva de género en las políticas públicas?",
+    "options": [
+      "a) Título I.",
+      "b) Título II.",
+      "c) Título III.",
+      "d) Título IV."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "13. La Ley 8/2011, de 23 de marzo, entró en vigor:",
+    "options": [
+      "a) El 25 de marzo de 2011.",
+      "b) El 26 de marzo de 2011.",
+      "c) El 23 de marzo de 2011.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "14. ¿Cuál de los siguientes enunciados constituye un principio general a los que se somete la actuación de los poderes públicos de Extremadura en materia de igualdad entre mujeres y hombres y en la erradicación de la violencia de género?",
+    "options": [
+      "a) La Igualdad de trato entre mujeres y hombres, que proscribe cualquier discriminación, directa o indirecta, por razón de sexo, en todos los ámbitos de la vida y singularmente en las esferas económica, social, laboral, cultural y educativa.",
+      "b) EI reconocimiento de la maternidad como un valor social, evitando los efectos negativos en los derechos de las mujeres, y la consideración de la paternidad en un contexto familiar y social de corresponsabilidad, de acuerdo con los nuevos modelos de familia.",
+      "c) La coordinación y colaboración. Los poderes públicos extremeños tienen la obligación de colaborar y coordinar sus actuaciones en materia de igualdad entre mujeres y hombres y contra la violencia de género, para que sus intervenciones sean más eficaces y acordes con una utilización racional de los recursos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "15. El objeto de la Ley 8/2011, de 23 de marzo es:",
+    "options": [
+      "a) La integración de la perspectiva de género en las políticas públicas.",
+      "b) Hacer efectivo el derecho de igualdad de trato y oportunidades entre mujeres y hombres en la Comunidad Autónoma de Extremadura.",
+      "c) Implantar la representación equilibrada entre mujeres y hombres.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "16. Señale la respuesta incorrecta. La Ley 8/2011 será aplicable:",
+    "options": [
+      "a) Al sistema universitario extremeño.",
+      "b) A las empresas en las que sea mayoritaria la representación directa de la Junta de Extremadura.",
+      "c) A todas las entidades con personalidad jurídica propia cuyo domicilio social se encuentre en el territorio de la Comunidad Autónoma extremeña.",
+      "d) A todas las entidades que realicen actividades educativas y de formación cualquiera que sea su tipo, nivel y grado."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "17. Señale la respuesta correcta en relación con el informe de evaluación de impacto de género:",
+    "options": [
+      "a) Todos los Proyectos de ley que apruebe el Consejo de Gobierno deben incorporar un informe sobre su impacto por razón de género, por parte de quien reglamentariamente se determine.",
+      "b) El mismo debe ir acompañado en todos los casos de indicadores pertinentes en género, mecanismos y medidas dirigidas a paliar y neutralizar los posibles impactos negativos que se detecten sobre las mujeres y los hombres.",
+      "c) La Junta de Extremadura, a propuesta del Instituto de la Mujer de Extremadura, elaborará normas o directrices en las que se indiquen las pautas a seguir para la realización de la evaluación previa del impacto en función del género.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "18. ¿Quién es el/la encargado/a de controlar el cumplimiento de la obligación del uso no sexista de todo tipo de lenguaje en el ámbito administrativo?",
+    "options": [
+      "a) La Comisión de Impacto de Género.",
+      "b) La Consejería competente en asuntos de Presidencia.",
+      "c) El Consejo Extremeño de Participación de las Mujeres.",
+      "d) El Instituto de la Mujer de Extremadura."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "19. La Junta de Extremadura, aprobará un Plan Estratégico para la igualdad entre Mujeres y Hombres:",
+    "options": [
+      "a) Cada cuatro años.",
+      "b) Cada seis años.",
+      "c) Cada tres años.",
+      "d) Cada cinco años."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "20. El Plan Estratégico para la igualdad entre Mujeres y Hombres se aprueba:",
+    "options": [
+      "a) A propuesta del Consejo Extremeño de Participación de las Mujeres y con el dictamen del Instituto de la Mujer de Extremadura.",
+      "b) A propuesta de la Comisión de Impacto de Género y con el dictamen del Instituto de la Mujer de Extremadura.",
+      "c) A propuesta del Instituto de la Mujer de Extremadura y con el dictamen del Consejo Extremeño de Participación de las Mujeres.",
+      "d) A propuesta de la Consejería competente en materia de igualdad y con el dictamen del Consejo Extremeño de Participación de las Mujeres."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "21. La pérdida automática de los beneficios derivados de la aplicación de los programas de empleo a aquellas empresas sancionadas por resolución administrativa firme por acciones u omisiones de discriminación tipificadas en la Ley sobre Infracciones y Sanciones en el Orden Social, se hará efectiva desde:",
+    "options": [
+      "a) La fecha en que se cometió la infracción.",
+      "b) La fecha de la resolución administrativa firme.",
+      "c) La fecha en que se pruebe la infracción.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "22. Además de la pérdida automática de tales beneficios, se produce la exclusión automática del acceso a los mismos a las empresas sancionadas por acciones u omisiones de discriminación:",
+    "options": [
+      "a) Durante un año.",
+      "b) Durante seis meses.",
+      "c) Durante nueve meses.",
+      "d) Durante dos años."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "23. En el plano internacional y dentro del marco de la Organización de las Naciones Unidas se han celebrado cuatro Conferencias Mundiales sobre las Mujeres que han establecido dos estrategias fundamentales para el desarrollo eficaz de las políticas de igualdad. ¿Cuáles son estas dos estrategias?",
+    "options": [
+      "a) La transversalidad de género y la paridad.",
+      "b) La representación equilibrada y la paridad de género.",
+      "c) La transversalidad de género y la representación equilibrada.",
+      "d) La interseccionalidad y la transversalidad de género."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "24. ¿Cuál de los siguientes artículos de la Constitución española de 1978 no recoge ningún principio o derecho relacionado con la igualdad?",
+    "options": [
+      "a) El artículo 14.",
+      "b) El artículo 1.",
+      "c) El artículo 9.",
+      "d) El artículo 26."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "25. ¿Qué Ley regula, a nivel estatal, la igualdad efectiva de mujeres y hombres?",
+    "options": [
+      "a) La Ley Orgánica 7/1985, de 2 de abril.",
+      "b) La Ley 23/2003, de 23 de noviembre.",
+      "c) La Ley 30/1992, de 26 de noviembre.",
+      "d) La Ley Orgánica 3/2007, de 22 de marzo."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "26. El reparto equilibrado entre mujeres y hombres de las responsabilidades familiares, las tareas domésticas y el cuidado de las personas en situación de dependencia, se entiende como:",
+    "options": [
+      "a) Interseccionalidad.",
+      "b) Transversalidad de género.",
+      "c) Corresponsabilidad.",
+      "d) Acción positiva."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "27. ¿En qué año fue aprobada la Ley de Igualdad entre mujeres y hombres y contra la violencia de género en Extremadura?",
+    "options": [
+      "a) En 2008.",
+      "b) En 2009.",
+      "c) En 2010.",
+      "d) En 2011."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "28. ¿Cuál es la máxima expresión de la desigualdad entre hombres y mujeres?",
+    "options": [
+      "a) La desigualdad jurídica.",
+      "b) La violencia contra las mujeres.",
+      "c) La invisibilidad en sus labores públicas.",
+      "d) La desigualdad material y formal."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "29. ¿Qué año fue declarado Año Europeo contra la Violencia de Género?",
+    "options": [
+      "a) 1989.",
+      "b) 1979.",
+      "c) 1999.",
+      "d) 2009."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "30. La utilización de expresiones lingüísticamente correctas sustitutivas de otras, correctas o no, que invisibilizan el femenino, hace referencia:",
+    "options": [
+      "a) Al principio de corresponsabilidad.",
+      "b) Al uso no sexista del lenguaje.",
+      "c) Al acoso por razón de sexo.",
+      "d) Ninguna de las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "31. ¿Cuál de las siguientes no es una de las orientaciones de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género de Extremadura?",
+    "options": [
+      "a) Prevención de las conductas discriminatorias.",
+      "b) Tutela de la igualdad mediante la sanción de las conductas discriminatorias.",
+      "c) Promoción de la igualdad mediante la previsión de políticas activas que la hagan real y efectiva en cualquier ámbito.",
+      "d) Asegurar la especialización de todos los colectivos profesionales que intervienen en la atención, asistencia, protección, recuperación y reparación destinadas a las mujeres."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "32. ¿Cuántos artículos y títulos forman parte de la estructura de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género de Extremadura?",
+    "options": [
+      "a) 116 artículos y ocho Títulos.",
+      "b) 106 artículos y siete Títulos.",
+      "c) 106 artículos y ocho Títulos.",
+      "d) 116 artículos y siete Títulos."
+    ],
+    "correct": 1
+  },
+    {
+    "question": "33. ¿Quién ostenta la superior competencia en materia de igualdad?",
+    "options": [
+      "a) El Observatorio de igualdad.",
+      "b) El IMEX.",
+      "c) La Consejería competente en materia de igualdad.",
+      "d) El Consejo Extremeño de Participación de las mujeres."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "34. La Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género de Extremadura no resulta de aplicación, en todos los casos:",
+    "options": [
+      "a) A todas las entidades privadas.",
+      "b) A todas las entidades que realicen actividades educativas y de formación.",
+      "c) A la Universidad de Extremadura.",
+      "d) A las entidades con personalidad jurídica propia en los que sea mayoritaria la representación directa de la Junta de Extremadura."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "35. ¿Qué principio general impone a los poderes públicos de Extremadura la obligación de adoptar las medidas oportunas para garantizar el acceso y el ejercicio efectivo de los derechos políticos, civiles, económicos, sociales, laborales y culturales y para eliminar la discriminación?",
+    "options": [
+      "a) El principio de igualdad de oportunidades.",
+      "b) El principio de fomento de la corresponsabilidad.",
+      "c) El principio de igualdad de trato entre mujeres y hombres.",
+      "d) El principio de acción positiva."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "36. ¿Qué principio general comprende las técnicas de análisis y planificación que tienen en cuenta la interacción que se produce entre el género y otros factores de discriminación, con el objetivo de atender a la diversidad de las mujeres, mediante la puesta en marcha de mecanismos antidiscriminación de acción integral?",
+    "options": [
+      "a) La representación equilibrada.",
+      "b) La interseccionalidad.",
+      "c) La transversalidad.",
+      "d) El mainstreaming."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "37. Los poderes públicos extremeños tienen la obligación de colaborar y coordinar sus actuaciones en materia de igualdad entre mujeres y hombres y contra la violencia de género. ¿Cuál es la finalidad de esta obligación?",
+    "options": [
+      "a) Que sus intervenciones sean más eficaces y acordes con una utilización racional de los recursos.",
+      "b) La adopción de medidas que aseguren la igualdad entre hombres y mujeres.",
+      "c) La garantía de la proximidad y el equilibrio de las intervenciones en casos de violencia de género.",
+      "d) El impulso de la efectividad del principio de igualdad de género en las relaciones entre particulares."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "38. ¿Cuál de los siguientes no es uno de los principios generales de actuación de los poderes públicos de Extremadura para alcanzar los objetivos establecidos en la Ley 8/2011, de 23 de marzo?",
+    "options": [
+      "a) Establecimiento de roles en función del sexo.",
+      "b) Fomento de la corresponsabilidad.",
+      "c) Acción positiva.",
+      "d) Igualdad de oportunidades."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "39. ¿Cómo se define la situación en que se produce un comportamiento relacionado con el sexo de una persona, con el propósito o el efecto de atentar contra la dignidad de la persona y crear un entorno intimidatorio, hostil, degradante, humillante u ofensivo?",
+    "options": [
+      "a) Como acoso sexual.",
+      "b) Como discriminación indirecta siempre.",
+      "c) Como discriminación por razón de sexo.",
+      "d) Como acoso por razón de sexo."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "40. ¿Cuál de las siguientes no es una de las medidas para la integración de género en las Políticas Públicas y en la normativa, establecidas en el Título II de la ley 8/2011, de 23 de marzo?",
+    "options": [
+      "a) Las estadísticas e investigaciones sin perspectiva de género.",
+      "b) El enfoque de género en el presupuesto.",
+      "c) Evaluación del impacto de género.",
+      "d) Transversalidad de género."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "41. ¿En qué aspectos de las Políticas Públicas deben, los poderes públicos de Extremadura, integrar el principio de interseccionalidad?",
+    "options": [
+      "a) En el diseño, implementación, seguimiento y evaluación de las Políticas Públicas, especialmente de inclusión social, atendiendo y visibilizando la pluralidad de los desarrollos identitarios de las mujeres.",
+      "b) En el diseño, implementación, seguimiento y evaluación de las Políticas Públicas, especialmente de exclusión social, atendiendo y visibilizando la pluralidad de los desarrollos identitarios de hombres y mujeres.",
+      "c) En el diseño, implementación, seguimiento y evaluación de las Políticas Públicas, especialmente de inclusión social, atendiendo y visibilizando la pluralidad de los desarrollos identitarios de hombres y mujeres.",
+      "d) En el diseño, implementación, seguimiento y evaluación de las Políticas Públicas, especialmente de exclusión social, atendiendo y visibilizando la pluralidad de los desarrollos identitarios de las mujeres."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "42. La medida que incorpora la perspectiva de la igualdad de género en la elaboración, ejecución y seguimiento de las disposiciones normativas, así como de las políticas y actividades en todos los ámbitos de actuación, se denomina:",
+    "options": [
+      "a) Interseccionalidad.",
+      "b) Evaluación del impacto de género.",
+      "c) Transversalidad de género.",
+      "d) Plan Estratégico para la Igualdad entre Mujeres y Hombres."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "43. Los Poderes Públicos de Extremadura, para hacer efectivas las disposiciones de esta ley y garantizar de modo efectivo la integración de la perspectiva de género en su ámbito de actuación:",
+    "options": [
+      "a) Podrán incluir la variable sexo en las estadísticas, encuestas y recogida de datos que realicen.",
+      "b) Deberán incluir sistemáticamente la variable sexo en las estadísticas, encuestas y recogida de datos que realicen.",
+      "c) La Ley 8/2011 de 23 de marzo, no hace referencia a estadísticas e investigaciones con perspectiva de género.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "44. La Junta de Extremadura determinará los contratos de la Administración de la Comunidad Autónoma y de sus organismos públicos que deberán incluir entre sus condiciones de ejecución, medidas tendentes a promover la igualdad efectiva entre mujeres y hombres en el mercado de trabajo:",
+    "options": [
+      "a) Obligatoriamente.",
+      "b) Opcionalmente.",
+      "c) Sucintamente.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "45. La elaboración de un informe en el que se evalúe el impacto de género en el anteproyecto de Ley de Presupuestos de la Comunidad Autónoma de Extremadura se realizará por:",
+    "options": [
+      "a) El Consejero competente en materia de igualdad.",
+      "b) El Instituto de la Mujer de Extremadura.",
+      "c) El Centro de Estudios de Género.",
+      "d) La Comisión de Impacto de Género en los Presupuestos."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "46. La Junta de Extremadura elaborará normas o directrices en las que se indiquen las pautas a seguir para la realización de la evaluación previa del impacto en función del género, a propuesta:",
+    "options": [
+      "a) De la Consejería competente en materia de igualdad.",
+      "b) Del Instituto de la Mujer de Extremadura.",
+      "c) De la Comisión de Impacto de Género en los Presupuestos.",
+      "d) Del Consejo Extremeño de Participación de las Mujeres."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "47. Conforme al artículo 2 de la Ley 8/2011, de 23 de marzo, de Igualdad entre mujeres y hombres y contra la violencia de género en Extremadura, se incluyen en el ámbito de aplicación de la misma:",
+    "options": [
+      "a) A la Universidad de Extremadura.",
+      "b) A los consorcios, fundaciones y demás entidades con personalidad jurídica propia en los que sea mayoritaria la representación directa de la Junta de Extremadura.",
+      "c) A las entidades que realicen actividades educativas y de formación.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "48. Se garantizará la representación equilibrada de hombres y mujeres en el nombramiento de titulares de órganos directivos de la Administración de la Comunidad Autónoma de Extremadura cuya designación corresponda:",
+    "options": [
+      "a) A la Comisión de Impacto de Género en los Presupuestos.",
+      "b) A la Consejería competente en materia de igualdad.",
+      "c) Al Presidente de la Comunidad Autónoma.",
+      "d) Al Consejo de Gobierno."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "49. Según el artículo 22.3 de la Ley 8/2011, de 23 de marzo, de Igualdad entre mujeres y hombres y contra la violencia de género en Extremadura, con el objetivo de garantizar el ejercicio de los derechos de ciudadanía a todas las mujeres, promover su participación de política, económica, social, laboral y cultural, así como el acceso a los recursos y servicios en igualdad de oportunidades, los poderes públicos podrán:",
+    "options": [
+      "a) Poner en marcha de forma prioritaria acciones positivas para aquellos colectivos en los que confluyan diversos factores de discriminación.",
+      "b) Impulsar la efectividad del principio de igualdad en las relaciones entre particulares.",
+      "c) Incorporar la perspectiva de género en la elaboración, ejecución y seguimiento de las disposiciones normativas.",
+      "d) Incorporar la evaluación del impacto de género en el desarrollo de sus competencias."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "50. La Ley 8/2011, de 23 de marzo será de aplicación:",
+    "options": [
+      "a) A la Administración de la Comunidad Autónoma de Extremadura y sus organismos autónomos.",
+      "b) A la Universidad de Extremadura.",
+      "c) A las entidades privadas que suscriban contratos o convenios de colaboración con las Administraciones Públicas de Extremadura.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "51. La Junta de Extremadura aprobará cada cuatro años el Plan Estratégico para la Igualdad entre Mujeres y Hombres con el dictamen de:",
+    "options": [
+      "a) La Consejería competente en materia de igualdad.",
+      "b) El Consejo Extremeño de Participación de las Mujeres.",
+      "c) Las respuestas a) y b) son correctas.",
+      "d) Las respuestas a) y b) son incorrectas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "52. ¿Quién tendrá como objetivo elaborar un informe en el que se evalúe el impacto de género en el anteproyecto de Ley de Presupuestos de la Comunidad Autónoma de Extremadura?",
+    "options": [
+      "a) La Comisión de Impacto de Género en los Presupuestos como órgano interdepartamental.",
+      "b) La Comunidad Autónoma de Extremadura creará la Comisión de Impacto de Género en los Presupuestos como órgano departamental.",
+      "c) El Parlamento Extremeño creará la Comisión de Consecuencias de Género en los Presupuestos como órgano interdepartamental.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "53. ¿Qué principio tendrán en cuenta la Administración de la Comunidad Autónoma de Extremadura y los organismos públicos vinculados o dependientes de ella para designar los cargos de responsabilidad?",
+    "options": [
+      "a) Principio de competencia entre mujeres y hombres.",
+      "b) Principio de presencia equilibrada de mujeres y hombres.",
+      "c) Principio de igualdad de mujeres y hombres.",
+      "d) Principio de participación entre mujeres y hombres."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "54. Los poderes públicos de Extremadura, para hacer efectivas las disposiciones de esta ley y garantizar de modo efectivo la integración de la perspectiva de género en su ámbito de actuación, deberán:",
+    "options": [
+      "a) Incluir sistemáticamente la variable sexo en las estadísticas, encuestas y recogida de datos que realicen.",
+      "b) Incorporar indicadores de género en las operaciones estadísticas que posibiliten un mejor conocimiento de las diferencias en los valores, roles, situaciones, condiciones, expectativas y necesidades de mujeres y hombres, su manifestación e interacción en la realidad que se vaya a analizar.",
+      "c) Analizar los resultados desde la dimensión de género.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "55. Según el artículo 32 de la Ley 8/2011, de Igualdad entre Mujeres y hombres y contra la Violencia de Género en Extremadura, ¿qué medidas se toman para eliminar desigualdades y promover la igualdad?",
+    "options": [
+      "a) Los temarios para la celebración de pruebas selectivas incluirán materias relativas a la normativa sobre igualdad y violencia de género.",
+      "b) La Administración de la Comunidad Autónoma de Extremadura garantizará la formación de su personal en esta materia.",
+      "c) Las normas que vayan a regular los jurados creados para la concesión de cualquier tipo de premio promovido o subvencionado por la Administración de la Comunidad Autónoma de Extremadura, así como las que regulen órganos afines habilitados para la adquisición de fondos culturales y/o artísticos, deben incluir una cláusula por la que se garantice en los tribunales de selección una representación equilibrada de mujeres y hombres con capacitación, competencia y preparación adecuada.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "56. Se entiende que cualquier tipo de trato desfavorable relacionado con el embarazo, la maternidad o la paternidad constituye:",
+    "options": [
+      "a) Discriminación directa.",
+      "b) Discriminación indirecta.",
+      "c) Acoso sexual.",
+      "d) Acoso por razón de sexo."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "57. Constituye uno de los principios generales de la Ley 8/2011, de 23 de marzo:",
+    "options": [
+      "a) La igualdad de trato entre mujeres y hombres.",
+      "b) La igualdad de oportunidades.",
+      "c) La ruptura de la brecha de género en la Sociedad de la Información, el Conocimiento y la Imaginación.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "58. ¿Cómo se denomina el principio que comprende las técnicas de análisis y planificación que tienen en cuenta la interacción que se produce entre el género y otros factores de discriminación?",
+    "options": [
+      "a) Interseccionalidad.",
+      "b) Interaccionalidad.",
+      "c) Seccionalidad.",
+      "d) Accionalidad."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "59. La Junta de Extremadura aprobará cada cuatro años el Plan Estratégico para la Igualdad entre Mujeres y Hombres a propuesta de:",
+    "options": [
+      "a) La Consejería competente en materia de igualdad.",
+      "b) El Consejo Extremeño de Participación de las Mujeres.",
+      "c) Las respuestas a) y b) son correctas.",
+      "d) Las respuestas a) y b) son incorrectas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "60. Se define como “dirección electrónica disponible para los ciudadanos a través de redes de telecomunicaciones cuya titularidad, gestión y administración corresponde a una Administración Pública, órgano o entidad administrativa en el ejercicio de sus competencias”:",
+    "options": [
+      "a) Sede electrónica.",
+      "b) Administración electrónica.",
+      "c) Página web de una Administración Pública.",
+      "d) Estándar abierto."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "61. Según la Ley 40/2015, de 1 de octubre, de Régimen Jurídico del Sector Público, en relación con las redes electrónicas y los portales de internet, señala la respuesta correcta:",
+    "options": [
+      "a) Los portales dispondrán de sistemas que permitan el establecimiento de comunicaciones seguras siempre que sean necesarias.",
+      "b) El establecimiento de un portal conlleva la responsabilidad del titular respecto de la integridad, veracidad y actualización de la información y los servicios a los que pueda accederse a través de la misma.",
+      "c) Se entiende por portal de internet el punto de acceso electrónico cuya titularidad corresponda a una Administración Pública, organismo público o entidad de Derecho Público que permite el acceso a través de internet a la información publicada y, en su caso, a la sede electrónica correspondiente.",
+      "d) Los portales de internet utilizarán, para identificarse y garantizar una comunicación segura con los mismos, certificados reconocidos o cualificados de autenticación de sitio web o medio equivalente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "62. ¿Cuál es la Ley de Régimen Jurídico del Sector Público?",
+    "options": [
+      "a) La Ley 39/2015, de 1 de octubre.",
+      "b) La Ley 39/2014, de 1 de octubre.",
+      "c) La Ley 40/2015, de 1 de octubre.",
+      "d) La Ley 40/2014, de 1 de octubre."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "63. ¿Qué artículos de la Ley 40/2015, de Régimen Jurídico del Sector Publico regulan el funcionamiento electrónico del Sector Público?",
+    "options": [
+      "a) Los artículos del 1 a 27.",
+      "b) Los artículos del 38 a 46.",
+      "c) Los artículos del 133 a 138.",
+      "d) Los artículos del 145 a 148."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "64. Las Administraciones Públicas se relacionarán entre sí y con sus órganos, organismos públicos y entidades vinculados o dependientes a través de medios:",
+    "options": [
+      "a) Telefónicos.",
+      "b) Documentales.",
+      "c) Electrónicos.",
+      "d) Telemáticos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "65. El punto de acceso electrónico cuya titularidad corresponda a una Administración Pública, se denomina:",
+    "options": [
+      "a) Sede electrónica.",
+      "b) Portal de internet.",
+      "c) Portal electrónico.",
+      "d) Portal de servicios."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "66. En el ejercicio de la competencia en la actuación administrativa automatizada, cada Administración Pública podrá determinar los supuestos de utilización de los siguientes sistemas de firma electrónica:",
+    "options": [
+      "a) Sello electrónico de Administración Pública.",
+      "b) Código seguro de verificación vinculado a la Administración Pública.",
+      "c) Cualquiera de los dos sistemas establecidos en las respuestas anteriores.",
+      "d) No se podrá utilizar ninguno de los sistemas de firma electrónica en la actuación administrativa automatizada."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "67. La actuación de una Administración Pública, órgano, organismo público o entidad de derecho público, cuando utilice medios electrónicos, se realizará mediante firma electrónica:",
+    "options": [
+      "a) Del titular del órgano.",
+      "b) Del empleado público.",
+      "c) Las respuestas a) y b) son correctas.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "68. Se entiende por actuación administrativa automatizada:",
+    "options": [
+      "a) Cualquier acto o actuación realizada íntegramente a través de medios electrónicos por una Administración Pública en el marco de un procedimiento administrativo y en la que no haya intervenido de forma directa un empleado público.",
+      "b) Cualquier actuación realizada íntegra o parcialmente a través de medios electrónicos por una Administración Pública en el marco de un procedimiento administrativo.",
+      "c) Cualquier acto o actuación realizada íntegra o parcialmente a través de medios electrónicos por una Administración Pública en el marco de un procedimiento administrativo.",
+      "d) Cualquier acto o actuación realizada íntegramente a través de medios electrónicos por una Administración Pública en el marco de un procedimiento administrativo, pudiendo haber intervenido de forma indirecta un empleado público."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "69. El establecimiento de una sede electrónica conlleva la responsabilidad del titular:",
+    "options": [
+      "a) Respecto de la integridad y veracidad de la información a la que pueda accederse a través de la misma.",
+      "b) Respecto de la integridad, veracidad y actualización de la información y los servicios a los que pueda accederse a través de la misma.",
+      "c) Respecto de la veracidad y actualización de la información a la que pueda accederse a través de la misma.",
+      "d) Respecto de la actualización de la información y los servicios a los que pueda accederse a través de la misma."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "70. Cada Administración Pública determinará las condiciones e instrumentos de creación de las sedes electrónicas, con sujeción a los principios de:",
+    "options": [
+      "a) Transparencia, disponibilidad, accesibilidad de interoperabilidad.",
+      "b) Transparencia, publicidad, responsabilidad, calidad, seguridad, disponibilidad, accesibilidad, neutralidad e interoperabilidad.",
+      "c) Transparencia, publicidad de interoperabilidad.",
+      "d) Transparencia, publicidad, calidad, seguridad, disponibilidad, accesibilidad, neutralidad e interoperabilidad."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "71. Las Administraciones Públicas podrán identificarse mediante el uso de un sello electrónico basado en:",
+    "options": [
+      "a) Un certificado electrónico reconocido que reúna los requisitos exigidos por la legislación de firma electrónica.",
+      "b) Un certificado electrónico cualificado que reúna los requisitos exigidos por la legislación de firma electrónica.",
+      "c) Un certificado electrónico reconocido o cualificado que reúna los requisitos exigidos por la legislación de firma electrónica.",
+      "d) Un certificado electrónico reconocido o cualificado que reúna los requisitos exigidos por la legislación de comercio electrónico."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "72. No es un principio al que deben quedar sujetas las Administraciones Públicas en el marco de sus relaciones por medios electrónicos:",
+    "options": [
+      "a) Interoperabilidad.",
+      "b) Publicidad.",
+      "c) Seguridad.",
+      "d) Parcialidad."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "73. La titularidad de un portal de internet del sector público puede pertenecer:",
+    "options": [
+      "a) A una Administración Pública, organismo público o entidad de Derecho Público.",
+      "b) Exclusivamente a una Administración Pública.",
+      "c) Exclusivamente a un organismo público.",
+      "d) A una Administración Pública u entidad de Derecho Público."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "74. Pueden ser sistemas de firma para la actuación administrativa automatizada:",
+    "options": [
+      "a) El sello electrónico y el código seguro de verificación.",
+      "b) Exclusivamente el sello electrónico.",
+      "c) Exclusivamente el código seguro de verificación.",
+      "d) Exclusivamente el código relativo de verificación."
+    ],
+    "correct": 0
+  },
+    {
+    "question": "75. Respecto al archivo de los documentos electrónicos, señale la respuesta correcta:",
+    "options": [
+      "a) Todos los documentos utilizados en las actuaciones administrativas se almacenarán por medios electrónicos, salvo cuando no sea posible.",
+      "b) En todo caso, los documentos utilizados en las actuaciones administrativas se almacenarán por medios electrónicos.",
+      "c) Los documentos utilizados en las actuaciones administrativas se almacenarán por medios electrónicos sólo cuando así lo exija la ley.",
+      "d) Todos los documentos utilizados en las actuaciones administrativas se almacenarán por medios electrónicos, salvo que la ley disponga lo contrario."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "76. Los medios o soportes en que se almacenen documentos deberán contar con medidas de seguridad, de acuerdo con lo previsto en:",
+    "options": [
+      "a) El Esquema Virtual de Seguridad.",
+      "b) El Esquema Nacional de Seguridad.",
+      "c) El Esquema Electrónico de Seguridad.",
+      "d) El Esquema Nacional de Seguridad Electrónica."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "77. Respecto a la sede electrónica, señala la respuesta incorrecta:",
+    "options": [
+      "a) Las sedes electrónicas dispondrán de sistemas que permitan el establecimiento de comunicaciones seguras siempre que sean necesarias.",
+      "b) Las sedes electrónicas utilizarán, para identificarse y garantizar una comunicación segura con las mismas, solo certificados reconocidos de autenticación de sitio web.",
+      "c) La publicación en las sedes electrónicas de informaciones, servicios y transacciones respetará los principios de accesibilidad y uso de acuerdo con las normas establecidas al respecto, estándares abiertos y, en su caso, aquellos otros que sean de uso generalizado por los ciudadanos.",
+      "d) Las sedes electrónicas utilizarán, para identificarse y garantizar una comunicación segura con las mismas, certificados reconocidos o cualificados de autenticación de sitio web o medio equivalente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "78. Respecto a la firma electrónica del personal al servicio de las Administraciones Públicas, señale la respuesta correcta:",
+    "options": [
+      "a) Los sistemas de firma electrónica deberán referirse sólo al número de identificación profesional del empleado público.",
+      "b) Por razones de seguridad pública los sistemas de firma electrónica deberán referirse al del empleado público.",
+      "c) Los sistemas de firma electrónica deberán referirse al número de identificación personal o profesional del empleado público.",
+      "d) Por razones de seguridad pública los sistemas de firma electrónica podrán referirse solo al número de identificación profesional del empleado público."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "79. En una sede electrónica del Sector Público:",
+    "options": [
+      "a) Deberán garantizarse los medios disponibles para la formulación de sugerencias y quejas cuando así lo exija la ley.",
+      "b) En todo caso deberán garantizarse los medios disponibles para la formulación de sugerencias.",
+      "c) En todo caso deberán garantizarse los medios disponibles para la formulación de sugerencias y quejas.",
+      "d) En todo caso deberán garantizarse los medios disponibles para la formulación de reclamaciones y quejas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "80. Los medios o soportes en que se almacenen documentos deberán contar con medidas de seguridad que garanticen:",
+    "options": [
+      "a) La integridad y autenticidad de los documentos almacenados.",
+      "b) La integridad, autenticidad y conservación de los documentos almacenados.",
+      "c) La integridad, autenticidad, confidencialidad, protección y conservación de los documentos almacenados.",
+      "d) La integridad, autenticidad, confidencialidad, calidad, protección y conservación de los documentos almacenados."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "81. En el caso de la actuación administrativa automatizada:",
+    "options": [
+      "a) Se indicará el órgano que debe ser considerado responsable a efectos de reclamaciones.",
+      "b) Se indicará el órgano que debe ser considerado responsable a efectos de impugnación.",
+      "c) Se indicará el órgano que debe ser considerado responsable a efectos de quejas.",
+      "d) No será necesario establecer ningún mecanismo a efectos de impugnación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "82. Con el fin de favorecer la interoperabilidad y posibilitar la verificación automática de la firma electrónica de los documentos electrónicos, cuando una Administración utilice sistemas de firma electrónica distintos de aquellos basados en certificado electrónico reconocido o cualificado, para remitir o poner a disposición de otros órganos, organismos públicos, entidades de Derecho Público o Administraciones la documentación firmada electrónicamente, podrá superponer un sello electrónico basado en:",
+    "options": [
+      "a) Un certificado electrónico reconocido o cualificado.",
+      "b) Exclusivamente un certificado electrónico reconocido.",
+      "c) Exclusivamente un certificado electrónico cualificado.",
+      "d) Un certificado electrónico reconocido o cualificado, según disponga la ley."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "83. La Ley 40/2015, de 1 de octubre, entró en vigor:",
+    "options": [
+      "a) El 02/10/2016.",
+      "b) El 02/10/2015.",
+      "c) El 02/11/2016.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "84. La Ley 40/2015, de 1 de octubre, se publicó en el DOE:",
+    "options": [
+      "a) El 02/10/2016.",
+      "b) El 02/10/2015.",
+      "c) El 02/11/2016.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "85. Los certificados electrónicos que usan las Administraciones Públicas para identificarse incluirán:",
+    "options": [
+      "a) El número de identificación fiscal.",
+      "b) La denominación correspondiente.",
+      "c) La identidad de la persona titular en el caso de los sellos electrónicos de órganos administrativos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "86. Los documentos electrónicos transmitidos en entornos cerrados de comunicaciones establecidos entre Administraciones Públicas:",
+    "options": [
+      "a) Serán considerados válidos a efectos de autenticación.",
+      "b) Serán considerados válidos a efectos de autenticación, si se superpone un sello electrónico.",
+      "c) Serán considerados válidos a efectos de autenticación, si incluyen un sello electrónico y el código seguro de verificación.",
+      "d) Podrán ser considerados válidos a efectos de autenticación."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "87. En el intercambio electrónico de datos en entornos cerrados de comunicación, cuando los participantes pertenezcan a distintas Administraciones, las condiciones y garantías se establecerán mediante:",
+    "options": [
+      "a) Un reglamento que redacten las dos partes.",
+      "b) Convenio suscrito entre ellas.",
+      "c) Una norma electrónica.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "88. Los documentos electrónicos que contengan actos administrativos que afecten a derechos o intereses de los particulares:",
+    "options": [
+      "a) Deberán conservarse en soportes de esta naturaleza.",
+      "b) Pueden conservarse en el mismo formato a partir del que se originó el documento o en otro cualquiera que asegure la identidad e integridad de la información necesaria para reproducirlo.",
+      "c) Se asegurará en todo caso la posibilidad de trasladar los datos a otros formatos y soportes que garanticen el acceso desde diferentes aplicaciones.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "89. Los sistemas de información y comunicaciones para la recogida, almacenamiento, procesamiento y gestión del censo electoral, los padrones municipales de habitantes…",
+    "options": [
+      "a) Deberán ubicarse y prestarse dentro del territorio de la Unión Europea.",
+      "b) Deberán ubicarse y prestarse dentro del territorio de España.",
+      "c) Deberán ubicarse y prestarse dentro del territorio de la Península Ibérica.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "90. Según el artículo 46 bis de la LRJSP, los datos registrados:",
+    "options": [
+      "a) Podrán ser objeto de transferencia a un tercer país u organización internacional.",
+      "b) No podrán ser objeto de transferencia a un tercer país u organización internacional, en todo caso.",
+      "c) No podrán ser objeto de transferencia a un tercer país u organización internacional, con excepción de los que hayan sido objeto de una decisión de adecuación de la Comisión Europea o cuando así lo exija el cumplimiento de las obligaciones internacionales asumidas por el Reino de España.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "91. El actual Plan Estratégico para la igualdad entre mujeres y hombres de Extremadura es el VI Plan para el periodo:",
+    "options": [
+      "a) 2023-2026.",
+      "b) 2024-2026.",
+      "c) 2021-2025.",
+      "d) 2024-2030."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "92. Según el artículo 3 de la Ley de igualdad entre mujeres y hombres y contra la violencia de género en Extremadura, el principio general de actuación por el que los poderes públicos de Extremadura adoptarán medidas específicas a favor de las mujeres para corregir situaciones patentes de desigualdad de hecho respecto de los hombres sería:",
+    "options": [
+      "a) La ruptura de la brecha de género en la Sociedad de la Información, el Conocimiento y la Imaginación.",
+      "b) El principio de acción positiva.",
+      "c) El respeto a la diversidad y a la diferencia.",
+      "d) El principio de reconocimiento de la maternidad como un valor social."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "93. Según el artículo 4 de la ley de igualdad entre mujeres y hombres y contra la violencia de género en Extremadura, el trato desfavorable relacionado con la paternidad constituye:",
+    "options": [
+      "a) Discriminación indirecta por razón de sexo.",
+      "b) Discriminación directa por razón de sexo.",
+      "c) Acoso por razón de sexo.",
+      "d) No aparece previsto como causa de discriminación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "94. Los certificados electrónicos que usen las Administraciones Públicas como sistemas de identificación incluirán (señala la respuesta incorrecta):",
+    "options": [
+      "a) El número de identificación fiscal.",
+      "b) La denominación correspondiente.",
+      "c) En su caso, la identidad de la persona titular en el caso de los sellos electrónicos de órganos administrativos.",
+      "d) El periodo de validez del certificado."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "95. La relación de sellos electrónicos utilizados por cada Administración Pública:",
+    "options": [
+      "a) Incluyendo las características de los certificados electrónicos y los prestadores que los expiden, deberá ser pública.",
+      "b) Excepto las características de los certificados electrónicos y los prestadores que los expiden, será privada.",
+      "c) Incluyendo las características de los certificados electrónicos y los prestadores que los expiden, será privada.",
+      "d) Excepto las características de los certificados electrónicos y los prestadores que los expiden, deberá ser pública."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "96. Respecto a los sistemas de identificación de las Administraciones Públicas:",
+    "options": [
+      "a) Cada Administración Pública adoptará las medidas adecuadas para facilitar la verificación de sus sellos electrónicos.",
+      "b) Se entenderá identificada la Administración Pública respecto de la información que se publique como propia en su portal de internet.",
+      "c) La relación de sellos electrónicos será accesible por medios electrónicos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "97. En caso de actuación administrativa automatizada deberá:",
+    "options": [
+      "a) Establecerse previamente el órgano u órganos competentes, según los casos, para la definición de las especificaciones, programación, mantenimiento, supervisión y control de calidad.",
+      "b) Establecerse previamente el órgano u órganos competentes, en su caso, para auditoría del sistema de información y de su código fuente.",
+      "c) Indicarse el órgano que debe ser considerado responsable a efectos de impugnación.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "98. En el ejercicio de la competencia en la actuación administrativa automatizada, cada Administración Pública podrá determinar los supuestos de utilización de los siguientes sistemas de firma electrónica:",
+    "options": [
+      "a) Sello electrónico de Administración Pública, órgano, organismo público o entidad de derecho público, basado en certificado electrónico reconocido o cualificado que reúna los requisitos exigidos por la legislación de firma electrónica.",
+      "b) Código seguro de verificación vinculado a la Administración Pública, órgano, organismo público o entidad de Derecho Público, en los términos y condiciones establecidos, no permitiéndose la comprobación de la integridad del documento mediante el acceso a la sede electrónica correspondiente.",
+      "c) Las respuestas a) y b) son correctas.",
+      "d) Las respuestas a) y b) son incorrectas."
+    ],
+    "correct": 0
+  },
+    {
+    "question": "98. En el ejercicio de la competencia en la actuación administrativa automatizada, cada Administración Pública podrá determinar los supuestos de utilización de los siguientes sistemas de firma electrónica:",
+    "options": [
+      "a) Sello electrónico de Administración Pública, órgano, organismo público o entidad de derecho público, basado en certificado electrónico reconocido o cualificado que reúna los requisitos exigidos por la legislación de firma electrónica.",
+      "b) Código seguro de verificación vinculado a la Administración Pública, órgano, organismo público o entidad de Derecho Público, en los términos y condiciones establecidos, no permitiéndose la comprobación de la integridad del documento mediante el acceso a la sede electrónica correspondiente.",
+      "c) Las respuestas a) y b) son correctas.",
+      "d) Las respuestas a) y b) son incorrectas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "99. Sin perjuicio de lo previsto en los artículos 38, 41 y 42, la actuación de una Administración Pública, órgano, organismo público o entidad de derecho público, cuando utilice medios electrónicos se realizará mediante:",
+    "options": [
+      "a) Sello electrónico del titular del órgano o empleado público.",
+      "b) Firma electrónica del titular del órgano o empleado público.",
+      "c) Certificado electrónico del titular del órgano o empleado público.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "100. Cada Administración Pública determinará los sistemas de firma electrónica que debe utilizar su personal, los cuales:",
+    "options": [
+      "a) Podrán identificar de forma conjunta al titular del puesto de trabajo o cargo y a la Administración u órgano en la que presta sus servicios.",
+      "b) Identificarán de forma separada al titular del puesto de trabajo o cargo y a la Administración u órgano en la que presta sus servicios.",
+      "c) Únicamente identificarán al titular del puesto de trabajo o cargo.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "101. Serán considerados válidos a efectos de autenticación e identificación de los emisores y receptores en las condiciones establecidas en la Ley de régimen jurídico del sector público:",
+    "options": [
+      "a) Los documentos electrónicos transmitidos en entornos abiertos de comunicaciones establecidos entre Administraciones Públicas, órganos, organismos públicos y entidades de derecho público o privado.",
+      "b) Los documentos electrónicos transmitidos en entornos cerrados de comunicaciones establecidos entre Administraciones Públicas, órganos, organismos públicos y entidades de derecho público.",
+      "c) Los documentos electrónicos transmitidos en entornos abiertos de comunicaciones establecidos entre Administraciones Públicas, órganos, organismos públicos y entidades de derecho público.",
+      "d) Los documentos electrónicos transmitidos en entornos cerrados de comunicaciones establecidos entre Administraciones Públicas, órganos, organismos públicos y entidades de derecho público o privado."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "102. Cuando los participantes en las comunicaciones pertenezcan a una misma Administración Pública, esta determinará las condiciones y garantías por las que se regirá que:",
+    "options": [
+      "a) Al menos, comprenderá la relación de emisores y receptores autorizados y la naturaleza de los datos a intercambiar.",
+      "b) En ningún caso, comprenderá la relación de emisores y receptores autorizados y la naturaleza de los datos a intercambiar.",
+      "c) Comprenderá la relación de emisores y receptores autorizados, pero no la naturaleza de los datos a intercambiar.",
+      "d) No comprenderá la relación de emisores y receptores autorizados, pero sí la naturaleza de los datos a intercambiar."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "103. Cuando los participantes en las comunicaciones pertenezcan a distintas Administraciones, las condiciones y garantías por las que se regirán:",
+    "options": [
+      "a) Se establecerá por la Administración que sea superior jerárquicamente a las demás.",
+      "b) Se establecerá por la Administración que inicie el envío de las comunicaciones.",
+      "c) Son las que se establecen en la Ley de Régimen Jurídico del Sector Público.",
+      "d) Se establecerán mediante convenio suscrito entre aquellas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "104. Señala la respuesta incorrecta:",
+    "options": [
+      "a) En todo caso deberá garantizarse la seguridad del entorno abierto de comunicaciones y la protección de los datos que se transmitan.",
+      "b) Las Administraciones Públicas podrán determinar los trámites e informes que incluyan firma electrónica reconocida o cualificada y avanzada basada en certificados electrónicos reconocidos o cualificados de firma electrónica.",
+      "c) Con el fin de favorecer la interoperabilidad y posibilitar la verificación automática de la firma electrónica de los documentos electrónicos, cuando una Administración utilice sistemas de firma electrónica distintos de aquellos basados en certificado electrónico reconocido o cualificado, para remitir o poner a disposición de otros órganos, organismos públicos, entidades de Derecho Público o Administraciones la documentación firmada electrónicamente, podrá superponer un sello electrónico basado en un certificado electrónico reconocido o cualificado.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "105. Los documentos electrónicos que contengan actos administrativos que afecten a derechos o intereses de los particulares deberán conservarse en soportes de esta naturaleza:",
+    "options": [
+      "a) En el mismo formato a partir del que se originó el documento.",
+      "b) En cualquier formato que asegure la identidad e integridad de la información necesaria para reproducirlo.",
+      "c) En el formato que decidan los particulares.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "106. Los medios o soportes en que se almacenen documentos, deberán contar con medidas de seguridad que garanticen (señala la respuesta incorrecta):",
+    "options": [
+      "a) La integridad y autenticidad de los documentos almacenados.",
+      "b) La confidencialidad y la calidad de los documentos almacenados.",
+      "c) La protección y la conservación de los documentos almacenados.",
+      "d) El acceso libre a los documentos almacenados."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "107. Los medios o soportes en que se almacenen documentos asegurarán (señala la respuesta incorrecta):",
+    "options": [
+      "a) La identificación de los usuarios y el control de accesos.",
+      "b) El cumplimiento de las garantías previstas en la legislación de protección de datos.",
+      "c) La recuperación y conservación a corto plazo de los documentos electrónicos producidos por las Administraciones Públicas que así lo requieran.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 2
+  }
+
+  
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
