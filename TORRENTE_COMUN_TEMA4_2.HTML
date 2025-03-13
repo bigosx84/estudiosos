@@ -1,0 +1,1024 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+{
+  "question": "1. [SES - 2013 - A. CLIN.] Según la Ley de Salud de Extremadura son competencias de la Consejería responsable en materia de sanidad con relación al Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) Establecer los principios generales que han de informar la política de salud en la Comunidad Autónoma de Extremadura, proponiendo los criterios generales de planificación.",
+    "b) La aprobación del mapa sanitario de la Comunidad.",
+    "c) Velar por los derechos reconocidos en la presente Ley en relación con los servicios sanitarios.",
+    "d) La a y la c son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "2. [SES - 2013 - A. PATOL] La Ley 10/2001, de 28 de junio, de Salud de Extremadura tiene como objeto:",
+  "options": [
+    "a) La ordenación y regulación del Sistema Sanitario Público de Extremadura como parte integrante del Sistema Nacional de Salud.",
+    "b) La creación del Servicio Extremeño de Salud.",
+    "c) Las respuestas anteriores a y b son correctas.",
+    "d) Las respuestas anteriores a y b son incorrectas."
+  ],
+  "correct": 2
+},
+{
+  "question": "3. [SES - 2013-A. PATOL] La Ley 10/2001, de Salud de Extremadura otorga las facultades de dirección, coordinación, ordenación, planificación, supervisión y control al objeto de garantizar el funcionamiento armónico y eficaz del Sistema Sanitario Público de Extremadura a:",
+  "options": [
+    "a) La Junta de Extremadura.",
+    "b) La Consejería competente en materia de sanidad.",
+    "c) El Servicio Extremeño de Salud.",
+    "d) Todos los anteriores de manera coordinada."
+  ],
+  "correct": 0
+},
+{
+  "question": "4. [SES - 2013 -A. PATOL] Uno de los siguientes NO es uno de los principios rectores en los que se inspira la Ley 10/2001, de 28 de junio, de Salud de Extremadura:",
+  "options": [
+    "a) Titularidad pública de los centros y servicios sanitarios, así como su coordinación, descentralización, autonomía y responsabilidad.",
+    "b) Participación social, comunitaria y de los pacientes.",
+    "c) Eficacia y eficiencia en la asignación, utilización y gestión de los recursos.",
+    "d) Fomento del conocimiento sobre el ejercicio de los derechos y deberes de los ciudadanos."
+  ],
+  "correct": 1
+},
+{
+  "question": "5. [SES - 2013 - F. HOSP.] Según la Ley de Salud de Extremadura son competencias de la Consejería responsable en materia de sanidad, en relación al Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) Velar por los derechos reconocidos en la presente Ley en relación con los servicios sanitarios.",
+    "b) La aprobación del mapa sanitario de la Comunidad.",
+    "c) Vigilar, inspeccionar y evaluar las actividades del Sistema Sanitario Público de Extremadura, y su adecuación al Plan de Salud.",
+    "d) La b y la c son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "6. [SES - 2013 - F. HOSP.] Según la Ley de Salud de Extremadura son competencias de las corporaciones locales, en relación con el Sistema Sanitario Público:",
+  "options": [
+    "a) Desarrollo de programas de promoción de la salud, educación sanitaria y protección de grupos sociales con riesgos específicos.",
+    "b) Ordenación y regulación de las funciones de policía sanitaria mortuoria.",
+    "c) Conservación y mantenimiento de los centros de salud.",
+    "d) Todas son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "7. [ATB - 2017] ¿Qué órgano se creará según la Ley de Salud de Extremadura, como órgano colegiado de carácter consultivo, de participación comunitaria y de coordinación en relación con las actividades que desarrollan las asociaciones de pacientes en la Comunidad Autónoma de Extremadura?",
+  "options": [
+    "a) Consejo Extremeño de Salud",
+    "b) Consejo General",
+    "c) Consejo de Enfermedades Raras.",
+    "d) Consejo Regional de Pacientes de Extremadura"
+  ],
+  "correct": 3
+},
+{
+  "question": "8. [SES - 2013 - MAXILO] El Defensor de los Usuarios del Sistema Sanitario Público de Extremadura, será designado por un periodo de:",
+  "options": [
+    "a) 5 años",
+    "b) 3 años",
+    "c) Por tiempo indefinido",
+    "d) 1 año renovable."
+  ],
+  "correct": 0
+},
+{
+  "question": "9. [SES - 2013 - MAXILO] En cada zona de salud, en el Sistema Sanitario Público de Extremadura, se establecerá como mínimo:",
+  "options": [
+    "a) Consejo de Salud de Zona, como órgano colegiado de participación ciudadana",
+    "b) Un Consejo de Salud de Área, como órgano colegiado de consulta y participación.",
+    "c) Consejo Regional de Pacientes de Extremadura.",
+    "d) Un Defensor de los Usuarios del Sistema Sanitario Público de Extremadura."
+  ],
+  "correct": 0
+},
+{
+  "question": "10. [SES - 2013 - MAXILO] Las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) Serán, como máximo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "b) Serán las establecidas en cada momento para la Comunidad Europea.",
+    "c) Serán, como mínimo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "d) Ninguna de las anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "11. [SES - 2013 - MEDICOS] La Ley de Salud de Extremadura se inspira en todos los siguientes principios rectores excepto en uno:",
+  "options": [
+    "a) Concepción integral de la salud.",
+    "b) Concertación de servicios sanitarios que sean precisos en centros privados.",
+    "c) Mejora continua de la calidad de los servicios y prestaciones.",
+    "d) Eficacia y eficiencia en la asignación, utilización y gestión de los recursos."
+  ],
+  "correct": 1
+},
+{
+  "question": "12. [SES - 2013 - MEDICOS] Se consideran competencias de las corporaciones locales en relación con el sistema sanitario público, según la Ley de Salud de Extremadura, todos excepto una de las siguientes:",
+  "options": [
+    "a) Conservación y mantenimiento de los consultorios locales.",
+    "b) Control sanitario de los cementerios y policía sanitaria mortuoria.",
+    "c) Control sanitario del medio ambiente.",
+    "d) Elaboración y propuesta a la Junta de Extremadura del Plan de Salud del Área."
+  ],
+  "correct": 3
+},
+{
+  "question": "13. [ATB - 2017] El Defensor de los usuarios del Sistema Sanitario Público de Extremadura ¿puede actuar de oficio?",
+  "options": [
+    "a) Sí, en exclusiva.",
+    "b) No, salvo a instancia de parte.",
+    "c) Sí",
+    "d) No, sólo puede actuar a instancia de parte de toda persona natural o jurídica que invoque un interés legítimo."
+  ],
+  "correct": 2
+},
+{
+  "question": "14. [ATB - 2017] La Ley de Salud de Extremadura, considera otras fuentes de financiación del sistema (señale la INCORRECTA):",
+  "options": [
+    "a) Las aportaciones que deben realizar las corporaciones locales con cargo a su presupuesto.",
+    "b) Los rendimientos de los bienes y derechos propios que tenga adscritos.",
+    "c) Los recursos que le puedan corresponder por la participación de la Junta de Extremadura en los Presupuestos del Estado afectos a servicios y prestaciones sanitarias.",
+    "d) Las subvenciones, donaciones y aportaciones voluntarias, tanto de entidades públicas como privadas y de particulares."
+  ],
+  "correct": 2
+},
+{
+  "question": "15. [SES - 2013 - NEFRO] Según dispone la Ley 10/2001, de 28 de junio, de Salud de Extremadura, el control sanitario del medio ambiente es una competencia de:",
+  "options": [
+    "a) La Consejería responsable en materia de sanidad",
+    "b) Las Corporaciones Locales",
+    "c) La Junta de Extremadura.",
+    "d) Las Diputaciones Provinciales."
+  ],
+  "correct": 1
+},
+{
+  "question": "16. [SES - 2013 - NEFRO] Según dispone la Ley 10/2001, de 28 de junio, de Salud de Extremadura, el órgano colegiado superior de carácter consultivo, de participación ciudadana y de formulación y control de la política sanitaria en la Comunidad Autónoma de Extremadura es:",
+  "options": [
+    "a) El Consejo Regional de Salud.",
+    "b) El Consejo de Salud de la Comunidad Autónoma de Extremadura.",
+    "c) El Consejo Extremeño de Salud.",
+    "d) El Consejo Consultivo Sanitario de Extremadura"
+  ],
+  "correct": 2
+},
+{
+  "question": "17. [SES - 2013 - NEUMO.] Según dispone la Ley 10/2001, de 28 de junio, de Salud de Extremadura, el control sanitario del medio ambiente es una competencia de:",
+  "options": [
+    "a) La Consejería responsable en materia de sanidad",
+    "b) Las Corporaciones Locales",
+    "c) La Junta de Extremadura.",
+    "d) Las Diputaciones Provinciales"
+  ],
+  "correct": 1
+},
+{
+  "question": "18. [SES - 2013 - REUMA] Según lo establecido en la Ley de Salud de Extremadura, el Defensor de los Usuarios:",
+  "options": [
+    "a) Estará adscrito al departamento de la Administración regional que ostente las competencias en materia de protección de los derechos de los consumidores",
+    "b) Será designado por el Consejero competente en materia de sanidad",
+    "c) La duración de la designación será de 6 años",
+    "d) Todas las respuestas son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "19. [ATB - 2017] ¿Quién elaborará el Plan de Salud de Extremadura?",
+  "options": [
+    "a) El Servicio Extremeño de Salud.",
+    "b) La Dirección Gerencia del Servicio Extremeño de Salud.",
+    "c) La Consejería competente en materia de sanidad.",
+    "d) La Secretaría General del Servicio Extremeño de Salud."
+  ],
+  "correct": 2
+},
+{
+  "question": "20. [SES - T. AP. - 2014] De acuerdo con la Ley de Salud de Extremadura, las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura, serán:",
+  "options": [
+    "a) Como máximo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "b) Las que crea conveniente la Comunidad Autónoma de Extremadura, siempre que lleven asociada una financiación específica.",
+    "c) Como mínimo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "21. [SES - T. AP. - 2014] Según la Ley de Salud de Extremadura, ¿Cuál de los siguientes es un requisito imprescindible para la participación del paciente en un proyecto docente o de investigación?",
+  "options": [
+    "a) La previa autorización por escrito del paciente.",
+    "b) La aceptación por parte del médico.",
+    "c) La aceptación de la dirección del correspondiente centro sanitario.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "22. [ATB - 2017] ¿Tienen los ciudadanos según la Ley de Salud de Extremadura el deber de participar en las actividades sanitarias a través de los cauces previstos?",
+  "options": [
+    "a) Sí",
+    "b) La a) es correcta, a través de los cauces previstos en la normativa básica estatal en la presente Ley y en cuantas disposiciones la desarrollen.",
+    "c) No.",
+    "d) No, salvo que así lo disponga una ley de la Asamblea."
+  ],
+  "correct": 2
+},
+{
+  "question": "23. [ATB - 2017] ¿Qué no debe contener al menos el Plan de Salud de Extremadura según la Ley de Salud de Extremadura?",
+  "options": [
+    "a) La valoración de la situación inicial",
+    "b) El análisis y diagnóstico de los problemas sanitarios",
+    "c) El establecimiento de objetivos a alcanzar",
+    "d) Debe contener todo lo anterior"
+  ],
+  "correct": 3
+},
+{
+  "question": "24. [ATB - 2017] ¿Qué no debe contener al menos el Plan de Salud de Extremadura según la Ley de Salud de Extremadura?",
+  "options": [
+    "a) Los programas a desarrollar",
+    "b) Las previsiones económicas y de financiación de las actividades",
+    "c) Los mecanismos de evaluación de la aplicación y seguimiento del Plan.",
+    "d) Debe contener todo lo anterior"
+  ],
+  "correct": 3
+},
+{
+  "question": "25. [%] Corresponde a la Consejería competente en materia de sanidad, en el marco de la política sanitaria definida por la Junta de Extremadura:",
+  "options": [
+    "a) Establecer los principios generales que han de informar la política de salud en la Comunidad Autónoma de Extremadura, proponiendo los criterios generales de planificación",
+    "b) Aprobación del Plan de Salud de la Comunidad Autónoma",
+    "c) Inspección de todos los centros, servicios, prestaciones y establecimientos sanitarios y sociosanitarios de España, así como el control de sus actividades de promoción y publicidad",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "26. [%] Corresponde a los poderes públicos extremeños la actuación preferente de promocionar la salud en cada uno de los sectores de la actividad socioeconómica, con el fin de:",
+  "options": [
+    "a) Estimular los hábitos saludables",
+    "b) La anulación de efectos positivos",
+    "c) Liberar los factores de riesgo",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "27. [%] De conformidad con lo establecido en la legislación de Régimen Local, en la Ley General de Sanidad y en la Ley 10/2001, a las corporaciones locales les corresponden:",
+  "options": [
+    "a) Control sanitario del medio ambiente",
+    "b) Control sanitario de industrias, actividades y servicios, transportes, ruidos y vibraciones",
+    "c) Control sanitario de edificios y lugares de vivienda y convivencia humana, especialmente en centros de alimentación, peluquerías, saunas y centros de higiene personal, hoteles y centros residenciales, escuelas, campamentos turísticos y áreas de actividad física, deportiva y de recreo",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "28. [%] En el ámbito de sus respectivas atribuciones, tienen el carácter de autoridad sanitaria:",
+  "options": [
+    "a) La Junta de Extremadura",
+    "b) El Consejero titular de la Consejería competente en materia sanitaria",
+    "c) Los alcaldes, de acuerdo con lo previsto en la legislación de Régimen Local y en la Ley 10/2001",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "29. [%] En relación con la adopción de medidas cautelares necesarias para preservar la salud colectiva en situaciones de urgente necesidad, se habrá de dar cuenta inmediata de las actuaciones realizadas a la autoridad sanitaria competente, quien deberá ratificar o no dichas actuaciones en un plazo máximo de:",
+  "options": [
+    "a) 24 horas desde que fueron adoptadas",
+    "b) 48 horas desde que fueron adoptadas",
+    "c) 72 horas desde que fueron adoptadas",
+    "d) 96 horas desde que fueron adoptadas"
+  ],
+  "correct": 1
+},
+{
+  "question": "30. [%] Es competencia de la Junta de Extremadura en relación al Sistema Sanitario:",
+  "options": [
+    "a) El establecimiento de las directrices de la política sanitaria nacional",
+    "b) La elaboración del Plan de Salud de Extremadura",
+    "c) La aprobación del mapa sanitario de la Comunidad",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 2
+},
+{
+  "question": "31. [ATB - 2017] Según la Ley de Salud de Extremadura, a quién le compete la 'Ordenación y regulación de las funciones de policía sanitaria mortuoria.':",
+  "options": [
+    "a) A la Consejería competente en materia de sanidad",
+    "b) A las corporaciones locales",
+    "c) A la Junta de Extremadura",
+    "d) A la Consejería competente en materia de sanidad."
+  ],
+  "correct": 0
+},
+{
+  "question": "32. [ATB - 2017] Según la Ley de Salud de Extremadura, a quién le compete el 'Control sanitario de los cementerios y policía sanitaria mortuoria':",
+  "options": [
+    "a) A la Consejería competente en materia de sanidad",
+    "b) A las corporaciones locales",
+    "c) A la Junta de Extremadura",
+    "d) A la Consejería competente en materia de sanidad."
+  ],
+  "correct": 1
+},
+{
+  "question": "33. [%] La inclusión de nuevos servicios y prestaciones en el Sistema Sanitario Público de Extremadura será objeto de una evaluación previa de su efectividad y eficiencia en términos:",
+  "options": [
+    "a) Tecnológicos",
+    "b) De salud",
+    "c) De ponderación en la asignación del gasto público",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "34. [%] La Junta de Extremadura ejercerá las competencias que tiene atribuidas la Comunidad Autónoma en materia de:",
+  "options": [
+    "a) Sanidad interior",
+    "b) Higiene y salud pública",
+    "c) Ordenación farmacéutica",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "35. [%] La Ley 10/2001 se inspira en el principio de:",
+  "options": [
+    "a) Participación social, comunitaria y de los trabajadores",
+    "b) Fomento del conocimiento sobre el ejercicio de los derechos y deberes de los ciudadanos",
+    "c) Mejora continua de la calidad de los servicios y prestaciones",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "36. [%] La Ley de Salud de Extremadura es de fecha:",
+  "options": [
+    "a) 29 de julio de 2001",
+    "b) 28 de junio de 2001",
+    "c) 18 de julio de 2001",
+    "d) 19 de junio de 2001"
+  ],
+  "correct": 1
+},
+{
+  "question": "37. [ATB - 2017] La Junta de Extremadura puede delegar o transferir a las corporaciones locales el ejercicio de funciones en materia sanitaria?",
+  "options": [
+    "a) Sí",
+    "b) No",
+    "c) la A), en las condiciones previstas en la legislación vigente.",
+    "d) la B), salvo medidas excepcionales en materia de salud pública."
+  ],
+  "correct": 2
+},
+{
+  "question": "38. [%] La Ordenación y regulación de las funciones de policía sanitaria mortuoria corresponde a:",
+  "options": [
+    "a) El personal debidamente acreditado que actúe en representación de la autoridad sanitaria",
+    "b) La Consejería competente en materia de sanidad",
+    "c) La Corporación Local",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "39. [ATB - 2017] Según la Ley de Salud de Extremadura ¿son titulares de los derechos y deberes contenidos en dicha ley los extranjeros residentes en Extremadura?",
+  "options": [
+    "a) Sí.",
+    "b) No.",
+    "c) Salvo que su situación legal o administrativa sea irregular.",
+    "d) Si son de la Unión Europea."
+  ],
+  "correct": 0
+},
+{
+  "question": "40. [ATB - 2017] Según la Ley de Salud de Extremadura ¿Qué colectivos tienen derecho a actuaciones y programas sanitarios específicos y preferentes? (señale la INCORRECTA):",
+  "options": [
+    "a) menores",
+    "b) mayores",
+    "c) enfermos mentales",
+    "d) los que padecen Enfermedades terminales"
+  ],
+  "correct": 1
+},
+{
+  "question": "41. [%] Las Administraciones Públicas de la Comunidad Autónoma, dentro de sus respectivas competencias, adoptarán, entre otras, la siguiente medida:",
+  "options": [
+    "a) Establecer y acordar limitaciones y medidas preventivas en relación con las actividades públicas y privadas que puedan tener consecuencias negativas para la salud",
+    "b) Establecer prohibiciones y requisitos mínimos para el uso y tráfico de los bienes cuando supongan un riesgo o daño para la salud",
+    "c) Adoptar las medidas cautelares necesarias, tales como la incautación o inmovilización de productos, suspensión del ejercicio de actividades, cierres de empresas o sus instalaciones, intervención de medios materiales y personales y cuantas otras se consideren sanitariamente justificadas, siempre que exista o se sospeche razonablemente la existencia de un riesgo inminente y extraordinario o una repercusión excepcional y negativa para la salud",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "42. [ATB - 2017] Según la Ley de Salud de Extremadura, en la regulación reglamentaria de la organización, composición, funcionamiento y atribuciones del Consejo Extremeño de Salud, se contemplará, al menos la participación de (señale la incorrecta):",
+  "options": [
+    "a) Equipos de Atención Primaria",
+    "b) Administraciones Locales",
+    "c) Sindicatos",
+    "d) Organizaciones Empresariales más representativas a nivel de Extremadura"
+  ],
+  "correct": 0
+},
+{
+  "question": "43. [ATB - 2017] Según la Ley de Salud de Extremadura, en la regulación reglamentaria de la organización, composición, funcionamiento y atribuciones del Consejo Extremeño de Salud, no se contemplará, al menos la participación de:",
+  "options": [
+    "a) Organizaciones de Consumidores y Usuarios",
+    "b) Administraciones Locales",
+    "c) Sindicatos",
+    "d) Se contemplarán todos los anteriores."
+  ],
+  "correct": 3
+},
+{
+  "question": "44. [%] Los ciudadanos están sujetos, con respecto al Sistema Sanitario Público de Extremadura, al cumplimiento del siguiente deber:",
+  "options": [
+    "a) Cumplir las prescripciones generales de naturaleza sanitaria comunes a toda la población, así como las específicamente determinadas por los servicios sanitarios",
+    "b) Cuidar las instalaciones y colaborar en el mantenimiento de la habitabilidad de las instituciones sanitarias y sociosanitarias",
+    "c) Mantener el debido respeto a las normas establecidas en cada centro sanitario y sociosanitario a los usuarios y personal que preste sus servicios en los mismos",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "45. [%] Los enfermos mentales, tendrán, en especial, derecho a:",
+  "options": [
+    "a) Cuando en los ingresos forzosos desapareciera la plenitud de facultades durante el internamiento, la Dirección del Centro deberá solicitar la correspondiente autorización judicial para la continuación del mismo",
+    "b) Cuando en los ingresos voluntarios desapareciera la plenitud de facultades durante el internamiento, la Dirección del Centro podrá solicitar la correspondiente autorización judicial para la continuación del mismo",
+    "c) En los ingresos forzosos, el derecho a que se reexamine periódicamente la necesidad del internamiento",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "46. [ATB - 2017] Según la Ley de Salud de Extremadura, el Sistema Sanitario Público de Extremadura es parte integrante:",
+  "options": [
+    "a) Del Servicio Extremeño de Salud",
+    "b) Del Sistema Nacional de Salud",
+    "c) Del Servicio Extremeño de Empleo",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "47. [%] Se constituye el Sistema Sanitario Público de Extremadura como el conjunto de recursos, de actividades y de prestaciones que, conforme al Plan de Salud de Extremadura, funcionan de forma coordinada y ordenada, siendo desarrollados por organizaciones y personas públicas en el territorio de la Comunidad, dirigidos a hacer efectivo el derecho a la protección de la salud a través de:",
+  "options": [
+    "a) La promoción de la salud",
+    "b) La prevención de las enfermedades",
+    "c) La rehabilitación funcional y reincorporación social del paciente",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "48. [%] Son titulares de los derechos y deberes contemplados en la Ley 10/2001, en relación con el Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) Los españoles y los extranjeros residentes en cualesquiera de los municipios de Extremadura",
+    "b) Los españoles y extranjeros no residentes en Extremadura que tengan establecida su residencia en el territorio nacional, con el alcance determinado por la legislación estatal",
+    "c) Los nacionales de Estados no pertenecientes a la Unión Europea tienen los derechos que les reconozcan las Leyes, los Tratados y Convenios suscritos por el Estado español",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "49. ¿A qué institución de la Comunidad Autónoma de Extremadura le corresponde establecer las directrices de la política sanitaria?",
+  "options": [
+    "a) A la Junta de Extremadura.",
+    "b) Al Presidente.",
+    "c) Al Consejo de Gobierno.",
+    "d) Al Servicio Extremeño de Salud."
+  ],
+  "correct": 0
+},
+{
+  "question": "50. ¿A qué órgano dará cuenta de sus actividades el Defensor de los Usuarios del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) Al Consejo Extremeño de Salud.",
+    "b) A la Junta de Extremadura.",
+    "c) Al Defensor del Pueblo.",
+    "d) A la Consejería de Sanidad de la Junta de Extremadura."
+  ],
+  "correct": 0
+},
+{
+  "question": "51. ¿A quién corresponde la regulación reglamentaria de la organización, composición, funcionamiento y atribuciones del Consejo Extremeño de Salud?",
+  "options": [
+    "a) A la Asamblea Legislativa de la Comunidad Autónoma de Extremadura.",
+    "b) A la Junta de Extremadura.",
+    "c) Al Gobierno.",
+    "d) A las Cortes Generales."
+  ],
+  "correct": 1
+},
+{
+  "question": "52. ¿Cuál es el objeto de la Ley de Salud de Extremadura?",
+  "options": [
+    "a) La ordenación y regulación del Sistema Sanitario Público de Extremadura.",
+    "b) La creación del Instituto de la Salud.",
+    "c) Las respuestas a) y b) son ciertas.",
+    "d) Las respuestas a) y b) son falsas."
+  ],
+  "correct": 0
+},
+{
+  "question": "53. ¿Cuáles son los objetivos del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) La promoción y protección de la salud.",
+    "b) La promoción de la salud y la prevención de la enfermedad",
+    "c) La prevención de la enfermedad y la asistencia sanitaria en todos los casos de pérdida de salud.",
+    "d) La promoción y protección de la salud, la prevención de la enfermedad y la asistencia sanitaria en todos los casos de pérdida de salud."
+  ],
+  "correct": 3
+},
+{
+  "question": "54. ¿Qué carácter tiene el Consejo Extremeño de Salud?",
+  "options": [
+    "a) Es un órgano ejecutivo dentro del Sistema de Salud.",
+    "b) Es un órgano de control económico.",
+    "c) Es un órgano consultivo.",
+    "d) Es un órgano superior de carácter directivo."
+  ],
+  "correct": 2
+},
+{
+  "question": "55. [ATB - 2017] No es un Principio Rector de la Ley de Salud de Extremadura:",
+  "options": [
+    "a) Concepción integrada de la salud",
+    "b) Integración funcional de todos los recursos sanitarios públicos y privados.",
+    "c) Efectividad en la asignación, utilización y gestión de los recursos.",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 3
+},
+{
+  "question": "56. [ATB - 2017] ¿Quién aprueba el Plan de Salud de Extremadura?",
+  "options": [
+    "a) El Consejo de Gobierno de la Junta de Extremadura.",
+    "b) La anterior, a propuesta de la Consejería competente en materia de sanidad.",
+    "c) La anterior, oído el Consejo Extremeño de Salud.",
+    "d) La Consejería de Sanidad y Políticas Sociales."
+  ],
+  "correct": 2
+},
+{
+  "question": "57. ¿Quién propone el nombramiento del Defensor de los Usuarios del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) El Consejo de Gobierno de la Junta de Extremadura.",
+    "b) La Consejería de Sanidad de la Junta de Extremadura.",
+    "c) El Consejo Regional de Consumidores y Usuarios.",
+    "d) El Consejo Extremeño de Salud."
+  ],
+  "correct": 2
+},
+{
+  "question": "58. Compete a las Corporaciones Locales:",
+  "options": [
+    "a) El control sanitario de los cementerios y policía sanitaria mortuoria.",
+    "b) Establecer la estructura básica y las características que ha de reunir el sistema de información sanitaria.",
+    "c) Controlar los centros sociosanitarios, en lo que se refiere a la autorización de creación, apertura, modificación y cierre.",
+    "d) La planificación y ordenación de las actividades, programas y servicios sanitarios y sociosanitarios."
+  ],
+  "correct": 0
+},
+{
+  "question": "59. El Sistema Sanitario Público de Extremadura no garantiza el derecho:",
+  "options": [
+    "a) A las prestaciones y servicios de salud individual.",
+    "b) A las prestaciones y servicios de salud colectiva.",
+    "c) A la habitación individual en los centros hospitalarios de la Comunidad Autónoma de Extremadura.",
+    "d) A disponer de información sobre el coste económico de las prestaciones y servicios recibidos."
+  ],
+  "correct": 2
+},
+{
+  "question": "60. El Sistema Sanitario Público de Extremadura se financiará fundamentalmente con cargo a:",
+  "options": [
+    "a) Los ingresos obtenidos de los tributos que se cedan total y parcialmente por el Estado a la Comunidad Autónoma de Extremadura para fines sanitarios, así como los ingresos de los tributos y precios públicos que para idénticos fines establezca la Comunidad Autónoma.",
+    "b) Las aportaciones que deben realizar las corporaciones locales con cargo a su presupuesto.",
+    "c) Los rendimientos de los bienes y derechos propios que tenga adscritos.",
+    "d) Las subvenciones, donaciones y aportaciones voluntarias, tanto de entidades públicas como privadas y de particulares."
+  ],
+  "correct": 0
+},
+{
+  "question": "61. No es competencia de las corporaciones locales en el marco de las directrices, objetivos y líneas de actuación del Plan de Salud de Extremadura:",
+  "options": [
+    "a) El control sanitario de la distribución y suministro de alimentos, bebidas y demás productos directa o indirectamente relacionados con el uso o consumo humano, así como de los medios de su transporte.",
+    "b) El control sanitario de industrias, actividades y servicios, transportes, ruidos y vibraciones.",
+    "c) La ordenación y regulación de las funciones de policía sanitaria mortuoria.",
+    "d) El desarrollo de programas de promoción de la salud, educación sanitaria y protección de grupos sociales con riesgos específicos."
+  ],
+  "correct": 2
+},
+{
+  "question": "62. No es correcto afirmar que:",
+  "options": [
+    "a) En cada área de salud se establecerá un Consejo de Salud de Área.",
+    "b) En cada zona de salud se establecerá un Consejo de Salud de Zona.",
+    "c) Reglamentariamente se establecerá la organización, composición, funcionamiento y atribuciones de los Consejos de Salud de Área y de Zona.",
+    "d) Por ley de la Asamblea se establecerá la organización y composición de los Consejos de Salud de Área y de Zona."
+  ],
+  "correct": 3
+},
+{
+  "question": "63. [ATB - 2017] En las tarifas de precios públicos que se establezcan, para los casos en que el Sistema Sanitario Público de Extremadura tenga derecho al reembolso de los gastos efectuados, se tendrán en cuenta:",
+  "options": [
+    "a) Los costes efectivos totales de los servicios prestados",
+    "b) Los costes aproximados totales de los servicios prestados",
+    "c) Los costes ajustados totales de los servicios prestados",
+    "d) Los costes facturados totales de los servicios prestados"
+  ],
+  "correct": 0
+},
+{
+  "question": "64. No es un principio rector de la Ley de Salud de Extremadura:",
+  "options": [
+    "a) La concepción integral de la salud.",
+    "b) La universalización de la atención sanitaria.",
+    "c) La titularidad pública o privada de los centros y servicios sanitarios.",
+    "d) La participación social, comunitaria y de los trabajadores."
+  ],
+  "correct": 2
+},
+{
+  "question": "65. No está atribuido a la Consejería competente en materia de sanidad de la Comunidad Autónoma de Extremadura:",
+  "options": [
+    "a) Establecer los principios generales que han de informar la política de salud en la Comunidad Autónoma de Extremadura, proponiendo los criterios generales de planificación.",
+    "b) Vigilar, inspeccionar y evaluar las actividades del Sistema Sanitario Público de Extremadura y su adecuación al Plan de Salud.",
+    "c) La cooperación y coordinación general con el resto de las administraciones Públicas de la Comunidad Autónoma.",
+    "d) Controlar los centros, servicios, establecimientos y actividades sanitarias y centros sociosanitarios, en lo que se refiere a la autorización de creación, apertura, modificación y cierre, así como el mantenimiento de los registros pertinentes, su catalogación y, en su caso, su acreditación."
+  ],
+  "correct": 2
+},
+{
+  "question": "66. No le corresponde a la Junta de Extremadura:",
+  "options": [
+    "a) La planificación y ordenación de las actividades, programas y servicios sanitarios y sociosanitarios.",
+    "b) La aprobación del Plan de Salud de Extremadura.",
+    "c) La aprobación del mapa sanitario de la Comunidad.",
+    "d) La inspección de todos los centros, servicios, prestaciones y establecimientos sanitarios y sociosanitarios de Extremadura, así como el control de sus actividades de promoción y publicidad."
+  ],
+  "correct": 3
+},
+{
+  "question": "67. [ATB - 2017] La composición, organización, funcionamiento y atribuciones del Consejo Regional de Pacientes de Extremadura serán objeto de:",
+  "options": [
+    "a) crítica constructiva",
+    "b) desarrollo legal",
+    "c) discusión parlamentaria",
+    "d) desarrollo reglamentario"
+  ],
+  "correct": 3
+},
+{
+  "question": "68. Son titulares de los derechos y deberes contemplados en la Ley de Salud de Extremadura en relación con el Sistema Sanitario Público:",
+  "options": [
+    "a) Los españoles y los extranjeros residentes en cualesquiera de los municipios de Extremadura.",
+    "b) Los españoles y extranjeros no residentes en Extremadura que tengan establecida su residencia en el territorio nacional, con el alcance determinado por la legislación estatal.",
+    "c) Sólo los españoles y los que adquieran esta nacionalidad.",
+    "d) Las respuestas a y b son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "69. [ATB - 2017] Los que padecen enfermedades discapacitantes ¿tienen derecho a actuaciones y programas sanitarios específicos y preferentes en el Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) Sí.",
+    "b) No.",
+    "c) La a), al igual que aquellos que sufran enfermedades crónicas",
+    "d) La b), salvo que padezcan enfermedades terminales."
+  ],
+  "correct": 2
+},
+{
+  "question": "70. [ATB - 2017] Según la Ley de Salud de Extremadura, cuando en los ingresos de enfermos mentales desapareciera la plenitud de facultades durante el internamiento:",
+  "options": [
+    "a) Tendrán el derecho a que se reexamine periódicamente la necesidad del internamiento.",
+    "b) No tendrán el derecho a que se reexamine periódicamente la necesidad del internamiento.",
+    "c) El médico debe solicitar la correspondiente autorización al Director del Centro para continuar con el ingreso.",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 3
+},
+{
+  "question": "71. [ATB - 2017] ¿Cuál de los siguientes derechos serán ejercidos también con respecto a los servicios sanitarios privados?",
+  "options": [
+    "a) A la libre elección de médico, servicio y centro",
+    "b) Al libre acceso al defensor de los usuarios del Sistema Sanitario Público de Extremadura.",
+    "c) A las prestaciones y servicios de salud individual y colectiva del Sistema Sanitario Público de Extremadura.",
+    "d) Ninguno de los anteriores."
+  ],
+  "correct": 3
+},
+{
+  "question": "72. ¿Cuál de los siguientes no es un deber de los usuarios del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) Cuidar las instalaciones y colaborar en el mantenimiento de la habitabilidad de las instituciones sanitarias y sociosanitarias.",
+    "b) Mantener el debido respeto a las normas establecidas en cada centro sanitario y sociosanitario a los usuarios y personal que preste sus servicios en los mismos.",
+    "c) Colaborar con los centros, servicios y profesionales sanitarios, reservando la información de su estado de salud para adecuar la atención sanitaria a las necesidades demandadas.",
+    "d) Cumplir las normas y procedimientos de uso y acceso a los derechos que se le otorgan a través de la presente Ley."
+  ],
+  "correct": 2
+},
+{
+  "question": "73. ¿Cuál de los siguientes no es un principio rector de la Ley de Salud?",
+  "options": [
+    "a) Eficacia y eficiencia en la asignación, utilización y gestión de los recursos.",
+    "b) Mejora continua de la calidad de los servicios y prestaciones",
+    "c) Participación social, comunitaria y de los trabajadores.",
+    "d) Aseguramiento general y financiación pública del Sistema Sanitario Público de Extremadura."
+  ],
+  "correct": 3
+},
+{
+  "question": "74. [ATB - 2017] La Ley de Salud de Extremadura, ¿es aplicable a todos los extremeños y residentes en cualquiera de los municipios de Extremadura, con independencia de su situación legal o administrativa?",
+  "options": [
+    "a) Sí",
+    "b) La anterior es correcta, así como a los no residentes, en cualquier caso.",
+    "c) No a todos.",
+    "d) Todas son falsas."
+  ],
+  "correct": 0
+},
+{
+  "question": "75. ¿Cuáles serán las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) Las mismas que el Sistema Nacional de Salud en todo caso.",
+    "b) Como mínimo las ofertadas por los Sistemas de Salud de otras Comunidades Autónomas.",
+    "c) Como mínimo las ofertadas por el Sistema Nacional de Salud.",
+    "d) Como mínimo, las establecidas en cada momento para el Sistema Nacional de Salud."
+  ],
+  "correct": 3
+},
+{
+  "question": "76. [ATB - 2017] ¿Quién garantiza el funcionamiento armónico y eficaz del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) La Consejería competente en materia de sanidad.",
+    "b) El Servicio Extremeño de Salud.",
+    "c) Las corporaciones locales.",
+    "d) Ninguna de las anteriores."
+  ],
+  "correct": 3
+},
+{
+  "question": "77. [ATB - 2017] ¿Pueden las Administraciones Públicas de la Comunidad Autónoma Establecer y acordar limitaciones y medidas preventivas en relación con las actividades públicas y privadas que puedan tener consecuencias negativas para la salud?",
+  "options": [
+    "a) Sí",
+    "b) Sí, pero sólo la Consejería de Sanidad",
+    "c) Sí, en el caso de las corporaciones locales, exclusivamente.",
+    "d) Sólo la Junta de Extremadura."
+  ],
+  "correct": 0
+},
+{
+  "question": "78. [ATB - 2017] ¿Están los pacientes o usuarios obligados a mantener el debido respeto a las normas establecidas en cada centro sanitario?",
+  "options": [
+    "a) Sí",
+    "b) Y en centros sociosanitarios.",
+    "c) Y al personal que preste sus servicios en los mismos.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "79. ¿La ley de Salud se aplica a las administraciones públicas de la Comunidad Autónoma de Extremadura?",
+  "options": [
+    "a) No",
+    "b) Depende de la situación administrativa.",
+    "c) Sí",
+    "d) Sí, en todo caso."
+  ],
+  "correct": 3
+},
+{
+  "question": "80. [ATB - 2017] ¿Se podrán establecer por la Junta de Extremadura otros órganos de participación que los descritos en la Ley de Salud?",
+  "options": [
+    "a) A otros niveles de la organización funcional del Sistema Sanitario Público de Extremadura",
+    "b) Con la finalidad de asesorar a los correspondientes órganos directivos e implicar a las organizaciones sociales y ciudadanas en el objetivo de alcanzar mayores niveles de salud.",
+    "c) A y B son correctas.",
+    "d) No."
+  ],
+  "correct": 2
+},
+{
+  "question": "81. ¿Qué artículo de la Ley de Salud se recogen los deberes de los usuarios del Sistema de Sanitario?",
+  "options": [
+    "a) 11",
+    "b) 12",
+    "c) 13",
+    "d) 12 a)"
+  ],
+  "correct": 1
+},
+{
+  "question": "82. [ATB - 2017] ¿Qué facultad no tiene atribuida la Junta de Extremadura para garantizar el funcionamiento del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) Dirección y coordinación.",
+    "b) Planificación y ordenación",
+    "c) Manejo y verificación.",
+    "d) supervisión y control."
+  ],
+  "correct": 2
+},
+{
+  "question": "83. ¿Quién garantiza el funcionamiento armónico y eficaz del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) El gerente del SES",
+    "b) La Consejería competente en materia de Sanidad.",
+    "c) La Junta de Extremadura en los términos que establece la Ley de Sanidad.",
+    "d) La Junta de Extremadura"
+  ],
+  "correct": 3
+},
+{
+  "question": "84. [ATB - 2017] ¿Quiénes son titulares de los derechos y deberes de los ciudadanos respecto del Sistema Sanitario?",
+  "options": [
+    "a) Los españoles",
+    "b) Los extranjeros",
+    "c) a y b son correctas.",
+    "d) La anterior es correcta, si se trata de residentes."
+  ],
+  "correct": 3
+},
+{
+  "question": "85. A las entidades o instituciones privadas se les aplicará la Ley de Salud:",
+  "options": [
+    "a) En todo caso.",
+    "b) Siempre",
+    "c) Cuando así se establezca en la Ley",
+    "d) Nunca debido a su carácter privado."
+  ],
+  "correct": 2
+},
+{
+  "question": "86. A parte de los deberes recogidos en la ley de salud que otros deberes tienen los ciudadanos respecto del Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) Los recogidos en el Estatuto.",
+    "b) Los recogidos en el Reglamento de la Asamblea y la Constitución.",
+    "c) Las respuestas a y b son ciertas.",
+    "d) Los deberes reconocidos en la legislación básica estatal."
+  ],
+  "correct": 3
+},
+{
+  "question": "87. ¿Cuál de los siguientes es un derecho no contemplado en la Ley de Salud?",
+  "options": [
+    "a) A las prestaciones y servicios de salud individual y colectiva del Sistema Sanitario Público de Extremadura",
+    "b) A la información sobre los servicios sanitarios a que pueden acceder y sobre los requisitos necesarios para su uso.",
+    "c) Al respeto de su personalidad, dignidad humana e intimidad, sin que puedan ser discriminados por ninguna causa.",
+    "d) A disponer de información sobre el coste social de las prestaciones y servicios recibidos."
+  ],
+  "correct": 3
+},
+{
+  "question": "88. ¿Cuál de los siguientes no es un deber de los ciudadanos respecto del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) Cumplir las normas y procedimientos de uso y acceso a los derechos que se le otorgan a través de la presente Ley.",
+    "b) Mantener el debido respeto a las normas establecidas en cada centro sanitario y sociosanitario a los usuarios y personal que preste sus servicios en los mismos.",
+    "c) Colaborar con los centros, servicios y profesionales sanitarios, facilitando la información de su estado económico para adecuar la atención sanitaria a las necesidades demandadas",
+    "d) Responsabilizarse del uso adecuado de las prestaciones ofrecidas por el sistema sanitario"
+  ],
+  "correct": 2
+},
+{
+  "question": "89. Cumplir las prescripciones generales de naturaleza sanitaria comunes a toda la población, así como las específicamente determinadas por los servicios Sanitarios.",
+  "options": [
+    "a) Es un derecho de todos los ciudadanos.",
+    "b) Es un deber emanado de la Ley de Sanidad.",
+    "c) Es un deber",
+    "d) Es un derecho"
+  ],
+  "correct": 2
+},
+{
+  "question": "90. De conformidad con los derechos reconocidos en la Constitución Española y en la legislación básica estatal, en el Sistema Sanitario Público de Extremadura se garantiza el derecho:",
+  "options": [
+    "a) A las prestaciones y servicios de salud individual y colectiva del Sistema Sanitario Público de Extremadura",
+    "b) A la confidencialidad de toda la información relacionada con su proceso y con su estancia en cualquier institución sanitaria de Extremadura",
+    "c) A la información sobre los factores, situaciones y causas de riesgo para la salud individual y colectiva conocidos",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+}
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
