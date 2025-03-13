@@ -1,0 +1,625 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+{
+  "question": "1. [SES - 2013 - A. CLIN.] Según la Ley de Salud de Extremadura son competencias de la Consejería responsable en materia de sanidad con relación al Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) Establecer los principios generales que han de informar la política de salud en la Comunidad Autónoma de Extremadura, proponiendo los criterios generales de planificación.",
+    "b) La aprobación del mapa sanitario de la Comunidad.",
+    "c) Velar por los derechos reconocidos en la presente Ley en relación con los servicios sanitarios.",
+    "d) La a y la c son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "2. [SES - 2013 - A. CLIN.] Según los Estatutos del Organismo Autónomo Servicio Extremeño de Salud, ¿A qué órgano del Servicio Extremeño de Salud corresponde aprobar la memoria anual de la gestión del Servicio Extremeño de Salud?",
+  "options": [
+    "a) Consejo de Dirección.",
+    "b) Dirección Gerencia.",
+    "c) Secretaría General.",
+    "d) Consejo General."
+  ],
+  "correct": 3
+},
+{
+  "question": "3. [SES - 2013 - A. CLIN.] Según los Estatutos del Organismo Autónomo Servicio Extremeño de Salud, el mantenimiento, actualización, organización y gestión de los registros de centros, servicios y establecimientos farmacéuticos de Extremadura corresponde a:",
+  "options": [
+    "a) Dirección General de Salud Pública.",
+    "b) Dirección General de Asistencia Sanitaria.",
+    "c) Dirección Gerencia.",
+    "d) Dirección General de Farmacia."
+  ],
+  "correct": 0
+},
+{
+  "question": "4. [SES - 2013 - A. CLIN.] Según los Estatutos del Organismo Autónomo Servicio Extremeño de Salud, son órganos de dirección y gestión del Servicio Extremeño de Salud los siguientes:",
+  "options": [
+    "a) La Dirección Gerencia, la Secretaría General, la Dirección General de Asistencia Sanitaria y la Dirección General de Salud Pública.",
+    "b) La Dirección Gerencia, la Dirección de Recursos Humanos, la Dirección General de Asistencia Sanitaria y la Dirección General de Salud Pública.",
+    "c) La Dirección Gerencia, la Secretaría General, la Dirección General de Presupuestos y Tesorería, la Dirección General de Asistencia Sanitaria y la Dirección General de Salud Pública.",
+    "d) La Dirección Gerencia, la Secretaría General, la Dirección de Recursos Humanos, la Dirección General de Presupuestos y Tesorería, la Dirección General de Asistencia Sanitaria y la Dirección General de Salud Pública."
+  ],
+  "correct": 0
+},
+{
+  "question": "5. [SES - 2013 -A.PATOL] La Ley 10/2001, de 28 de junio, de Salud de Extremadura tiene como objeto:",
+  "options": [
+    "a) La ordenación y regulación del Sistema Sanitario Público de Extremadura como parte integrante del Sistema Nacional de Salud.",
+    "b) La creación del Servicio Extremeño de Salud.",
+    "c) Las respuestas anteriores a y b son correctas.",
+    "d) Las respuestas anteriores a y b son incorrectas."
+  ],
+  "correct": 2
+},
+{
+  "question": "6. [SES - 2013-A.PATOL] La Ley 10/2001, de Salud de Extremadura otorga las facultades de dirección, coordinación, ordenación, planificación, supervisión y control al objeto de garantizar el funcionamiento armónico y eficaz del Sistema Sanitario Público de Extremadura a:",
+  "options": [
+    "a) La Junta de Extremadura.",
+    "b) La Consejería competente en materia de sanidad.",
+    "c) El Servicio Extremeño de Salud.",
+    "d) Todos los anteriores de manera coordinada."
+  ],
+  "correct": 0
+},
+{
+  "question": "7. [SES - 2013 -A.PATOL] Uno de los siguientes NO es uno de los principios rectores en los que se inspira la Ley 10/2001, de 28 de junio, de Salud de Extremadura:",
+  "options": [
+    "a) Titularidad pública de los centros y servicios sanitarios, así como su coordinación, descentralización, autonomía y responsabilidad.",
+    "b) Participación social, comunitaria y de los pacientes.",
+    "c) Eficacia y eficiencia en la asignación, utilización y gestión de los recursos.",
+    "d) Fomento del conocimiento sobre el ejercicio de los derechos y deberes de los ciudadanos."
+  ],
+  "correct": 1
+},
+{
+  "question": "8. [SES - 2013 - F. HOSP.] Según el artículo 15 de los Estatutos del Organismo Autónomo Servicio Extremeño de Salud, los bienes y derechos del Servicio Extremeño de Salud se regirán por la normativa contenida en:",
+  "options": [
+    "a) Ley General de Hacienda Pública de Extremadura, Ley de Patrimonio de la Comunidad Autónoma de Extremadura y Ley de Salud de Extremadura.",
+    "b) Ley de Presupuestos de la Comunidad Autónoma de Extremadura, Ley de Patrimonio de la Comunidad Autónoma de Extremadura y Ley de Salud de Extremadura.",
+    "c) Ley de Presupuestos de la Comunidad Autónoma de Extremadura y Ley de Patrimonio de la Comunidad Autónoma de Extremadura.",
+    "d) Ley General de Hacienda Pública de Extremadura, Ley de Patrimonio de la Comunidad Autónoma de Extremadura y Ley de Presupuestos de la Comunidad Autónoma de Extremadura."
+  ],
+  "correct": 0
+},
+{
+  "question": "9. [SES - 2013 - F. HOSP.] Según la Ley de Salud de Extremadura son competencias de la Consejería responsable en materia de sanidad, en relación al Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) Velar por los derechos reconocidos en la presente Ley en relación con los servicios sanitarios.",
+    "b) La aprobación del mapa sanitario de la Comunidad.",
+    "c) Vigilar, inspeccionar y evaluar las actividades del Sistema Sanitario Público de Extremadura, y su adecuación al Plan de Salud.",
+    "d) La b y la c son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "10. [SES - 2013 - F. HOSP.] Según la Ley de Salud de Extremadura son competencias de las corporaciones locales, en relación con el Sistema Sanitario Público:",
+  "options": [
+    "a) Desarrollo de programas de promoción de la salud, educación sanitaria y protección de grupos sociales con riesgos específicos.",
+    "b) Ordenación y regulación de las funciones de policía sanitaria mortuoria.",
+    "c) Conservación y mantenimiento de los centros de salud.",
+    "d) Todas son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "11. [SES - 2013 - F. HOSP.] Según los Estatutos del Organismo Autónomo Servicio Extremeño de Salud, el desarrollo de las políticas de uso racional del medicamento corresponde al:",
+  "options": [
+    "a) Director General de Salud Pública.",
+    "b) Director General de Asistencia Sanitaria.",
+    "c) Director Gerente.",
+    "d) Director General de Farmacia."
+  ],
+  "correct": 1
+},
+{
+  "question": "12. [SES - 2013 - MAXILO] El centro de salud tendrá, entre otras, la siguiente función:",
+  "options": [
+    "a) El internamiento Clínico.",
+    "b) La asistencia especializada.",
+    "c) Facilitar el trabajo en equipo de los profesionales sanitarios de la zona.",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "13. [SES - 2013 - MAXILO] El Defensor de los Usuarios del Sistema Sanitario Público de Extremadura, será designado por un periodo de:",
+  "options": [
+    "a) 5 años",
+    "b) 3 años",
+    "c) Por tiempo indefinido",
+    "d) 1 año renovable."
+  ],
+  "correct": 0
+},
+{
+  "question": "14. [SES - 2013 - MAXILO] El Secretario General del Servicio Extremeño de Salud desempeñará, entre otras, la siguiente función:",
+  "options": [
+    "a) El nombramiento del personal estatutario fijo.",
+    "b) Ostentar la representación legal del Servicio Extremeño de Salud.",
+    "c) El control y evaluación de la calidad asistencial.",
+    "d) Establecer las directrices generales sobre policía sanitaria mortuoria."
+  ],
+  "correct": 0
+},
+{
+  "question": "15. [SES - 2013 - MAXILO] El Servicio Extremeño de Salud:",
+  "options": [
+    "a) Es un organismo autónomo de carácter administrativo, sin personalidad jurídica propia y capacidad de obrar limitada en el cumplimiento de sus fines",
+    "b) Es un organismo autónomo de carácter administrativo, dotado de personalidad jurídica propia y plena capacidad de obrar para el cumplimiento de sus fines",
+    "c) No es un organismo autónomo de carácter administrativo.",
+    "d) Es un organismo autónomo de carácter administrativo, dotado de personalidad jurídica propia y sin capacidad de obrar para el cumplimiento de sus fines."
+  ],
+  "correct": 1
+},
+{
+  "question": "16. [SES - 2013 - MAXILO] En cada zona de salud, en el Sistema Sanitario Público de Extremadura, se establecerá como mínimo:",
+  "options": [
+    "a) Consejo de Salud de Zona, como órgano colegiado de participación ciudadana",
+    "b) Un Consejo de Salud de Área, como órgano colegiado de consulta y participación.",
+    "c) Consejo Regional de Pacientes de Extremadura.",
+    "d) Un Defensor de los Usuarios del Sistema Sanitario Público de Extremadura."
+  ],
+  "correct": 0
+},
+{
+  "question": "17. [SES - 2013 - MAXILO] Las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) Serán, como máximo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "b) Serán las establecidas en cada momento para la Comunidad Europea.",
+    "c) Serán, como mínimo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "d) Ninguna de las anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "18. [SES - 2013 - MEDICOS] La Ley de Salud de Extremadura se inspira en todos los siguientes principios rectores excepto en uno:",
+  "options": [
+    "a) Concepción integral de la salud.",
+    "b) Concertación de servicios sanitarios que sean precisos en centros privados.",
+    "c) Mejora continua de la calidad de los servicios y prestaciones.",
+    "d) Eficacia y eficiencia en la asignación, utilización y gestión de los recursos."
+  ],
+  "correct": 1
+},
+{
+  "question": "19. [SES - 2013 - MEDICOS] Se consideran competencias de las corporaciones locales en relación con el sistema sanitario público, según la Ley de Salud de Extremadura, todos excepto una de las siguientes:",
+  "options": [
+    "a) Conservación y mantenimiento de los consultorios locales.",
+    "b) Control sanitario de los cementerios y policía sanitaria mortuoria.",
+    "c) Control sanitario del medio ambiente.",
+    "d) Elaboración y propuesta a la Junta de Extremadura del Plan de Salud del Área."
+  ],
+  "correct": 3
+},
+{
+  "question": "20. [SES - 2013 - MEDICOS] Señale la respuesta correcta respecto al Sistema Sanitario Público de Extremadura:",
+  "options": [
+    "a) El Sistema Sanitario Público de Extremadura se ordena en demarcaciones territoriales denominadas Centros de Salud.",
+    "b) El área de salud es el marco fundamental para el desarrollo de los programas de promoción de lo salud y prevención de la enfermedad.",
+    "c) Las áreas de salud se dividen en puntos de atención continuada.",
+    "d) El Consejo de Salud de Área es un órgano colegiado de participación con carácter ejecutivo."
+  ],
+  "correct": 1
+},
+{
+  "question": "21. [SES - 2013 - MEDICOS] Señale la respuesta incorrecta sobre el sistema sanitario público de Extremadura:",
+  "options": [
+    "a) Los servicios sanitarios de Extremadura se ordenan en tres niveles de atención: Primaría, Especializada y Unidades Medicalizadas de Emergencias (112).",
+    "b) Las unidades de Salud Mental se consideran unidades de apoyo a la Atención Primaria.",
+    "c) Corresponderá al Servicio Extremeño de Salud el establecimiento de los puntos de atención continuada que estime necesarios.",
+    "d) La aprobación y modificación de los límites territoriales de las zonas de salud corresponde a la Junta de Extremadura."
+  ],
+  "correct": 0
+},
+{
+  "question": "22. [SES - 2013 - NEFRO] Según dispone la Ley 10/2001, de 28 de junio, de Salud de Extremadura, el control sanitario del medio ambiente es una competencia de:",
+  "options": [
+    "a) La Consejería responsable en materia de sanidad",
+    "b) Las Corporaciones Locales",
+    "c) La Junta de Extremadura.",
+    "d) Las Diputaciones Provinciales."
+  ],
+  "correct": 1
+},
+{
+  "question": "23. [SES - 2013 - NEFRO] Según dispone la Ley 10/2001, de 28 de junio, de Salud de Extremadura, el órgano colegiado superior de carácter consultivo, de participación ciudadana y de formulación y control de la política sanitaria en la Comunidad Autónoma de Extremadura es:",
+  "options": [
+    "a) El Consejo Regional de Salud.",
+    "b) El Consejo de Salud de la Comunidad Autónoma de Extremadura.",
+    "c) El Consejo Extremeño de Salud.",
+    "d) El Consejo Consultivo Sanitario de Extremadura"
+  ],
+  "correct": 2
+},
+{
+  "question": "24. [SES - 2013 - NEFRO] Según el Decreto 221/2008, de 24 de octubre Aprueba los Estatutos de Organismo Autónomo Servicio Extremeño de Salud, El Servicio Extremeño de Salud:",
+  "options": [
+    "a) Es un organismo autónomo sin personalidad jurídica",
+    "b) Es un organismo autónomo de carácter administrativo",
+    "c) Es un organismo autónomo de carácter sanitario",
+    "d) Todas son falsas"
+  ],
+  "correct": 1
+},
+{
+  "question": "25. [SES - 2013 - NEUMO.] Según dispone la Ley 10/2001, de 28 de junio, de Salud de Extremadura, el control sanitario del medio ambiente es una competencia de:",
+  "options": [
+    "a) La Consejería responsable en materia de sanidad",
+    "b) Las Corporaciones Locales",
+    "c) La Junta de Extremadura.",
+    "d) Las Diputaciones Provinciales"
+  ],
+  "correct": 1
+},
+{
+  "question": "26. [SES - 2013 - NEUMO.] Según el Decreto 221/2008, de 24 de octubre Aprueba los Estatutos de Organismo Autónomo Servicio Extremeño de Salud ¿Cuál es el órgano de Coordinación del S.E.S.?",
+  "options": [
+    "a) Director Gerente",
+    "b) Consejo General",
+    "c) Consejo Dirección",
+    "d) El Consejo Extremeño de Salud"
+  ],
+  "correct": 2
+},
+{
+  "question": "27. [SES - 2013 - NEUMO.] Según el Decreto 221/2008, de 24 de octubre Aprueba los Estatutos de Organismo Autónomo Servicio Extremeño de Salud, El Servicio Extremeño de Salud:",
+  "options": [
+    "a) Es un organismo autónomo sin personalidad jurídica",
+    "b) Es un organismo autónomo de carácter administrativo",
+    "c) Es un organismo autónomo de carácter sanitario",
+    "d) Todas son falsas"
+  ],
+  "correct": 1
+},
+{
+  "question": "28. [SES - 2013 - REUMA] Según lo establecido en la Ley de Salud de Extremadura, el Defensor de los Usuarios:",
+  "options": [
+    "a) Estará adscrito al departamento de la Administración regional que ostente las competencias en materia de protección de los derechos de los consumidores",
+    "b) Será designado por el Consejero competente en materia de sanidad",
+    "c) La duración de la designación será de 6 años",
+    "d) Todas las respuestas son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "29. [SES - 2013 - REUMA] Según lo establecido en los Estatutos del Servicio Extremeño de Salud, el Consejo General estará integrado por:",
+  "options": [
+    "a) Seis representantes de la Administración de la Comunidad Autónoma",
+    "b) Tres representantes designados por las organizaciones de consumidores y usuarios",
+    "c) Tres representantes de las Corporaciones Locales de la Comunidad Autónoma de Extremadura, designados por la Federación de Municipios y Provincias de Extremadura",
+    "d) Todas las respuestas son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "30. [SES - 2013 - REUMA] Según lo establecido en los Estatutos del Servicio Extremeño de Salud, la clasificación del personal del organismo autónomo será:",
+  "options": [
+    "a) Funcionario de carrera, funcionario interino, personal estatutario, ya sea fijo o temporal, y personal laboral",
+    "b) Funcionario de carrera; funcionario interino; personal estatutario fijo y personal laboral",
+    "c) Funcionario de carrera; funcionario interino; personal estatutario fijo y personal eventual",
+    "d) Funcionario de carrera; funcionario interino; personal estatutario, ya sea fijo o temporal; personal laboral y personal eventual"
+  ],
+  "correct": 3
+},
+{
+  "question": "31. [SES - FISIO - 2014] ¿A qué Órgano del Servicio Extremeño de Salud corresponde el reconocimiento de los niveles de carrera y desarrollo profesional?",
+  "options": [
+    "a) A la Dirección Gerencia.",
+    "b) A la Dirección General de Asistencia Sanitaria.",
+    "c) A la Dirección General de Presupuestos y Tesorería.",
+    "d) No corresponde esta competencia a ninguna Dirección General, sino a la Secretaría General."
+  ],
+  "correct": 0
+},
+{
+  "question": "32. [SES - FISIO - 2014] El Director Gerente del S.E.S. es nombrado por:",
+  "options": [
+    "a) El Consejo de Gobierno de la Junta de Extremadura",
+    "b) El/la Consejero/a titular de la Consejería competente en materia Sanitaria",
+    "c) La Asamblea de Extremadura",
+    "d) El Consejo de dirección del S.E.S."
+  ],
+  "correct": 0
+},
+{
+  "question": "33. [SES - FISIO - 2014] El titular de la Secretaría General del Servicio Extremeño de Salud será nombrado a propuesta de:",
+  "options": [
+    "a) El Consejero de Salud y Política Social.",
+    "b) El Consejo de Gobierno.",
+    "c) El Presidente de la Junta.",
+    "d) El Director Gerente."
+  ],
+  "correct": 0
+},
+{
+  "question": "34. [SES - FISIO - 2014] La Dirección Gerencia, es el órgano superior del Servicio Extremeño de Salud, correspondiéndole, entre otras, las siguientes funciones:",
+  "options": [
+    "a) La dirección, gestión y liquidación de los derechos económicos, así como la elaboración de la cuenta anual del Organismo Autónomo.",
+    "b) Gestión de los procedimientos de selección de personal permanente, así como de provisión de sus plazas y promoción profesional.",
+    "c) La programación, dirección, evaluación interna y control de la organización y actividades de los centros, establecimientos y servicios adscritos orgánica y/o funcionalmente al Servicio Extremeño de Salud.",
+    "d) La dirección de la gestión asistencial de los centros, establecimientos y servicios sanitarios del Organismo y entidades concertadas"
+  ],
+  "correct": 2
+},
+{
+  "question": "35. [SES - FISIO - 2014] Las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura serán:",
+  "options": [
+    "a) Como mínimo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "b) Como máximo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "c) Las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "36. [SES - FISIO - 2014] Los órganos colegiados de participación comunitaria para la consulta y el seguimiento de la gestión en el ámbito de las Áreas de Salud, en los que participarán las organizaciones empresariales y sindicales, se denominan:",
+  "options": [
+    "a) Consejos de Salud de Área.",
+    "b) Consejos de Dirección de Área.",
+    "c) Gerencia de Área.",
+    "d) Consejo de Participación del Área."
+  ],
+  "correct": 0
+},
+{
+  "question": "37. [SES - FISIO - 2014] Según la ley 10/2001, de 28 de junio, de Salud de Extremadura. ¿A partir de cuántos habitantes dispondrá un núcleo de población de consultorio local?",
+  "options": [
+    "a) 90 habitantes.",
+    "b) 45 habitantes.",
+    "c) 50 habitantes.",
+    "d) 120 habitantes."
+  ],
+  "correct": 2
+},
+{
+  "question": "38. [SES - LAVAND. - 2018] Señale la respuesta correcta. La Ley de Salud de Extremadura se inspira:",
+  "options": [
+    "a) En el principio de cotitularidad público-privada de los centros y servicios.",
+    "b) En el principio de aseguramiento múltiple.",
+    "c) En una concepción diversa de la salud.",
+    "d) En los principios de eficacia y eficiencia en la asignación, utilización y gestión de los recursos."
+  ],
+  "correct": 3
+},
+{
+  "question": "39. [SES - T.AP. - 2014] De acuerdo con la Ley de Salud de Extremadura, las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura, serán:",
+  "options": [
+    "a) Como máximo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "b) Las que crea conveniente la Comunidad Autónoma de Extremadura, siempre que lleven asociada una financiación específica.",
+    "c) Como mínimo, las establecidas en cada momento para el Sistema Nacional de Salud.",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "40. [SES - T.AP. - 2014] El Servicio Extremeño de Salud:",
+  "options": [
+    "a) Es una Entidad Pública de carácter administrativo.",
+    "b) Es un organismo autónomo de carácter asistencial.",
+    "c) Es un organismo autónomo de carácter administrativo.",
+    "d) Es una Entidad Pública de carácter asistencial."
+  ],
+  "correct": 2
+},
+{
+  "question": "41. [SES - T.AP. - 2014] Según la Ley de Salud de Extremadura, ¿Cuál de los siguientes es un requisito imprescindible para la participación del paciente en un proyecto docente o de investigación?",
+  "options": [
+    "a) La previa autorización por escrito del paciente.",
+    "b) La aceptación por parte del médico.",
+    "c) La aceptación de la dirección del correspondiente centro sanitario.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "42. [SES - T.AP. - 2014] Según los Estatutos del Servicio Extremeño de Salud, la Resolución por la que se le concede el reingreso al servicio activo a un/a Técnico/a Superior en Anatomía Patológica, ¿Es competencia de?",
+  "options": [
+    "a) El/la Directora/a Gerente del Servicio Extremeño de Salud.",
+    "b) El/la Secretario/a General del Servicio Extremeño de Salud.",
+    "c) El/la directora/a de Recursos Humanos del Área de Salud donde se le hubiera concedido el reingreso.",
+    "d) El/la Gerente del Área de Salud donde se le hubiera concedido el reingreso."
+  ],
+  "correct": 1
+},
+{
+  "question": "43. ¿A qué institución de la Comunidad Autónoma de Extremadura le corresponde establecer las directrices de la política sanitaria?",
+  "options": [
+    "a) A la Junta de Extremadura.",
+    "b) Al Presidente.",
+    "c) Al Consejo de Gobierno.",
+    "d) Al Servicio Extremeño de Salud."
+  ],
+  "correct": 0
+},
+{
+  "question": "44. ¿A qué órgano dará cuenta de sus actividades el Defensor de los Usuarios del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) Al Consejo Extremeño de Salud.",
+    "b) A la Junta de Extremadura.",
+    "c) Al Defensor del Pueblo.",
+    "d) A la Consejería de Sanidad de la Junta de Extremadura."
+  ],
+  "correct": 0
+},
+{
+  "question": "45. ¿Qué clase de competencias confiere el Estatuto de Autonomía a la Comunidad Autónoma de Extremadura en materia sanitaria?",
+  "options": [
+    "a) Exclusivas.",
+    "b) De desarrollo legislativo y ejecutivo.",
+    "c) De ejecución.",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "46. ¿Quién propone el nombramiento del Defensor de los Usuarios del Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) El Consejo de Gobierno de la Junta de Extremadura.",
+    "b) La Consejería de Sanidad de la Junta de Extremadura.",
+    "c) El Consejo Regional de Consumidores y Usuarios.",
+    "d) El Consejo Extremeño de Salud."
+  ],
+  "correct": 2
+},
+{
+  "question": "47. Compete a las Corporaciones Locales:",
+  "options": [
+    "a) El control sanitario de los cementerios y policía sanitaria mortuoria.",
+    "b) Establecer la estructura básica y las características que ha de reunir el sistema de información sanitaria.",
+    "c) Controlar los centros sociosanitarios, en lo que se refiere a la autorización de creación, apertura, modificación y cierre.",
+    "d) La planificación y ordenación de las actividades, programas y servicios sanitarios y sociosanitarios."
+  ],
+  "correct": 0
+},
+{
+  "question": "48. No es competencia de las corporaciones locales en el marco de las directrices, objetivos y líneas de actuación del Plan de Salud de Extremadura:",
+  "options": [
+    "a) El control sanitario de la distribución y suministro de alimentos, bebidas y demás productos directa o indirectamente relacionados con el uso o consumo humano, así como de los medios de su transporte.",
+    "b) El control sanitario de industrias, actividades y servicios, transportes, ruidos y vibraciones.",
+    "c) La ordenación y regulación de las funciones de policía sanitaria mortuoria.",
+    "d) El desarrollo de programas de promoción de la salud, educación sanitaria y protección de grupos sociales con riesgos específicos."
+  ],
+  "correct": 2
+},
+{
+  "question": "49. No está atribuido a la Consejería competente en materia de sanidad de la Comunidad Autónoma de Extremadura:",
+  "options": [
+    "a) Establecer los principios generales que han de informar la política de salud en la Comunidad Autónoma de Extremadura, proponiendo los criterios generales de planificación.",
+    "b) Vigilar, inspeccionar y evaluar las actividades del Sistema Sanitario Público de Extremadura y su adecuación al Plan de Salud.",
+    "c) La cooperación y coordinación general con el resto de las administraciones Públicas de la Comunidad Autónoma.",
+    "d) Controlar los centros, servicios, establecimientos y actividades sanitarias y centros sociosanitarios, en lo que se refiere a la autorización de creación, apertura, modificación y cierre, así como el mantenimiento de los registros pertinentes, su catalogación y, en su caso, su acreditación."
+  ],
+  "correct": 2
+},
+{
+  "question": "50. El órgano encargado de la defensa de los derechos de aquellos, quien desempeñará sus funciones con plena autonomía e independencia:",
+  "options": [
+    "a) Director del SES.",
+    "b) Gerente del SES",
+    "c) El Defensor de los Usuarios del Sistema Sanitario Público de Extremadura",
+    "d) El Gerente del Área de Salud."
+  ],
+  "correct": 2
+}
+
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
