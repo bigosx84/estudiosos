@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+{
+  "question": "1. [CEP] ¿En qué título y capítulo de la Ley de Salud de Extremadura se recoge la ordenación sanitaria de la Comunidad?",
+  "options": [
+    "a) Título 11, Capítulo 1",
+    "b) Título 111, Capítulo 11",
+    "c) Título 1, Capítulo 11",
+    "d) Título 11, Capítulo 1"
+  ],
+  "correct": 1
+},
+{
+  "question": "2. [CEP] Corresponde a la Consejería competente en materia de sanidad, en el marco de la política sanitaria definida por la Junta de Extremadura:",
+  "options": [
+    "a) Establecer los principios generales que han de informar la política de salud en la Comunidad Autónoma de Extremadura, proponiendo los criterios generales de planificación",
+    "b) Aprobación del Plan de Salud de la Comunidad Autónoma",
+    "c) Inspección de todos los centros, servicios, prestaciones y establecimientos sanitarios y sociosanitarios de España, así como el control de sus actividades de promoción y publicidad",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "3. [CEP] Corresponde a los poderes públicos extremeños la actuación preferente de promocionar la salud en cada uno de los sectores de la actividad socioeconómica, con el fin de:",
+  "options": [
+    "a) Estimular los hábitos saludables",
+    "b) La anulación de efectos positivos",
+    "c) Liberar los factores de riesgo",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "4. [CEP] De conformidad con lo establecido en la legislación de Régimen Local, en la Ley General de Sanidad y en la Ley 10/2001, a las corporaciones locales les corresponden:",
+  "options": [
+    "a) Control sanitario del medio ambiente",
+    "b) Control sanitario de industrias, actividades y servicios, transportes, ruidos y vibraciones",
+    "c) Control sanitario de edificios y lugares de vivienda y convivencia humana, especialmente en centros de alimentación, peluquerías, saunas y centros de higiene personal, hoteles y centros residenciales, escuelas, campamentos turísticos y áreas de actividad física, deportiva y de recreo",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "5. [CEP] De conformidad con los derechos reconocidos en la Constitución Española y en la legislación básica estatal, en el Sistema Sanitario Público de Extremadura se garantiza el derecho:",
+  "options": [
+    "a) A las prestaciones y servicios de salud individual y colectiva del Sistema Sanitario Público de Extremadura",
+    "b) A la confidencialidad de toda la información relacionada con su proceso y con su estancia en cualquier institución sanitaria de Extremadura",
+    "c) A la información sobre los factores, situaciones y causas de riesgo para la salud individual y colectiva conocidos",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "6. [CEP] De las enumeradas a continuación, ¿cuál es una competencia de la Consejería responsable en materia de sanidad con relación al Sistema Sanitario Público de Extremadura?",
+  "options": [
+    "a) Desarrollar, en el ámbito de sus competencias, la normativa básica sanitaria, así como la relativa al personal del Sistema Sanitario Público dictada en consonancia con lo establecido en la legislación básica estatal",
+    "b) La aprobación del Plan de Salud de Extremadura",
+    "c) La cooperación y coordinación general con el resto de las Administraciones Públicas de la Comunidad Autónoma",
+    "d) Vigilar, inspeccionar y evaluar las actividades del Sistema Sanitario Público de Extremadura, y su adecuación al Plan de Salud"
+  ],
+  "correct": 2
+},
+{
+  "question": "7. [CEP] De las enumeradas a continuación, ¿cuál es una competencia de la Junta de Extremadura?",
+  "options": [
+    "a) El establecimiento de las directrices de la política sanitaria de la Comunidad Autónoma",
+    "b) La planificación y ordenación de las actividades, programas y servicios sanitarios y sociosanitarios",
+    "c) La aprobación del mapa sanitario de la Comunidad",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "8. [CEP] De las enumeradas a continuación, ¿cuál no es una competencia de las Corporaciones Locales en relación con el Sistema Sanitario Público?",
+  "options": [
+    "a) Control sanitario de industrias, actividades y servicios, transportes, ruidos y vibraciones",
+    "b) Control sanitario de edificios y lugares de vivienda y convivencia humana, especialmente en centros de alimentación, peluquerías, saunas y centros de higiene personal, hoteles y centros residenciales, escuelas, campamentos turísticos y áreas de actividad física , deportiva y de recreo",
+    "c) Desarrollo de programas de promoción de la salud, educación sanitaria y protección de grupos sociales con riesgos específicos",
+    "d) Tomar o sacar muestras con objeto de comprobar el cumplimiento de la legislación aplicable"
+  ],
+  "correct": 3
+},
+{
+  "question": "9. [CEP] El personal debidamente acreditado que actúe en representación de la autoridad sanitaria, cuando ejerza funciones de inspección, estará facultado para:",
+  "options": [
+    "a) Acceder libremente y en cualquier momento a todo centro, servicio o establecimiento sujeto a la Ley de Salud de Extremadura",
+    "b) Tomar o sacar muestras con objeto de comprobar el cumplimiento de la legislación aplicable",
+    "c) Realizar cuantas actuaciones sean precisas para el adecuado cumplimiento de las funciones de inspección y control, incluyendo la adopción de medidas cautelares necesarias para preservar la salud colectiva en situaciones de urgente necesidad",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "10. [CEP] En el ámbito de sus respectivas atribuciones, tienen el carácter de autoridad sanitaria:",
+  "options": [
+    "a) La Junta de Extremadura",
+    "b) El Consejero titular de la Consejería competente en materia sanitaria",
+    "c) Los alcaldes, de acuerdo con lo previsto en la legislación de Régimen Local y en la Ley 10/2001",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "12. [CEP] En relación con la adopción de medidas cautelares necesarias para preservar la salud colectiva en situaciones de urgente necesidad, se habrá de dar cuenta inmediata de las actuaciones realizadas a la autoridad sanitaria competente, quien deberá ratificar o no dichas actuaciones en un plazo máximo de:",
+  "options": [
+    "a) 24 horas desde que fueron adoptadas",
+    "b) 48 horas desde que fueron adoptadas",
+    "c) 72 horas desde que fueron adoptadas",
+    "d) 96 horas desde que fueron adoptadas"
+  ],
+  "correct": 1
+},
+{
+  "question": "13. [CEP] Es competencia de la Junta de Extremadura en relación al Sistema Sanitario:",
+  "options": [
+    "a) El establecimiento de las directrices de la política sanitaria nacional",
+    "b) La elaboración del Plan de salud de Extremadura",
+    "c) La aprobación del mapa sanitario de la Comunidad",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 2
+},
+{
+  "question": "14. [CEP] La inclusión de nuevos servicios y prestaciones en el Sistema Sanitario Público de Extremadura será objeto de una evaluación previa de su efectividad y eficiencia en términos:",
+  "options": [
+    "a) Tecnológicos",
+    "b) De salud",
+    "c) De ponderación en la asignación del gasto público",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "15. [CEP] La Junta de Extremadura ejercerá las competencias que tiene atribuidas la Comunidad Autónoma en materia de:",
+  "options": [
+    "a) Sanidad interior",
+    "b) Higiene y salud pública",
+    "c) Ordenación farmacéutica",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "16. [CEP] La Junta de Extremadura, en los términos de esta Ley y mediante las facultades de dirección, coordinación, ordenación, planificación, supervisión y control que en ella se le atribuyen, garantiza el funcionamiento:",
+  "options": [
+    "a) Coordinado y eficaz del Sistema Sanitario Público de Extremadura",
+    "b) Coordinado y ordenado del Sistema Sanitario Público de Extremadura",
+    "c) Armónico y eficaz del Sistema Sanitario Público de Extremadura",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "17. [CEP] La Ley 10/2001 se inspira en el principio de:",
+  "options": [
+    "a) Participación social, comunitaria y de los trabajadores",
+    "b) Fomento del conocimiento sobre el ejercicio de los derechos y deberes de los ciudadanos",
+    "c) Mejora continua de la calidad de los servicios y prestaciones",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "18. [CEP] La Ley de Salud de Extremadura es de aplicación a:",
+  "options": [
+    "a) Todos los extremeños y residentes en cualquiera de los municipios de Extremadura, con independencia de su situación legal o administrativa",
+    "b) Las Administraciones Públicas de la Comunidad Autónoma de Extremadura",
+    "c) Las entidades o instituciones, tanto públicas como privadas, cuando así se establezca en la citada norma",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "19. [CEP] La Ley de Salud de Extremadura es de fecha:",
+  "options": [
+    "a) 29 de julio de 2001",
+    "b) 28 de junio de 2001",
+    "c) 18 de julio de 2001",
+    "d) 19 de junio de 2001"
+  ],
+  "correct": 1
+},
+
+{
+  "question": "20. [CEP] La Ley de Salud de Extremadura es del año:",
+  "options": [
+    "a) 2000",
+    "b) 2001",
+    "c) 2002",
+    "d) 2003"
+  ],
+  "correct": 1
+},
+{
+  "question": "21. [CEP] La Ley de Salud de Extremadura se inspira en el principio de:",
+  "options": [
+    "a) Concepción integral de la salud, incluyendo actuaciones de promoción, prevención, asistencia, rehabilitación e incorporación social",
+    "b) Universalización de la atención sanitaria, garantizando la igualdad efectiva en las condiciones de acceso a los servicios y actuaciones sanitarias",
+    "c) Aseguramiento único y financiación públicos del Sistema Sanitario Público de Extremadura",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "22. [CEP] La Ley de Salud de Extremadura tiene por objeto:",
+  "options": [
+    "a) La ordenación del Sistema Sanitario Público de Extremadura",
+    "b) La regulación del Sistema Sanitario Privado de Extremadura",
+    "c) La Creación del Servicio Privado de Salud",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "23. [CEP] La Ordenación y regulación de las funciones de policía sanitaria mortuoria corresponde a:",
+  "options": [
+    "a) El personal debidamente acreditado que actúe en representación de la autoridad sanitaria",
+    "b) La Consejería competente en materia de sanidad",
+    "c) La Corporación Local",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "24. [CEP] La zona básica de salud es la demarcación poblacional y geográfica:",
+  "options": [
+    "a) Básica",
+    "b) Fundamental",
+    "c) Primaria",
+    "d) Primordial"
+  ],
+  "correct": 1
+},
+{
+  "question": "25. [CEP] Las Administraciones Públicas de la Comunidad Autónoma garantizarán, en el ámbito de sus competencias:",
+  "options": [
+    "a) El derecho a la protección de la salud",
+    "b) La asistencia sanitaria a los ciudadanos",
+    "c) Las respuestas a) y b) son correctas",
+    "d) Las respuestas a) y b) son incorrectas"
+  ],
+  "correct": 2
+},
+{
+  "question": "26. [CEP] Las Administraciones Públicas de la Comunidad Autónoma, dentro de sus respectivas competencias, adoptarán, entre otras, la siguiente medida:",
+  "options": [
+    "a) Establecer y acordar limitaciones y medidas preventivas en relación con las actividades públicas y privadas que puedan tener consecuencias negativas para la salud",
+    "b) Establecer prohibiciones y requisitos mínimos para el uso y tráfico de los bienes cuando supongan un riesgo o daño para la salud",
+    "c) Adoptar las medidas cautelares necesarias, tales como la incautación o inmovilización de productos, suspensión del ejercicio de actividades, cierres de empresas o sus instalaciones, intervención de medios materiales y personales y cuantas otras se consideren sanitariamente justificadas, siempre que exista o se sospeche razonablemente la existencia de un riesgo inminente y extraordinario o una repercusión excepcional y negativa para la salud",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "27. [CEP] Las prestaciones ofertadas por el Sistema Sanitario Público de Extremadura serán:",
+  "options": [
+    "a) Como mínimo, las establecidas en cada momento para el Sistema Nacional de Salud",
+    "b) Como máximo, las establecidas en cada momento para el Sistema Nacional de Salud",
+    "c) Las establecidas en cada momento para el Sistema Nacional de Salud",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "28. [CEP] Los ciudadanos están sujetos, con respecto al Sistema Sanitario Público de Extremadura, al cumplimiento del siguiente deber:",
+  "options": [
+    "a) Cumplir las prescripciones generales de naturaleza sanitaria comunes a toda la población, así como las específicamente determinadas por los servicios sanitarios",
+    "b) Cuidar las instalaciones y colaborar en el mantenimiento de la habitabilidad de las instituciones sanitarias y sociosanitarias",
+    "c) Mantener el debido respeto a las normas establecidas en cada centro sanitario y sociosanitario a los usuarios y personal que preste sus servicios en los mismos",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "29. [CEP] Los enfermos mentales, tendrán, en especial, derecho a:",
+  "options": [
+    "a) Cuando en los ingresos forzosos desapareciera la plenitud de facultades durante el internamiento, la Dirección del Centro deberá solicitar la correspondiente autorización judicial para la continuación del mismo",
+    "b) Cuando en los ingresos voluntarios desapareciera la plenitud de facultades durante el internamiento, la Dirección del Centro podrá solicitar la correspondiente autorización judicial para la continuación del mismo",
+    "c) En los ingresos forzosos, el derecho a que se reexamine periódicamente la necesidad del internamiento",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "30. [CEP] Los servicios sanitarios de la Comunidad Autónoma de Extremadura se encuadran dentro de:",
+  "options": [
+    "a) El Sistema Autonómico de Salud",
+    "b) El Sistema Nacional de Salud",
+    "c) El Sistema Europeo de Salud",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+}
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,4264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+ {
+    "question": "1. ¿Qué tipo de cirugía requiere una atención quirúrgica en menos de 24-48 horas?",
+    "options": [
+      "a) Cirugía de emergencia.",
+      "b) Cirugía diagnóstica.",
+      "c) Cirugía programada.",
+      "d) Cirugía urgente."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "2. ¿Cuál es el significado de antisepsia?",
+    "options": [
+      "a) Conjunto de procedimientos científicos destinados a preservar de gérmenes infecciosos el organismo.",
+      "b) Ausencia de materia séptica, libre de infección.",
+      "c) Etimológicamente significa sin putrefacción.",
+      "d) Método que consiste en combatir o prevenir padecimientos infecciosos destruyendo los microbios que los causan."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "3. En función del grado de contaminación de los tejidos, cuando se penetra en cavidades comunicadas con el exterior de forma controlada, hablamos de:",
+    "options": [
+      "a) Cirugía limpia.",
+      "b) Cirugía de alto riesgo.",
+      "c) Cirugía contaminada.",
+      "d) Cirugía limpia-contaminada."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "4. La cirugía que sirve para aliviar los síntomas de una enfermedad se denomina:",
+    "options": [
+      "a) Cirugía reparadora.",
+      "b) Cirugía exploratoria.",
+      "c) Cirugía paliativa.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "5. Señala la respuesta incorrecta. En función del objetivo que se persigue con su realización, la cirugía puede ser:",
+    "options": [
+      "a) Diagnóstica.",
+      "b) Necesaria.",
+      "c) Reparadora.",
+      "d) Paliativa."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "6. El material utilizado para el empaquetado del instrumental a esterilizar debe ser:",
+    "options": [
+      "a) Impermeable al agente esterilizante.",
+      "b) Permeable a agentes externos.",
+      "c) Impermeable a la contaminación externa y permeable al agente esterilizante.",
+      "d) Permeable a los agentes externos e impermeable al vapor."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "7. Si el objetivo de una cirugía es extraer un fragmento de tejido para una biopsia, hablamos de una cirugía:",
+    "options": [
+      "a) Exploradora.",
+      "b) Paliativa.",
+      "c) Diagnóstica.",
+      "d) Estética."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "8. Si el objetivo de una cirugía es la extirpación de una masa tumoral, hablamos de una cirugía:",
+    "options": [
+      "a) Diagnóstica.",
+      "b) Exploratoria.",
+      "c) Reparadora.",
+      "d) Curativa."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "9. La cirugía necesaria requiere una atención:",
+    "options": [
+      "a) Inmediata.",
+      "b) En pocas semanas.",
+      "c) En pocas horas.",
+      "d) En 24-48 horas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "10. Respecto a la esterilización por autoclave de vapor, indica la respuesta incorrecta:",
+    "options": [
+      "a) La técnica se basa en la aplicación de calor húmedo a presión.",
+      "b) Las cargas no superarán el 75 % de la capacidad de las cámaras.",
+      "c) Los paquetes se colocarán preferiblemente en posición vertical.",
+      "d) En la carga mixta colocar el material metálico en la parte superior y el textil en la parte inferior."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "11. Cuando no hay indicio de que una cirugía no vaya a ser favorable al paciente, es que la cirugía es:",
+    "options": [
+      "a) Optativa.",
+      "b) De bajo riesgo.",
+      "c) Cirugía mayor.",
+      "d) Compleja."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "12. Cuando un paciente requiere una atención quirúrgica inmediata con grave riesgo para la vida, hablamos de:",
+    "options": [
+      "a) Cirugía de emergencia.",
+      "b) Cirugía urgente.",
+      "c) Cirugía necesaria.",
+      "d) Cirugía opcional."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "13. Una desinfección que elimina bacterias patógenas en su forma vegetativa y algunos hongos es:",
+    "options": [
+      "a) Desinfección de alto nivel.",
+      "b) Desinfección de nivel intermedio.",
+      "c) Desinfección de bajo nivel.",
+      "d) Esterilización."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "14. El alcohol etílico, ¿a qué nivel de desinfección corresponde?",
+    "options": [
+      "a) Nivel alto.",
+      "b) Nivel intermedio.",
+      "c) Nivel bajo.",
+      "d) Nivel muy alto."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "15. En la terminología quirúrgica el sufijo “ectomía” significa:",
+    "options": [
+      "a) Evitar el sangrado.",
+      "b) Extirpación.",
+      "c) Infección.",
+      "d) Sutura de la incisión."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "16. La última fase del acto quirúrgico es:",
+    "options": [
+      "a) La incisión cutánea.",
+      "b) La hemostasia de los vasos sanguíneos.",
+      "c) La colocación de drenajes, apósitos o tracciones, según sea la intervención.",
+      "d) La sutura de la incisión."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "17. ¿Cuántas fases claramente diferenciadas forman parte del perioperatorio?",
+    "options": [
+      "a) Dos.",
+      "b) Tres.",
+      "c) Cuatro.",
+      "d) Cinco."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "18. El perioperatorio es el periodo de tiempo que transcurre:",
+    "options": [
+      "a) Desde que un paciente va a ser intervenido hasta que es dado de alta.",
+      "b) Desde que un paciente se prepara para una intervención hasta que le dan el alta.",
+      "c) Desde que un paciente es anestesiado hasta que le dan el alta.",
+      "d) Desde que un paciente despierta en la sala de reanimación hasta que le dan el alta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "19. El periodo de tiempo que transcurre desde que el paciente es colocado en la mesa de operaciones hasta que abandona el quirófano, se conoce como:",
+    "options": [
+      "a) Preoperatorio.",
+      "b) Perioperatorio.",
+      "c) Transoperatorio.",
+      "d) Postoperatorio."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "20. ¿De cuántas fases suele constar el acto quirúrgico?",
+    "options": [
+      "a) Tres fases.",
+      "b) Cuatro fases.",
+      "c) Cinco fases.",
+      "d) Seis fases."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "21. ¿Cuándo termina el periodo postoperatorio?",
+    "options": [
+      "a) Cuando el paciente es dado de alta.",
+      "b) Cuando el paciente es trasladado a la habitación.",
+      "c) Cuando termina la intervención quirúrgica y el paciente ingresa en la sala de recuperación.",
+      "d) Cuando el paciente sale de la unidad asistencial y llega a su habitación."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "22. Cuando en una intervención existe inflamación no purulenta hablamos de cirugía:",
+    "options": [
+      "a) Limpia-contaminada.",
+      "b) Contaminada.",
+      "c) Sucia o infectada.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "23. Según el grado de contaminación de los tejidos, la cirugía cuyo riesgo de contaminación es exógeno corresponde a un tipo de cirugía:",
+    "options": [
+      "a) Limpia.",
+      "b) Menor.",
+      "c) Contaminada.",
+      "d) Infectada."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "24. El periodo de tiempo que transcurre desde que el paciente es colocado en la mesa de operaciones hasta que abandona el quirófano, se conoce como:",
+    "options": [
+      "a) Intraoperatorio.",
+      "b) Preoperatorio.",
+      "c) Postoperatorio.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "25. Algunos autores sitúan el inicio de la fase preoperatoria:",
+    "options": [
+      "a) En el momento de decidir que se va a intervenir quirúrgicamente al paciente.",
+      "b) En el momento en el que el paciente decide que va a ser intervenido quirúrgicamente.",
+      "c) Cuando se comienza con la anestesia del paciente.",
+      "d) Cuando se coloca al paciente en la mesa de operaciones."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "26. ¿Qué tiene como fin curar, paliar o diagnosticar enfermedades, así como reparar o mejorar sus posibles secuelas por medio de intervenciones?",
+    "options": [
+      "a) La cirugía curativa.",
+      "b) La cirugía.",
+      "c) La parte de la medicina conocida como cirugía paliativa.",
+      "d) La cirugía exploradora y curativa."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "27. El bloque quirúrgico respecto al resto del hospital:",
+    "options": [
+      "a) Está funcionalmente diferenciado.",
+      "b) Está funcionalmente integrado.",
+      "c) Está físicamente diferenciado.",
+      "d) Las respuestas a) y c) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "28. Respecto al tamaño de los quirófanos:",
+    "options": [
+      "a) El tamaño normal oscila de 36-42 m2.",
+      "b) No existe un tamaño recomendado.",
+      "c) El tamaño recomendado es de 6 x 4 x 2 metros.",
+      "d) Las respuestas a) y c) son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "29. Las salas para procedimientos especiales, como cirugía cardiovascular y trasplantes, han de medir:",
+    "options": [
+      "a) Entre 36 y 42 m2.",
+      "b) Entre 40 y 60 m2.",
+      "c) Entre 50 y 65 m2.",
+      "d) 6 x 6 x 3 metros."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "30. ¿Qué clase de puertas están recomendadas en los quirófanos?",
+    "options": [
+      "a) Abatibles.",
+      "b) Correderas.",
+      "c) Giratorias.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "31. Durante una intervención quirúrgica, las puertas han de permanecer:",
+    "options": [
+      "a) Abiertas.",
+      "b) Semiabiertas.",
+      "c) Cerradas.",
+      "d) Lo que el cirujano estime oportuno."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "32. Los quirófanos suelen carecer:",
+    "options": [
+      "a) De ventanas de intercambio.",
+      "b) De ventanas al exterior.",
+      "c) De aire acondicionado independiente.",
+      "d) De escabeles."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "33. Los materiales empleados para formar los suelos de los quirófanos deben ser:",
+    "options": [
+      "a) No conductores de la electricidad.",
+      "b) Porosos y fáciles de limpiar.",
+      "c) Moderadamente conductores de la electricidad.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "34. Se ha de evitar que los suelos de los quirófanos:",
+    "options": [
+      "a) Tengan ángulos.",
+      "b) Tengan hendiduras.",
+      "c) Tengan esquinas.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "35. El bloque quirúrgico estructuralmente, comprende:",
+    "options": [
+      "a) Los locales donde se desarrolla el proceso asistencial del procedimiento quirúrgico (quirófanos y unidad de recuperación) y los locales de soporte que precisa.",
+      "b) Personal no sanitario.",
+      "c) Personal sanitario.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "36. En el concepto de Bloque quirúrgico no se incluye:",
+    "options": [
+      "a) Cirugía menor.",
+      "b) Gabinetes de endoscopias.",
+      "c) Salas de hemodinámica.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "37. Según el Real Decreto de hospitales, los quirófanos están adscritos a:",
+    "options": [
+      "a) La división de enfermería.",
+      "b) La división médica.",
+      "c) La división de gestión y servicios generales.",
+      "d) La división de unidades especiales."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "38. Las instalaciones eléctricas deben contribuir a garantizar dentro del bloque quirúrgico:",
+    "options": [
+      "a) La seguridad de los pacientes.",
+      "b) El alumbrado normal.",
+      "c) El alumbrado de emergencia.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "39. En el caso de que falle el alumbrado normal en un quirófano, ¿cuánto tiempo debe tardar en activarse el alumbrado de emergencia?",
+    "options": [
+      "a) 0,1 segundo.",
+      "b) 0,5 segundos.",
+      "c) 1,5 segundos.",
+      "d) 2 segundos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "40. La desinfección concomitante se lleva a cabo:",
+    "options": [
+      "a) Mientras el paciente se somete a pruebas diagnósticas.",
+      "b) Siempre que el médico lo estime necesario.",
+      "c) Cuando termina el periodo de aislamiento.",
+      "d) Mientras el paciente permanece ingresado."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "41. Un profesional que se encuentra en el pasillo de sucio deberá ir vestido:",
+    "options": [
+      "a) Es suficiente con el uniforme aséptico de dos piezas.",
+      "b) Con zuecos quirúrgicos o calzas y gorro.",
+      "c) Con el uniforme aséptico de dos piezas, gorro y calzas o zuecos quirúrgicos.",
+      "d) Con el uniforme aséptico de dos piezas y calzas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "42. La limpieza se define como:",
+    "options": [
+      "a) Técnica de saneamiento cuya finalidad es separar de las superficies inertes, la suciedad que sirve de soporte y nutriente a los microorganismos.",
+      "b) Método que consiste en combatir o prevenir los padecimientos infecciosos, destruyendo los microorganismos que causan la infección.",
+      "c) Conjunto de procedimientos científicos destinados a preservar de gérmenes infecciosos el organismo.",
+      "d) Técnica de saneamiento cuya finalidad es la destrucción de todos los microorganismos tanto patógenos como no patógenos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "43. La zona sin limitaciones de acceso es la que hay a la entrada del bloque quirúrgico y va desde:",
+    "options": [
+      "a) La puerta que delimita el principio de esta zona hasta los vestuarios y la zona de recepción de pacientes.",
+      "b) La puerta que delimita el principio de esta zona hasta el pasillo de sucio y vestuarios.",
+      "c) La puerta que delimita el principio de esta zona hasta los vestuarios.",
+      "d) La puerta que delimita el principio de esta zona hasta el pasillo de limpio y zona de recepción de pacientes."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "44. Las zonas sin límite de acceso, semilimitadas y limitadas del bloque quirúrgico, se diferencian en función de:",
+    "options": [
+      "a) Las normas de asepsia y antisepsia.",
+      "b) La vestimenta necesaria que se debe utilizar.",
+      "c) El personal autorizado.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "45. Los almacenes de aparatos situados a partir de los vestuarios de un bloque quirúrgico pertenecen:",
+    "options": [
+      "a) A la zona sin límite de acceso.",
+      "b) A la zona semilimitada.",
+      "c) A la zona limitada.",
+      "d) Al área estéril."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "46. ¿Es obligación del celador llevar puesta la mascarilla en el antequirófano?",
+    "options": [
+      "a) No, es suficiente con calzas y gorro.",
+      "b) Sí, pues se trata de una zona limitada, igual que los quirófanos.",
+      "c) Sí, y el paciente siempre tendrá que llevarla también.",
+      "d) Según el tipo de intervención que se esté llevando a cabo en el quirófano."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "47. ¿Cada cuánto se renueva el aire en un quirófano, de forma general?",
+    "options": [
+      "a) Entre 20 y 25 veces por hora.",
+      "b) Entre 25 y 30 veces por hora.",
+      "c) Entre 10 y 15 veces por hora.",
+      "d) Entre 15 y 20 veces por hora."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "48. Si la temperatura de un quirófano es alta (señala la respuesta incorrecta):",
+    "options": [
+      "a) Aumenta la aparición de infección.",
+      "b) Aumenta el riesgo de explosión de los gases empleados.",
+      "c) Se genera un medio relativamente conductor.",
+      "d) Aumenta el crecimiento bacteriano."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "49. ¿Cuál es la temperatura recomendada en un quirófano?",
+    "options": [
+      "a) 16-30 ºC.",
+      "b) 18-26 ºC.",
+      "c) 18-30 ºC.",
+      "d) 20-28 ºC."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "50. Está recomendado que la humedad de un quirófano se mantenga entre el:",
+    "options": [
+      "a) 40 y 50 %.",
+      "b) 50 y 60 %.",
+      "c) 30 y 40 %.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "51. Forma parte de los miembros no estériles del equipo quirúrgico:",
+    "options": [
+      "a) El celador.",
+      "b) El anestesista.",
+      "c) La enfermera instrumentista.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "52. No es un accesorio de la mesa de operaciones:",
+    "options": [
+      "a) Bolsa de arena.",
+      "b) Estribos y perneras.",
+      "c) Bolsa de diuresis.",
+      "d) Tabla braquial."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "53. La mesa quirúrgica es:",
+    "options": [
+      "a) Autoelevable.",
+      "b) Articulada.",
+      "c) Fija o con ruedas.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "54. Respecto a la mesa quirúrgica, señala la respuesta incorrecta:",
+    "options": [
+      "a) Existirán modelos de mesas adecuadas para cada especialidad quirúrgica.",
+      "b) Existirán accesorios adecuados para cada especialidad quirúrgica.",
+      "c) El colchón suele estar cubierto de caucho conductor.",
+      "d) Debe disponer de una buena toma de tierra, pero no es imprescindible."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "55. Si el cirujano le indica al celador que ajuste la cialítica, ¿a qué se refiere?",
+    "options": [
+      "a) Ajustar la parte de la mesa quirúrgica correspondiente a los miembros inferiores, hasta la posición que le indiquen.",
+      "b) Ajustar la lámpara quirúrgica hasta la posición que le indique.",
+      "c) Ajustar unos pequeños escalones para que el cirujano pueda acercarse más al paciente.",
+      "d) Ajustar los soportes para los hombros hasta la posición que le indique."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "56. ¿Cuántas cialíticas hay normalmente, en un quirófano?",
+    "options": [
+      "a) Ninguna.",
+      "b) Dos.",
+      "c) Cuatro.",
+      "d) Seis."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "57. Atendiendo a las normas de asepsia y antisepsia, el pasillo de limpio pertenece a:",
+    "options": [
+      "a) El área limpia.",
+      "b) El área estéril.",
+      "c) El área aséptica.",
+      "d) La zona séptica."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "58. En la zona a la que pertenece el pasillo de limpio, es necesario el uso de:",
+    "options": [
+      "a) Uniforme aséptico de dos piezas, gorro y calzas o zuecos quirúrgicos.",
+      "b) Gorro, calzas y mascarilla.",
+      "c) El gorro no es necesario.",
+      "d) Gorro y zuecos quirúrgicos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "59. No pertenece al área estéril del bloque quirúrgico:",
+    "options": [
+      "a) Quirófanos.",
+      "b) Zona de lavado quirúrgico.",
+      "c) Áreas de preparación de material estéril.",
+      "d) Almacén de material estéril."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "60. La sala de lavado quirúrgico es, respecto al quirófano:",
+    "options": [
+      "a) Una zona cercana.",
+      "b) Una sala anexa.",
+      "c) Una sala incomunicada.",
+      "d) Una sala semilimitada."
+    ],
+    "correct": 1
+  },
+    {
+    "question": "61. ¿Qué área del bloque quirúrgico es un área adyacente al quirófano o pasillo de circulación en la que no se necesita ninguna indumentaria especial?",
+    "options": [
+      "a) Área sin limitaciones de acceso.",
+      "b) Área limitada.",
+      "c) Área sucia.",
+      "d) Área aséptica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "62. ¿Con qué color se relaciona la zona sin límite de acceso del bloque quirúrgico?",
+    "options": [
+      "a) Blanco.",
+      "b) Negro.",
+      "c) Gris.",
+      "d) Verde."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "63. Relativo a las reglas básicas de la asepsia quirúrgica debemos saber que dentro del campo estéril debe usarse:",
+    "options": [
+      "a) Solo material estéril.",
+      "b) Solo material desinfectado.",
+      "c) Solo material quirúrgico desinfectado.",
+      "d) Solo material quirúrgico estéril y si no es posible, con desinfección de alto nivel."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "64. En el quirófano, ante la duda de la esterilidad de un objeto, este se considerará:",
+    "options": [
+      "a) Desechable.",
+      "b) No estéril.",
+      "c) Aséptico.",
+      "d) Séptico."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "65. Las batas del personal lavado se consideran estériles:",
+    "options": [
+      "a) Solamente por delante.",
+      "b) Son estériles completamente.",
+      "c) Por delante, del hombro a la cintura y las mangas hasta cinco centímetros por encima del codo.",
+      "d) Por delante, por detrás, del hombro a la cintura y las mangas hasta cinco centímetros por debajo del codo."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "66. Las mesas cubiertas con paños se consideran:",
+    "options": [
+      "a) Desinfectadas completamente.",
+      "b) Estériles solo en la superficie.",
+      "c) Totalmente estériles.",
+      "d) Desinfectadas solo en la superficie."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "67. Los peligros eléctricos más frecuentes en un quirófano son:",
+    "options": [
+      "a) Fuego.",
+      "b) Descargas eléctricas.",
+      "c) Quemaduras.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "68. El lavado por ultrasonidos es:",
+    "options": [
+      "a) Una forma de limpieza mecánica que se aplica a instrumentos muy caros y precisos.",
+      "b) Una forma de limpieza manual que se aplica a instrumentos muy complejos de montar y desmontar.",
+      "c) Una forma de limpieza mecánica que se aplica a instrumentos difíciles de limpiar por su escasa accesibilidad.",
+      "d) Una forma de limpieza manual que acorta el proceso de limpieza en el bloque quirúrgico."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "69. Un quirófano es un área de la institución sanitaria donde se:",
+    "options": [
+      "a) Realiza la esterilización del equipo a utilizar por el personal médico y sanitario.",
+      "b) Realizan operaciones quirúrgicas complejas, con anestesia general.",
+      "c) Realizan operaciones quirúrgicas.",
+      "d) Realiza la limpieza y desinfección."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "70. Las formas de aplicación de los desinfectantes pueden ser:",
+    "options": [
+      "a) Por inmersión, loción, pulverización, fumigación y aerosoles.",
+      "b) Por suspensión, loción, pulverización y aerosoles.",
+      "c) Por inmersión, loción, pulverización y cabina de aireación.",
+      "d) Por radiación, ionización, pulverización, fumigación y aerosoles."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "71. Son funciones propias del celador del quirófano:",
+    "options": [
+      "a) Al final de la operación ayudará al personal de enfermería a recoger el quirófano.",
+      "b) Colocarán al paciente siempre en la posición de decúbito prono.",
+      "c) Trasladar a los pacientes desde sus habitaciones a la zona de quirófano.",
+      "d) Trasladar, al final de cada turno, las biopsias intraoperatorias al Servicio de Anatomía Patológica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "72. Es una cualidad de un buen desinfectante o antiséptico:",
+    "options": [
+      "a) La incompatibilidad.",
+      "b) El elevado coste.",
+      "c) La estabilidad.",
+      "d) La opacidad."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "73. ¿Quién dará el permiso para colocar al paciente para la cirugía, después de que se encuentre anestesiado?",
+    "options": [
+      "a) La enfermera circulante.",
+      "b) El cirujano.",
+      "c) El anestesista.",
+      "d) El celador."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "74. Según la clasificación del grado de contaminación de los tejidos en la cirugía, señale, cuál de los siguientes grados no es correcto:",
+    "options": [
+      "a) Limpia.",
+      "b) Contaminada.",
+      "c) Infectada.",
+      "d) Esterilizada."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "75. El sistema de aspiración se conecta:",
+    "options": [
+      "a) A la toma de oxígeno.",
+      "b) A la toma de vacío.",
+      "c) Para ayudar a respirar al paciente que va a ser sometido a una intervención.",
+      "d) Al carro de paradas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "76. ¿Qué tipo de mesa que se encuentra en un quirófano suele ser de forma semicircular?",
+    "options": [
+      "a) La mesa auxiliar.",
+      "b) La mesa de instrumentación.",
+      "c) La mesa de Mayo.",
+      "d) La mesa de Cigüeña."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "77. El carro de parada también es conocido como:",
+    "options": [
+      "a) Carro de soporte vital.",
+      "b) Carro de emergencia.",
+      "c) Carro de urgencia.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "78. Respecto al aparato de RX portátil que se puede encontrar en un quirófano, el celador:",
+    "options": [
+      "a) Es el encargado de su traslado dentro del área quirúrgica.",
+      "b) Es el encargado de su manejo.",
+      "c) Es el encargado de aplicar las técnicas radiológicas.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "79. Es un método de esterilización químico:",
+    "options": [
+      "a) El calor seco.",
+      "b) El plasma de peróxido de hidrógeno.",
+      "c) Las radiaciones.",
+      "d) El vapor."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "80. Los extremos de un contenedor estéril se consideran:",
+    "options": [
+      "a) También estériles.",
+      "b) Desinfectados.",
+      "c) No estériles.",
+      "d) Desinfectados en alto nivel."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "81. Al final de una intervención quirúrgica:",
+    "options": [
+      "a) El celador ayudará al personal de enfermería a la retirada del paciente de la mesa de operaciones.",
+      "b) El personal sanitario ayudará al celador a la retirada del paciente de la mesa de operaciones.",
+      "c) El celador ayudará al anestesista a colocar al paciente para despertarlo de la anestesia.",
+      "d) En todo caso el celador trasladará al paciente a la sala de reanimación o de despertar."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "82. Los celadores de quirófano auxiliarán en todas aquellas funciones que le sean propias al ser destinado en estos servicios, así como las que le ordenen (señala la incorrecta):",
+    "options": [
+      "a) Enfermeros.",
+      "b) Auxiliares de enfermería.",
+      "c) Médicos.",
+      "d) Supervisores."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "83. ¿En qué momento debe hacerse la limpieza del instrumental?",
+    "options": [
+      "a) Únicamente transcurridas 24 horas.",
+      "b) Inmediatamente después de usarlo.",
+      "c) Preferiblemente después de que se seque.",
+      "d) Solamente si tienen restos de sangre, pero sin residuos sólidos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "84. En el procedimiento del rasurado, una vez que tenemos el material preparado y nos hemos lavado las manos y colocado los guantes, lo siguiente será:",
+    "options": [
+      "a) Le explicaremos al paciente lo que le vamos a realizar.",
+      "b) Colocaremos al paciente en función de la zona a rasurar.",
+      "c) Lavaremos la zona a rasurar con agua y jabón.",
+      "d) Lavaremos la zona a rasurar con antisépticos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "85. La clasificación clásica refiere que las posiciones quirúrgicas básicas son:",
+    "options": [
+      "a) Decúbito supino o dorsal, decúbito prono o ventral y decúbito lateral (derecho e izquierdo).",
+      "b) Litotomía o ginecológica, Trendelenburg, Genupectoral y Morestín.",
+      "c) Decúbito supino o dorsal, Fowler, Trendelenburg y Genupectoral.",
+      "d) Decúbito supino o dorsal, decúbito prono o ventral, Trendelenburg y antitrendelenburg."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "86. De las siguientes posiciones quirúrgicas ¿cuál precisa del uso del “trineo”?",
+    "options": [
+      "a) Posición de Laminectomía.",
+      "b) Posición de Trendelenburg.",
+      "c) Posición de Kraske.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "87. De las siguientes posiciones quirúrgicas, ¿cuál es una variación de la posición de decúbito prono?",
+    "options": [
+      "a) Posición de Kraske.",
+      "b) Posición de navaja.",
+      "c) Posición de Jacknnife.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "88. La posición de Jacknnife:",
+    "options": [
+      "a) Se utiliza en la cirugía de hemorroides.",
+      "b) Se utiliza para la extracción de líquido cefalorraquídeo.",
+      "c) Se utiliza en la cirugía perineal, rectal y vaginal.",
+      "d) Se utiliza en la cirugía biliar."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "89. El celador debe conocer que la eliminación del maquillaje y la laca de uñas en el preoperatorio inmediato del paciente, tiene como finalidad:",
+    "options": [
+      "a) Apreciar posibles cambios en la coloración de piel y uñas.",
+      "b) Valorar los hábitos higiénicos del paciente.",
+      "c) Adecuar la profilaxis tromboembólica.",
+      "d) Mejorar el estado de ansiedad del paciente."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "90. El lavado de manos constituye una de las medidas de eficacia probada para evitar la infección o:",
+    "options": [
+      "a) Contaminación.",
+      "b) Asepsia.",
+      "c) Esterilización.",
+      "d) Profilaxis."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "91. ¿Qué tipo de material debe estar rigurosamente limpio y en la medida de lo posible desinfectado?",
+    "options": [
+      "a) No crítico.",
+      "b) Crítico.",
+      "c) Semicrítico.",
+      "d) Semicrítico de grado 1."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "92. De los siguientes, ¿cuál forma parte de los métodos físicos de desinfección?",
+    "options": [
+      "a) Inmersión.",
+      "b) Hervido.",
+      "c) Pulverización.",
+      "d) Fumigación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "93. El material a esterilizar previamente se:",
+    "options": [
+      "a) Limpiará y empaquetará.",
+      "b) Limpiará, secará, lubricará y empaquetará.",
+      "c) Descontaminará y lubricará.",
+      "d) Desinfectará y secará."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "94. La posición de Fowler se utiliza en cirugía y en exploraciones:",
+    "options": [
+      "a) De Otorrinolaringología.",
+      "b) Vaginales.",
+      "c) De abdomen.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "95. La posición a adoptar por parte de la paciente durante una exploración ginecológica se denomina:",
+    "options": [
+      "a) Posición de Litotomía.",
+      "b) Posición de Morestín.",
+      "c) Posición de Sims.",
+      "d) Posición de Fowler."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "96. Durante una intervención quirúrgica, no se puede pedir al celador:",
+    "options": [
+      "a) El traslado al quirófano de aparatos de diagnóstico.",
+      "b) El traslado de bolsas de plaquetas desde el Banco de sangre al quirófano.",
+      "c) La sujeción de un miembro que va a ser amputado.",
+      "d) El manejo del artroscopio para ayudar al traumatólogo mientras este interviene una rodilla."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "97. Para realizar intervenciones quirúrgicas como hernias, laparotomía exploradora y colecistectomía, el paciente debe estar en posición de:",
+    "options": [
+      "a) Fowler.",
+      "b) Sims.",
+      "c) Decúbito Prono.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "98. ¿Qué tipo de agente es el mercurocromo?",
+    "options": [
+      "a) Limpiador.",
+      "b) Bactericida.",
+      "c) Antiséptico.",
+      "d) Desinfectante."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "99. Dentro del quirófano, el profesional responsable de proporcionar los cuidados de enfermería al paciente durante la intervención es:",
+    "options": [
+      "a) La enfermera circulante.",
+      "b) El celador de quirófano.",
+      "c) La enfermera instrumentista.",
+      "d) El TCAE de quirófano."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "100. Las biopsias intraoperatorias y demás muestras orgánicas que precisen estudio microscópico o macroscópico, deben ser trasladadas por:",
+    "options": [
+      "a) El celador al servicio de anatomía patológica.",
+      "b) La auxiliar de enfermería, al servicio de anatomía patológica.",
+      "c) El celador, al banco de sangre.",
+      "d) El celador, al servicio de medicina nuclear."
+    ],
+    "correct": 0
+  },
+    {
+    "question": "101. El conjunto de técnicas utilizadas para la destrucción de los gérmenes patógenos que existen sobre objetos y superficies lo llamamos:",
+    "options": [
+      "a) Esterilización.",
+      "b) Limpieza.",
+      "c) Desinsectación.",
+      "d) Desinfección."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "102. Los métodos de esterilización se clasifican en:",
+    "options": [
+      "a) Generales y específicos.",
+      "b) Físicos y químicos.",
+      "c) Naturales y sintéticos.",
+      "d) Secos y húmedos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "103. Señale la respuesta correcta:",
+    "options": [
+      "a) Los antisépticos y los desinfectantes tienen distinto objetivo y diferente indicación.",
+      "b) Los antisépticos y los desinfectantes tienen el mismo objetivo, pero diferente indicación.",
+      "c) Los antisépticos y los desinfectantes tienen distinto objetivo, pero la misma indicación.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "104. Cada proceso de esterilización, tiene unos controles, tanto químicos, como biológicos, independientemente de los propios de las máquinas (físicos). ¿Qué se utiliza como control biológico?",
+    "options": [
+      "a) Esporas.",
+      "b) Reactivos químicos.",
+      "c) Pintura.",
+      "d) Alcoholes especiales."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "105. Características del óxido de etileno como agente esterilizante. Señala la respuesta incorrecta:",
+    "options": [
+      "a) Relativa rapidez de acción.",
+      "b) Posibilidad de acción a bajas temperaturas.",
+      "c) Es corrosivo y puede deteriorar el material con filo.",
+      "d) Es tóxico."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "106. En caso de una exposición accidental a sustancias biológicas o materiales contaminados, el profesional, debe acudir a:",
+    "options": [
+      "a) Dirección de Enfermería.",
+      "b) Dirección Médica.",
+      "c) Servicio de Medicina Preventiva, dentro de las primeras 24 horas.",
+      "d) Lavar la zona con agua y jabón, esperando 24 horas mínimo por si se producen reacciones; si es así, acudirá al Servicio de Medicina Preventiva."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "107. El método indicado para la esterilización de los equipos eléctricos y electrónicos es:",
+    "options": [
+      "a) Autoclave por vapor de agua.",
+      "b) Flameado.",
+      "c) Óxido de etileno.",
+      "d) Radiaciones ionizantes."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "108. Una zona aséptica es una zona:",
+    "options": [
+      "a) Contaminada.",
+      "b) Limpia.",
+      "c) Sucia.",
+      "d) Estéril."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "109. ¿Cuál de estos compuestos es un desinfectante de alto nivel?",
+    "options": [
+      "a) Hipoclorito sódico.",
+      "b) Derivados mercuriales.",
+      "c) Amonio cuaternario.",
+      "d) Ortoftaldehído."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "110. Conjunto de métodos que tratan de evitar la contaminación:",
+    "options": [
+      "a) La desinsectación.",
+      "b) La antisepsia.",
+      "c) La desinfección.",
+      "d) La asepsia."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "111. Aunque el material quirúrgico se debe esterilizar siempre, si por algún motivo urgente no es posible, para conseguir una desinfección de alto nivel, el material se debe limpiar previamente con detergente enzimático y sumergirlo en una solución de:",
+    "options": [
+      "a) Glutaraldehído al 2 % durante 20 minutos.",
+      "b) Glutaraldehído al 5 % durante 10 minutos.",
+      "c) Glutaraldehído al 3 % durante 15 minutos.",
+      "d) Glutaraldehído al 10 % durante 5 minutos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "112. La aplicación de desinfectantes químicos en forma de gases, humos o vapores se denomina:",
+    "options": [
+      "a) Pulverización.",
+      "b) Loción.",
+      "c) Inmersión.",
+      "d) Fumigación."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "113. Los controles biológicos:",
+    "options": [
+      "a) Indican que un paquete ha sido sometido a un proceso determinado de esterilización.",
+      "b) Son controles que contienen reactivos químicos.",
+      "c) Son controles que contienen reactivos físicos.",
+      "d) Son dispositivos inoculados con esporas altamente resistentes al tipo de esterilización."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "114. El instrumental quirúrgico se esteriliza con:",
+    "options": [
+      "a) Óxido de etileno.",
+      "b) Desinfectante.",
+      "c) Vapor de agua a presión (autoclave).",
+      "d) Radiaciones ultravioletas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "115. Según la clasificación de Spaulding, un laringoscopio se considera:",
+    "options": [
+      "a) Material crítico.",
+      "b) Material no crítico.",
+      "c) Material semicrítico.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "116. Dentro de los controles de esterilización, el registro de gráficas pertenece al grupo de:",
+    "options": [
+      "a) Controles químicos.",
+      "b) Controles biológicos.",
+      "c) Controles físicos.",
+      "d) No corresponde a ningún control."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "117. Para la desinfección de la piel y mucosas, el lavado de superficies cutáneas y el lavado de manos antiséptico, se utilizan preferentemente:",
+    "options": [
+      "a) Povidona yodada.",
+      "b) Alcoholes.",
+      "c) Cloro y derivados.",
+      "d) Biguanidas (clorhexidina)."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "118. En la esterilización en el autoclave, el test o prueba de Bowie Dick se considera:",
+    "options": [
+      "a) Un ciclo de esterilización del autoclave.",
+      "b) Un control de prueba de vacío.",
+      "c) Un control físico y de calentamiento.",
+      "d) Una prueba de esterilidad."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "119. El óxido de etileno es un método de esterilización:",
+    "options": [
+      "a) Biológico.",
+      "b) Físico.",
+      "c) De presión.",
+      "d) Químico."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "120. En un ciclo de esterilización a 134 ºC en autoclave de vapor, el tiempo para conseguir la eliminación de microorganismos es de:",
+    "options": [
+      "a) 10 minutos.",
+      "b) 15 minutos.",
+      "c) 20 minutos.",
+      "d) 5-7 minutos."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "121. Para realizar una desinfección no se utiliza:",
+    "options": [
+      "a) Clorhexidina.",
+      "b) Lejía.",
+      "c) Glutaraldehído.",
+      "d) Citrato sódico."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "122. ¿Cuál es el método de esterilización preferente para esterilizar material de goma como guantes, o sondas?",
+    "options": [
+      "a) Glutaraldehído.",
+      "b) Autoclave.",
+      "c) Óxido de Etileno.",
+      "d) Formol."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "123. Dentro de los métodos generales de desinfección, la pasteurización es:",
+    "options": [
+      "a) Un método físico por aplicación de calor.",
+      "b) Un método químico por aplicación de calor.",
+      "c) Un método químico por aplicación de desinfectantes.",
+      "d) Un método físico por aplicación de desinfectantes."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "124. ¿Cuál de las siguientes respuestas sobre las radiaciones ultravioletas es incorrecta?",
+    "options": [
+      "a) Es un método físico.",
+      "b) Es un método químico.",
+      "c) Solamente es efectiva sobre aquellas superficies directamente expuestas.",
+      "d) Las rugosidades del material y el polvo dificultan su efectividad."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "125. Dentro de los métodos de desinfección, aquella sustancia química que se aplica sobre material inerte con el fin de destruir microorganismos se define como:",
+    "options": [
+      "a) Antiséptico.",
+      "b) Desincrustante.",
+      "c) Desinfectante.",
+      "d) Antifúngico."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "126. Respecto a las características del óxido de etileno, ¿cuál de las siguientes es incorrecta?",
+    "options": [
+      "a) Es un compuesto bactericida.",
+      "b) Su tiempo de actuación varía con la temperatura.",
+      "c) Se emplea con aquel material que no puede ser esterilizado por otros medios.",
+      "d) Es un método de esterilización físico."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "127. ¿Cómo se denomina el sistema de esterilización fraccionada en el que el vapor circula por el interior del autoclave a una temperatura inferior a 100 ºC?",
+    "options": [
+      "a) Congelación.",
+      "b) Ondas sónicas.",
+      "c) Radiaciones.",
+      "d) Tindalización."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "128. Dentro de las radiaciones como método para esterilizar material, las radiaciones ultravioletas son, señala la respuesta incorrecta:",
+    "options": [
+      "a) Radiaciones ionizantes.",
+      "b) Radiaciones poco energéticas.",
+      "c) Radiaciones con poco poder de penetración.",
+      "d) Todas las respuestas anteriores son incorrectas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "129. Dentro del material no desechable de uso hospitalario, aquel que entra en contacto con la piel en buen estado, se denomina:",
+    "options": [
+      "a) Material semicrítico.",
+      "b) Material no crítico.",
+      "c) Material crítico.",
+      "d) Material supercrítico."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "130. ¿Qué técnica utilizarías para la esterilización de una sonda, tubo o drenaje de silicona, sabiendo que son termosensibles?",
+    "options": [
+      "a) Calor húmedo a 135ºC",
+      "b) Calor húmedo a 120ºC",
+      "c) Óxido de etileno.",
+      "d) Flameado."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "131. El material no desechable utilizado en la cura de heridas, se puede clasificar como:",
+    "options": [
+      "a) Material crítico.",
+      "b) Material no crítico.",
+      "c) Material no esterilizable.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "132. En la desinfección física del material e instrumental sanitario no es correcto utilizar:",
+    "options": [
+      "a) El agua oxigenada.",
+      "b) La ebullición.",
+      "c) Las radiaciones ionizantes.",
+      "d) Los ultrasonidos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "133. La dispersión del desinfectante en forma de gotas se denomina:",
+    "options": [
+      "a) Vaporización.",
+      "b) Pulverización.",
+      "c) Fumigación.",
+      "d) Inmersión."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "134. ¿Cuál de las siguientes no es una sustancia utilizada en los métodos químicos de esterilización?",
+    "options": [
+      "a) Formaldehído.",
+      "b) Óxido de etileno.",
+      "c) Clorhexidina.",
+      "d) Gas plasma de peróxido de hidrógeno."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "135. ¿Cuál de estos materiales no son esterilizables por óxido de etileno?",
+    "options": [
+      "a) El instrumental óptico.",
+      "b) Las gasas.",
+      "c) Las suturas.",
+      "d) Las fibras artificiales."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "136. Al esterilizar mediante calor húmedo, ¿qué se ha de tener en cuenta para un correcto empaquetado?",
+    "options": [
+      "a) El material debe estar húmedo.",
+      "b) Las bolsas estarán herméticamente cerradas e íntegras.",
+      "c) La bolsa debe tener un agujero para el vapor de agua.",
+      "d) Se lavarán las bolsas completamente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "137. La esterilización del material puede conseguirse por varios métodos, señala la respuesta incorrecta:",
+    "options": [
+      "a) Calor seco.",
+      "b) Calor húmedo.",
+      "c) Procedimientos químicos.",
+      "d) Radiación en caliente."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "138. ¿Cuál no es un tipo de control de esterilización?",
+    "options": [
+      "a) El físico.",
+      "b) El químico.",
+      "c) El biológico.",
+      "d) El interno."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "139. ¿De qué material deben ser los contenedores, en el proceso de la esterilización en autoclave?",
+    "options": [
+      "a) Plomo.",
+      "b) Cobre.",
+      "c) Estaño.",
+      "d) Aluminio."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "140. Cuando introducimos material a desinfectar en soluciones preparadas, realizamos una técnica llamada:",
+    "options": [
+      "a) Loción.",
+      "b) Pulverización.",
+      "c) Inmersión.",
+      "d) Fumigación."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "141. Entre los siguientes, señale el método físico de desinfección:",
+    "options": [
+      "a) Inmersión.",
+      "b) Fumigado.",
+      "c) Hervido.",
+      "d) Loción."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "142. Son métodos de esterilización:",
+    "options": [
+      "a) El calor, el lavado y las sustancias químicas.",
+      "b) El lavado y aclarado con agua muy caliente.",
+      "c) El lavado con abundante agua y jabón.",
+      "d) El calor seco y húmedo, las radiaciones y las sustancias químicas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "143. Señala la respuesta incorrecta:",
+    "options": [
+      "a) El objetivo del empaquetado es proteger el material estéril.",
+      "b) El material de empaquetado cambia según el método de esterilización.",
+      "c) El material esterilizado no tiene caducidad.",
+      "d) El material esterilizado tiene unas características de almacenamiento y manipulación."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "144. Con la estufa Poupinel, ¿qué material no podemos esterilizar?",
+    "options": [
+      "a) Soluciones no acuosas de sustancias termoestables.",
+      "b) Instrumental.",
+      "c) Compuestos en forma de polvo.",
+      "d) Sustancias acuosas y alcohólicas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "145. Etimológicamente significa “sin putrefacción”:",
+    "options": [
+      "a) Asepsia.",
+      "b) Salud laboral.",
+      "c) Control biológico.",
+      "d) Esterilidad."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "146. El flujo laminar es:",
+    "options": [
+      "a) Un método de limpieza.",
+      "b) Un método físico de esterilización.",
+      "c) Un método químico de esterilización.",
+      "d) Un método de esterilización mediante calor húmedo."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "147. El test de Bowie-Dick tiene como finalidad:",
+    "options": [
+      "a) Comprobar que no quede aire residual en el autoclave.",
+      "b) Comprobar que no quede aire residual en el horno de Pasteur.",
+      "c) Es un tipo de control biológico.",
+      "d) Es un tipo de control físico."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "148. Los agentes básicos en una limpieza de descontaminación son:",
+    "options": [
+      "a) Detergentes y agua.",
+      "b) Alcohol y algodón.",
+      "c) Povidona yodada.",
+      "d) Peróxido de hidrógeno."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "149. Al eliminar de un objeto la suciedad y la materia orgánica hacemos:",
+    "options": [
+      "a) Limpieza.",
+      "b) Desinfección.",
+      "c) Esterilización.",
+      "d) Asepsia."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "150. Es obligatorio que el instrumental para intervenciones en el quirófano esté:",
+    "options": [
+      "a) Limpio.",
+      "b) Estéril.",
+      "c) Desinfectado",
+      "d) Según el tipo de instrumental."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "151. En relación con la limpieza previa a la esterilización:",
+    "options": [
+      "a) La limpieza es el primer paso previo a la esterilización.",
+      "b) Con la limpieza puede desaparecer un máximo del 80 % de los gérmenes.",
+      "c) Tras la limpieza, el material se queda esterilizado.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "152. ¿Qué método se utiliza para esterilizar catéteres o sondas termosensibles?",
+    "options": [
+      "a) Autoclave.",
+      "b) Radiaciones gamma.",
+      "c) Incineración.",
+      "d) Flameado."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "153. Para evitar el riesgo de inflamación del óxido de etileno, este se diluye con:",
+    "options": [
+      "a) Cloroformo.",
+      "b) Dióxido de carbono.",
+      "c) Cloruro potásico.",
+      "d) Nitrato de plata."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "154. En la desinfección de medio y bajo nivel, el tiempo de exposición mínimo es de:",
+    "options": [
+      "a) 10 minutos.",
+      "b) 20 minutos.",
+      "c) 30 minutos.",
+      "d) 60 minutos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "155. Se conoce también como esterilización fraccionada:",
+    "options": [
+      "a) Tindalización.",
+      "b) Estufa Pasteur.",
+      "c) Autoclave.",
+      "d) Esterilización por filtración."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "156. De los siguientes métodos físicos de esterilización, ¿cuál usarías para esterilizar fluidos?",
+    "options": [
+      "a) Autoclave.",
+      "b) Radiaciones no ionizantes.",
+      "c) Filtración.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "157. De los siguientes métodos químicos de esterilización ¿cuál puede utilizarse de forma líquida?",
+    "options": [
+      "a) Óxido de etileno.",
+      "b) Ozono.",
+      "c) Ácido peracético.",
+      "d) Gas plasma peróxido de hidrógeno."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "158. ¿Cuál es una técnica de desinfección?",
+    "options": [
+      "a) Inmersión.",
+      "b) Vaporización y fumigación.",
+      "c) Loción.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "159. La desinfección del nivel intermedio, no es activa frente:",
+    "options": [
+      "a) Bacilos de Koch.",
+      "b) Esporas.",
+      "c) Virus lipídicos de tamaño medio.",
+      "d) Hongos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "160. ¿Qué cualidades no debe tener un detergente para que se le considere un buen agente de limpieza en el medio sanitario?",
+    "options": [
+      "a) Tener capacidad para desincrustar la suciedad adherida.",
+      "b) Tener alta capacidad para formar espuma.",
+      "c) Tener capacidad para disolver la suciedad de tipo lipoide.",
+      "d) Debe de ser biodegradable."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "161. El Glutaraldehído es un desinfectante de uso hospitalario, ¿qué precauciones debemos tomar durante su utilización?",
+    "options": [
+      "a) No utilizar con agua caliente.",
+      "b) Utilizar guantes en su manipulación.",
+      "c) Utilizar siempre recipientes con tapa.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "162. ¿Cuál de los siguientes productos se utiliza como agente esterilizador por medio del gas plasma?",
+    "options": [
+      "a) Peróxido de hidrógeno.",
+      "b) Óxido de etileno.",
+      "c) Argón.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "163. ¿Cuál de los siguientes métodos de esterilización tiene en cuenta los siguientes parámetros: presión, temperatura y tiempo?",
+    "options": [
+      "a) Estufa poupinel.",
+      "b) Autoclave.",
+      "c) Radiaciones ionizantes.",
+      "d) Flameado."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "164. Los antisépticos:",
+    "options": [
+      "a) Se aplican sobre tejidos vivos para destruir los microorganismos.",
+      "b) Son los compuestos derivados del aldehído.",
+      "c) Se aplican sobre objetos para destruir los microorganismos.",
+      "d) Prácticamente no se utilizan."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "165. La esterilización con óxido de etileno se utiliza para:",
+    "options": [
+      "a) El material que es preciso esterilizar en un corto periodo de tiempo.",
+      "b) Objetos que no pueden ser tratados con calor (termosensibles).",
+      "c) Objetos que deben esterilizarse a temperaturas superiores a 100 ºC.",
+      "d) Material que hay que esterilizar sumergido en vapor de agua."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "166. En la realización de una técnica aséptica se tendrá en cuenta:",
+    "options": [
+      "a) La utilización de detergentes.",
+      "b) El uso de guantes estériles.",
+      "c) La utilización de ropa limpia de cama.",
+      "d) La protección del personal."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "167. Cuál de los siguientes antisépticos o desinfectantes se utiliza también para la esterilización ampliando el tiempo de inmersión a 10 horas:",
+    "options": [
+      "a) Clorhexidina.",
+      "b) Compuestos fenólicos.",
+      "c) Glutaraldehído al 2%.",
+      "d) Compuestos alcohólicos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "168. Para la esterilización en frío se utiliza el glutaraldehído, ¿para qué materiales se puede usar?",
+    "options": [
+      "a) Material textil.",
+      "b) Endoscopios y laparoscopios.",
+      "c) Material termolábil que contenga celulosa o sus derivados.",
+      "d) Todas las respuestas anteriores son incorrectas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "169. Cuál es el método más idóneo y utilizado en el ámbito sanitario para la esterilización de materiales:",
+    "options": [
+      "a) Tindalización.",
+      "b) Horno Pasteur.",
+      "c) Autoclave.",
+      "d) Flameado."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "170. Una de las ventajas del calor seco como método de esterilización es:",
+    "options": [
+      "a) Baja temperatura.",
+      "b) Bajo coste.",
+      "c) Rapidez.",
+      "d) Esterilización de material termosensible."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "171. En el uso de controles de esterilización se sugiere seguir estas pautas:",
+    "options": [
+      "a) Controles físicos en cada ciclo de esterilización.",
+      "b) Controles químicos semanales en todos los equipos de esterilización.",
+      "c) Controles biológicos en cada paquete de esterilización.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "172. ¿Cuál de los siguientes microorganismos presenta más resistencia a la esterilización?",
+    "options": [
+      "a) Esporas bacterianas.",
+      "b) Virus medianos.",
+      "c) Virus pequeños.",
+      "d) Bacterias vegetativas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "173. De los siguientes agentes que se utilizan para la esterilización, ¿cuál de ellos es de naturaleza física?",
+    "options": [
+      "a) Óxido de etileno.",
+      "b) Peróxido de hidrógeno.",
+      "c) Filtros microporosos.",
+      "d) Todas las respuestas anteriores son de naturaleza física."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "174. ¿Cuál de los siguientes métodos de esterilización utiliza calor seco?",
+    "options": [
+      "a) Autoclave.",
+      "b) Rayos gamma.",
+      "c) Radiación ultravioleta.",
+      "d) Estufa Poupinel."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "175. El autoclave de vapor saturado a presión utiliza como método de esterilización:",
+    "options": [
+      "a) El calor húmedo.",
+      "b) El calor seco.",
+      "c) Radiaciones ionizantes.",
+      "d) Líquidos esterilizantes."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "176. El flameado es la técnica de esterilización por calor seco que utiliza:",
+    "options": [
+      "a) Un horno de Pasteur.",
+      "b) Una estufa Poupinel.",
+      "c) Un mechero tipo bunsen.",
+      "d) Una autoclave."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "177. Si para esterilizar materiales utilizamos la estufa Poupinel a una temperatura de 170 ºC, ¿cuánto tiempo necesitaríamos para esterilizar desde que se alcanza esa temperatura?",
+    "options": [
+      "a) 30 minutos.",
+      "b) 60 minutos.",
+      "c) 120 minutos.",
+      "d) 180 minutos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "178. Tenemos 2 horas y 30 minutos para esterilizar materiales con la estufa Poupinel, ¿a qué temperatura debemos programarla para conseguir la esterilización en ese tiempo?",
+    "options": [
+      "a) 170ºC.",
+      "b) 160ºC.",
+      "c) 150ºC.",
+      "d) 140ºC."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "179. Un buen método de esterilización para sustancias oleosas como los aceites es:",
+    "options": [
+      "a) La incineración.",
+      "b) La estufa poupinel.",
+      "c) El óxido de etileno.",
+      "d) El flameado."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "180. Para que el óxido de etileno actúe sobre las formas de resistencia de las bacterias es necesario que exista un grado de humedad:",
+    "options": [
+      "a) No inferior al 30 %.",
+      "b) No inferior al 20 %.",
+      "c) No inferior al 10 %.",
+      "d) Es más eficaz sin humedad ya que las esporas están muy hidratadas y la falta de humedad facilita su destrucción."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "181. ¿Desde qué temperatura es efectivo el óxido de etileno para esterilizar?",
+    "options": [
+      "a) 5ºC.",
+      "b) 10ºC.",
+      "c) 20ºC.",
+      "d) 30ºC."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "182. La técnica de aireación forzada se utiliza cuando estamos empleando:",
+    "options": [
+      "a) Autoclaves de vapor.",
+      "b) Radiaciones ultravioletas.",
+      "c) Óxido de etileno.",
+      "d) Estufas Poupinel."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "183. ¿Cuál de los siguientes métodos de esterilización se lleva a cabo en frío?",
+    "options": [
+      "a) Estufa Poupinel.",
+      "b) Horno de Pasteur.",
+      "c) Autoclave de vapor.",
+      "d) Radiaciones gamma."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "184. Si para esterilizar materiales utilizamos el autoclave de vapor a una temperatura de 121ºC, ¿cuánto tiempo necesitaríamos para esterilizar desde que se alcanza esa temperatura?",
+    "options": [
+      "a) 15-20 minutos.",
+      "b) 10 minutos.",
+      "c) 7 minutos.",
+      "d) 5 minutos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "185. Si queremos esterilizar con un autoclave de vapor durante 5-7 minutos, ¿a qué temperatura debemos programarla para conseguir la esterilización en ese tiempo?",
+    "options": [
+      "a) 80ºC.",
+      "b) 120ºC.",
+      "c) 134ºC.",
+      "d) 145ºC."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "186. Si queremos esterilizar material textil el método más conveniente es:",
+    "options": [
+      "a) Estufa Poupinel.",
+      "b) Óxido de etileno.",
+      "c) Autoclave de vapor.",
+      "d) Glutaraldehído."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "187. Para la desinfección de material no crítico como un fonendoscopio o un termómetro, el desinfectante más adecuado sería:",
+    "options": [
+      "a) El Glutaraldehído.",
+      "b) El alcohol etílico o isopropílico de 70º.",
+      "c) El ácido paracético.",
+      "d) El peróxido de hidrogeno."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "188. Cuando utilizamos un ciclo de esterilización de priones, queremos eliminar del material a esterilizar:",
+    "options": [
+      "a) Un virus.",
+      "b) Una bacteria.",
+      "c) Un hongo.",
+      "d) Una proteína infectante."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "189. De las siguientes características, señale cuál de ellas corresponde a un buen desinfectante:",
+    "options": [
+      "a) Biodegradable.",
+      "b) Económico.",
+      "c) Actuación rápida.",
+      "d) Todas las respuestas anteriores son características de un buen desinfectante."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "190. El gas plasma de peróxido de hidrógeno es un agente esterilizante:",
+    "options": [
+      "a) Físico.",
+      "b) Químico.",
+      "c) Biológico.",
+      "d) Microbiológico."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "191. Respecto a la autoclave no es correcto:",
+    "options": [
+      "a) El vapor debe acceder a todos los lugares de la cámara donde pueda haber material.",
+      "b) El vapor debe mezclarse con el aire, para poder contactar con todos los envoltorios y objetos.",
+      "c) Es el medio más idóneo y más utilizado en el ámbito sanitario.",
+      "d) La esterilización mediante la autoclave se lleva a cabo con calor húmedo."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "192. Un paciente ingresado en una planta abandona la habitación debido a que se ha producido el alta hospitalaria, ¿cómo se denomina el procedimiento al que se somete dicha habitación?",
+    "options": [
+      "a) Desinfección concomitante.",
+      "b) Esterilización.",
+      "c) Desinfección final o terminal.",
+      "d) Desinsectación."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "193. A la técnica de desinfección que consiste en introducir instrumentos en una solución desinfectante durante cierto tiempo, se denomina:",
+    "options": [
+      "a) Loción.",
+      "b) Brumas.",
+      "c) Inmersión.",
+      "d) Pulverización."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "194. Para esterilizar gasas, ropa y vendas, el procedimiento más adecuado es el que consiste en:",
+    "options": [
+      "a) Exponer el material por un largo periodo de tiempo a aire caliente sirviéndose de una estufa Poupinel.",
+      "b) Introducir los materiales en una cámara y exponerlos a determinadas concentraciones de óxido de etileno.",
+      "c) Someter el material a vapor de agua a presión y elevadas temperaturas.",
+      "d) Sumergir el material en agua con desinfectante y frotar con cepillo y detergente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "195. ¿Entre qué temperaturas actúa el Óxido de Etileno?",
+    "options": [
+      "a) Entre 60º y 90º C.",
+      "b) Entre 30 y 100º C.",
+      "c) Entre 30º y 60º C.",
+      "d) Entre 40º y 60º C."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "196. ¿Cómo se consigue la desinfección de objetos o materiales clínicos?",
+    "options": [
+      "a) Usando sustancias químicas con acción desinfectante.",
+      "b) Usando antisépticos.",
+      "c) Con agua oxigenada, alcohol de 70º o clorhexidina.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "197. Cuando se utiliza el tipo de desinfección de alto nivel. ¿Cuánto tiempo mínimo de actuación se necesita?",
+    "options": [
+      "a) 10-20 minutos.",
+      "b) 20-30 minutos.",
+      "c) 30-40 minutos.",
+      "d) 5 minutos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "198. Entre las técnicas de desinfección no es correcto:",
+    "options": [
+      "a) Inmersión: consiste en introducir instrumentos en una solución desinfectante durante cierto tiempo.",
+      "b) Loción: se empapan las bayetas en una solución y luego se usan para fregar.",
+      "c) Vaporización y Fumigación: forma un aerosol de gotas microscópicas que por su escaso peso permanecen cierto tiempo suspendidas en el aire atmosférico.",
+      "d) Pulverización: formación de gotas de mayor tamaño que por su peso caen rápidamente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "199. No es un procedimiento físico de desinfección:",
+    "options": [
+      "a) Pasteurización.",
+      "b) Uperización.",
+      "c) Rayos solares.",
+      "d) Glutaraldehído."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "200. ¿De qué control de esterilización forma parte el resultado de la medición del manómetro del autoclave?",
+    "options": [
+      "a) Biológico.",
+      "b) Químico.",
+      "c) Físico.",
+      "d) No es un control de esterilización."
+    ],
+    "correct": 2
+  },
+  // por aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+    {
+    "question": "201. La cirugía reparadora o reconstructiva es aquella que tiene como objetivo:",
+    "options": [
+      "a) Aliviar los síntomas sin curar la enfermedad.",
+      "b) Fortalecer zonas debilitadas, volver a unir zonas que se encuentran separadas o corregir deformidades.",
+      "c) Resecar la parte enferma.",
+      "d) Determinar la causa de los síntomas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "202. El periodo perioperatorio es:",
+    "options": [
+      "a) La fase que antecede a la intervención, desde la preparación del paciente hasta la intervención.",
+      "b) La fase que transcurre desde que el paciente es colocado en la mesa del quirófano hasta que sale del mismo.",
+      "c) La fase que transcurre posteriormente a la intervención, desde el traslado a la sala del despertar hasta ser dado de alta.",
+      "d) Todo lo anterior."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "203. El diseño de un quirófano está basado en:",
+    "options": [
+      "a) La separación de las zonas sépticas de las asépticas.",
+      "b) Garantizar la comodidad de los cirujanos para que puedan realizar las intervenciones en las mejores condiciones.",
+      "c) Garantizar la confortabilidad del paciente.",
+      "d) La distribución de los espacios de forma que los profesionales puedan circular por el mismo en un circuito predeterminado."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "204. Las paredes de los quirófanos deben ser:",
+    "options": [
+      "a) Lisas, sin tomas para gases, vacíos y electricidad, ya que estas deben situarse en el suelo.",
+      "b) Lisas de ángulos redondeados y sin ventanas.",
+      "c) De azulejos blancos de la mitad hacia abajo, siendo opcional ponerlos también en la parte superior.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "205. La temperatura de un quirófano debe ser:",
+    "options": [
+      "a) Baja, para disminuir el crecimiento bacteriano, entre 18 y 26 ºC.",
+      "b) Alta en general, para evitar la hipotermia del paciente, con una mínima de 24 ºC.",
+      "c) Aquella con la que los cirujanos se encuentren más cómodos para intervenir.",
+      "d) Aquella con la que el paciente se encuentre confortable."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "206. La humedad en el quirófano:",
+    "options": [
+      "a) Se recomienda baja (30-40 %), para que la corriente estática que se genera en el quirófano no descargue su intensidad a tierra.",
+      "b) Se recomienda baja (10-15 %), para que la corriente estática que se genera en el quirófano no descargue su intensidad a tierra.",
+      "c) Se recomienda alta (50-60 %), para que la corriente estática que se genera en el quirófano descargue su intensidad a tierra.",
+      "d) Se recomienda alta (80-85 %), para que la corriente estática que se genera en el quirófano no descargue su intensidad a tierra."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "207. La renovación de aire en el quirófano debe ser:",
+    "options": [
+      "a) 10-13 renovaciones a la hora.",
+      "b) 25-26 renovaciones a la hora.",
+      "c) 15-20 renovaciones a la hora.",
+      "d) Más de 22 renovaciones a la hora."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "208. Las zonas quirúrgicas semilimitadas son:",
+    "options": [
+      "a) Aquellas donde se encuentran los vestuarios y las salas de descanso.",
+      "b) Aquellas donde se requiere el uso obligatorio de mascarilla.",
+      "c) El antequirófano, el quirófano y los cuartos de lavado prequirúrgicos.",
+      "d) Aquellas en las que se requiere uniforme de dos piezas, calzado específico de quirófano o calzas y gorro."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "209. El área séptica o sucia del quirófano incluye:",
+    "options": [
+      "a) El área intermedia de quirófano.",
+      "b) La farmacia.",
+      "c) Es un área adyacente al quirófano o pasillo de circulación, por la que se va eliminando todo el material sucio procedente de la intervención.",
+      "d) La zona de lavado quirúrgico."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "210. Uno de los siguientes profesionales no forma parte del equipo estéril de quirófano:",
+    "options": [
+      "a) La enfermera instrumentista.",
+      "b) El anestesista.",
+      "c) El cirujano principal.",
+      "d) El ayudante del cirujano."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "211. Uno de los siguientes profesionales no forma parte del equipo no estéril del quirófano:",
+    "options": [
+      "a) El ayudante del anestesista.",
+      "b) La enfermera circulante.",
+      "c) El celador.",
+      "d) Todos forman parte del equipo no estéril."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "212. La ropa de quirófano debe ser:",
+    "options": [
+      "a) De algodón, con tejido de malla fuerte para dificultar el paso de los gérmenes.",
+      "b) De papel impermeable, que es un filtro que impide el paso de las bacterias.",
+      "c) Igual a la que usa el resto del personal del hospital.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "213. El uniforme de quirófano no incluye:",
+    "options": [
+      "a) Bata rusa tanto para el personal estéril como para el no estéril.",
+      "b) Guantes estériles para el equipo estéril y no estériles para el equipo no estéril.",
+      "c) Gorros de papel o tela.",
+      "d) Mascarillas desechables."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "214. La mascarilla hay que colocársela:",
+    "options": [
+      "a) Por debajo de la nariz en el personal que lleve gafas.",
+      "b) Adaptándola perfectamente a la fisionomía de la boca y la nariz.",
+      "c) Dejando algún hueco entre la nariz y el exterior para poder respirar mejor.",
+      "d) Por debajo de la nariz en el equipo no estéril."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "215. Entre las funciones del celador de quirófano no está:",
+    "options": [
+      "a) Trasladar a los pacientes desde sus habitaciones al quirófano en las intervenciones programadas.",
+      "b) Ayudar a ponerse la bata rusa a los cirujanos.",
+      "c) Ayudar a colocar al paciente en la mesa de operaciones.",
+      "d) Trasladar al paciente a la sala de despertar cuando termina la operación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "216. Durante la intervención quirúrgica, el celador debe permanecer atento y permanecer en la sala de antequirófanos por si fuera necesario realizar alguna de las siguientes tareas:",
+    "options": [
+      "a) Informar a los familiares sobre cómo está transcurriendo todo en la intervención.",
+      "b) Ayudar a la enfermera instrumentista en su tarea.",
+      "c) Transportar aparatos de radiodiagnóstico al quirófano.",
+      "d) No debe permanecer en la zona de antequirófanos, debe irse inmediatamente a preparar al paciente que entrará en la siguiente intervención."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "217. Una de las siguientes respuestas sobre la desinfección es incorrecta:",
+    "options": [
+      "a) Elimina todos los microorganismos y las esporas.",
+      "b) Es un procedimiento de antisepsia.",
+      "c) Se realiza frecuentemente con lejía.",
+      "d) Elimina los microorganismos patógenos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "218. Los productos químicos que se utilizan para la desinfección de la piel, heridas y cavidades del organismo se denomina:",
+    "options": [
+      "a) Desinfectantes.",
+      "b) Antisépticos.",
+      "c) Bactericidas.",
+      "d) Bacteriostáticos."
+    ],
+    "correct": 1
+  },
+  {
+  "question": "219. De un material esterilizado podemos afirmar:",
+  "options": [
+    "a) Que de él se ha eliminado cualquier forma de vida.",
+    "b) Que de él no se han eliminado las formas de resistencias de los microorganismos (esporas).",
+    "c) Que ha sido desinfectado con un bacteriostático.",
+    "d) Que ha sido desinfectado con un bactericida."
+  ],
+  "correct": 0
+},
+{
+  "question": "220. Una de las barreras más efectivas para evitar el contacto de los microorganismos con los tejidos corporales estériles es:",
+  "options": [
+    "a) La colocación de la bata rusa.",
+    "b) La aplicación de un antiséptico sobre toda la superficie corporal.",
+    "c) La piel intacta.",
+    "d) Las respuestas b) y c) son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "221. Un autoclave es:",
+  "options": [
+    "a) El instrumento que permite elevar o bajar la mesa de operaciones.",
+    "b) Un aparato a través del cual se esterilizan los materiales aplicando vapor de agua a presión y elevadas temperaturas.",
+    "c) Una estufa que permite esterilizar materiales exponiéndolos por un tiempo prolongado a aire caliente.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "222. Una de las siguientes respuestas no es correcta respecto al óxido de etileno:",
+  "options": [
+    "a) Es un gas fluorescente, inflamable y no tóxico.",
+    "b) Es un gas utilizado para la esterilización química.",
+    "c) Se usa para esterilizar plástico y material de precisión.",
+    "d) Se utiliza sometiendo a una determinada concentración de este gas a los materiales introducidos en una cámara."
+  ],
+  "correct": 0
+},
+{
+  "question": "223. La esterilización por radiaciones ionizantes:",
+  "options": [
+    "a) Consiste en utilizar radiaciones cargadas de energía que destruyen o lesionan a los microorganismos.",
+    "b) Está muy extendida.",
+    "c) Permite llegar a toda la superficie de manera uniforme.",
+    "d) No precisa alta capacitación del personal que la lleva a cabo."
+  ],
+  "correct": 0
+},
+{
+  "question": "224. Respecto a la limpieza de los materiales no es correcto:",
+  "options": [
+    "a) Constituye el paso previo a la desinfección y a la esterilización.",
+    "b) Busca la eliminación de los restos de materia orgánica y los gérmenes que contenga.",
+    "c) No es preciso realizarla con guantes.",
+    "d) Hay que limpiar tanto el material clínico como el utilizado por los pacientes."
+  ],
+  "correct": 2
+},
+{
+  "question": "225. La antisepsia consiste en:",
+  "options": [
+    "a) La utilización de productos químicos para intentar destruir microorganismos contaminantes.",
+    "b) El uso de desinfectantes, antisepsia es sinónimo de desinfección.",
+    "c) Realizar la esterilización de los materiales de quirófano.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "226. En el autoclave, para que el vapor de agua esterilice:",
+  "options": [
+    "a) Tiene que haberse desinfectado previamente el material a esterilizar.",
+    "b) Tiene que estar sometido a una presión menor que la atmosférica.",
+    "c) Ha de estar sometido a una presión mayor que la atmosférica y a una temperatura determinada durante un tiempo necesario.",
+    "d) Tiene que ser enfriado hasta alcanzar los 0 ºC."
+  ],
+  "correct": 2
+},
+{
+  "question": "227. Las fases de un ciclo de autoclave de prevacío son:",
+  "options": [
+    "a) 1º meseta de esterilización, 2º desvaporización, 3º secado, 4º acondicionamiento del material.",
+    "b) 1º acondicionamiento del material, 2º meseta de esterilización, 3º desvaporización, 4º secado.",
+    "c) 1º meseta de esterilización, 2º desvaporización, 3º acondicionamiento de la carga, 4º secado.",
+    "d) 1º desvaporización, 2º meseta de esterilización, 3º acondicionamiento de la carga, 4º secado."
+  ],
+  "correct": 1
+},
+{
+  "question": "228. Todas las siguientes son características de la esterilización en autoclave, excepto una, señala cuál:",
+  "options": [
+    "a) Es económica y rápida.",
+    "b) Es segura.",
+    "c) No contamina ni deja residuos.",
+    "d) No deteriora los cortes del instrumental con filo."
+  ],
+  "correct": 3
+},
+{
+  "question": "229. Señalar cuál de los siguientes materiales no conviene esterilizar en el autoclave:",
+  "options": [
+    "a) Textiles.",
+    "b) Materiales de goma o plástico.",
+    "c) Frascos de líquidos.",
+    "d) Medios de cultivo."
+  ],
+  "correct": 1
+},
+{
+  "question": "230. De las siguientes formas de esterilización, cuál no utiliza el calor seco:",
+  "options": [
+    "a) Flameado.",
+    "b) Incineración.",
+    "c) Autoclave.",
+    "d) Estufa de poupinel."
+  ],
+  "correct": 2
+},
+{
+  "question": "231. El flameado consiste en:",
+  "options": [
+    "a) Exponer a una llama durante unos minutos el material que se quiere esterilizar.",
+    "b) El uso del crematorio para quemar el material de un solo uso.",
+    "c) La exposición del material a aire caliente durante largos períodos de tiempo.",
+    "d) El uso de radiaciones ionizantes que producen un bombardeo de neutrones sobre los objetos a esterilizar."
+  ],
+  "correct": 0
+},
+{
+  "question": "232. La estufa Poupinel se usa para esterilizar principalmente los siguientes materiales:",
+  "options": [
+    "a) Textiles.",
+    "b) Vidrio y material de laboratorio.",
+    "c) Polvos y sustancias oleosas.",
+    "d) Las respuestas b) y c) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "233. La clorhexidina tiene un nivel de desinfección:",
+  "options": [
+    "a) Bajo.",
+    "b) Intermedio.",
+    "c) Alto.",
+    "d) No se utiliza para desinfectar."
+  ],
+  "correct": 1
+},
+{
+  "question": "234. La acción bactericida del óxido de etileno depende de:",
+  "options": [
+    "a) La concentración del gas, la temperatura, la humedad y el tiempo de exposición.",
+    "b) El tipo de material que se va a esterilizar.",
+    "c) La toxicidad de los gases con los que se presenta mezclado.",
+    "d) Que la humedad sea inferior al 30 %."
+  ],
+  "correct": 0
+},
+{
+  "question": "235. Los materiales de caucho y goma pueden esterilizarse con:",
+  "options": [
+    "a) El autoclave.",
+    "b) La estufa poupinel.",
+    "c) El óxido de etileno.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "236. La central de esterilización debe contar, entre otras, con las siguientes áreas excepto una, señala cuál:",
+  "options": [
+    "a) Área de recepción del material sucio.",
+    "b) Área de lavado y secado.",
+    "c) Área de revisión, selección y preparación del material.",
+    "d) Área de incineración."
+  ],
+  "correct": 3
+},
+{
+  "question": "237. Entre los riesgos físicos específicos derivados del trabajo en una central de esterilización no se encuentra:",
+  "options": [
+    "a) Riesgo de caídas.",
+    "b) Riesgo de quemaduras.",
+    "c) Calor excesivo.",
+    "d) Descargas eléctricas."
+  ],
+  "correct": 2
+},
+{
+  "question": "238. No es un efecto perjudicial del óxido de etileno:",
+  "options": [
+    "a) Las alteraciones respiratorias.",
+    "b) Las alteraciones óseas.",
+    "c) Las alteraciones digestivas.",
+    "d) Las alteraciones dermatológicas."
+  ],
+  "correct": 1
+},
+{
+  "question": "239. Los efectos nocivos del óxido de etileno pueden evitarse:",
+  "options": [
+    "a) Con una adecuada instalación, aireación forzada, sistemas de ventilación y formación del personal.",
+    "b) Utilizándolo a baja temperatura.",
+    "c) Usando gafas de protección.",
+    "d) Usándolo a baja presión."
+  ],
+  "correct": 0
+},
+{
+  "question": "240. Antes de que una persona comience a trabajar en la central de esterilización deberá acudir al servicio de medicina preventiva para:",
+  "options": [
+    "a) Que le administren la vacuna antitetánica y antihepatitis b si no está previamente inmunizado.",
+    "b) Realización de un Mantoux si previamente no tiene antecedentes de mantoux positivo.",
+    "c) Realización de un TAC de abdomen y tórax.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "241. Los controles de esterilización no incluyen:",
+  "options": [
+    "a) Control físico.",
+    "b) Control de radiaciones.",
+    "c) Control químico.",
+    "d) Control biológico."
+  ],
+  "correct": 1
+},
+{
+  "question": "242. Un indicador colorimétrico o termocromo es:",
+  "options": [
+    "a) Una tira reactiva que cambia de color si se alcanzan unas determinadas condiciones (temperatura).",
+    "b) Un control biológico.",
+    "c) Un control físico.",
+    "d) Un termómetro que permite registrar las temperaturas que se alcanzan en una gráfica."
+  ],
+  "correct": 0
+},
+{
+  "question": "243. El control biológico en las centrales de esterilización consiste en:",
+  "options": [
+    "a) La utilización de esporas atenuadas de microorganismos dentro de ampollas de vidrio que se colocan en el interior de los paquetes a esterilizar.",
+    "b) La utilización de tiras colorimétricas que indican si la temperatura alcanzada ha sido correcta.",
+    "c) La utilización de registros de presión, temperatura y tiempo.",
+    "d) La utilización de guantes y vacunación antitetánica y antihepatitis B."
+  ],
+  "correct": 0
+},
+{
+  "question": "244. El transporte de material esterilizado debe hacerse:",
+  "options": [
+    "a) En bolsas de plástico cerradas cuando es voluminoso.",
+    "b) En carros herméticos cuando es pequeño.",
+    "c) De forma que se garantice la seguridad del envoltorio.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "245. El material esterilizado debe almacenarse:",
+  "options": [
+    "a) Ordenado por fecha de caducidad.",
+    "b) En un lugar húmedo.",
+    "c) En contacto directo con el aire.",
+    "d) Cerca de una fuente de calor."
+  ],
+  "correct": 0
+},
+{
+  "question": "246. El material esterilizado en condiciones normales de conservación caduca:",
+  "options": [
+    "a) Envasado en papel de grado médico, a los 2 años.",
+    "b) En contenedores, a los 6 meses.",
+    "c) Con triple barrera, a los 12 meses.",
+    "d) En contenedores, a los 12 meses."
+  ],
+  "correct": 3
+},
+{
+  "question": "247. Antes de que un celador comience a trabajar en un centro hospitalario es conveniente:",
+  "options": [
+    "a) Valorar su estado de salud para descartar la presencia de enfermedades transmisibles.",
+    "b) Valorar su estado de salud para descartar la presencia de enfermedades cardiovasculares.",
+    "c) Vacunarse contra la tuberculosis.",
+    "d) Valorar su estado de salud para descartar la presencia de anemia."
+  ],
+  "correct": 0
+},
+{
+  "question": "248. Todas las siguientes son normas de higiene que debe seguir un celador excepto:",
+  "options": [
+    "a) Uso de mascarilla cuando trate con un enfermo diagnosticado de tuberculosis.",
+    "b) Lavado de manos antes del contacto con el paciente.",
+    "c) Uso de guantes y gorro en cada contacto con el paciente.",
+    "d) Ropa aséptica en el área quirúrgica."
+  ],
+  "correct": 2
+},
+{
+  "question": "249. En el servicio de medicina preventiva se ofrecen al celador las siguientes vacunas:",
+  "options": [
+    "a) Tétanos, hepatitis B, gripe y fiebre tifoidea.",
+    "b) Tétanos, hepatitis B y varicela.",
+    "c) Hepatitis B, varicela y gripe.",
+    "d) Tétanos, varicela y gripe."
+  ],
+  "correct": 1
+},
+{
+  "question": "250. Si un celador sufre una exposición accidental (pinchazo, salpicadura, ingestión) a sustancias biológicas deberá:",
+  "options": [
+    "a) Acudir al servicio de medicina preventiva en un plazo no superior a 24 horas.",
+    "b) Acudir al servicio de medicina preventiva si aparecen síntomas de alguna enfermedad.",
+    "c) Preguntar al paciente del que procede la sustancia biológica si padece alguna enfermedad contagiosa.",
+    "d) Realizar un hemograma inmediatamente y acudir al servicio de medicina preventiva cuando tenga el resultado del mismo."
+  ],
+  "correct": 0
+},
+{
+  "question": "251. Para realizar el lavado de manos de forma correcta:",
+  "options": [
+    "a) Las uñas deben ser cortas y no llevar esmalte.",
+    "b) No se deben llevar pulseras y anillos.",
+    "c) Hay que usar crema de manos para evitar la irritación de la piel por el lavado frecuente.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "252. El lavado de manos no debe realizarse:",
+  "options": [
+    "a) Antes y después de realizar la higiene del paciente.",
+    "b) Antes de servir las comidas y al terminar.",
+    "c) Antes y después de realizar la aspiración de secreciones.",
+    "d) Inmediatamente después de ponerse la crema de manos."
+  ],
+  "correct": 3
+},
+{
+  "question": "253. En el lavado de manos rutinario deben frotarse las manos:",
+  "options": [
+    "a) Entre 5 y 10 segundos.",
+    "b) Entre 10 y 30 segundos.",
+    "c) Más de 30 segundos.",
+    "d) Un minuto."
+  ],
+  "correct": 1
+},
+{
+  "question": "254. El lavado de manos especial:",
+  "options": [
+    "a) Debe durar dos minutos.",
+    "b) Se realiza con jabón antiséptico.",
+    "c) Debe realizarse después de las tareas habituales y cotidianas.",
+    "d) Debe realizarse con agua muy caliente."
+  ],
+  "correct": 1
+},
+{
+  "question": "255. El lavado de manos quirúrgico debe hacerse:",
+  "options": [
+    "a) Con un jabón antiséptico.",
+    "b) Con una solución hidroalcohólica.",
+    "c) Con una solución desinfectante.",
+    "d) Con jabón normal."
+  ],
+  "correct": 0
+},
+{
+  "question": "256. Respecto al uso de guantes estériles en el quirófano puede afirmarse que:",
+  "options": [
+    "a) Es necesario cuando el lavado de manos no ha sido adecuado.",
+    "b) El envoltorio de los guantes ha de ser abierto por la persona que se los va a colocar.",
+    "c) Los guantes llevan una marca que indica si es derecho o izquierdo.",
+    "d) Debe ser usado siempre por el celador cuando entre en el quirófano."
+  ],
+  "correct": 1
+},
+{
+  "question": "257. Los colores más usados en la ropa de quirófano son:",
+  "options": [
+    "a) Colores sólidos, relajantes y que absorban la luz.",
+    "b) Verde, blanco y celeste.",
+    "c) Colores claros que reflejen la luz.",
+    "d) Blanco y verde."
+  ],
+  "correct": 1
+},
+{
+  "question": "258. Para ponerse la bata rusa:",
+  "options": [
+    "a) El cirujano tiene que abrir el envoltorio.",
+    "b) Alguna persona del equipo tiene que ayudar al profesional a colocársela.",
+    "c) La persona que se la ponga debe hacerlo sola para que nadie más la toque.",
+    "d) No es preciso atarla a la espalda."
+  ],
+  "correct": 1
+},
+{
+  "question": "259. Los miembros del equipo estéril deben colocarse la mascarilla quirúrgica:",
+  "options": [
+    "a) Una vez puesta la bata rusa.",
+    "b) Después de ponerse los guantes estériles.",
+    "c) Antes de realizar el lavado quirúrgico de manos.",
+    "d) Colgada del cuello para terminar de colocársela justo antes de empezar la operación."
+  ],
+  "correct": 2
+},
+{
+  "question": "260. Las calzas se usan:",
+  "options": [
+    "a) Para cubrir el calzado y evitar la contaminación de áreas estériles.",
+    "b) Para aislar los pies del paciente en la cirugía rectal y vaginal.",
+    "c) Para no mojarse el calzado si se derrama algún líquido en el quirófano.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "261. Tomando como referencia el sistema CDC/HICPAC para categorizar recomendaciones, ¿qué categoría presentaría un método fuertemente recomendado para la puesta en práctica y apoyado por ciertos estudios experimentales, clínicos o epidemiológicos y fuerte análisis teórico razonado?",
+  "options": [
+    "a) Categoría IB.",
+    "b) Categoría II.",
+    "c) Categoría IC.",
+    "d) Categoría IA."
+  ],
+  "correct": 0
+},
+{
+  "question": "262. Tomando como referencia el sistema CDC/HICPAC para categorizar recomendaciones, la recomendación sugerida para la puesta en práctica y apoyada por estudios clínicos o epidemiológicos sugestivos o un análisis teórico razonado corresponde a la categoría:",
+  "options": [
+    "a) IA.",
+    "b) II.",
+    "c) IB.",
+    "d) IC."
+  ],
+  "correct": 2
+},
+{
+  "question": "263. Tomando como referencia la guía de higiene de manos en centros sanitarios CDC, con respecto a la higiene de manos es cierto que la longitud de las uñas no debe sobrepasar los:",
+  "options": [
+    "a) 0,6 cm.",
+    "b) 0,8 cm.",
+    "c) 1 cm.",
+    "d) 1,2 cm."
+  ],
+  "correct": 2
+},
+{
+  "question": "264. En los quirófanos el celador cumple una función:",
+  "options": [
+    "a) Los celadores no pueden entrar en los quirófanos.",
+    "b) Primaria.",
+    "c) Complementaria y auxiliar del trabajo del personal sanitario.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "265. El proceso mediante el cual se destruyen todos los posibles microorganismos presentes en un objeto o superficie, incluidas las esporas bacterianas, se denomina:",
+  "options": [
+    "a) Limpieza.",
+    "b) Desinfección.",
+    "c) Esterilización.",
+    "d) Antisepsia."
+  ],
+  "correct": 2
+},
+{
+  "question": "266. De las siguientes funciones, ¿cuál realiza el celador en el quirófano?",
+  "options": [
+    "a) Realizará tareas de ayuda al personal que se ocupa de la sujeción y movilización de los pacientes siempre que se requiera.",
+    "b) Llevará las muestras biológicas y traerá sangre del banco cuando sea preciso, siempre con los elementos de transporte adecuados y destinados para ello.",
+    "c) Ajustará la iluminación del quirófano.",
+    "d) Todas son funciones del celador en el quirófano."
+  ],
+  "correct": 3
+},
+{
+  "question": "267. Un producto bacteriostático:",
+  "options": [
+    "a) Inhibe el crecimiento de los microorganismos.",
+    "b) Mata los microorganismos.",
+    "c) Incita la inmunidad.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "268. ¿Cuándo debe cambiarse el celador el vestuario?",
+  "options": [
+    "a) Al entrar al puesto de trabajo debe cambiarse la ropa de calle por el uniforme reglamentario.",
+    "b) Si se manchase el uniforme debe proceder a cambiárselo.",
+    "c) Al concluir la jornada debe vestirse con la ropa de calle.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "269. En el bloque quirúrgico se delimitan las siguientes zonas:",
+  "options": [
+    "a) Zona séptica, zona sucia y zona de pacientes.",
+    "b) Zona aséptica, zona séptica y esclusas.",
+    "c) Zona aséptica, zona limpia y esclusas.",
+    "d) Esclusas, zona de personal y de pacientes."
+  ],
+  "correct": 2
+},
+{
+  "question": "270. El óxido de etileno:",
+  "options": [
+    "a) Es bactericida.",
+    "b) Es bacteriostático.",
+    "c) Es un antiséptico.",
+    "d) Es un desinfectante."
+  ],
+  "correct": 0
+},
+{
+  "question": "271. En el control biológico de la esterilización por óxido de etileno, la espora que se utiliza es:",
+  "options": [
+    "a) Geobacillus stearothermophilus.",
+    "b) Pnemocystis.",
+    "c) Bacillus atrophaeus (antes Bacillus subtilis Niger).",
+    "d) Ficomicatos."
+  ],
+  "correct": 2
+},
+{
+  "question": "272. ¿Cuál es la finalidad del uso de las gafas de protección?",
+  "options": [
+    "a) Se utilizan cuando existe riesgo de salpicaduras de sangre o líquidos orgánicos.",
+    "b) En la zona quirúrgica no son necesarias, se reservan para el servicio de radiología.",
+    "c) Las gafas se utilizan para sujetar a la vez la mascarilla y el gorro.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 0
+},
+{
+  "question": "273. La bata rusa irá cerrada:",
+  "options": [
+    "a) Por delante.",
+    "b) Por detrás.",
+    "c) No llevan cierre.",
+    "d) Las respuestas a) y c) son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "274. Los métodos de esterilización por calor seco son tres:",
+  "options": [
+    "a) Flambeado, incineración y Estufa Poupinel.",
+    "b) Flameado, incineración y Estufa Opinel.",
+    "c) Flambeado, incineración y Estufa Opinel.",
+    "d) Flameado, incineración y Estufa Poupinel."
+  ],
+  "correct": 3
+},
+{
+  "question": "275. La asepsia se consigue mediante:",
+  "options": [
+    "a) La intubación del paciente.",
+    "b) La limpieza de las manos.",
+    "c) El uso de material estéril.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "276. Antes de la entrada del paciente en el quirófano deberá realizarse:",
+  "options": [
+    "a) El rasurado de la región a operar si está indicado.",
+    "b) La colocación de la vestimenta adecuada para el paciente.",
+    "c) La preparación de la piel de la región a operar.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "277. Cuando eliminamos cualquier forma de vida de un material estamos:",
+  "options": [
+    "a) Limpiando y desinfectando.",
+    "b) Desinsectando.",
+    "c) Esterilizando.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "278. La ausencia de microorganismos productores de enfermedades se conoce como:",
+  "options": [
+    "a) Asepsia.",
+    "b) Antisepsia.",
+    "c) Desinsectación.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "279. El lavado de manos rutinario o higiénico debe durar alrededor de:",
+  "options": [
+    "a) 10 segundos.",
+    "b) 40-60 segundos.",
+    "c) 90 segundos.",
+    "d) 3 minutos."
+  ],
+  "correct": 1
+},
+{
+  "question": "280. ¿Cuándo debe el celador realizar un lavado ordinario de manos?",
+  "options": [
+    "a) Antes de ayudar al aseo de un paciente.",
+    "b) Antes de ir a la cafetería.",
+    "c) Después de ayudar en el aseo de un paciente.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "281. Una vez limpias las manos, ¿cuál de los siguientes agentes tiene mayor eficacia antiséptica?",
+  "options": [
+    "a) Agua y jabón.",
+    "b) Clorhexidina.",
+    "c) Povidona yodada.",
+    "d) Solución hidroalcohólica."
+  ],
+  "correct": 3
+},
+{
+  "question": "282. Sobre la higiene de las manos y el uso correcto de guantes en los centros sanitarios, ¿cuál de las siguientes recomendaciones es incorrecta?",
+  "options": [
+    "a) Cuando se va a realizar un procedimiento quirúrgico se deben frotar las manos y antebrazos con jabón antiséptico durante el tiempo recomendado por el fabricante, generalmente, unos 6 minutos.",
+    "b) Descontaminación de las manos antes y después del contacto con la piel intacta o con ropa no manchada del paciente.",
+    "c) El uso de guantes evita la necesidad de lavarse las manos.",
+    "d) No añadir jabón en un dispensador parcialmente vacío. Esta práctica del “relleno” puede provocar la contaminación bacteriana del jabón."
+  ],
+  "correct": 2
+},
+{
+  "question": "283. El agua corriente y el jabón se usan para el lavado de manos:",
+  "options": [
+    "a) Rutinario o higiénico.",
+    "b) Antiséptico.",
+    "c) Por fricción.",
+    "d) Quirúrgico."
+  ],
+  "correct": 0
+},
+{
+  "question": "284. El secado de las manos en el lavado higiénico se realizará:",
+  "options": [
+    "a) Con toallas higiénicas de algodón procedentes de lavandería.",
+    "b) Con secador de flujo de aire caliente.",
+    "c) Con toallas de papel desechables.",
+    "d) Esperando la evaporación total del agua a temperatura ambiente."
+  ],
+  "correct": 2
+},
+{
+  "question": "285. ¿Cuál de los siguientes productos no se utiliza en el lavado antiséptico de manos?",
+  "options": [
+    "a) La povidona yodada.",
+    "b) El gluconato de clorhexidina.",
+    "c) El jabón normal.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "286. Es importante en el lavado quirúrgico de manos:",
+  "options": [
+    "a) Mantener siempre las manos más altas que los codos.",
+    "b) No cerrar el grifo al final con las manos.",
+    "c) Limpiar los espacios subungueales.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "287. Antes de una intervención quirúrgica, en los miembros del equipo estéril, se recomienda:",
+  "options": [
+    "a) El lavado rutinario de manos.",
+    "b) El lavado higiénico de manos.",
+    "c) El lavado antiséptico de manos.",
+    "d) El lavado quirúrgico de manos."
+  ],
+  "correct": 3
+},
+{
+  "question": "288. Una de las siguientes respuestas sobre el lavado de manos es incorrecta:",
+  "options": [
+    "a) El uso de soluciones o geles de alcohol para el lavado de manos es más efectivo que el jabón de arrastre.",
+    "b) Es conveniente evitar el uso de cremas de manos en zonas de alto riesgo debido a la facilidad de contaminación bacteriana de las mismas y a la posible transmisión de infecciones.",
+    "c) Se recomienda el uso de uñas esmaltadas artificiales ya que requieren menos frecuencia de lavado.",
+    "d) Los espacios subungueales pueden albergar un elevado número de microorganismos."
+  ],
+  "correct": 2
+},
+{
+  "question": "289. Una de las siguientes respuestas sobre la esterilización es incorrecta:",
+  "options": [
+    "a) Mediante la esterilización se consigue la destrucción de los gérmenes patógenos y cualquier forma resistente de vida.",
+    "b) Un objeto esterilizado estará siempre desinfectado.",
+    "c) Un objeto desinfectado estará siempre esterilizado.",
+    "d) Durante el manejo de cualquier material estéril debemos utilizar técnicas de asepsia."
+  ],
+  "correct": 2
+},
+{
+  "question": "290. Respecto al almacenamiento del material esterilizado, una de las siguientes respuestas es incorrecta:",
+  "options": [
+    "a) Los envoltorios de material estarán completamente secos y en posición vertical.",
+    "b) Los armarios de almacenamiento deberán estar cerrados.",
+    "c) El material esterilizado permanece en esta situación indefinidamente.",
+    "d) El material esterilizado más recientemente se colocará detrás del más antiguo."
+  ],
+  "correct": 2
+},
+{
+  "question": "291. Las recomendaciones de la OMS sobre la duración del proceso de higiene de manos por fricción con un preparado de base alcohólica es de:",
+  "options": [
+    "a) 10 segundos.",
+    "b) 20-30 segundos.",
+    "c) 50-60 segundos.",
+    "d) 1-2 minutos."
+  ],
+  "correct": 1
+},
+{
+  "question": "292. Las intervenciones diagnósticas son para:",
+  "options": [
+    "a) Mejorar el aspecto.",
+    "b) Explorar una zona.",
+    "c) Determinar la causa de los síntomas.",
+    "d) Aliviar los síntomas."
+  ],
+  "correct": 2
+},
+{
+  "question": "293. Las intervenciones reparadoras son para:",
+  "options": [
+    "a) Determinar la causa de los síntomas.",
+    "b) Aliviar los síntomas.",
+    "c) Fortalecer zonas debilitadas, unir zonas o corregir deformidades.",
+    "d) Resección de la parte enferma."
+  ],
+  "correct": 2
+},
+{
+  "question": "294. Las intervenciones estéticas son para:",
+  "options": [
+    "a) Mejorar el aspecto.",
+    "b) Explorar una zona.",
+    "c) Determinar la causa de los síntomas.",
+    "d) Aliviar los síntomas."
+  ],
+  "correct": 0
+},
+{
+  "question": "295. Las intervenciones paliativas, son para:",
+  "options": [
+    "a) Mejorar el aspecto.",
+    "b) Explorar una zona.",
+    "c) Determinar la causa de los síntomas.",
+    "d) Aliviar los síntomas."
+  ],
+  "correct": 3
+},
+{
+  "question": "296. Las intervenciones exploratorias son para:",
+  "options": [
+    "a) Mejorar el aspecto.",
+    "b) Explorar una zona.",
+    "c) Determinar la causa de los síntomas.",
+    "d) Aliviar los síntomas."
+  ],
+  "correct": 1
+},
+{
+  "question": "297. La fase preoperatoria es:",
+  "options": [
+    "a) La fase que antecede a la operación. Desde que el paciente llega a quirófano hasta que es colocado en la mesa de operaciones.",
+    "b) La fase que antecede a la operación. Desde el primer dolor del paciente hasta que es colocado en la mesa de operaciones.",
+    "c) La fase que antecede a de la operación. Desde la preparación del paciente hasta que es colocado en la mesa de operaciones.",
+    "d) La fase que antecede a la operación. Desde la preparación del paciente hasta que es operado."
+  ],
+  "correct": 2
+},
+{
+  "question": "298. La fase transoperatoria:",
+  "options": [
+    "a) Transcurre desde que el paciente entra en el quirófano hasta que lo abandona.",
+    "b) Transcurre desde que el paciente es colocado en la mesa de operaciones hasta que sale de la sala de despertar.",
+    "c) Transcurre desde que el paciente es colocado en la mesa de operaciones hasta que abandona el quirófano.",
+    "d) Transcurre desde que el paciente es colocado en la mesa de operaciones hasta que es dado de alta."
+  ],
+  "correct": 2
+},
+{
+  "question": "299. ¿En qué momento no debe entrar el celador de quirófano al mismo?",
+  "options": [
+    "a) Durante una intervención, si no se le requiere.",
+    "b) Para introducir al paciente que será intervenido.",
+    "c) Para ayudar al personal de quirófano que lo requiere.",
+    "d) Para sacar al paciente que ha sido intervenido."
+  ],
+  "correct": 0
+},
+{
+  "question": "300. Los celadores en el quirófano:",
+  "options": [
+    "a) Ayudarán directamente al cirujano en intervenciones de cirugía menor ambulatoria.",
+    "b) Velarán por la correcta esterilización del material empleado.",
+    "c) Cuidarán de que todo el instrumental esté en orden.",
+    "d) Auxiliarán en aquellas labores que les sean propias."
+  ],
+  "correct": 3
+},
+{
+  "question": "301. Para que un celador deba rasurar a un enfermo masculino que vaya a ser sometido a una intervención quirúrgica, además de la ausencia del peluquero, ¿en qué otra circunstancia debe hacerlo?",
+  "options": [
+    "a) Por indicación del Médico de Guardia.",
+    "b) Por urgencia en el tratamiento.",
+    "c) Por ausencia del Auxiliar de Enfermería.",
+    "d) Por indicación del Cirujano del Quirófano."
+  ],
+  "correct": 3
+},
+{
+  "question": "302. Durante el traslado de un paciente de la habitación al quirófano, el celador va conversando con un familiar directo del paciente. El familiar le pregunta acerca de los beneficios del tratamiento que están aplicando al paciente, y por la idoneidad de la intervención. El celador:",
+  "options": [
+    "a) Puede dar esta información, aunque de manera muy superficial, pues sí que tiene conocimiento sobre el tema por otros casos similares en los que se ha llevado a cabo el mismo tratamiento.",
+    "b) En ningún caso puede dar esta información, pues le está expresamente prohibido.",
+    "c) Puede dar esta información siempre que el enfermo no haya sido diagnosticado como terminal.",
+    "d) No puede dar esta información ya que es función de la enfermera que le practica el tratamiento."
+  ],
+  "correct": 1
+},
+{
+  "question": "303. Por lo general, la temperatura que se recomienda en el interior del quirófano oscila entre:",
+  "options": [
+    "a) 16º mínimo 24º máximo.",
+    "b) 18º mínimo 26º máximo.",
+    "c) 20º mínimo 25º máximo.",
+    "d) 14º mínimo 22º máximo."
+  ],
+  "correct": 2
+},
+{
+  "question": "304. El celador que trabaja en el quirófano, forma parte del equipo:",
+  "options": [
+    "a) Estéril.",
+    "b) No estéril.",
+    "c) Semicrítico.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "305. ¿Cuál no es una función de un celador que trabaja en el quirófano?",
+  "options": [
+    "a) Controlar el acceso del personal al área quirúrgica.",
+    "b) Trasladar al paciente.",
+    "c) Recoger los pedidos de farmacia.",
+    "d) Todas son funciones del celador en el quirófano."
+  ],
+  "correct": 3
+},
+{
+  "question": "306. Dentro de un quirófano podemos encontrar el siguiente aparataje:",
+  "options": [
+    "a) Aspirador de secreciones.",
+    "b) Mesa de mayo.",
+    "c) Negatoscopio.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "307. La posición a adoptar para la implantación quirúrgica de una prótesis de cadera derecha será:",
+  "options": [
+    "a) Decúbito lateral derecho.",
+    "b) Decúbito supino.",
+    "c) Decúbito prono.",
+    "d) Decúbito lateral izquierdo."
+  ],
+  "correct": 3
+},
+{
+  "question": "308. Son normas básicas para la colocación de un paciente en la mesa de quirófano:",
+  "options": [
+    "a) Independientemente de su posición se mantendrá una correcta alineación corporal.",
+    "b) No se moverá al paciente anestesiado sin conocimiento previo del anestesista.",
+    "c) Si se coloca en decúbito supino las piernas no estarán cruzadas.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "309. Las normas generales que un paciente tiene que cumplir antes de entrar en el quirófano son:",
+  "options": [
+    "a) Retirar las prótesis dentales.",
+    "b) Llevar las uñas sin esmalte.",
+    "c) Ir en ayunas.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "310. Es función del celador asignado al quirófano:",
+  "options": [
+    "a) La preparación del material para su esterilización.",
+    "b) La recogida del instrumental utilizado.",
+    "c) La reposición de batas y sabanillas.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 3
+},
+{
+  "question": "311. ¿Quién debe realizar la limpieza del instrumental utilizado en un quirófano?",
+  "options": [
+    "a) La Enfermera instrumentista.",
+    "b) El Auxiliar de Enfermería (TCAE).",
+    "c) La Enfermera circulante.",
+    "d) El Celador de Quirófanos."
+  ],
+  "correct": 1
+},
+{
+  "question": "312. De los siguientes materiales, cuál es material semicrítico:",
+  "options": [
+    "a) Orinales.",
+    "b) Endoscopios.",
+    "c) Prótesis de cadera.",
+    "d) Hilos de sutura."
+  ],
+  "correct": 1
+},
+{
+  "question": "313. El instrumental y material utilizado en el cuidado de los enfermos se clasifica en tres categorías (crítico, semicrítico y no crítico) en función del riesgo de infección que conlleva su uso. ¿Quién hizo esta clasificación?",
+  "options": [
+    "a) Spaulding.",
+    "b) Tvvek.",
+    "c) Bowie & Dick.",
+    "d) Pareto."
+  ],
+  "correct": 0
+},
+{
+  "question": "314. De las siguientes posiciones, una no es quirúrgica:",
+  "options": [
+    "a) Posición ginecológica.",
+    "b) Posición decúbito supino o anatómica.",
+    "c) Posición de Morestin.",
+    "d) Posición Genupectoral."
+  ],
+  "correct": 2
+},
+{
+  "question": "315. En el quirófano para el material estéril de uso continuo en una intervención se utiliza:",
+  "options": [
+    "a) Mesa de cigüeña.",
+    "b) Mesa semicircular.",
+    "c) Mesa de instrumentación desinfectada.",
+    "d) Mesa quirúrgica."
+  ],
+  "correct": 3
+},
+{
+  "question": "316. La instalación en los quirófanos debe:",
+  "options": [
+    "a) Ser estéril.",
+    "b) Ser independiente.",
+    "c) Estar insonorizada.",
+    "d) Ser aséptica."
+  ],
+  "correct": 3
+},
+{
+  "question": "317. Es una característica de la fase preoperatoria:",
+  "options": [
+    "a) Antecede a la intervención.",
+    "b) Sigue a la intervención.",
+    "c) Finaliza cuando el paciente abandona el quirófano.",
+    "d) Finaliza cuando el paciente es dado de alta."
+  ],
+  "correct": 0
+},
+{
+  "question": "318. Sobre el Glutaraldehído al 2 %:",
+  "options": [
+    "a) Es bactericida, capaz de destruir también hongos, esporas y virus.",
+    "b) Se usa en desinfección por inmersión durante 20 minutos.",
+    "c) Se usa en esterilización por inmersión durante 10 horas.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "319. ¿Qué método químico de esterilización, que se utiliza también en la desinfección de alto nivel, se presenta en líquido o plasma y es muy corrosivo para los instrumentos?",
+  "options": [
+    "a) Ácido peracético.",
+    "b) Formaldehído.",
+    "c) Gas plasma de peróxido de hidrógeno.",
+    "d) Óxido de etileno."
+  ],
+  "correct": 0
+},
+{
+  "question": "320. Es función del celador asignado al quirófano:",
+  "options": [
+    "a) La reposición de batas y sabanillas.",
+    "b) La recogida del instrumental utilizado.",
+    "c) Ayudar a la Enfermera a colocar al enfermo en la mesa de operaciones.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "321. En el quirófano, una de las principales funciones del celador es:",
+  "options": [
+    "a) Trasladar a los pacientes desde sus respectivas habitaciones a las zonas de quirófano.",
+    "b) Ayudar dentro del quirófano a entregar el instrumental al personal médico y sanitario.",
+    "c) Las respuestas a) y b) son correctas.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "322. La utilización de productos químicos para intentar destruir los microorganismos contaminantes sobre la piel, se denomina:",
+  "options": [
+    "a) Limpieza.",
+    "b) Antisepsia.",
+    "c) Esterilización.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "323. Señale la respuesta correcta en relación al óxido de etileno:",
+  "options": [
+    "a) No es tóxico.",
+    "b) Es tóxico exclusivamente por la vía respiratoria.",
+    "c) Es tóxico si se mezcla con agua.",
+    "d) Es fundamentalmente tóxico por las vías cutánea y respiratoria."
+  ],
+  "correct": 3
+},
+{
+  "question": "324. ¿Dónde debe permanecer el celador durante una intervención quirúrgica?",
+  "options": [
+    "a) En el antequirófano.",
+    "b) En la sala de reanimación.",
+    "c) En los pasillos del quirófano.",
+    "d) En cualquier sitio, es indiferente."
+  ],
+  "correct": 0
+},
+{
+  "question": "325. Si el celador de quirófano escucha la palabra “escialítica” sabrá que se refiere a:",
+  "options": [
+    "a) Un carro de curas.",
+    "b) Una mesa accesoria.",
+    "c) Una lámpara.",
+    "d) Un tipo de sutura."
+  ],
+  "correct": 2
+},
+{
+  "question": "326. El calor seco:",
+  "options": [
+    "a) No actúa por oxidación física.",
+    "b) Es bactericida.",
+    "c) Las respuestas a) y b) son correctas.",
+    "d) Las respuestas a) y b) son incorrectas."
+  ],
+  "correct": 1
+},
+{
+  "question": "327. Señale la respuesta incorrecta. Durante una intervención quirúrgica se le puede pedir a un celador:",
+  "options": [
+    "a) El transporte de muestras al Servicio de Anatomía Patológica.",
+    "b) El uso de instrumental quirúrgico.",
+    "c) El transporte de concentrados de hematíes.",
+    "d) Trasladar al quirófano aparatos de diagnóstico."
+  ],
+  "correct": 1
+},
+{
+  "question": "328. Al colocar a un enfermo sobre la mesa quirúrgica se debe procurar que:",
+  "options": [
+    "a) El paciente no vea el instrumental.",
+    "b) Se mantenga despejado hasta la llegada del cirujano.",
+    "c) Ninguna articulación esté en posición forzada.",
+    "d) El paciente esté siempre rasurado."
+  ],
+  "correct": 2
+},
+{
+  "question": "329. ¿En cuál de las siguientes zonas quirúrgicas se requiere el uso obligatorio de mascarilla?",
+  "options": [
+    "a) Zonas sin limitaciones de acceso.",
+    "b) Zonas de intercambio.",
+    "c) Zonas semilimitadas.",
+    "d) Zonas limitadas."
+  ],
+  "correct": 3
+},
+{
+  "question": "330. En los quirófanos, ¿cómo se denomina la zona donde se deja la cama del paciente?",
+  "options": [
+    "a) Zona de espera.",
+    "b) Zona de vestuario.",
+    "c) Esclusa.",
+    "d) Zona sucia."
+  ],
+  "correct": 2
+},
+{
+  "question": "331. En el quirófano, ¿quién es el encargado de trasladar el arco de quirófano o arco en “C”?",
+  "options": [
+    "a) La enfermera instrumentista.",
+    "b) El técnico especialista en radiodiagnóstico.",
+    "c) El celador.",
+    "d) La enfermera circulante."
+  ],
+  "correct": 1
+},
+{
+  "question": "332. Los celadores tienen encomendado entre sus funciones el rasurado de los pacientes masculinos que vayan a ser intervenidos quirúrgicamente en aquellas zonas que lo requieran:",
+  "options": [
+    "a) En todos los casos.",
+    "b) Solo cuando esté destinado en el quirófano.",
+    "c) En ausencia del peluquero o por urgencia en el tratamiento.",
+    "d) Es una función que realiza el auxiliar de enfermería o la enfermera/o destinados en el quirófano."
+  ],
+  "correct": 2
+},
+{
+  "question": "333. Un celador tiene que trasladar a un paciente desde una planta de hospitalización hasta el quirófano, ¿cuál será la actuación correcta?",
+  "options": [
+    "a) Comprobar que el paciente tiene rasurada la zona donde se va a realizar la intervención.",
+    "b) Comprobar la identidad del paciente y asegurarse de que le acompaña su historia clínica.",
+    "c) Comprobar que al paciente se le ha entregado el consentimiento informado y que está debidamente firmado.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "334. Durante la intervención quirúrgica de un paciente es necesario acudir al laboratorio a recoger el resultado de una analítica, ¿quién deberá ir?",
+  "options": [
+    "a) El Auxiliar de enfermería.",
+    "b) La Enfermera circulante.",
+    "c) La Enfermera instrumentista.",
+    "d) El Celador."
+  ],
+  "correct": 3
+},
+{
+  "question": "335. Estando usted prestando sus servicios como celador en un quirófano, el cirujano le encomienda varias tareas, ¿cuál de las siguientes debe realizar?",
+  "options": [
+    "a) Revisar las instalaciones eléctricas por si hubiera algún defecto.",
+    "b) Elegir los accesorios que deberá llevar la mesa quirúrgica según el tipo de intervención.",
+    "c) Trasladar hasta el quirófano el arco quirúrgico o amplificador de imagen.",
+    "d) Ninguna de las respuestas anteriores son funciones del Celador."
+  ],
+  "correct": 2
+},
+{
+  "question": "336. Durante una intervención quirúrgica, el cirujano solicita realizar una Rx al paciente, ¿a quién corresponde conectar y colocar el portátil de Rx?",
+  "options": [
+    "a) Al celador del quirófano.",
+    "b) Al técnico especialista de radiología.",
+    "c) Al enfermero circulante.",
+    "d) Al celador destinado en el Servicio de Radiología a quién pasará el aviso inmediatamente."
+  ],
+  "correct": 1
+},
+{
+  "question": "337. ¿El gorro es una prenda que los celadores deben utilizar dentro del quirófano?",
+  "options": [
+    "a) No, solo deben utilizarlo los cirujanos.",
+    "b) Es una prenda obligada para todas las personas que accedan al quirófano.",
+    "c) Solo está indicado para el personal sanitario.",
+    "d) Depende del tipo de cirugía que se realice, se utilizará o no."
+  ],
+  "correct": 1
+},
+{
+  "question": "338. ¿Quién trasladará el aparato de artroscopia desde el almacén de utensilios y aparatos del quirófano hasta la mesa de operaciones?",
+  "options": [
+    "a) El celador del almacén.",
+    "b) El traumatólogo.",
+    "c) La supervisora de quirófano.",
+    "d) El celador de quirófano."
+  ],
+  "correct": 3
+},
+{
+  "question": "339. Dentro de las funciones que ejercen los celadores en el quirófano, ¿cuál de las siguientes es correcta?",
+  "options": [
+    "a) Manejarán el aparato portátil de Rx.",
+    "b) Durante las intervenciones quirúrgicas se mantendrá en todo momento dentro del quirófano.",
+    "c) Ayudará al personal sanitario en la colocación del paciente en la mesa quirúrgica.",
+    "d) Trasladarán los aparatos precisos para la intervención quirúrgica, haciendo uso de ellos cuando así se lo indique el cirujano."
+  ],
+  "correct": 2
+},
+{
+  "question": "340. Una vez finalizada la intervención quirúrgica es preciso trasladar al paciente a la sala de reanimación, ¿qué personal acompaña al celador en dicho traslado?",
+  "options": [
+    "a) El celador irá solo en el traslado.",
+    "b) El anestesista.",
+    "c) La enfermera circulante.",
+    "d) Las respuestas b) y c) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "341. Según la clasificación de Spaulding, el material que entra en contacto con mucosas y piel no intacta es:",
+  "options": [
+    "a) Material crítico.",
+    "b) Material semicrítico.",
+    "c) Material no crítico.",
+    "d) Material biológico."
+  ],
+  "correct": 1
+},
+{
+  "question": "342. La cirugía, según su finalidad general, se clasifica en (señale la respuesta incorrecta):",
+  "options": [
+    "a) Cirugía paliativa.",
+    "b) Cirugía electiva.",
+    "c) Cirugía diagnóstica.",
+    "d) Cirugía reparadora."
+  ],
+  "correct": 1
+},
+{
+  "question": "343. En el servicio de quirófano llaman a un celador para sujetar una extremidad y así poder desinfectarla:",
+  "options": [
+    "a) El celador acudirá y la desinfectará.",
+    "b) El celador acudirá a sujetar la extremidad.",
+    "c) No es obligación del celador sujetar miembros.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "344. La cirugía, según el tiempo de espera, se clasifica en (señale la respuesta incorrecta):",
+  "options": [
+    "a) Cirugía electiva.",
+    "b) Cirugía emergente.",
+    "c) Cirugía diagnóstica.",
+    "d) Cirugía programada."
+  ],
+  "correct": 2
+},
+{
+  "question": "345. ¿Cómo deben ser las ropas utilizadas en el quirófano?",
+  "options": [
+    "a) De plástico.",
+    "b) De algodón.",
+    "c) De lana.",
+    "d) De nylon."
+  ],
+  "correct": 1
+},
+{
+  "question": "346. En los quirófanos, ¿qué función tienen los celadores?",
+  "options": [
+    "a) Auxiliarán en todas aquellas labores propias del celador.",
+    "b) Realizarán las labores que les sean indicadas por los médicos, supervisoras o enfermeras.",
+    "c) Las respuestas a) y b) son correctas.",
+    "d) Las respuestas a) y b) son incorrectas."
+  ],
+  "correct": 2
+},
+{
+  "question": "347. Dentro del quirófano, el cirujano le encomienda al celador varias tareas, ¿cuál de las siguientes deberá realizar?",
+  "options": [
+    "a) Revisar los quirófanos y reponer el mobiliario preciso en cada uno de ellos.",
+    "b) Colocar el aparato de anestesia y la mesa de quirófano de la forma por él especificada para proceder a la intervención.",
+    "c) Preparar lo necesario para una extracción de órganos destinada a un trasplante.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "348. Durante una intervención quirúrgica, y antes de que el cirujano proceda a la sutura de la incisión, ¿quién es el encargado de verificar el recuento de compresas realizado por la enfermera circulante?",
+  "options": [
+    "a) El anestesista.",
+    "b) El cirujano ayudante.",
+    "c) La enfermera instrumentista.",
+    "d) Nadie, porque ya lo ha realizado la enfermera circulante."
+  ],
+  "correct": 3
+},
+{
+  "question": "349. En los quirófanos, los celadores:",
+  "options": [
+    "a) Informarán a los familiares de los pacientes intervenidos sobre el diagnóstico y tratamiento que se les aplica.",
+    "b) Auxiliarán en aquellas labores propias de los Celadores destinados en estos servicios, así como en las que sean ordenadas por los Médicos, Supervisoras o Enfermeras.",
+    "c) No existen celadores destinados en los quirófanos.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "350. Hablamos de cirugía de alto riesgo, cuando:",
+  "options": [
+    "a) La intervención se alarga en el tiempo.",
+    "b) La zona a intervenir es de difícil acceso.",
+    "c) La suma de los padecimientos del enfermo puede llevar a un resultado no deseado, que puede incluir la muerte del paciente.",
+    "d) La intervención se realiza sobre órganos importantes."
+  ],
+  "correct": 2
+},
+{
+  "question": "351. Dentro del área quirúrgica de un hospital, la zona de acceso limitado es aquella en la que:",
+  "options": [
+    "a) Se puede deambular con ropa de calle, aunque el acceso es restringido.",
+    "b) Se encuentran los vestuarios de los trabajadores.",
+    "c) Tienen lugar todos los procedimientos estériles que se desarrollan dentro del área.",
+    "d) Se encuentra la sala de descanso del personal que trabaja en el área quirúrgica."
+  ],
+  "correct": 2
+},
+{
+  "question": "352. Ayudar a la enfermera circulante a colocar o a retirar al enfermo de la mesa quirúrgica, es una función del:",
+  "options": [
+    "a) Anestesista.",
+    "b) Cirujano.",
+    "c) Enfermera instrumentista.",
+    "d) Celador."
+  ],
+  "correct": 3
+},
+{
+  "question": "353. La cirugía curativa es aquella con la que se consigue:",
+  "options": [
+    "a) Solucionar la causa de la patología.",
+    "b) Realizar un diagnóstico de la patología.",
+    "c) Investigar la causa de la patología.",
+    "d) Paliar las consecuencias de la patología."
+  ],
+  "correct": 0
+},
+{
+  "question": "354. Es función del celador asignado al quirófano:",
+  "options": [
+    "a) La preparación del material para su esterilización.",
+    "b) El transporte de muestras al servicio de anatomía patológica.",
+    "c) La recogida de material utilizado en el quirófano.",
+    "d) La reposición de batas y mascarillas."
+  ],
+  "correct": 2
+},
+{
+  "question": "355. En el quirófano se recomienda que la:",
+  "options": [
+    "a) Humedad sea alta y la temperatura alta.",
+    "b) Humedad sea baja y la temperatura alta.",
+    "c) Humedad sea alta y la temperatura baja.",
+    "d) Humedad sea baja y temperatura baja."
+  ],
+  "correct": 3
+},
+{
+  "question": "356. ¿Cómo se denomina el periodo que transcurre desde que el paciente es colocado en la mesa de operaciones hasta que abandona el quirófano?",
+  "options": [
+    "a) Preoperatorio.",
+    "b) Perioperatorio.",
+    "c) Transoperatorio.",
+    "d) Postoperatorio."
+  ],
+  "correct": 2
+},
+{
+  "question": "357. ¿Qué orden deben seguir los miembros del equipo estéril en la colocación de las prendas antes de la cirugía?",
+  "options": [
+    "a) Calzas, gorro, bata, guantes, mascarilla.",
+    "b) Calzas, gorro, bata, mascarilla, guantes.",
+    "c) Calzas, gorro, mascarilla, bata, guantes.",
+    "d) Calzas, mascarilla, gorro, bata, guantes."
+  ],
+  "correct": 2
+},
+{
+  "question": "358. Los quirófanos pertenecen a la:",
+  "options": [
+    "a) Zona semirrestringida.",
+    "b) Zona semipública.",
+    "c) Zona restringida.",
+    "d) Zona estéril."
+  ],
+  "correct": 2
+},
+{
+  "question": "359. Mientras se está realizando una operación, el celador permanece dentro del quirófano por si se le necesita, ¿es correcta su actuación?",
+  "options": [
+    "a) Sí.",
+    "b) No, deberá permanecer en el antequirófano.",
+    "c) Sí, si no habla ni distrae al cirujano.",
+    "d) Sí, por si es necesaria su colaboración."
+  ],
+  "correct": 1
+},
+{
+  "question": "360. Atendiendo a las normas de asepsia, el quirófano se divide en áreas con diferentes tipos de restricciones en lo referente a la circulación de personal, enfermos y material. Según este criterio, ¿cuál de las siguientes áreas no forma parte del área quirúrgica?",
+  "options": [
+    "a) Área limpia.",
+    "b) Área familiar.",
+    "c) Área estéril.",
+    "d) Área de intercambio."
+  ],
+  "correct": 1
+},
+{
+  "question": "361. Debido a la exposición a la baja temperatura del quirófano muchos pacientes sufren una importante pérdida de calor corporal. Para limitar esta pérdida de calor pueden utilizarse las siguientes medidas:",
+  "options": [
+    "a) Colocar mantas calientes o térmicas al paciente cuando entra en el quirófano.",
+    "b) Aumentar la temperatura ambiente mientras el paciente se halla expuesto y se prepara la piel.",
+    "c) Utilizar líquidos templados para las irrigaciones y administración intravenosa.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "362. La zona del área quirúrgica donde se puede deambular con cualquier indumentaria se denomina:",
+  "options": [
+    "a) Limpia.",
+    "b) Negra.",
+    "c) Estéril.",
+    "d) Gris."
+  ],
+  "correct": 1
+},
+{
+  "question": "363. ¿Qué profesional es el encargado de la recogida, limpieza, clasificación, reposición, desinfección y esterilización del material?",
+  "options": [
+    "a) Enfermera instrumentista.",
+    "b) Auxiliar de enfermería.",
+    "c) Celador de quirófano.",
+    "d) Enfermera circulante."
+  ],
+  "correct": 2
+},
+{
+  "question": "364. ¿Cuál es la relación correcta entre la colocación de la mascarilla quirúrgica y el lavado quirúrgico de manos para los miembros del equipo estéril?",
+  "options": [
+    "a) La mascarilla hay que colocarla antes de realizar el lavado quirúrgico de manos.",
+    "b) La mascarilla hay que colocarla después de realizar el lavado quirúrgico de las manos y antes de ponerse los guantes.",
+    "c) La mascarilla es la última protección que se pone.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "365. Durante una intervención quirúrgica, la mesa de mayo se suele ubicar:",
+  "options": [
+    "a) Sobre el paciente y frente a la enfermera instrumentista.",
+    "b) Al lado izquierdo de la enfermera instrumentista.",
+    "c) Al lado derecho de la enfermera instrumentista.",
+    "d) Detrás de la enfermera instrumentista y al lado del cirujano."
+  ],
+  "correct": 2
+},
+{
+  "question": "366. La clasificación de Altemeier nos permite:",
+  "options": [
+    "a) Clasificar las intervenciones quirúrgicas según el grado de limpieza y contaminación.",
+    "b) Clasificar las intervenciones quirúrgicas según el grado de complejidad de las mismas.",
+    "c) Clasificar las intervenciones quirúrgicas según su finalidad.",
+    "d) Clasificar las intervenciones quirúrgicas según la necesidad de ingreso o no."
+  ],
+  "correct": 0
+},
+{
+  "question": "367. ¿Qué es la clasificación de Spaulding?",
+  "options": [
+    "a) Un sistema de clasificación de enfermedades.",
+    "b) Un sistema de clasificación del material según su peligrosidad infectiva.",
+    "c) Un sistema de clasificación de los riesgos quirúrgicos.",
+    "d) Un sistema de clasificación de medicamentos."
+  ],
+  "correct": 1
+},
+{
+  "question": "368. Según la clasificación de Spaulding, el instrumental quirúrgico es un artículo:",
+  "options": [
+    "a) Semicrítico.",
+    "b) No crítico.",
+    "c) Crítico.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "369. Para colocarse correctamente la mascarilla hay que tener en cuenta una serie de consideraciones. De las siguientes respuestas indique la que no es correcta:",
+  "options": [
+    "a) Debe adaptarse perfectamente a la fisonomía de la cara y nariz, evitando la presencia de huecos que permitan que el aire exhalado se escape.",
+    "b) Si el personal sanitario lleva barba, la mascarilla debe cubrirla completamente.",
+    "c) La mascarilla hay que colocarla después de realizar el lavado quirúrgico de las manos y atarla adecuadamente.",
+    "d) Una mascarilla solo sirve para una intervención quirúrgica."
+  ],
+  "correct": 2
+},
+{
+  "question": "370. Spaulding clasifica el material según su peligrosidad infectiva, ¿a qué grupo corresponde las válvulas cardiacas?",
+  "options": [
+    "a) Crítico.",
+    "b) Semicrítico.",
+    "c) No crítico.",
+    "d) Apto para su uso."
+  ],
+  "correct": 0
+},
+{
+  "question": "371. La mascarilla quirúrgica colocada correctamente deberá cubrir:",
+  "options": [
+    "a) Boca, mentón y orejas.",
+    "b) Nariz, boca y pómulos.",
+    "c) Nariz, boca y mentón.",
+    "d) Nariz, boca, ojos, pómulos y mentón."
+  ],
+  "correct": 2
+},
+{
+  "question": "372. Dentro del aparataje de uso frecuente que se encuentra en los quirófanos, el instrumento quirúrgico que corta el tejido y/o lo cauteriza se conoce como:",
+  "options": [
+    "a) Sistema de aspiración.",
+    "b) Bisturí de mango largo.",
+    "c) Bisturí eléctrico.",
+    "d) Pinza de mosquito."
+  ],
+  "correct": 2
+},
+{
+  "question": "373. Es preciso realizar el lavado de manos. Señale la respuesta incorrecta:",
+  "options": [
+    "a) Después de tocar sangre, otros líquidos orgánicos, secreciones, excreciones y objetos contaminados, solo si no se llevan guantes.",
+    "b) Inmediatamente después de quitarse los guantes, aunque estos parezcan intactos.",
+    "c) Entre contactos con distintos pacientes.",
+    "d) Después de tocar equipos o superficies que puedan estar contaminadas."
+  ],
+  "correct": 0
+},
+{
+  "question": "374. La higiene de manos por fricción con un preparado de base alcohólica se caracteriza por:",
+  "options": [
+    "a) Precisar mayor tiempo que la higiene de manos por lavado.",
+    "b) Precisar de mayor infraestructura que la higiene de manos por lavado.",
+    "c) La mala tolerancia de la piel a los productos de base alcohólica.",
+    "d) Eliminar la mayoría de los gérmenes, incluyendo algunos virus."
+  ],
+  "correct": 3
+},
+{
+  "question": "375. ¿Cuál de estas respuestas es correcta, respecto al lavado quirúrgico de manos?",
+  "options": [
+    "a) Dura aproximadamente un minuto.",
+    "b) Se realiza con jabón normal de pH 5.",
+    "c) El uso del cepillo es optativo.",
+    "d) Se realiza desde las puntas de los dedos hasta 5 cm por encima del codo."
+  ],
+  "correct": 3
+},
+{
+  "question": "376. Sobre la higiene de manos por fricción con un preparado de base alcohólica:",
+  "options": [
+    "a) Es la forma más efectiva de asegurar una higiene de manos óptima.",
+    "b) El jabón y el preparado de base alcohólica pueden utilizarse conjuntamente.",
+    "c) Los profesionales lo llevan a cabo antes de una intervención quirúrgica.",
+    "d) Precisa de una toalla para el secado posterior."
+  ],
+  "correct": 0
+},
+{
+  "question": "377. En el lavado de manos quirúrgico:",
+  "options": [
+    "a) Las manos deben mantenerse más bajas que los codos.",
+    "b) Incluye el lavado con agua durante 30 segundos.",
+    "c) Las manos deben mantenerse a la misma altura que los codos.",
+    "d) Las manos deben mantenerse más altas que los codos."
+  ],
+  "correct": 3
+},
+{
+  "question": "378. Señale la respuesta incorrecta. El lavado de manos se realizará:",
+  "options": [
+    "a) Antes de empezar y finalizar la jornada laboral.",
+    "b) Después de movilizar a un paciente infectado.",
+    "c) Obligatoriamente cada 30 ó 40 minutos.",
+    "d) Siempre que se tenga contacto físico con los pacientes."
+  ],
+  "correct": 2
+},
+{
+  "question": "379. Los llamados cinco momentos para el lavado de manos en el contexto hospitalario, son:",
+  "options": [
+    "a) Antes de comenzar el turno de trabajo, antes de realizar una técnica aséptica, después de exponerse a fluidos corporales, después de entrar en contacto con el paciente y después de entrar en contacto con el entorno que rodea al paciente.",
+    "b) Antes de entrar en la habitación del paciente, antes de realizar una técnica aséptica, antes de exponerse a fluidos corporales, antes de entrar en contacto con el paciente y antes de entrar en contacto con el entorno que rodea al paciente.",
+    "c) Antes de entrar en contacto con el paciente, antes de realizar una técnica aséptica, después de exponerse a fluidos corporales, después de entrar en contacto con el paciente y después de entrar en contacto con el entorno que rodea al paciente.",
+    "d) Antes de realizar una técnica aséptica, antes de exponerse a fluidos corporales, después de entrar en contacto con el paciente, después de entrar en contacto con el entorno que rodea al paciente y después de realizar el registro de los cuidados realizados al paciente."
+  ],
+  "correct": 2
+},
+{
+  "question": "380. Según indica la organización mundial de la salud, el lavado de manos con agua y jabón:",
+  "options": [
+    "a) Debe realizarse cuando las manos estén visiblemente sucias. Si no, debe utilizarse la solución alcohólica.",
+    "b) El procedimiento de lavado de manos con agua y jabón dura entre 40-60 segundos.",
+    "c) El procedimiento de lavado de manos con agua y jabón dura entre 10-20 segundos.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "381. Tipo de cirugía que hace referencia a los procedimientos quirúrgicos más complejos y frecuentemente realizados bajo anestesia general o regional:",
+  "options": [
+    "a) Cirugía contaminada.",
+    "b) Cirugía mayor.",
+    "c) Cirugía menor.",
+    "d) Cirugía curativa."
+  ],
+  "correct": 1
+},
+{
+  "question": "382. Consiste en la exploración de la vagina y el cuello uterino a través de la vagina:",
+  "options": [
+    "a) Colonoscopia.",
+    "b) Colposcopia.",
+    "c) Gastroscopia.",
+    "d) Laringoscopia."
+  ],
+  "correct": 1
+},
+{
+  "question": "383. Consiste en descuidar una gasa o instrumento quirúrgico, durante una intervención quirúrgica y dejarlo olvidado en el interior de un paciente:",
+  "options": [
+    "a) Oblito quirúrgico.",
+    "b) Escabel quirúrgico.",
+    "c) Travesía quirúrgica.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "384. La zona estéril de quirófano se denomina:",
+  "options": [
+    "a) Zona limitada o blanca.",
+    "b) Zona sin limitaciones de acceso o negra.",
+    "c) Zona semilimitada o gris.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "385. La altura de los techos del quirófano será de:",
+  "options": [
+    "a) 2,70 a 3 metros.",
+    "b) 2 a 3 metros.",
+    "c) 2,50 metros.",
+    "d) 3 a 4 metros."
+  ],
+  "correct": 0
+},
+{
+  "question": "386. En los quirófanos tipo A, ¿cuántas renovaciones de aire se establecen por hora?",
+  "options": [
+    "a) Al menos 20 renovaciones por hora.",
+    "b) Al menos 15 renovaciones por hora.",
+    "c) Al menos 30-35 renovaciones por hora.",
+    "d) Al menos 50 renovaciones por hora."
+  ],
+  "correct": 2
+},
+{
+  "question": "387. Los miembros del equipo no estéril deben permanecer a una distancia mínima del campo estéril de:",
+  "options": [
+    "a) 50 cm.",
+    "b) 30 cm.",
+    "c) 20 cm.",
+    "d) 1 metro."
+  ],
+  "correct": 1
+},
+{
+  "question": "388. Las articulaciones de la mesa de operaciones se denominan:",
+  "options": [
+    "a) Flexiones.",
+    "b) Extensiones.",
+    "c) Quebraduras.",
+    "d) Resecciones."
+  ],
+  "correct": 2
+},
+{
+  "question": "389. Es un accesorio metálico, que se fija a la mesa quirúrgica encima del paciente y permite separar la zona de anestesia de la zona de intervención o campo quirúrgico:",
+  "options": [
+    "a) Tripié.",
+    "b) Arco de anestesia.",
+    "c) Escabel.",
+    "d) Negatoscopio."
+  ],
+  "correct": 1
+},
+{
+  "question": "390. Mesa auxiliar para la cirugía, de forma rectangular de acero inoxidable, que se utiliza como recurso de apoyo a la enfermera circulante y al anestesista:",
+  "options": [
+    "a) Mesa de instrumentación.",
+    "b) Mesa de Pasteur.",
+    "c) Mesa de Mayo.",
+    "d) Mesa de Cigüeña."
+  ],
+  "correct": 2
+},
+{
+  "question": "391. Es un sistema de estabilización y fijación craneal esquelética utilizado en intervenciones quirúrgicas de neurocirugía y otorrinolaringología:",
+  "options": [
+    "a) Escabel.",
+    "b) Trineo.",
+    "c) Cabezal de Myfield.",
+    "d) Negatoscopio."
+  ],
+  "correct": 2
+},
+{
+  "question": "392. Las pinzas de Jones o cangrejo, son un instrumental quirúrgico de:",
+  "options": [
+    "a) Hemostasia.",
+    "b) Aprehensión.",
+    "c) Talla o campo.",
+    "d) Sutura."
+  ],
+  "correct": 2
+},
+{
+  "question": "393. Tijeras utilizadas para retirar vendajes:",
+  "options": [
+    "a) Tijeras de Metzenbaum.",
+    "b) Tijeras de Mayo.",
+    "c) Tijeras de Doyen.",
+    "d) Tijeras de Lister."
+  ],
+  "correct": 3
+},
+{
+  "question": "394. Las pinzas de mosquito, son un instrumental quirúrgico de:",
+  "options": [
+    "a) Hemostasia.",
+    "b) Aprehensión.",
+    "c) Talla o campo.",
+    "d) Sutura."
+  ],
+  "correct": 0
+},
+{
+  "question": "395. Tijeras utilizadas para retirar suturas de seda:",
+  "options": [
+    "a) Tijeras de Metzenbaum.",
+    "b) Tijeras de Mayo.",
+    "c) Tijeras de Littauer.",
+    "d) Tijeras de Lister."
+  ],
+  "correct": 2
+},
+{
+  "question": "396. El miringótomo es un instrumental utilizado en:",
+  "options": [
+    "a) Cirugía traumatológica.",
+    "b) Cirugía abdominal.",
+    "c) Ginecología.",
+    "d) Otorrinolaringología."
+  ],
+  "correct": 3
+},
+{
+  "question": "397. Material que se caracteriza porque se deteriora con el uso, es frágil en algunos casos y tiene una vida corta:",
+  "options": [
+    "a) Material inventariable.",
+    "b) Material fungible.",
+    "c) Material crítico.",
+    "d) Material semicrítico."
+  ],
+  "correct": 1
+},
+{
+  "question": "398. Tipo de limpieza que se lleva a cabo por cavitación:",
+  "options": [
+    "a) Manual.",
+    "b) Automática.",
+    "c) Por ultrasonido.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "399. Los parámetros que determinan e influyen en la efectividad de los procesos de limpieza, están representados en el círculo de:",
+  "options": [
+    "a) Spaulding.",
+    "b) Altemeier.",
+    "c) Sinner.",
+    "d) Myfield."
+  ],
+  "correct": 2
+},
+{
+  "question": "400. El aclarado del material en los procesos de limpieza se hará con agua:",
+  "options": [
+    "a) Estéril.",
+    "b) Destilada.",
+    "c) Limpia.",
+    "d) Aséptica."
+  ],
+  "correct": 1
+},
+{
+  "question": "401. La UCI y los quirófanos, pertenecen en el hospital al área:",
+  "options": [
+    "a) Crítica.",
+    "b) Semicrítica.",
+    "c) No crítica.",
+    "d) Especial."
+  ],
+  "correct": 0
+},
+{
+  "question": "402. La mayoría de las bacterias patógenas para el hombre son:",
+  "options": [
+    "a) Criófilas.",
+    "b) Termófilas.",
+    "c) Mesófilas.",
+    "d) Priones."
+  ],
+  "correct": 2
+},
+{
+  "question": "403. Actualmente es el desinfectante más utilizado en el medio hospitalario:",
+  "options": [
+    "a) Hipoclorito sódico.",
+    "b) Ácido peracético o peroxiacético.",
+    "c) Aldehídos.",
+    "d) Clorhexidina."
+  ],
+  "correct": 0
+},
+{
+  "question": "404. Actualmente es el antiséptico más utilizado en el medio hospitalario:",
+  "options": [
+    "a) Alcohol.",
+    "b) Povidona yodada.",
+    "c) Mercurocromo.",
+    "d) Clorhexidina."
+  ],
+  "correct": 3
+},
+{
+  "question": "405. En la central de esterilización, el método más empleado es:",
+  "options": [
+    "a) El vapor de agua a presión del autoclave y, cuando el material es termosensible, la cámara de óxido de etileno.",
+    "b) El óxido de etileno y, cuando el material es termosensible, las radiaciones ionizantes.",
+    "c) El calor seco y, cuando el material es termosensible, la cámara de óxido de etileno.",
+    "d) El vapor de agua a presión del autoclave y, cuando el material es termosensible, las radiaciones ionizantes."
+  ],
+  "correct": 0
+},
+{
+  "question": "406. ¿Cuál es el cuarto momento que marca la OMS para la higiene de manos?",
+  "options": [
+    "a) Después de tocar al paciente.",
+    "b) Antes del contacto con el paciente.",
+    "c) Después del riesgo de exposición a líquidos corporales.",
+    "d) Después del contacto con el entorno del paciente."
+  ],
+  "correct": 0
+},
+{
+  "question": "407. Es la recomendación con la categoría más alta según el sistema CDC/HICPAC:",
+  "options": [
+    "a) Categoría I.",
+    "b) Categoría IA.",
+    "c) Categoría II.",
+    "d) Categoría V."
+  ],
+  "correct": 1
+},
+{
+  "question": "408. Señale la respuesta incorrecta relativa a un campo estéril:",
+  "options": [
+    "a) Dentro de un campo estéril solo debe usarse material estéril.",
+    "b) Las batas del personal lavado se consideran estériles por delante y por detrás.",
+    "c) El campo estéril debe crearse lo más cerca posible del momento en que va a ser utilizado.",
+    "d) Las mesas cubiertas con paños estériles se consideran estériles solo en la superficie."
+  ],
+  "correct": 1
+},
+{
+  "question": "409. En la estructura de la unidad del bloque quirúrgico, ¿en qué zona se sitúa la denominada URPA?",
+  "options": [
+    "a) Zona de preparación prequirúrgica.",
+    "b) Zona postquirúrgica.",
+    "c) Zona de acceso y recepción.",
+    "d) Zona de personal de anestesia y cirugía."
+  ],
+  "correct": 1
+},
+{
+  "question": "410. No es miembro del equipo de lavado estéril en el área quirúrgica:",
+  "options": [
+    "a) Cirujano/a.",
+    "b) Enfermero/a instrumentista.",
+    "c) Enfermero/a circulante.",
+    "d) Ayudante de cirujano."
+  ],
+  "correct": 2
+},
+{
+  "question": "411. Señale la respuesta incorrecta relativa a las características de los quirófanos:",
+  "options": [
+    "a) Existirá una instalación de aire acondicionado independiente de la del resto del hospital y con capacidad para renovar el aire entre 15 y 20 veces por hora.",
+    "b) La temperatura debe mantenerse entre 18 y 26ºC.",
+    "c) La humedad del ambiente debe mantenerse entre 50 y 60 %.",
+    "d) Las paredes, techos y suelos deben estar construidos con un material poroso de fácil limpieza."
+  ],
+  "correct": 3
+},
+{
+  "question": "412. ¿Qué posición quirúrgica se emplea sobre todo en intervenciones de la columna torácica o lumbar?",
+  "options": [
+    "a) Posición de laminectomía.",
+    "b) Posición de kraske.",
+    "c) Posición de litotomía.",
+    "d) Posición de craneotomía."
+  ],
+  "correct": 0
+},
+{
+  "question": "413. El conjunto de técnicas que garantiza la ausencia de materia séptica o microorganismos infecciosos, tanto en la superficie como en la profundidad, de los materiales expuestos o de los seres vivos, se conoce como:",
+  "options": [
+    "a) Desinfección.",
+    "b) Esterilización.",
+    "c) Antisepsia.",
+    "d) Asepsia."
+  ],
+  "correct": 3
+},
+{
+  "question": "414. ¿Cuál sería el tiempo necesario para esterilizar un material en la estufa Poupinel a una temperatura de 150 ºC?",
+  "options": [
+    "a) 30 minutos.",
+    "b) 60 minutos.",
+    "c) 120 minutos.",
+    "d) 150 minutos."
+  ],
+  "correct": 2
+}
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
