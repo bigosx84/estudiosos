@@ -1,0 +1,614 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [		
+  {
+    "question": "1. ¿Cuántos artículos tiene la Constitución Española?",
+    "options": [
+      "a) 189.",
+      "b) 169.",
+      "c) 170.",
+      "d) 165."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "2. ¿Cuál es la sucesión natural de mayor a menor contenido?",
+    "options": [
+      "a) Artículo, Sección, Capítulo y Título",
+      "b) Artículo, Capítulo, Título y Sección",
+      "c) Capítulo, Título, Artículo y Sección",
+      "d) Título, Capítulo, Sección y Artículo"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "3. ¿Cuántos artículos tiene la constitución?",
+    "options": [
+      "a) 168",
+      "b) 167",
+      "c) 165",
+      "d) 169"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "4. ¿Qué nombre recibe el Título Preliminar de la CE?",
+    "options": [
+      "a) De los derechos y deberes fundamentales.",
+      "b) De la Reforma Constitucional",
+      "c) De las Garantías Constitucionales.",
+      "d) Todas son falsas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "5. ¿Qué Título de la CE trata de las relaciones entre el Gobierno y las Cortes Generales?",
+    "options": [
+      "a) El Título III",
+      "b) El Título VI",
+      "c) El Título V",
+      "d) El Título VII"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "6. ¿Qué Títulos de la Constitución se dividen en Capítulos?",
+    "options": [
+      "a) El I, el II, el III y el VIII",
+      "b) El I, el III y el VIII",
+      "c) El I, el VII y el X",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "7. ¿De cuántos capítulos consta el Título I de la CE?",
+    "options": [
+      "a) 3",
+      "b) 5",
+      "c) 2",
+      "d) 4"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "8. El Capítulo 2° del Título I se denomina:",
+    "options": [
+      "a) De los españoles y los extranjeros y comprende los artículos 11 al 13",
+      "b) Derechos y libertades y está dividido en tres secciones.",
+      "c) Derechos y libertades y está dividido en dos secciones y comprende los artículos del 14 al 38",
+      "d) Derechos fundamentales y de las libertades públicas y comprende los artículos del 14 al 38"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. El Capítulo III del Título VIII",
+    "options": [
+      "a) Recoge las competencias exclusivas de las GGAA",
+      "b) Recoge las competencias exclusivas del Estado.",
+      "c) En su artículo 143 recoge el proceso para el autogobierno según la vía común.",
+      "d) Todas son verdaderas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "10. El capítulo tercero del Título I de la CE comprende:",
+    "options": [
+      "a) Los artículos 39 a 45 de la CE",
+      "b) Los artículos 39 a 53 inclusive.",
+      "c) Los artículos 39 a 52 inclusive.",
+      "d) Los artículos 38 a 52 de la CE."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "11. El Capítulo I del Título I de la CE se denomina:",
+    "options": [
+      "a) Derechos y Libertades",
+      "b) Normas sobre nacionalidad y derechos de los extranjeros en España y comprende los artículos del 11 al 13",
+      "c) De los españoles y los extranjeros y comprende los artículos del 11 al 12",
+      "d) De los españoles y los extranjeros"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "12. El Título I de la CE habla de:",
+    "options": [
+      "a) La Reforma Constitucional",
+      "b) El Poder Judicial",
+      "c) Las Cortes Generales",
+      "d) Los Derechos y Deberes Fundamentales."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "13. El Título II de la CE habla de:",
+    "options": [
+      "a) La Corona",
+      "b) Las Cortes Generales",
+      "c) El Poder Judicial",
+      "d) El Tribunal Constitucional"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "14. El Título II de la Constitución Española hace referencia:",
+    "options": [
+      "a) Al Gobierno y la Administración",
+      "b) Al Poder Judicial",
+      "c) A las Cortes Generales",
+      "d) A la Corona"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "15. El Título III de la CE habla de",
+    "options": [
+      "a) El Gobierno y la Administración",
+      "b) La Corona",
+      "c) Las Cortes Generales",
+      "d) Las relaciones entre el Gobierno y las Cortes Generales."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "16. El Título IV de la CE trata de:",
+    "options": [
+      "a) La Corona",
+      "b) Del Gobierno y la Administración",
+      "c) Del poder Judicial",
+      "d) De la Economía y Hacienda"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "17. El Título IX de la CE habla de:",
+    "options": [
+      "a) El Tribunal Constitucional",
+      "b) Nueve disposiciones adicionales, transitorias, una derogatoria y una final.",
+      "c) Cuatro disposiciones adicionales, transitorias, dos derogatorias y una final.",
+      "d) Cuatro disposiciones adicionales, transitorias, una derogatoria y una final."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "18. El Título Preliminar y el Título I de la Constitución española forman básicamente su parte:",
+    "options": [
+      "a) Dogmática.",
+      "b) Programática.",
+      "c) Estatutaria.",
+      "d) Orgánica."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "19. El Título Primero de la Constitución Española habla de:",
+    "options": [
+      "a) El Poder Judicial",
+      "b) Las Cortes Generales",
+      "c) La Reforma Constitucional",
+      "d) Los Derechos y Deberes Fundamentales"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "20. El Título VIII está dividido en:",
+    "options": [
+      "a) 2 capítulos",
+      "b) 3 capítulos",
+      "c) 4 capítulos",
+      "d) 1 capítulo"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "21. La CE establece los derechos y deberes fundamentales en:",
+    "options": [
+      "a) El Preámbulo",
+      "b) Título Preliminar",
+      "c) Título I",
+      "d) El artículo 10"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "22. La Constitución de 1978 contiene:",
+    "options": [
+      "a) Una disposición adicional, una transitoria, una derogatoria y una final.",
+      "b) Nueve Títulos numerados, cuatro Disposiciones Adicionales, nueve Disposiciones Transitorias y una Disposición Derogatoria",
+      "c) Un Preámbulo, un Título Preliminar, once Títulos numerados, cuatro Disposiciones Adicionales, nueve Disposiciones Transitorias y una Disposición Derogatoria",
+      "d) Un Preámbulo, un Título Preliminar, doce Títulos numerados, cuatro Disposiciones Adicionales, nueve Disposiciones Transitorias y una Disposición Derogatoria"
+    ],
+    "correct": 3
+  },
+
+    {
+    "question": "24. La Constitución española tiene un total de:",
+    "options": [
+      "a) 179 artículos",
+      "b) 169 artículos.",
+      "c) 188 artículos.",
+      "d) 196 artículos"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "25. La Constitución Española consta de:",
+    "options": [
+      "a) 171 artículos",
+      "b) 179 artículos",
+      "c) 169 artículos",
+      "d) 159 artículos"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "26. La parte de la CE en la que se exponen los motivos para la adopción del texto constitucional se denomina",
+    "options": [
+      "a) Parte Dogmática",
+      "b) Parte Orgánica.",
+      "c) Parte Básica.",
+      "d) Introducción o Preámbulo"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "27. La Sección 1ª del Capítulo II, ¿qué artículos comprende?",
+    "options": [
+      "a) 15 al 29, ambos inclusive.",
+      "b) 14 al 29, ambos inclusive",
+      "c) 15 al 45, ambos inclusive.",
+      "d) 15 al 65, ambos inclusive."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "28. La sección 2ª del capítulo II del Título I comprende:",
+    "options": [
+      "a) Los artículos 30 al 38 de la CE",
+      "b) Los artículos 29 al 38 de la CE",
+      "c) Los artículos 30 al 38 de la CE y se denomina de los derechos y deberes de los ciudadanos",
+      "d) Los artículos 30 al 37 de la CE y se denomina de los derechos fundamentales y de las libertades públicas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "29. La Sección 2ª del Capítulo II del Título I se denomina",
+    "options": [
+      "a) Derecho al honor, la intimidad y la propia imagen",
+      "b) De los derechos fundamentales y de las libertades publicas",
+      "c) Derechos y Libertades",
+      "d) De los derechos y deberes de los ciudadanos"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "30. La Sección I del Capítulo II del Título Primero se denomina:",
+    "options": [
+      "a) De los derechos fundamentales y de las libertades públicas.",
+      "b) De los derechos y deberes de los ciudadanos",
+      "c) Derecho al honor la intimidad y la propia imagen",
+      "d) Derecho a la libertad y seguridad"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "31. La Sección Segunda del Capítulo Segundo del Título Primero de la Constitución:",
+    "options": [
+      "a) No existe.",
+      "b) Comprende los artículos treinta a cincuenta y dos.",
+      "c) Comprende los artículos treinta a treinta y ocho.",
+      "d) Comprende los artículos quince a veintinueve."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "32. La vigente Constitución se compone de:",
+    "options": [
+      "a) Un Preámbulo, un Título Preliminar y diez Títulos más.",
+      "b) Un Preámbulo, un Título Preliminar y nueve Títulos más",
+      "c) Un Preámbulo, un Título Preliminar y once Títulos más.",
+      "d) Un Preámbulo, un Título Preliminar y ocho Títulos más"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "33. Las disposiciones adicionales de la CE son:",
+    "options": [
+      "a) 5",
+      "b) 4",
+      "c) 9",
+      "d) 1"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "34. Las Relaciones entre el Gobierno y las Cortes están en:",
+    "options": [
+      "a) El Título III",
+      "b) El Título VI",
+      "c) El Título V",
+      "d) El Título VII"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "35. [OSAKIDETZA-2006-parte 2] Son causas de extinción de la condición de personal estatutario fijo:",
+    "options": [
+      "a) La renuncia, la pérdida de nacionalidad, la separación del servicio, la pena principal o accesoria de inhabilitación absoluta, la jubilación y la incapacidad permanente",
+      "b) La renuncia y la sanción disciplinaria de separación del servicio",
+      "c) La renuncia, la pérdida de nacionalidad, la separación del servicio, la pena principal o accesoria de inhabilitación absoluta y la incapacidad permanente",
+      "d) La renuncia, la pérdida de nacionalidad, la separación del servicio, la jubilación y la incapacidad permanente"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "36. [OSAKIDETZA-2006-parte 2] De los siguientes requisitos que se señalan para poder participar en los procesos de selección de personal estatutario fijo, hay uno que es falso, ¿cuál es?",
+    "options": [
+      "a) Estar en posesión de la titulación exigida en la convocatoria o en condiciones de obtenerla dentro del plazo de presentación de solicitudes",
+      "b) Tener cumplidos 18 años y no exceder la edad de jubilación forzosa",
+      "c) Haber sido separado del servicio, mediante expediente disciplinario",
+      "d) Tener la capacidad funcional necesaria para el desempeño de las funciones que se deriven del correspondiente nombramiento"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "37. [OSAKIDETZA-2006-parte 3] La condición de personal estatutario fijo se adquiere por el cumplimiento sucesivo de los siguientes requisitos:",
+    "options": [
+      "a) Superación de las pruebas de selección",
+      "b) Superación de las pruebas de selección, nombramiento e incorporación previo cumplimiento de los requisitos formales",
+      "c) Superación de las pruebas de selección e incorporación previo cumplimiento de los requisitos formales",
+      "d) Superación de las pruebas y nombramiento"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "38. [OSAKIDETZA-2006-parte 4] Las funciones de los celadores contempladas en el estatuto de personal no sanitario de las instituciones de la seguridad social están en vigor en virtud de lo establecido en:",
+    "options": [
+      "a) La disposición transitoria sexta-1 de la Ley 55/2003, de 16 de diciembre",
+      "b) La disposición transitoria sexta-2 de la Ley 55/2003, de 16 de diciembre",
+      "c) La disposición transitoria quinta de la Ley 55/2003, de 16 de diciembre",
+      "d) La disposición transitoria cuarta de la Ley 55/2003, de 16 de diciembre"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "39. [OSAKIDETZA-2006-parte 4] ¿Cuándo se aprobó el estatuto marco del personal no sanitario del Servicio Extremeño de Salud (SES)?",
+    "options": [
+      "a) Mediante la Ley 8/1997, de 26 de junio.",
+      "b) Mediante Ley 55/2003, de 16 de diciembre",
+      "c) No se encuentra regulado el Estatuto Marco del personal no sanitario del SES",
+      "d) Mediante Decreto 57/2005, de 15 de marzo"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "40. [SERMAS-2007-PARTE 1] Es un deber obligado del personal estatutario:",
+    "options": [
+      "a) Ser identificado por su nombre y categoría profesional por los usuarios del Sistema Nacional de Salud",
+      "b) La libre sindicación y la actividad sindical",
+      "c) La promoción interna y desarrollo profesional",
+      "d) La acción social en los términos y ámbitos subjetivos que se determinen en las normas, acuerdos o convenios aplicables"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "41. [SERMAS-2007-PARTE 2] Los celadores se encuadran dentro del grupo de clasificación correspondiente a:",
+    "options": [
+      "a) Personal estatutario no sanitario de formación profesional",
+      "b) Personal estatutario sanitario de formación profesional",
+      "c) Personal estatutario sanitario de gestión y servicios",
+      "d) Personal estatutario de gestión y servicios"
+    ],
+    "correct": 3
+  },
+    {
+    "question": "42. [SERMAS-2007-PARTE 2] El derecho a la formación continuada, se encuentra dentro de los derechos que el estatuto marco denomina:",
+    "options": [
+      "a) Derechos colectivos",
+      "b) Derechos individuales",
+      "c) Derechos genéricos",
+      "d) Derechos específicos"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "43. [SERMAS-2007-PARTE 2] Conforme a lo establecido en la Ley 55/2003 del estatuto marco del personal estatutario de los servicios de salud, el régimen jurídico del personal estatutario es:",
+    "options": [
+      "a) Laboral",
+      "b) Funcionarial especial",
+      "c) Funcionarial de la Administración General del Estado",
+      "d) Funcionarial de la Administración de la Seguridad Social"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "44. [SESCAM-2008-PARTE 2] ¿Cuál de los siguientes derechos individuales no es correcto?",
+    "options": [
+      "a) La percepción puntual de las retribuciones",
+      "b) Ser identificado por su nombre y categoría profesional",
+      "c) La estabilidad en el empleo",
+      "d) Que sea respetada su dignidad e intimidad personal"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "45. [SESCAM-2008-PARTE 3] No es un deber del personal estatutario de los servicios de salud:",
+    "options": [
+      "a) Respetar la Constitución, el Estatuto de Autonomía correspondiente y el resto del ordenamiento jurídico",
+      "b) Cumplir el régimen de horarios y jornada, atendiendo a la cobertura de jornadas complementarias que se hayan establecido para garantizar de forma permanente el funcionamiento de las instituciones, centros y servicios",
+      "c) Recibir protección eficaz en materia de seguridad y salud en el trabajo",
+      "d) Cumplir las normas relativas a la seguridad y salud en el trabajo, así como las disposiciones adoptadas en el centro sanitario en relación con esta materia"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "46. [SESCAM-2008-PARTE 3] Son causas de extinción de la condición de personal estatutario fijo:",
+    "options": [
+      "a) La sanción disciplinaria firme de separación del servicio",
+      "b) La jubilación",
+      "c) La renuncia",
+      "d) Las tres anteriores son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "47. [SACYL-2011-PARTE 1] Atendiendo a la función desarrollada, es personal estatutario sanitario:",
+    "options": [
+      "a) Titulado superior en prevención de riesgos laborales",
+      "b) Titulado superior en administración sanitaria",
+      "c) Logopeda",
+      "d) Ninguna es correcta"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "48. [SACYL-2011-PARTE 1] La cobertura de vacaciones del personal estatutario, será mediante contratación de:",
+    "options": [
+      "a) Personal estatutario Eventual",
+      "b) Personal estatutario Temporal",
+      "c) Personal Estatutario Interino",
+      "d) Personal Estatutario Sustituto"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "49. [SESCAM-2008-PARTE 4] Según el estatuto marco del personal estatutario de los servicios de salud, la selección del personal fijo se efectuará, con carácter general, a través del siguiente sistema:",
+    "options": [
+      "a) Oposición",
+      "b) Concurso general",
+      "c) Concurso-oposición",
+      "d) Concurso específico"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "50. [SESCAM-2008-PARTE 4] Según el estatuto marco, la renuncia a la condición de personal estatutario tiene el carácter de acto voluntario y deberá ser solicitada con una antelación mínima a la fecha de efectividad de:",
+    "options": [
+      "a) 20 días",
+      "b) 10 días",
+      "c) 15 días",
+      "d) 30 días"
+    ],
+    "correct": 2
+  }
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
