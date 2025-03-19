@@ -1,0 +1,723 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "01. RESPECTO A LAS PAREDES DE UNA HABITACIÓN HOSPITALARIA, ¿DE COLOR, PREFERENTEMENTE, ESTARÁN PINTADAS?",
+  "options": [
+    "a) Blanco sucio",
+    "b) Blanco roto",
+    "c) Blanco mate",
+    "d) Blanco con brillo"
+  ],
+  "correct": 2
+},
+{
+  "question": "02. ¿CUÁL DE LOS SIGUIENTES MATERIALES NO FORMA PARTE DEL MATERIAL HABITUAL EN UNA UNIDAD TIPO DE UNA HABITACIÓN DE HOSPITAL?",
+  "options": [
+    "a) Toma de oxígeno",
+    "b) Pie para suero",
+    "c) Timbre de alarma",
+    "d) Fonendoscopio"
+  ],
+  "correct": 3
+},
+{
+  "question": "03. LA PUERTA DE ACCESO A LA HABITACION HOSPITALARIA, ¿QUE DIMENSIONES TENDRA?",
+  "options": [
+    "a) No debe en ningún caso ser superior a 1 m.",
+    "b) Debe tener el ancho suficiente para que pasen sillas de ruedas, camillas, camas, etc.",
+    "c) Debe ser de doble hoja con cerrojo interno",
+    "d) Debe permanecer siempre cerrada excepto cuando el médico lo desaconseje"
+  ],
+  "correct": 0
+},
+{
+  "question": "04. LA TEMPERATURA AMBIENTE DE LA UNIDAD DE HOSPITALIZACIÓN DEBE ESTAR:",
+  "options": [
+    "a) 24-27ºC",
+    "b) 20-23ºC",
+    "c) 20-22ºC",
+    "d) 15-19ºC"
+  ],
+  "correct": 2
+},
+{
+  "question": "05. ¿CÓMO DEBERÁ ESTAR COLOCADA LA CAMA EN UNA HABITACIÓN HOSPITALARIA?",
+  "options": [
+    "a) Todo dependerá del tamaño de la habitación",
+    "b) De tal forma que el paciente pueda ser atendido por los tres lados de la cama",
+    "c) De tal forma que el paciente pueda sólo ser atendido por ambos laterales de la cama",
+    "d) De tal forma que el paciente pueda sólo ser atendido por ambos laterales de la cama y por el cabecero"
+  ],
+  "correct": 1
+},
+{
+  "question": "06. DENTRO DE LAS CONDICIONES ATMOSFÉRICAS DE LA UNIDAD DE HOSPITALIZACIÓN NO SE ENCUENTRA:",
+  "options": [
+    "a) Temperatura",
+    "b) Ruido ambiental",
+    "c) Humedad",
+    "d) Ventilación y pureza del aire"
+  ],
+  "correct": 1
+},
+{
+  "question": "07. EN UNA HABITACION HOSPITALARIA",
+  "options": [
+    "a) Se evitarán los malos olores",
+    "b) Se mantendrá en condiciones óptimas de limpieza e higiene",
+    "c) Sólo la respuesta B es correcta",
+    "d) Las respuestas A y B son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "08. ENTRE LAS CONDICIONES IDEALES DEL MEDIO FISICO EN UNA UNIDAD DE HOSPITALIZACION, SE ENCUENTRA:",
+  "options": [
+    "a) Temperatura 22° y humedad 45-55%",
+    "b) Temperatura 20° y humedad 55-65%",
+    "c) Temperatura 22° y humedad 65-85%",
+    "d) Temperatura 20° y humedad 45-55%"
+  ],
+  "correct": 0
+},
+{
+  "question": "09. AL CONJUNTO FORMADO POR EL ESPACIO DE LA HABITACIÓN, EL MOBILIARIO Y EL MATERIAL QUE UTILIZA CADA PACIENTE DURANTE SU ESTANCIA EN EL HOSPITAL, SE LE DENOMINA:",
+  "options": [
+    "a) Unidad de día",
+    "b) Sala de hospitalización",
+    "c) Unidad del paciente",
+    "d) Unidad de enfermería"
+  ],
+  "correct": 2
+},
+{
+  "question": "10. ¿CUÁL SERÁ EL ESPACIO MÍNIMO QUE DEBERÁ EXISTIR ENTRE CAMAY CAMA, EN UNA HABITACIÓN HOSPITALARIA?",
+  "options": [
+    "a) De 1m a 1,20 m",
+    "b) De 1,20 a 1,40 m",
+    "c) 0,90 cm a 1 m",
+    "d) Es indiferente"
+  ],
+  "correct": 0
+},
+{
+  "question": "11. ¿QUÉ SON LOS ''CENTINELAS'' DE CAMA?",
+  "options": [
+    "a) Almohadillas utilizadas para prevenir lesiones o caídas",
+    "b) Luz tenue y delicada que evita la desorientación del encamado al despertar",
+    "c) Timbres próximos al cabecero para avisar de incidentes",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "12. EL ANCHO DE LAS CAMAS HOSPITALARIAS ESTÁNDAR ES APROXIMADAMENTE DE:",
+  "options": [
+    "a) 70 cm - 80 cm",
+    "b) 80 cm - 90 cm",
+    "c) 90 cm - 100 cm",
+    "d) 100 cm - 110 cm"
+  ],
+  "correct": 1
+},
+{
+  "question": "13. NO SUELE FORMAR PARTE DE UNA UNIDAD DEL PACIENTE:",
+  "options": [
+    "a) Cama hospitalaria",
+    "b) Carro de curas",
+    "c) Toma de oxígeno",
+    "d) Pie para suero"
+  ],
+  "correct": 1
+},
+{
+  "question": "14. EN LAS HABITACIONES CON VARIAS CAMAS, CADA UNIDAD, PARA ASEGURAR Y RESPETAR LA INTIMIDAD DEL PACIENTE, PODRÁ AISLARSE MEDIANTE:",
+  "options": [
+    "a) Paredes de pladur",
+    "b) Biombos o cortinas",
+    "c) No es necesario aislar las distintas unidades",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "15. EN UNA HABITACIÓN DE UNA PLANTA HOSPITALARIA, ¿CUÁNTAS UNIDADES DE PACIENTE HABRÁ?",
+  "options": [
+    "a) Sólo una",
+    "b) El número de camas que tenga la habitación",
+    "c) Como norma general habrá tres unidades",
+    "d) Dos"
+  ],
+  "correct": 1
+},
+{
+  "question": "16. LA ALTURA DE LA CAMA HOSPITALARIA SIN COLCHÓN SUELE SER:",
+  "options": [
+    "a) 60 cm",
+    "b) 70 cm",
+    "c) 80 cm",
+    "d) 90 cm"
+  ],
+  "correct": 1
+},
+{
+  "question": "17. DENTRO DE UNA UNIDAD DE PACIENTE NOS PODEMOS ENCONTRAR CON:",
+  "options": [
+    "a) Escabel",
+    "b) Timbre para la comunicación con el control de enfermería",
+    "c) Biombo",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "18. EL ACCESORIO DE LA CAMA HOSPITALARIA QUE, BIEN SE PUEDE COLGAR DEL TECHO EN SISTEMA DE RIEL, BIEN PERMITE LA POSIBILIDAD DE SER ADAPTADO A LA CABECERA DE LA CAMA O BIEN SER PORTÁTIL MEDIANTE RUEDAS QUE ES NECESARIO PARA ADMINISTRAR DETERMINADA MEDICACIÓN, SE LLAMA:",
+  "options": [
+    "a) Arco de cama",
+    "b) Soporte de suero",
+    "c) Férula de arco",
+    "d) Barra de tracción"
+  ],
+  "correct": 1
+},
+{
+  "question": "19. EN UNA HABITACIÓN HOSPITALARIA EL ESPACIO ENTRE LA CAMA Y LA PARED SERÁ:",
+  "options": [
+    "a) Mínimo 1 m",
+    "b) Mínimo 1,10 m",
+    "c) Máximo 1,10 m",
+    "d) Máximo 1 m"
+  ],
+  "correct": 1
+},
+{
+  "question": "20. EL ACCESORIO QUE SE AJUSTA ALREDEDOR DE LA CAMA PARA PREVENIR CAIDAS DE PACIENTES, SE LLAMA:",
+  "options": [
+    "a) Barra de tracción",
+    "b) Barandillas o rejas de seguridad",
+    "c) Férula de arco",
+    "d) Arco de cama"
+  ],
+  "correct": 1
+},
+{
+  "question": "21. LA ILUMINACIÓN EN LAS HABITACIONES HOSPITALARIAS DEBE SER PREFERENTEMENTE:",
+  "options": [
+    "a) Muy oscura, para que no les moleste la luz",
+    "b) Con luz artificial durante todo el día",
+    "c) Natural para favorecer el estado de ánimo del paciente",
+    "d) Es indiferente el tipo de iluminación que haya en la habitación"
+  ],
+  "correct": 2
+},
+{
+  "question": "22. LOS MUEBLES EXISTENTES EN UNA HABITACION HOSPITALARIA SE RECOMIENDAN QUE SEAN:",
+  "options": [
+    "a) De color verde botella",
+    "b) De colores claros y fácilmente lavables",
+    "c) De colores claros y difícilmente lavables",
+    "d) Preferentemente de color azul"
+  ],
+  "correct": 1
+},
+{
+  "question": "23. ES UN REQUISITO DE LA UNIDAD DEL PACIENTE:",
+  "options": [
+    "a) Condiciones ambientales favorables",
+    "b) Correctas medidas de seguridad",
+    "c) Debe proporcionar intimidad al paciente",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "24. LA UNIDAD DE PACIENTE ES:",
+  "options": [
+    "a) El único espacio 'privado' que el paciente poseerá durante su permanencia en el hospital",
+    "b) El único espacio 'público' que el paciente poseerá durante su permanencia en el hospital",
+    "c) El lugar donde pasará la mayor parte del tiempo durante su ingreso en el centro",
+    "d) Las respuestas A y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "25. LA ILUMINACIÓN ARTIFICIAL EN UNA HABITACIÓN HOSPITALARIA SERÁ:",
+  "options": [
+    "a) Directa, auxiliar, general y de emergencia",
+    "b) Indirecta, auxiliar, general y de emergencia",
+    "c) Indirecta, auxiliar e individual",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "26. RESPECTO A LA UNIDAD DEL PACIENTE:",
+  "options": [
+    "a) En una habitación doble, con un tercer paciente en cama, pasan a ser tres unidades de paciente",
+    "b) Por cada unidad de paciente se exige un cuarto de baño individual",
+    "c) Se podrán instalar en cada habitación hospitalaria de 5 a 6 unidades de paciente",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "27. CUANDO EN UN HOSPITAL EXISTAN HABITACIONES DOBLES, LA DISTANCIA ACONSEJADA ENTRE LAS DOS CAMAS DEBE SER:",
+  "options": [
+    "a) 80 cm",
+    "b) 1,20 m",
+    "c) 2,20 m",
+    "d) 100 cm"
+  ],
+  "correct": 1
+},
+{
+  "question": "28. PARA REALIZAR UNA VENTILACIÓN ADECUADA EN UNA HABITACION HOSPITALARIA, DEBEMOS:",
+  "options": [
+    "a) Abrir las ventanas y la puerta a la vez",
+    "b) Abrir las ventanas y el aire le dé directamente al paciente encamado",
+    "c) Abrir las ventanas de 10 a 15 minutos",
+    "d) Abrir las ventanas mientras se realice el aseo al paciente encamado"
+  ],
+  "correct": 2
+},
+{
+  "question": "29. LA CAMA EN UNA HABITACIÓN HOSPITALARIA DEBE ESTAR COLOCADA DE TAL FORMA QUE SEA POSIBLE LA ASISTENCIA AL PACIENTE, ¿POR CUANTOS DE SUS LADOS?",
+  "options": [
+    "a) Dos",
+    "b) Tres",
+    "c) Cuatro",
+    "d) Es suficiente sólo por uno"
+  ],
+  "correct": 1
+},
+{
+  "question": "30. ¿QUÉ ANCHO DEBERÁN TENER LAS PUERTAS DE UNA HABITACIÓN DE UNA PLANTA DE HOSPITALIZACION?",
+  "options": [
+    "a) Como mínimo 1,20 m",
+    "b) Como mínimo 2 m",
+    "c) El ancho suficiente que permita la entrada de una cama equipada con todos los dispositivos que se le pueda acoplar a dicha cama",
+    "d) El ancho suficiente que permita la entrada de camilla de ambulancia"
+  ],
+  "correct": 2
+},
+{
+  "question": "31. EN LA UNIDAD DEL PACIENTE:",
+  "options": [
+    "a) Se contará con un baño común para varias habitaciones hospitalarias",
+    "b) La humedad no debe ser mayor del 15%",
+    "c) La temperatura se mantendrá a una temperatura constante entre 22-24º C",
+    "d) Se mantendrá una temperatura constante entre 20-22º C"
+  ],
+  "correct": 3
+},
+{
+  "question": "32. SEÑALE DE LAS SIGUIENTES RESPUESTAS CUÁL NO FORMA PARTE DE LA UNIDAD DEL PACIENTE:",
+  "options": [
+    "a) Cama hospitalaria",
+    "b) Colchón",
+    "c) Pijama",
+    "d) Negatoscopio"
+  ],
+  "correct": 3
+},
+{
+  "question": "33. LA HABITACIÓN DEL PACIENTE DEBE REUNIR UNAS CARACTERÍSTICAS MÍNIMAS, SEÑALE LA RESPUESTA CORRECTA:",
+  "options": [
+    "a) Tranquila",
+    "b) Ventilada",
+    "c) Temperatura adecuada",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "34. UNA UNIDAD TIPO ESTÁ FORMADA POR: SEÑALE LA INCORRECTA:",
+  "options": [
+    "a) Cama hospitalaria",
+    "b) Accesorios para la cama: colchón, almohada, barandillas, etc.",
+    "c) Sondas vesicales",
+    "d) Lencería de cama"
+  ],
+  "correct": 2
+},
+{
+  "question": "35. LA CAMA INDICADA PARA PACIENTES CON LESIONES MEDULARES, FRACTURAS DE COLUMNA VERTEBRAL, ES:",
+  "options": [
+    "a) La cama electromagnética",
+    "b) Armazón de Stryker",
+    "c) La cama traumatológica",
+    "d) La cama articulada"
+  ],
+  "correct": 1
+},
+{
+  "question": "36. POSEE UN SOMIER METÁLICO FORMADO POR DOS O TRES SEGMENTOS MÓVILES Y ADAPTABLES A LAS NECESIDADES DEL PACIENTE. ES UNA CAMA:",
+  "options": [
+    "a) Metálica de somier rígido",
+    "b) Traumatológica",
+    "c) Articulada",
+    "d) Electrocircular"
+  ],
+  "correct": 2
+},
+{
+  "question": "37. ¿QUÉ TIPO DE CAMA PERMITE UNA ANGULACIÓN LATERAL QUE DISTRIBUYE LA ZONA DE PRESIÓN Y MODIFICA LOS PUNTOS DE APOYO DEL CUERPO?",
+  "options": [
+    "a) La cama libro",
+    "b) La cama de levitación",
+    "c) La cama de Stryker",
+    "d) La cama de Judet"
+  ],
+  "correct": 0
+},
+{
+  "question": "38. EL COLCHÓN ALTERNATING SE UTILIZA",
+  "options": [
+    "a) Para prevenir las úlceras por presión",
+    "b) En pacientes fracturados",
+    "c) Para enfermos pulmonares",
+    "d) Para enfermos renales"
+  ],
+  "correct": 0
+},
+{
+  "question": "39. CUANDO HABLAMOS DE UNA CAMA HOSPITALARIA TIPO ORTOPEDICA DE JUDET NOS REFERIMOS A:",
+  "options": [
+    "a) Que es indicada para facilitar el cambio postural en aquellos pacientes que únicamente pueden hacerlo con volteo",
+    "b) Que está indicada para pacientes que sufren fracturas o parálisis de las extremidades",
+    "c) Que se utiliza para la exploración ginecológica así como en el momento del parto",
+    "d) Utiliza un flujo continuo e intenso de aire que permite que el paciente permanezca en suspensión"
+  ],
+  "correct": 1
+},
+{
+  "question": "40. SE DECIDE COLOCAR A UN PACIENTE EN UN COLCHON ANTIESCARAS. ¿CUÁL ES EL FUNCIONAMIENTO DE ESTE TIPO DE COLCHÓN?",
+  "options": [
+    "a) Presión concomitante",
+    "b) Presión alternante",
+    "c) Antipresión en las zonas de riesgo",
+    "d) Evitar la presión alternante"
+  ],
+  "correct": 1
+},
+{
+  "question": "41. UN PACIENTE CON LESIÓN MEDULAR NECESITA UNA CAMA:",
+  "options": [
+    "a) Ortopédica o de Judet",
+    "b) Cama libro",
+    "c) Cama electrocircular",
+    "d) Cama de Gatch"
+  ],
+  "correct": 2
+},
+{
+  "question": "42. ¿PARA QUÉ SE UTILIZA EL ARMAZÓN BALKAN?",
+  "options": [
+    "a) Para facilitar la incorporación del paciente con traumatismo en las extremidades inferiores",
+    "b) Para evitar que el paciente se caiga en la cama",
+    "c) Para evitar posturas viciadas o incorrectas",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "43. LA CAMA ELECTROCIRCULAR O DE STRIKER PERMITE DAR GIROS DE:",
+  "options": [
+    "a) 360°",
+    "b) 180°",
+    "c) 90°",
+    "d) 190°"
+  ],
+  "correct": 1
+},
+{
+  "question": "44. AL CELADOR QUE PRESTA SUS SERVICIOS EN UNA PLANTA DE HOSPITALIZACION, LE REQUIEREN UNA CAMA ESPECIAL PARA UN PACIENTE CON FRACTURAS EN LAS EXTREMIDADES SUPERIORES E INFERIORES. EL CELADOR LLEVARA:",
+  "options": [
+    "a) Una cama electrocircular",
+    "b) Una cama rígida",
+    "c) Una cama articulada",
+    "d) Una cama ortopédica"
+  ],
+  "correct": 3
+},
+{
+  "question": "45. PARA UN PACIENTE CON FRACTURA DE EXTREMIDADES, ¿QUÉ TIPO DE CAMA SE UTILIZARA?",
+  "options": [
+    "a) Electrocircular",
+    "b) Rígida",
+    "c) Articulada",
+    "d) Traumatológica"
+  ],
+  "correct": 3
+},
+{
+  "question": "46. EL CUADRO BALCÁNICO ES...",
+  "options": [
+    "a) Un conjunto de síntomas de una enfermedad",
+    "b) Un armazón que inmoviliza las camas en las habitaciones",
+    "c) Un armazón que se coloca en las camas de determinados pacientes",
+    "d) Un aparato mecánico que utiliza exclusivamente el personal de mantenimiento"
+  ],
+  "correct": 2
+},
+{
+  "question": "47. LA CAMA QUE MANTIENE AL PACIENTE GIRANDO CONSTANTEMENTE, PERMITIENDO GIROS Y CAMBIOS DE POSICIÓN LATERAL Y LONGITUDINAL, ELIMINANDO LOS PUNTOS DE PRESIÓN, SE LLAMA:",
+  "options": [
+    "a) Cama Gatch",
+    "b) Cama roto-rest",
+    "c) Cama de Striker",
+    "d) Cama libro"
+  ],
+  "correct": 1
+},
+{
+  "question": "48. ¿QUE TIPO DE CAMA ES LA QUE CONSTA DE DOS ARMAZONES UTILIZANDO UN FLUJO CONTINUO DE AIRE CALIENTE, PERMITIENDO AL PACIENTE PERMANECER EN SUSPENSION?",
+  "options": [
+    "a) Cama libro",
+    "b) Cama de levitación",
+    "c) Cama roto-rest",
+    "d) Cama de Judet"
+  ],
+  "correct": 1
+},
+{
+  "question": "49. CUANDO HABLAMOS DE UNA CAMA QUE POSEE UN SOMIER RÍGIDO Y QUE NO PERMITE LA MOVILIDAD POR SEGMENTOS, NOS ESTAMOS REFIRIENDO A LA:",
+  "options": [
+    "a) Cama articulada",
+    "b) Tablero espinal",
+    "c) Cama rígida",
+    "d) Camilla Gacht"
+  ],
+  "correct": 2
+},
+{
+  "question": "50. ¿CUÁL ES EL DISPOSITIVO QUE SE UTILIZA PARA LA MOVILIZACIÓN DE PACIENTES CON TRAUMATISMO HASTA LA CAMILLA DE TRANSPORTE?",
+  "options": [
+    "a) Camilla rígida",
+    "b) Tablero espinal",
+    "c) Camilla de tijera",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "51. ¿CUÁL ES LA CAMA ARTICULADA QUE PERMITE LA ANGULACIÓN LATERAL?",
+  "options": [
+    "a) Cama de levitación",
+    "b) Cama roto-rest",
+    "c) Cama libro",
+    "d) Cama electrocircular"
+  ],
+  "correct": 2
+},
+{
+  "question": "52. LA CAMA QUE PERMITE MOVILIZAR AL PACIENTE DE DECÚBITO SUPINO A POSICION DE SENTADO, ES:",
+  "options": [
+    "a) Cama libro",
+    "b) Cama Gatch",
+    "c) Cama Clinitron",
+    "d) Cama de Stryker"
+  ],
+  "correct": 1
+},
+{
+  "question": "53. ¿QUÉ CARACTERÍSTICAS DEBE TENER UNA MESA QUIRÚRGICA?",
+  "options": [
+    "a) Autoelevable",
+    "b) Radiotransporte",
+    "c) Articulada",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "54. EL DISPOSITIVO QUE SE ACOPLA A UNA CAMA HOSPITALARIA PARA EVITAR EL ROZAMIENTO DE LA ROPA CON LA PIEL DEL PACIENTE, RECIBE EL NOMBRE DE:",
+  "options": [
+    "a) Arco protector",
+    "b) Cuadro balcánico",
+    "c) Centinela de cama",
+    "d) Triangulo de Balkan"
+  ],
+  "correct": 0
+},
+{
+  "question": "55. EL COLCHÓN FORMADO POR UNA SERIE DE TUBOS O BOLAS NEUMÁTICAS QUE SE HINCHAN Y DESHINCHAN ALTERNATIVAMENTE, REALIZANDO UN MASAJE CONTINÚO AL PACIENTE, ES:",
+  "options": [
+    "a) Colchón de esferas fluidificado",
+    "b) Colchón alternating",
+    "c) Colchón de goma con celdillas",
+    "d) Colchón de látex"
+  ],
+  "correct": 1
+},
+{
+  "question": "56. DE LOS SIGUIENTES DISPOSITIVOS, ¿CUÁLES DE ELLOS SE PUEDEN ACOPLAR A UNA CAMA HOSPITALARIA?",
+  "options": [
+    "a) Soporte de suero",
+    "b) Cuadro balcánico",
+    "c) Percha o soporte para la bolsa de orina",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "57. AL CELADOR QUE PRESTA SUS SERVICIOS EN UNA PLANTA DE HOSPITALIZACION, LE PIDEN UNA CAMA ESPECIAL PARA UN PACIENTE QUE PADECE OBESIDAD MÓRBIDA. EL CELADOR LLEVARÁ:",
+  "options": [
+    "a) Cama Sanders",
+    "b) Cama Bariátrica",
+    "c) Cama de Stryker",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "58. LA CAMA INDICADA PARA UN PACIENTE QUE HA SUFRIDO UN ROTURA DE CADERA, ES:",
+  "options": [
+    "a) Rígida",
+    "b) De Judet",
+    "c) Traumatológica",
+    "d) Las respuestas B y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "59. UN GRAN QUEMADO, NECESITARÁ UNA CAMA HOSPITALARIA LLAMADA:",
+  "options": [
+    "a) Traumatológica",
+    "b) De Judet",
+    "c) De levitación",
+    "d) De libro"
+  ],
+  "correct": 2
+},
+{
+  "question": "60. ¿QUÉ NOMBRE RECIBE LA CAMA CON ESTRUCTURA METÁLICA, VARILLAS PARA POLEAS Y PESOS, UTILIZADAS PARA TRACCIONES?",
+  "options": [
+    "a) Cama circo-eléctrica",
+    "b) Cama ortopédica",
+    "c) Cama articulada",
+    "d) Alternating o antiescaras"
+  ],
+  "correct": 1
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
