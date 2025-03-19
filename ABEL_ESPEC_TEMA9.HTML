@@ -1,0 +1,3173 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [	
+{
+  "question": "1. La actividad de suministro hace referencia:",
+  "options": [
+    "a) Al conjunto de tareas que tienen como finalidad el aprovisionamiento del economato.",
+    "b) Al conjunto de tareas que tienen como finalidad el suministro de los servicios de un hospital.",
+    "c) Al conjunto de tareas que tienen como finalidad aprovisionar de materias al almacén y a los servicios sanitarios.",
+    "d) A las tareas realizadas por los Celadores en los almacenes."
+  ],
+  "correct": 2
+},
+{
+  "question": "2. No se conoce como suministro interno:",
+  "options": [
+    "a) Aquella tarea dedicada a proveer desde el exterior al almacén.",
+    "b) Aquella tarea dedicada a proveer desde el almacén a los servicios.",
+    "c) Aquella tarea dedicada a proveer desde el almacén a las unidades.",
+    "d) Aquellas tareas que se hacen para proveer del material necesario a los servicios desde el almacén para poder llevar a cabo la actividad asistencial."
+  ],
+  "correct": 0
+},
+{
+  "question": "3. El suministro externo en las instituciones sanitarias es aquel:",
+  "options": [
+    "a) Que abastece al almacén desde el proveedor.",
+    "b) Que abastece a los proveedores.",
+    "c) Que abastece desde el almacén los distintos Servicios.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "4. El Celador encargado de almacén se contempla:",
+  "options": [
+    "a) En el Acuerdo del Consejo de Ministros del 16/6/71.",
+    "b) En el Real Decreto-Ley 6/90.",
+    "c) En el Acuerdo del Consejo de Ministros del 29/6/90.",
+    "d) En el Real Decreto-Ley 3/97."
+  ],
+  "correct": 2
+},
+{
+  "question": "5. El lugar físico donde se efectúa el almacenaje se denomina:",
+  "options": [
+    "a) Economato.",
+    "b) Recepción de mercancías.",
+    "c) Almacén.",
+    "d) Menaje."
+  ],
+  "correct": 2
+},
+{
+  "question": "6. La actividad o conjunto de tareas destinadas al aprovisionamiento de materiales al almacén general se denomina:",
+  "options": [
+    "a) Gestión.",
+    "b) Aprovisionamiento.",
+    "c) Suministro externo.",
+    "d) Logística."
+  ],
+  "correct": 2
+},
+{
+  "question": "7. Señala cuál de las siguientes no es una zona del almacén:",
+  "options": [
+    "a) Zona de recepción.",
+    "b) Zona de control de entradas.",
+    "c) Zona de citostáticos.",
+    "d) Zona de salida de artículos."
+  ],
+  "correct": 2
+},
+{
+  "question": "8. ¿Cuál es la finalidad del almacén en una institución sanitaria?",
+  "options": [
+    "a) Garantizar el funcionamiento del mismo.",
+    "b) Garantizar el aprovisionamiento del mismo.",
+    "c) Garantizar el aprovisionamiento a las distintas unidades y servicios en todo momento y a un coste razonable.",
+    "d) Garantizar una buena organización del servicio."
+  ],
+  "correct": 2
+},
+{
+  "question": "9. El término FEFO hace referencia a:",
+  "options": [
+    "a) El último artículo en entrar en un almacén es el primero en salir.",
+    "b) El primer artículo en entrar en un almacén es el primero en salir.",
+    "c) El primer artículo en caducar en un almacén es el primero en salir.",
+    "d) El último artículo en caducar en un almacén es el primero en salir."
+  ],
+  "correct": 2
+},
+{
+  "question": "10. Para una mayor eficacia del almacén:",
+  "options": [
+    "a) Contará con una adecuada estructura.",
+    "b) Contará con una persona que se responsabilice del control.",
+    "c) Tendrá a cargo una persona que garantice la organización del mismo.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "11. La clasificación de Pareto ordena los artículos por:",
+  "options": [
+    "a) Tamaño.",
+    "b) Flujos de entrada y salida.",
+    "c) Accesibilidad.",
+    "d) Caducidad."
+  ],
+  "correct": 2
+},
+{
+  "question": "12. Según la clasificación de Pareto, los artículos de clase A:",
+  "options": [
+    "a) Son aquellos artículos de elevado coste, por lo que no pueden almacenarse en grandes cantidades.",
+    "b) Son aquellos que más se utilizan, y por tanto se guardarán en los lugares más próximos y de fácil acceso.",
+    "c) Son artículos intermedios.",
+    "d) Son aquellos que se consumen menos y tienen una rotación más lenta."
+  ],
+  "correct": 1
+},
+{
+  "question": "13. Según la clasificación de Pareto, ¿qué clase de artículos se almacena en los lugares menos accesibles del almacén?",
+  "options": [
+    "a) Los artículos clase A.",
+    "b) Los artículos clase B.",
+    "c) Los artículos clase C.",
+    "d) Los artículos clase D."
+  ],
+  "correct": 2
+},
+{
+  "question": "14. Los artículos de clase B, según la clasificación de Pareto:",
+  "options": [
+    "a) Son aquellos artículos de elevado coste, por lo que no pueden almacenarse en grandes cantidades.",
+    "b) Son aquellos que más se utilizan, y por tanto se guardarán en los lugares más próximos y de fácil acceso.",
+    "c) Son artículos intermedios.",
+    "d) Son aquellos que se consumen menos y tienen una rotación más lenta."
+  ],
+  "correct": 2
+},
+{
+  "question": "15. Señala la respuesta correcta en relación con el inventario:",
+  "options": [
+    "a) Es un sistema de control de las existencias.",
+    "b) Es el conjunto de operaciones que se llevan a cabo para conocer las cantidades existentes en el almacén de cada producto en un momento determinado.",
+    "c) En su elaboración no se tienen en cuenta los artículos en stock.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "16. Una de las siguientes respuestas es incorrecta:",
+  "options": [
+    "a) El inventario tradicional consiste en el recuento de los artículos del almacén, para lo cual no es necesario que esté cerrado.",
+    "b) El inventario rotativo requiere de un recuento sistemático de las existencias durante todo el ejercicio con el fin de determinar el número de veces que se consumen las mercancías a lo largo del año.",
+    "c) Para el inventario rotativo es útil la clasificación de Pareto.",
+    "d) Para el inventario rotativo el recuento sistemático se realiza por grupos."
+  ],
+  "correct": 0
+},
+{
+  "question": "17. Señala la respuesta correcta. De los distintos criterios de cálculo que se pueden utilizar en la valoración de existencias:",
+  "options": [
+    "a) El método FIFO calcula el valor de existencia de un producto considerando que la primera unidad que entró en el almacén es la última que sale.",
+    "b) El método FIFO calcula el valor de existencia de un producto considerando que la primera unidad que entra en el almacén es la primera que sale.",
+    "c) El método FIFO considera que las primeras unidades que salen del almacén son las más recientes.",
+    "d) El método FIFO significa: “primero en salir, último en entrar”."
+  ],
+  "correct": 1
+},
+{
+  "question": "18. Señala cuál no es una fase en la tarea de suministros:",
+  "options": [
+    "a) Previsión de aprovisionamiento.",
+    "b) Planificación de adquisiciones.",
+    "c) Procedimiento administrativo de contratación.",
+    "d) Criterios de valoración."
+  ],
+  "correct": 3
+},
+{
+  "question": "19. La actividad o conjunto de tareas destinadas al aprovisionamiento de materiales al almacén y a la Institución sanitaria se denomina:",
+  "options": [
+    "a) FIFO.",
+    "b) Suministro.",
+    "c) Gestión.",
+    "d) Logística."
+  ],
+  "correct": 1
+},
+{
+  "question": "20. El procedimiento administrativo de contratación:",
+  "options": [
+    "a) Es el procedimiento mediante el cual se adquieren determinados productos o servicios.",
+    "b) Este procedimiento debe respetar las normas de contratación administrativa.",
+    "c) Las normas de contratación se establecen por Ley 9/2017, de 8 de noviembre, de Contratos del Sector Público.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "21. La tarea intermedia, entre la previsión de aprovisionamientos y el procedimiento administrativo de contratación se denomina:",
+  "options": [
+    "a) Planificación de adquisiciones.",
+    "b) Petición de material.",
+    "c) Revisión de la mercancía.",
+    "d) Recepción."
+  ],
+  "correct": 0
+},
+{
+  "question": "22. Una vez gestionada la compra de la mercancía precisa, se procede a:",
+  "options": [
+    "a) La recepción.",
+    "b) La petición del material por la Sección Administrativa de suministros.",
+    "c) El almacenaje.",
+    "d) La revisión."
+  ],
+  "correct": 1
+},
+{
+  "question": "23. ¿Cuál es la primera tarea de la Unidad de Suministros, tras recibir un pedido?",
+  "options": [
+    "a) Comprobarlo.",
+    "b) Abrirlo.",
+    "c) Registrarlo.",
+    "d) Revisarlo."
+  ],
+  "correct": 2
+},
+{
+  "question": "24. Cuando se recepciona una mercancía en el almacén se deben tomar unos datos, pero ¿qué datos se toman en el control de pedidos?",
+  "options": [
+    "a) Nombre del transportista.",
+    "b) Cantidad de bultos.",
+    "c) Número de pedido y nombre del proveedor.",
+    "d) Cuenteo de las unidades."
+  ],
+  "correct": 2
+},
+{
+  "question": "25. A la hora de revisar la mercancía:",
+  "options": [
+    "a) Se controla por unidades.",
+    "b) Se controla por lotes.",
+    "c) Se controla el etiquetado de la mercancía.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "26. ¿Cómo se denomina el informe emitido por el recepcionista del almacén sobre el estado de la mercancía recibida?",
+  "options": [
+    "a) Calidad.",
+    "b) Dictamen.",
+    "c) Albarán.",
+    "d) Bono de entrada."
+  ],
+  "correct": 1
+},
+{
+  "question": "27. Una vez recepcionada la mercancía se procede a su:",
+  "options": [
+    "a) Revisión.",
+    "b) Clasificación.",
+    "c) Almacenamiento.",
+    "d) Codificación."
+  ],
+  "correct": 2
+},
+{
+  "question": "28. La recepción de mercancía consta de:",
+  "options": [
+    "a) Recepción simple de la mercancía.",
+    "b) Revisión de la mercancía.",
+    "c) Control de calidad.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "29. Señala la respuesta incorrecta. Son datos que se pueden tomar para el control de calidad:",
+  "options": [
+    "a) Dictamen.",
+    "b) Devolución al proveedor.",
+    "c) Entrada a rotos.",
+    "d) Etiquetado de mercancía."
+  ],
+  "correct": 3
+},
+{
+  "question": "30. Señala la respuesta incorrecta. Dependiendo de las dimensiones del almacén y del volumen de las mercancías, el guardado de las mismas debe reunir unas características:",
+  "options": [
+    "a) Posibilidad de formar palets de forma automática o manual.",
+    "b) Permitir el uso de diferentes tecnologías.",
+    "c) Información en tiempo diferido de los palets.",
+    "d) Posibilidad de mezcla de artículos en un hueco."
+  ],
+  "correct": 2
+},
+{
+  "question": "31. ¿Cómo se denomina el dato referente a aquellos artículos que se admiten temporal o definitivamente bajo la indicación de rotos y que serán repuestos o reparados por el proveedor?",
+  "options": [
+    "a) Bono del proveedor.",
+    "b) Entrada a rotos.",
+    "c) Devolución al proveedor.",
+    "d) Entrada a beneficio proveedor."
+  ],
+  "correct": 1
+},
+{
+  "question": "32. Señala la respuesta correcta. Dependiendo de las dimensiones del almacén y del volumen de las mercancías, el guardado de las mismas debe reunir unas características:",
+  "options": [
+    "a) Posibilidad de mezclar la mercancía procedente de distintos albaranes en un mismo palet.",
+    "b) Control de artículos de peso variable.",
+    "c) Posibilidad de guardado parcial.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "33. Señala cuál no es una zona del almacén:",
+  "options": [
+    "a) Recepción.",
+    "b) Zona de apilado en bloque.",
+    "c) Zona de animalario.",
+    "d) Zona de rotos."
+  ],
+  "correct": 2
+},
+{
+  "question": "34. Se entiende por gestión de stock:",
+  "options": [
+    "a) El control de las existencias de cada artículo para evitar situaciones de desabastecimiento que darían lugar al incumplimiento de la labor asistencial encomendada.",
+    "b) Todos los materiales almacenados e inventariables.",
+    "c) Los artículos consumidos.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 0
+},
+{
+  "question": "35. Una de las siguientes respuestas es incorrecta:",
+  "options": [
+    "a) El control del almacén solo incluye el control de los movimientos de entrada y/o salida.",
+    "b) El control del almacén debe incluir el control de movimientos externos e internos.",
+    "c) El control del almacén incluye el control de movimientos de entrada y/o salida, y los movimientos de reaprovisionamiento.",
+    "d) El control del almacén incluye el control de movimientos de salida y los de colocación."
+  ],
+  "correct": 0
+},
+{
+  "question": "36. El control económico del almacén corresponde:",
+  "options": [
+    "a) A Personal administrativo de contratación de servicios.",
+    "b) A la Sección Administrativa de suministro.",
+    "c) A la Unidad de Intervención.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 2
+},
+{
+  "question": "37. Una de las siguientes respuestas no es correcta en relación con la Unidad de Intervención:",
+  "options": [
+    "a) Puede existir en cada hospital.",
+    "b) Su objetivo es cuidar del hospital.",
+    "c) Debe hacer cumplir las previsiones establecidas en los Presupuestos.",
+    "d) Debe hacer cumplir las normas de contratación establecidas en la Ley de contratos de las Administraciones Públicas."
+  ],
+  "correct": 1
+},
+{
+  "question": "38. Señala la respuesta incorrecta. Son almacenes de materiales de uso relacionado directamente con los pacientes:",
+  "options": [
+    "a) Almacén de farmacia.",
+    "b) Almacén clínico fungible.",
+    "c) Almacén de mantenimiento.",
+    "d) Almacén de aparataje."
+  ],
+  "correct": 2
+},
+{
+  "question": "39. Señalar cuál de los siguientes es un almacén de material para el funcionamiento del Centro Sanitario:",
+  "options": [
+    "a) Almacén de farmacia.",
+    "b) Almacén de papelería.",
+    "c) Almacén de aparataje.",
+    "d) Almacén de material quirúrgico."
+  ],
+  "correct": 1
+},
+{
+  "question": "40. Uno de los siguientes productos no es almacenado en una Institución Sanitaria:",
+  "options": [
+    "a) Medicamentos.",
+    "b) Lencería hospitalaria.",
+    "c) Stock.",
+    "d) Material de oficina."
+  ],
+  "correct": 2
+},
+{
+  "question": "41. Señala cuál es un objetivo del servicio de almacén hospitalario:",
+  "options": [
+    "a) La calidad.",
+    "b) La facilidad de la relación del material almacenado.",
+    "c) La buena gestión.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "42. Una de las siguientes no es una función del Celador de almacén:",
+  "options": [
+    "a) Revisión del material.",
+    "b) Recepción de la mercancía.",
+    "c) Pago a los proveedores.",
+    "d) Colocación del material."
+  ],
+  "correct": 2
+},
+{
+  "question": "43. La finalidad y el objetivo último de los almacenes es:",
+  "options": [
+    "a) La distribución de los pedidos.",
+    "b) El suministro.",
+    "c) Las ganancias.",
+    "d) La buena gestión."
+  ],
+  "correct": 0
+},
+{
+  "question": "44. Señala la respuesta correcta en relación con el funcionamiento de los almacenes sanitarios:",
+  "options": [
+    "a) Solicitar el reabastecimiento.",
+    "b) Recepción y registro de los materiales suministrados.",
+    "c) Rechazo del material deteriorado.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "45. La petición del material al almacén debe hacerse:",
+  "options": [
+    "a) En una hoja de albarán.",
+    "b) En una hoja de dictamen.",
+    "c) En un impreso normalizado.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "46. ¿Por quién estará firmada la petición del material al almacén?",
+  "options": [
+    "a) Por el Celador.",
+    "b) Por el responsable del servicio.",
+    "c) Por el Médico.",
+    "d) Por el Auxiliar de Enfermería."
+  ],
+  "correct": 1
+},
+{
+  "question": "47. La petición del material debe indicar:",
+  "options": [
+    "a) Denominación del material.",
+    "b) Código y cantidad solicitada.",
+    "c) Identificación del Servicio, fecha y firma.",
+    "d) Todo lo anterior en un impreso normalizado."
+  ],
+  "correct": 3
+},
+{
+  "question": "48. Señala la respuesta incorrecta sobre el código de barras:",
+  "options": [
+    "a) El código EAN consta de 15 dígitos.",
+    "b) Es una etiqueta con un número determinado de barras negras inscritas en ella.",
+    "c) Cada barra representa a un dígito.",
+    "d) Representa datos de forma legible para las máquinas."
+  ],
+  "correct": 0
+},
+{
+  "question": "49. El primer código de barras se debe a:",
+  "options": [
+    "a) N. J. Woodland.",
+    "b) Pareto.",
+    "c) Johann Craus.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 0
+},
+{
+  "question": "50. De quién depende el servicio de farmacia de un hospital:",
+  "options": [
+    "a) De un departamento central, externo al hospital.",
+    "b) De la Dirección Médica.",
+    "c) Del servicio de Salud.",
+    "d) De la comisión farmacéutica."
+  ],
+  "correct": 1
+},
+{
+  "question": "51. Se considera un medicamento de uso humano:",
+  "options": [
+    "a) A toda sustancia o combinación de sustancias que se presente como poseedora de propiedades para el tratamiento o prevención de enfermedades en seres humanos.",
+    "b) Los derivados de la sangre, del plasma y el resto de sustancias de origen humano.",
+    "c) Fluidos, glándulas, excreciones, secreciones, tejidos y, cuando se utilicen con finalidad terapéutica.",
+    "d) Aquellos productos obtenidos in vivo o ex vivo."
+  ],
+  "correct": 0
+},
+{
+  "question": "52. Cómo se denomina aquel medicamento destinado a un paciente individualizado:",
+  "options": [
+    "a) Medicamento genérico.",
+    "b) Medicamento homeopático.",
+    "c) Fórmula magistral.",
+    "d) Forma galénica."
+  ],
+  "correct": 2
+},
+{
+  "question": "53. No es función del Celador de la farmacia hospitalaria:",
+  "options": [
+    "a) Dispensación de determinado material.",
+    "b) Recepción de material.",
+    "c) Acondicionamiento de material.",
+    "d) Control y dispensación de estupefacientes."
+  ],
+  "correct": 3
+},
+{
+  "question": "54. La dispensación individualizada de medicamentos desde la farmacia del hospital se denomina dispensación:",
+  "options": [
+    "a) Aleatoria.",
+    "b) En unidosis.",
+    "c) General.",
+    "d) Anómala."
+  ],
+  "correct": 1
+},
+{
+  "question": "55. Uno de los siguientes preparados no se realiza en la farmacia del hospital:",
+  "options": [
+    "a) Nutriciones parenterales.",
+    "b) Fórmulas magistrales.",
+    "c) Soluciones desinfectantes.",
+    "d) Dietas ordinarias."
+  ],
+  "correct": 3
+},
+{
+  "question": "56. El transporte del material pesado dentro de la farmacia es función del:",
+  "options": [
+    "a) Celador de farmacia.",
+    "b) Celador de planta.",
+    "c) Celador de almacén.",
+    "d) Personal sanitario de farmacia."
+  ],
+  "correct": 0
+},
+{
+  "question": "57. No es función del Celador de la farmacia hospitalaria:",
+  "options": [
+    "a) Farmacovigilancia.",
+    "b) Dispensación de determinado material como sueros o alcohol.",
+    "c) Recepción de material.",
+    "d) Acondicionamiento de material."
+  ],
+  "correct": 0
+},
+{
+  "question": "58. Un Celador destinado en el servicio de farmacia de un hospital deberá:",
+  "options": [
+    "a) Trasladar los pedidos a los servicios que lo soliciten.",
+    "b) Atender con carácter de urgencia la expedición de medicamentos por orden del farmacéutico, ante la ausencia del personal autorizado.",
+    "c) Velar por la seguridad en el servicio.",
+    "d) Las respuestas a) y c) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "59. Un Celador destinado en el almacén de farmacia es requerido por un médico para que le suministre una determinada medicación, ¿cuál debe ser su actuación?",
+  "options": [
+    "a) Se lo dará, notificándolo posteriormente.",
+    "b) Se lo negará y avisará al jefe de personal subalterno.",
+    "c) Se lo dará, pero se lo comunicará al supervisor de guardia.",
+    "d) Pasará la notificación al farmacéutico responsable."
+  ],
+  "correct": 3
+},
+{
+  "question": "60. El Celador de farmacia normalmente se ocupa de acondicionar determinado material recepcionado por él, como:",
+  "options": [
+    "a) Alcohol.",
+    "b) Suero fisiológico.",
+    "c) El Celador no tiene que acondicionar ningún material.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "61. El área o departamento de distribución de suministros en un hospital está adscrita a:",
+  "options": [
+    "a) La Gerencia.",
+    "b) La División Médica.",
+    "c) La División de Enfermería.",
+    "d) La División de Gestión y Servicios Generales."
+  ],
+  "correct": 3
+},
+{
+  "question": "62. El departamento de distribución de suministros en un hospital sirve material:",
+  "options": [
+    "a) A los servicios de enfermería del hospital.",
+    "b) A los servicios quirúrgicos del hospital.",
+    "c) A los servicios de consultas externas del hospital.",
+    "d) A todos los servicios del hospital."
+  ],
+  "correct": 3
+},
+{
+  "question": "63. Son suministros internos:",
+  "options": [
+    "a) Los que facilita el almacén del hospital a su departamento de farmacia.",
+    "b) Los que suministran los distintos proveedores al almacén central del hospital.",
+    "c) Todas las respuestas anteriores son correctas.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 0
+},
+{
+  "question": "64. La responsabilidad del proveedor se descarga:",
+  "options": [
+    "a) Al facturar la mercancía.",
+    "b) Al firmar el almacenista el albarán de entrega.",
+    "c) Al recibir el pedido del hospital.",
+    "d) Al hacerse efectivo el cobro de la mercancía."
+  ],
+  "correct": 1
+},
+{
+  "question": "65. La hoja de pedido de productos al almacén central podrá ir firmada:",
+  "options": [
+    "a) Por el responsable del servicio.",
+    "b) Por la supervisora de planta.",
+    "c) Por el jefe de unidad.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "66. El control y registro de todos los artículos que se encuentran en el almacén en un momento dado se realiza mediante:",
+  "options": [
+    "a) El inventario.",
+    "b) Una estimación subjetiva y aproximada de los artículos.",
+    "c) Una estimación objetiva singular.",
+    "d) Cálculos estadísticos."
+  ],
+  "correct": 0
+},
+{
+  "question": "67. El documento mediante el cual la Administración regula el aprovisionamiento externo de material se denomina:",
+  "options": [
+    "a) Contrato de obras.",
+    "b) Contrato de gestión de servicios públicos.",
+    "c) Contrato de suministros.",
+    "d) Contrato de consultoría."
+  ],
+  "correct": 2
+},
+{
+  "question": "68. Una de las siguientes no es función de la unidad de farmacia de un hospital:",
+  "options": [
+    "a) La adquisición y gestión de medicamentos.",
+    "b) La distribución de medicamentos.",
+    "c) La prescripción de medicamentos.",
+    "d) La información sobre medicamentos."
+  ],
+  "correct": 2
+},
+{
+  "question": "69. La recepción de los paquetes que los proveedores suministran a la unidad de farmacia, ¿podrá ser función del celador?",
+  "options": [
+    "a) No, en ningún caso.",
+    "b) Sí, en cualquier caso.",
+    "c) Sí, cuando se recoja en las normas de funcionamiento interno del hospital.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 2
+},
+{
+  "question": "70. La alimentación de los animales por parte de los celadores en el animalario, se realizará:",
+  "options": [
+    "a) De acuerdo con las indicaciones de sus superiores.",
+    "b) Independientemente y a juicio del celador.",
+    "c) De acuerdo con las exigencias de los animales.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "71. El tubo neumático se utiliza para:",
+  "options": [
+    "a) Funciones del celador relacionadas con la oxigenoterapia del paciente.",
+    "b) Transportar documentos y pequeños objetos.",
+    "c) Regular las bombonas de oxígeno.",
+    "d) Regular el sistema de aire acondicionado."
+  ],
+  "correct": 1
+},
+{
+  "question": "72. La unidad de distribución de suministros nada más recibir un pedido deberá:",
+  "options": [
+    "a) Registrarlo.",
+    "b) Remitirlo a la dirección del centro.",
+    "c) Remitirlo al remitente.",
+    "d) Remitirlo al destinatario."
+  ],
+  "correct": 0
+},
+{
+  "question": "73. Un código de barras es:",
+  "options": [
+    "a) Una etiqueta con un número determinado de barras negras inscritas en ella, que proporciona información del producto.",
+    "b) Un dígito particular de todos los dígitos del stock.",
+    "c) Una parte del código total de suministros del centro.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "74. Con relación a las tareas del celador en la zona de acceso del almacén general, el celador deberá:",
+  "options": [
+    "a) Permitir el paso a todo el que desee entrar.",
+    "b) No dejar pasar a nadie para evitar robos de material.",
+    "c) Solo dejará pasar a quién tenga que descargar mercancías.",
+    "d) No permitir el acceso a sus dependencias más que a las personas autorizadas para ello."
+  ],
+  "correct": 3
+},
+{
+  "question": "75. ¿Cuál de las siguientes es una función del celador en el almacén?",
+  "options": [
+    "a) Realizar el listado mensual con las necesidades de estocaje.",
+    "b) Realizar los pedidos externos.",
+    "c) Preparar los pedidos para que el personal sanitario de las unidades baje a recogerlos.",
+    "d) Trasladar desde el almacén a las distintas unidades el mobiliario y aparatos que se requieran."
+  ],
+  "correct": 3
+},
+{
+  "question": "76. El transporte de material de peso dentro de la farmacia es función del:",
+  "options": [
+    "a) Celador de farmacia.",
+    "b) Celador de planta.",
+    "c) Celador de almacén.",
+    "d) Personal sanitario de farmacia."
+  ],
+  "correct": 0
+},
+{
+  "question": "77. Le indican al Celador que hay que llevar una muestra de sangre y una petición urgente a farmacia. ¿A qué servicios iría?",
+  "options": [
+    "a) Al laboratorio y al almacén general.",
+    "b) Al laboratorio y al servicio de farmacia.",
+    "c) Al equipo de información para que las distribuyan por los servicios correspondientes.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "78. Destinado como celador/a en el almacén de farmacia, es requerido por el médico de urgencias para que le suministre un medicamento. ¿Cuál será su actuación?",
+  "options": [
+    "a) Se lo dará haciendo la oportuna anotación.",
+    "b) Se lo comunicará al director médico.",
+    "c) Se lo negará.",
+    "d) Pasará la comunicación al farmacéutico responsable."
+  ],
+  "correct": 3
+},
+{
+  "question": "79. Los celadores, en relación con los animales utilizados en los quirófanos experimentales y laboratorios:",
+  "options": [
+    "a) Los tendrán a su cargo, los cuidarán, alimentarán, limpiarán sus jaulas y los asearán.",
+    "b) Los cuidarán, limpiarán sus jaulas, los asearán, pero en ningún caso los alimentarán, ya que esa función corresponde a los veterinarios.",
+    "c) No realizarán ninguna función con respecto a estos animales.",
+    "d) El personal facultativo se encarga en exclusiva de estos animales, y el celador tiene prohibido acercarse a ellos."
+  ],
+  "correct": 0
+},
+{
+  "question": "80. Indicar cuál de estas funciones no corresponde al celador del animalario:",
+  "options": [
+    "a) Mantener limpias las jaulas de los animales utilizados en experimentación.",
+    "b) Alimentar y asear a los animales utilizados en experimentación.",
+    "c) Seccionar dichos animales en los quirófanos por indicación del personal facultativo.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 2
+},
+{
+  "question": "81. El almacén es:",
+  "options": [
+    "a) El lugar destinado a guardar todo lo que está en proceso de reciclaje.",
+    "b) El lugar destinado a guardar todo lo que se va a desechar o reciclar.",
+    "c) El lugar destinado a guardar todo el material que no se va a usar inmediatamente.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "82. El stock es:",
+  "options": [
+    "a) La cantidad de artículos del almacén.",
+    "b) Sistema de control de existencias.",
+    "c) La zona de expedición del almacén.",
+    "d) El mapa del almacén."
+  ],
+  "correct": 0
+},
+{
+  "question": "83. Entre las funciones del Celador en el almacén no está:",
+  "options": [
+    "a) Cargar y descargar los productos, así como colocarlos ordenadamente en el almacén.",
+    "b) Entregar el material y los productos que les sean solicitados por vía telefónica por su superior.",
+    "c) Distribuir o trasladar desde el almacén a las distintas unidades el mobiliario y aparatos.",
+    "d) Vigilar las entradas y salidas del almacén, así como el cierre de puertas de la zona de almacenaje."
+  ],
+  "correct": 1
+},
+{
+  "question": "84. El servicio de Farmacia está bajo la dirección de:",
+  "options": [
+    "a) Un farmacéutico.",
+    "b) Un farmacéutico y un enfermero.",
+    "c) Un Director médico.",
+    "d) Un médico y varios farmacéuticos."
+  ],
+  "correct": 0
+},
+{
+  "question": "85. La custodia, conservación y dispensación de medicamentos de uso humano corresponderá exclusivamente:",
+  "options": [
+    "a) A las oficinas de farmacia abiertas al público, legalmente autorizadas.",
+    "b) A los servicios de farmacia de los hospitales, de los centros de salud y de las estructuras de Atención Primaria del Sistema Nacional de Salud.",
+    "c) A las Consejerías de Salud.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "86. En las unidades de Farmacia hospitalaria, pueden prestar servicio los siguientes profesionales:",
+  "options": [
+    "a) Auxiliares de enfermería, farmacéuticos y administrativos.",
+    "b) Celadores, FIR y DUEs.",
+    "c) Dos farmacéuticos, un auxiliar y un celador.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "87. Es función del servicio de farmacia hospitalaria:",
+  "options": [
+    "a) Establecer un sistema eficaz y seguro en la distribución de medicamentos.",
+    "b) Tomar las medidas para su correcta administración.",
+    "c) Las respuestas a) y b) son correctas.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "88. ¿Quién custodia y dispensa los productos en fase de investigación y vela por el cumplimiento de la legislación sobre cualquier medicamento que requiera un control especial?",
+  "options": [
+    "a) Los laboratorios encargados de ello.",
+    "b) El Estado.",
+    "c) El servicio de Farmacia del hospital.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "89. ¿Quién lleva a cabo actividades educativas sobre cuestiones relacionadas con la competencia de la farmacia dirigidas al personal sanitario del hospital y a los pacientes?",
+  "options": [
+    "a) Médicos y enfermeros.",
+    "b) El Servicio de Farmacia.",
+    "c) El área de formación.",
+    "d) Formación sanitaria."
+  ],
+  "correct": 1
+},
+{
+  "question": "90. ¿En qué consiste la distribución de “unidosis”?",
+  "options": [
+    "a) En la distribución de la medicación por semana.",
+    "b) En la distribución de la medicación por paciente ingresado, en el momento de su ingreso.",
+    "c) En la distribución de la medicación por habitación hasta el momento del alta del paciente.",
+    "d) En la distribución de la medicación por dosis/día para cada uno de los pacientes ingresados."
+  ],
+  "correct": 3
+},
+{
+  "question": "91. El celador de farmacia es quien se encarga de:",
+  "options": [
+    "a) La distribución de medicación y demás productos a las unidades de hospitalización.",
+    "b) Transporta cualquier producto desde cualquier unidad del hospital.",
+    "c) Solo se encarga de distribuir medicación a las plantas.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "92. Dentro de las funciones del celador de farmacia están:",
+  "options": [
+    "a) Hacer controles e inventarios de productos de los que sea responsable.",
+    "b) Hacer limpieza en el interior de la farmacia.",
+    "c) La custodia de la farmacia.",
+    "d) Las respuestas a) y c) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "93. Establecer un sistema eficaz y seguro de administración de medicamentos es función de:",
+  "options": [
+    "a) El laboratorio.",
+    "b) El almacén.",
+    "c) El servicio de farmacia.",
+    "d) El personal de enfermería."
+  ],
+  "correct": 2
+},
+{
+  "question": "94. El contrato de suministro se encuentra regulado en la:",
+  "options": [
+    "a) Ley 9/2017, de 8 de noviembre, de Contratos del Sector Público.",
+    "b) Ley 13/95, de 20 de mayo, de Contratos de las Administraciones Públicas.",
+    "c) Ley 103/95, de 18 de mayo, de Contratos de las Administraciones Públicas.",
+    "d) Ley 30/2007, de 30 de octubre, de Contratos del Sector Público."
+  ],
+  "correct": 0
+},
+{
+  "question": "95. El almacén tiene como finalidad:",
+  "options": [
+    "a) Controlar las existencias.",
+    "b) Determinar las necesidades.",
+    "c) Recepcionar el material.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "96. La función de contar las existencias de almacén en un momento determinado se denomina:",
+  "options": [
+    "a) Entradas.",
+    "b) Almacenaje.",
+    "c) Salidas.",
+    "d) Inventario."
+  ],
+  "correct": 3
+},
+{
+  "question": "97. Son fases en la tarea de suministro:",
+  "options": [
+    "a) La planificación de adquisiciones.",
+    "b) La previsión de aprovisionamiento.",
+    "c) La petición de material.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "98. ¿Quién ha de controlar las existencias de los materiales en el almacén?",
+  "options": [
+    "a) El controlador de Suministros.",
+    "b) El Director de Gestión y Servicios Generales.",
+    "c) El Jefe de la Unidad.",
+    "d) El Supervisor de Planta."
+  ],
+  "correct": 0
+},
+{
+  "question": "99. La comprobación de que los bultos son los que constan en el albarán de entrega se realizará:",
+  "options": [
+    "a) En el instante de la petición de material.",
+    "b) Al recibir el material.",
+    "c) Al realizar el inventario.",
+    "d) En el momento de entregar el material a los distintos servicios."
+  ],
+  "correct": 1
+},
+{
+  "question": "100. Dentro del contrato de suministro se incluye:",
+  "options": [
+    "a) El arrendamiento financiero.",
+    "b) La adquisición de bienes muebles relativos a propiedades incorporales.",
+    "c) La adquisición de valores negociables.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "101. La adquisición de programas de ordenador a medida se considera:",
+  "options": [
+    "a) Contrato de suministro.",
+    "b) Contrato de arrendamiento financiero.",
+    "c) Contrato de servicios.",
+    "d) Contrato de obra."
+  ],
+  "correct": 2
+},
+{
+  "question": "102. La función de comprobación de que los bultos recibidos son los que constan en el albarán de entrega, una vez realizada ésta, corresponde a:",
+  "options": [
+    "a) El Jefe de la Unidad.",
+    "b) El Supervisor de Planta.",
+    "c) El Coordinador del Servicio.",
+    "d) El operario del almacén."
+  ],
+  "correct": 3
+},
+{
+  "question": "103. ¿Cuál de todos los almacenes de un Centro Sanitario, es uno de los que más movimiento diario registra?",
+  "options": [
+    "a) El de productos farmacéuticos.",
+    "b) El de lavandería.",
+    "c) El de suministro de material quirúrgico.",
+    "d) El de papelería."
+  ],
+  "correct": 1
+},
+{
+  "question": "104. La ropa sucia ha de ser retirada en las unidades de neonatología:",
+  "options": [
+    "a) Una vez al día por lo menos.",
+    "b) Tres veces a la semana al menos.",
+    "c) Dos veces al día por lo menos.",
+    "d) Dos veces por semana."
+  ],
+  "correct": 2
+},
+{
+  "question": "105. La labor del servicio de lavandería se resume en:",
+  "options": [
+    "a) Recogida de la ropa sucia.",
+    "b) Transporte a la lavandería.",
+    "c) Clasificación, una vez limpia.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "106. ¿Durante cuánto tiempo debe guardarse la ropa limpia en los armarios destinados a tal fin?",
+  "options": [
+    "a) Durante un día como máximo.",
+    "b) Durante una semana como máximo.",
+    "c) Durante el tiempo mínimo posible para evitar la recontaminación.",
+    "d) Durante dos días como mínimo."
+  ],
+  "correct": 2
+},
+{
+  "question": "107. ¿Qué deberán hacer los trabajadores del almacén en caso de verificar desperfectos o anomalías en el almacén de lavandería?",
+  "options": [
+    "a) Dar cuenta a sus inmediatos superiores.",
+    "b) Tratar de repararlos con sus propios medios.",
+    "c) Dar aviso inmediato para la reparación.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "108. Según sus características y duración, el material empleado en un hospital puede ser:",
+  "options": [
+    "a) Fungible y crítico.",
+    "b) Fungible e inventariable.",
+    "c) Inventariable y crítico.",
+    "d) Crítico y semicrítico."
+  ],
+  "correct": 1
+},
+{
+  "question": "109. El material de larga vida y carácter definitivo se denomina:",
+  "options": [
+    "a) Fungible.",
+    "b) No crítico.",
+    "c) Inventariable.",
+    "d) Catalogable."
+  ],
+  "correct": 2
+},
+{
+  "question": "110. Los materiales tales como las prótesis de cadera o los hilos de sutura, se incluyen dentro de los denominados:",
+  "options": [
+    "a) No críticos.",
+    "b) Semicríticos.",
+    "c) No fungibles.",
+    "d) Críticos."
+  ],
+  "correct": 3
+},
+{
+  "question": "111. La ropa de cama y los orinales son considerados como material:",
+  "options": [
+    "a) Crítico.",
+    "b) No crítico.",
+    "c) Semicrítico.",
+    "d) No inventariable."
+  ],
+  "correct": 1
+},
+{
+  "question": "112. ¿Qué función específica cumplen los almacenes?",
+  "options": [
+    "a) Controlar las existencias de material.",
+    "b) Comprobar que el producto recibido es el adecuado.",
+    "c) Verificar el buen uso del material entregado por parte del personal y de los pacientes.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "113. No es un almacén de materiales de uso relacionado con los pacientes:",
+  "options": [
+    "a) El almacén de material clínico fungible.",
+    "b) El almacén de farmacia.",
+    "c) El almacén de papelería.",
+    "d) El almacén de material quirúrgico."
+  ],
+  "correct": 2
+},
+{
+  "question": "114. En la Unidad de Farmacia, ¿es función del celador elaborar las soluciones enterales y parenterales?",
+  "options": [
+    "a) No.",
+    "b) Sí.",
+    "c) Sí, cuando así lo indique el responsable de esta Unidad.",
+    "d) No, salvo que no la pueda realizar el auxiliar de enfermería."
+  ],
+  "correct": 0
+},
+{
+  "question": "115. En el mapa del almacén, ¿a qué zona se le conoce como zona de “picking”?",
+  "options": [
+    "a) Pulmón de entrada.",
+    "b) Zona de expedición.",
+    "c) Zona de estanterías de almacenaje.",
+    "d) Zona de preparación de pedidos."
+  ],
+  "correct": 3
+},
+{
+  "question": "116. Dentro de la Unidad de Farmacia, ¿puede dispensar el celador el pedido de sueros?",
+  "options": [
+    "a) No.",
+    "b) Sí.",
+    "c) No, salvo que así se lo autorice el responsable de Farmacia.",
+    "d) No, es función del auxiliar de enfermería."
+  ],
+  "correct": 1
+},
+{
+  "question": "117. Atendiendo a la clasificación de Pareto, según criterios de ordenación de almacenes, los artículos que más se utilizan y, por tanto, se guardan en los lugares más próximos y de fácil acceso, son catalogados como:",
+  "options": [
+    "a) De clase A.",
+    "b) De clase B.",
+    "c) De clase C.",
+    "d) De clase D."
+  ],
+  "correct": 0
+},
+{
+  "question": "118. El medicamento destinado a un paciente individualizado, preparado por un farmacéutico, o bajo su dirección, para cumplimentar expresamente una prescripción facultativa detallada de los principios activos que incluye, según las normas de correcta elaboración y control de la calidad establecidas al efecto, dispensado en oficina de farmacia o servicio farmacéutico, se conoce como:",
+  "options": [
+    "a) Principio activo.",
+    "b) Fórmula magistral.",
+    "c) Forma galénica.",
+    "d) Forma farmacéutica."
+  ],
+  "correct": 1
+},
+{
+  "question": "119. A la hora de ubicar un muelle de carga para un almacén hospitalario debemos tener en cuenta:",
+  "options": [
+    "a) Nada, pues se puede ubicar en cualquier sitio que creamos conveniente.",
+    "b) Habrá que tener en cuenta las comodidades de los que van a trabajar en ese lugar.",
+    "c) Que esté cerca de la sede de las ambulancias para aprovechar el mismo espacio.",
+    "d) Que no esté próximo de las zonas asistenciales, para que no influyan en el tránsito de las ambulancias y evitar ruidos que perjudiquen a los pacientes."
+  ],
+  "correct": 3
+},
+{
+  "question": "120. ¿Cuál de las siguientes no son funciones del almacén?",
+  "options": [
+    "a) La de custodiar los bienes del centro.",
+    "b) La de aprovisionamiento.",
+    "c) La de distribución.",
+    "d) Todas son funciones de un almacén."
+  ],
+  "correct": 3
+},
+{
+  "question": "121. Dentro de un almacén, el stock es:",
+  "options": [
+    "a) Distribución y consumo de materiales por los servicios.",
+    "b) Función de contar las existencias de un almacén en un momento determinado.",
+    "c) La cantidad de un producto almacenada en un lugar determinado.",
+    "d) Son correctas las respuestas a) y c)."
+  ],
+  "correct": 2
+},
+{
+  "question": "122. ¿Cuál de las siguientes actividades es esencial en la gestión de un inventario?",
+  "options": [
+    "a) Determinar las existencias.",
+    "b) Analizar el resultado de la operación del inventario.",
+    "c) Son correctas las respuestas a) y b).",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "123. ¿Cuál de los siguientes inventarios pertenece a una concepción logística?",
+  "options": [
+    "a) Inventario cíclico o de lotes.",
+    "b) Inventario de productos originarios.",
+    "c) Inventario de productos en transformación.",
+    "d) Inventario de productos ya elaborados."
+  ],
+  "correct": 0
+},
+{
+  "question": "124. ¿Cuál de la siguiente clasificación del inventario no se realiza teniendo en cuenta las características de los productos?",
+  "options": [
+    "a) Inventarios estacionales o periódicos.",
+    "b) Inventarios de productos que dan soporte a la actividad del centro.",
+    "c) Inventarios de productos originarios.",
+    "d) Inventarios de productos ya elaborados."
+  ],
+  "correct": 0
+},
+{
+  "question": "125. Señale las zonas en que se pueden dividir un almacén:",
+  "options": [
+    "a) Muelles de descarga.",
+    "b) Recepción y control de mercancías.",
+    "c) Zonas de preparación para el reparto.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "126. ¿En qué zonas del almacén se efectúa la clasificación de los productos?",
+  "options": [
+    "a) Muelles de descarga.",
+    "b) Zona de stock o almacenamiento.",
+    "c) Zona administrativa.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 3
+},
+{
+  "question": "127. ¿Cuál de las siguientes características pertenece al sistema de clasificación de productos?",
+  "options": [
+    "a) Los productos deben ser identificados rápidamente y sin confusión alguna.",
+    "b) El código debe facilitar la agrupación de los productos en virtud de su naturaleza y su búsqueda.",
+    "c) Los códigos deben ir siempre acompañados de una descripción de longitud limitada y de formato preestablecido, así como de una indicación clara de la unidad de medida que se emplea.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "128. En la clasificación de Pareto:",
+  "options": [
+    "a) Los productos de tipo A son productos intermedios.",
+    "b) Los productos de tipo A son una gran cantidad de productos que representan un pequeño porcentaje del total del valor de su uso.",
+    "c) Son correctas las respuestas a) y b).",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 3
+},
+{
+  "question": "129. Dependiendo de la ubicación, existen diversos tipos de almacenajes:",
+  "options": [
+    "a) Localización preasignada.",
+    "b) Localización aleatoria.",
+    "c) Localización inmediata.",
+    "d) Son correctas las respuestas a) y b)."
+  ],
+  "correct": 3
+},
+{
+  "question": "130. ¿Cuál de las siguientes características pertenece a la forma de almacenaje tipo mixto?",
+  "options": [
+    "a) Todos los productos tienen identificado su lugar de colocación.",
+    "b) Ningún espacio está predeterminado.",
+    "c) Son correctas las respuestas a) y b).",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 3
+},
+{
+  "question": "131. En el almacén se pueden utilizar aparatos tales como:",
+  "options": [
+    "a) Carretillas.",
+    "b) Apiladoras.",
+    "c) Transpaleta.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "132. Un concepto importante en la gestión del almacén es:",
+  "options": [
+    "a) Índice alfabético.",
+    "b) Índice aleatorio.",
+    "c) Índice optativo.",
+    "d) Índice de rotación."
+  ],
+  "correct": 3
+},
+{
+  "question": "133. ¿Qué es el plazo de aprovisionamiento?",
+  "options": [
+    "a) El tiempo que tarda el celador en distribuir el pedido.",
+    "b) El tiempo que ha permanecido el producto en el almacén.",
+    "c) El tiempo que tarda el contratista en suministrar un producto.",
+    "d) Son correctas las respuestas a) y b)."
+  ],
+  "correct": 2
+},
+{
+  "question": "134. Señale la respuesta correcta en relación con la clasificación de Pareto:",
+  "options": [
+    "a) Los productos tipo A son aquellos, que aun siendo pocos, representan un porcentaje importante del total del valor del uso.",
+    "b) Los productos tipo B son intermedios.",
+    "c) Los productos tipo C son una gran cantidad de productos que representan un pequeño porcentaje del total del valor de su uso.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "135. La recepción de una mercancía se realiza de forma:",
+  "options": [
+    "a) Cuantitativa.",
+    "b) Intuitiva.",
+    "c) Cualitativa.",
+    "d) Son correctas las respuestas a) y c)."
+  ],
+  "correct": 3
+},
+{
+  "question": "136. El celador de almacén realiza fundamentalmente sus funciones en la siguiente dependencia:",
+  "options": [
+    "a) En la oficina del almacén.",
+    "b) En la sala de estar del almacén.",
+    "c) En el hall del almacén.",
+    "d) En el muelle de descarga."
+  ],
+  "correct": 3
+},
+{
+  "question": "137. ¿Cuál de las siguientes funciones corresponde al celador en el muelle de descarga?",
+  "options": [
+    "a) Recepción física de las mercancías, comprobación de existencia de albarán, comprobación del número de bultos.",
+    "b) Notificación al responsable del posible rechazo de la mercancía por no adecuación al pedido, falta de identificación u otros motivos.",
+    "c) Transporte de los bultos al almacén.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "138. ¿Cuál de las siguientes funciones no la realiza el celador en la zona de almacenamiento?",
+  "options": [
+    "a) Colocación de los productos almacenables en sus ubicaciones respectivas.",
+    "b) Notificación de la disminución o agotamiento de productos, a fin de tomar medidas para su reposición.",
+    "c) Recepción física de la mercancía.",
+    "d) Preparación de los pedidos internos según plan (normalmente semanal) de reparto."
+  ],
+  "correct": 2
+},
+{
+  "question": "139. ¿Cómo se denomina el documento donde el responsable de un servicio realiza un pedido de almacén?",
+  "options": [
+    "a) Documento de entrega.",
+    "b) Vale de pedido.",
+    "c) Vale de entrega.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "140. Los vales de pedidos deben ir:",
+  "options": [
+    "a) Con la fecha del día que se solicita.",
+    "b) Firmados por el celador.",
+    "c) Firmados por el responsable del servicio.",
+    "d) Son correctas las respuestas a) y c)."
+  ],
+  "correct": 3
+},
+{
+  "question": "141. ¿Quién debe realizar el reparto de los pedidos programados?",
+  "options": [
+    "a) El celador del servicio al que corresponde el pedido.",
+    "b) Un celador de retén.",
+    "c) El encargado de almacén.",
+    "d) El celador de almacén."
+  ],
+  "correct": 3
+},
+{
+  "question": "142. Son funciones del servicio de farmacia hospitalaria:",
+  "options": [
+    "a) Establecer un sistema eficaz y seguro de distribución de medicamentos.",
+    "b) Llevar a cabo actividades educativas sobre cuestiones de su competencia dirigidas al personal sanitario del hospital y a los pacientes.",
+    "c) Efectuar trabajos de investigación propios o en colaboración con otras unidades o servicios y participar en los ensayos clínicos con medicamentos.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "143. Los servicios de farmacia hospitalaria estarán bajo la titularidad y responsabilidad de:",
+  "options": [
+    "a) Un farmacéutico especialista en farmacia hospitalaria.",
+    "b) Un farmacéutico especialista en farmacia clínica.",
+    "c) Un supervisor de farmacia.",
+    "d) El jefe de guardia."
+  ],
+  "correct": 0
+},
+{
+  "question": "144. ¿Cuál de las siguientes es una función del celador en el servicio de farmacia?",
+  "options": [
+    "a) La recepción de paquetes, bultos y envases que los proveedores suministran a la farmacia.",
+    "b) El transporte del material dentro de la farmacia.",
+    "c) La preparación del alcohol que se utiliza en las unidades del hospital.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "145. Señale la respuesta incorrecta en relación con la distribución de medicamentos:",
+  "options": [
+    "a) La petición de medicamentos debe ir avalada por la correspondiente prescripción médica, que puede ser de carácter verbal.",
+    "b) Cuando se estime conveniente realizar la división de los envases normales o clínicos, las entregas parciales del contenido de estos irán debidamente etiquetadas.",
+    "c) Se prestará especial vigilancia y control sobre aquellos medicamentos situados en las unidades de enfermería, urgencias y similares.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 0
+},
+{
+  "question": "146. La unidad de farmacia puede dividirse en:",
+  "options": [
+    "a) Biblioteca y centro de información de medicamentos.",
+    "b) Administración o gestión.",
+    "c) Farmacotecnia.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "147. ¿En qué fase de la tarea de suministros se decide si un producto pasa a “entrada a rotos”?",
+  "options": [
+    "a) Revisión de la mercancía.",
+    "b) Control de calidad.",
+    "c) Recepción de la mercancía.",
+    "d) Revisión simple de la mercancía."
+  ],
+  "correct": 1
+},
+{
+  "question": "148. ¿No es una función del celador almacenero?",
+  "options": [
+    "a) Distribución de la mercancía.",
+    "b) Traslado de la mercancía.",
+    "c) Pedido de la mercancía.",
+    "d) Participar en el inventario general."
+  ],
+  "correct": 2
+},
+{
+  "question": "149. ¿Quién traslada los pedidos de suministros de almacén desde el camión transportista hasta el almacén?",
+  "options": [
+    "a) Los mozos de almacén.",
+    "b) El celador que haya realizado el pedido.",
+    "c) El celador de farmacia.",
+    "d) El celador responsable del muelle de carga-descarga."
+  ],
+  "correct": 3
+},
+{
+  "question": "150. En un almacén y según la clasificación PARETO, los artículos de consumo intermedio son los que corresponden a:",
+  "options": [
+    "a) La clase A y B.",
+    "b) La clase B.",
+    "c) La clase B y C.",
+    "d) La clase D."
+  ],
+  "correct": 1
+},
+{
+  "question": "151. El stock que sirve para hacer frente a la demanda imprevista de los clientes y retrasos en el plazo de entrega de proveedores y evitar roturas de stock es:",
+  "options": [
+    "a) El stock de almacenaje imprevisto.",
+    "b) El stock de seguridad.",
+    "c) El stock reserva.",
+    "d) El stock activo."
+  ],
+  "correct": 1
+},
+{
+  "question": "152. En el almacén, los bultos más pesados, el celador los colocará en las estanterías:",
+  "options": [
+    "a) El celador no coloca los bultos en las estanterías del almacén.",
+    "b) En la parte media, para equilibrar los pesos.",
+    "c) En la parte inferior.",
+    "d) En la parte superior."
+  ],
+  "correct": 2
+},
+{
+  "question": "153. Un domingo llega al servicio donde usted está destinado como celador, una caja grande y pesada, la supervisora de guardia le indica que la lleve al almacén del servicio y la coloque. Usted:",
+  "options": [
+    "a) Hará lo que le indica la Supervisora.",
+    "b) No hará nada, pues el domingo la Supervisora no está de servicio.",
+    "c) Colocará la caja lo más cercana posible al suelo.",
+    "d) Las respuestas a) y c) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "154. Al incorporarse un Celador en el hospital, se le indica que vaya al servicio de lencería para que le proporcionen el uniforme correspondiente, ¿quién será el/la encargado/a de darle el uniforme?",
+  "options": [
+    "a) El encargado de turno.",
+    "b) El jefe de personal subalterno.",
+    "c) La costurera.",
+    "d) La gobernanta."
+  ],
+  "correct": 3
+},
+{
+  "question": "155. El celador de farmacia puede preparar:",
+  "options": [
+    "a) Unidosis.",
+    "b) Medicamentos antidiabéticos.",
+    "c) Medicamentos analgésicos.",
+    "d) Alcohol."
+  ],
+  "correct": 3
+},
+{
+  "question": "156. No es una función del celador encargado del almacén:",
+  "options": [
+    "a) Distribuir los productos en las estanterías.",
+    "b) Comprobar que los vales de pedido están cumplimentados correctamente.",
+    "c) Confrontar las facturas con los albaranes.",
+    "d) Distribuir los pedidos internos."
+  ],
+  "correct": 2
+},
+{
+  "question": "157. Al recepcionar una mercancía en el almacén de suministros, ¿qué datos se toman para el control de pedidos?",
+  "options": [
+    "a) Nombre del transportista.",
+    "b) Cantidad de bultos.",
+    "c) Número de pedido y nombre del proveedor.",
+    "d) Contaje de unidades."
+  ],
+  "correct": 2
+},
+{
+  "question": "158. La comprobación de que los bultos son los que constan en el albarán de entrega se realizará:",
+  "options": [
+    "a) En el instante de la petición del material.",
+    "b) Al recibir el material.",
+    "c) Al realizar el inventario.",
+    "d) En el momento de entrega del material a los distintos servicios."
+  ],
+  "correct": 1
+},
+{
+  "question": "159. El término LIFO significa:",
+  "options": [
+    "a) El primero en entrar es el primero en salir.",
+    "b) El último en entrar es el primero en salir.",
+    "c) El primer consumo es la primera compra.",
+    "d) El último en entrar es el último en salir."
+  ],
+  "correct": 1
+},
+{
+  "question": "160. El celador podrá contratar verbalmente la adquisición de un suministro hospitalario:",
+  "options": [
+    "a) Cuando se lo pida el médico de guardia de urgencias.",
+    "b) Cuando se lo pida el jefe de la unidad al que va dirigido el suministro.",
+    "c) Cuando al hacer el inventario detecte el stock agotado de un producto.",
+    "d) No podrá contratarlo en ningún caso."
+  ],
+  "correct": 3
+},
+{
+  "question": "161. ¿Cuál de los siguientes productos no se considera material fungible?",
+  "options": [
+    "a) Guantes estériles.",
+    "b) Hojas de bisturí.",
+    "c) Camas.",
+    "d) Gasas estériles."
+  ],
+  "correct": 2
+},
+{
+  "question": "162. Las sondas de aspiración tienen la consideración de material:",
+  "options": [
+    "a) Inventariable.",
+    "b) De mantenimiento.",
+    "c) Fungible.",
+    "d) Común."
+  ],
+  "correct": 2
+},
+{
+  "question": "163. Dentro del almacén no es función de los celadores:",
+  "options": [
+    "a) Comprobación de los vales de suministros o pedidos internos.",
+    "b) Notificación de la disminución o agotamiento de productos, a fin de tomar medidas para su reposición.",
+    "c) Colocación de los productos almacenables en sus ubicaciones respectivas.",
+    "d) Control del gasto del almacén de los diferentes servicios peticionarios."
+  ],
+  "correct": 3
+},
+{
+  "question": "164. ¿Qué se entiende por inventario de un almacén?",
+  "options": [
+    "a) La estancia provisional de la mercancía en el almacén.",
+    "b) Información que permite conocer en todo momento las entradas, las salidas y las existencias.",
+    "c) Llegada de mercancías que sirven los proveedores.",
+    "d) Relación detallada y valorada de contar las existencias de un almacén en un momento determinado."
+  ],
+  "correct": 3
+},
+{
+  "question": "165. Qué factor se tendrá en cuenta a la hora de realizar el diseño de un almacén:",
+  "options": [
+    "a) No importa el coste del almacenamiento.",
+    "b) La maximización del riesgo.",
+    "c) Optimización del espacio disponible.",
+    "d) La inflexibilidad para futuras adaptaciones."
+  ],
+  "correct": 2
+},
+{
+  "question": "166. La actividad o conjunto de tareas destinadas al aprovisionamiento de materiales al almacén general, se denomina:",
+  "options": [
+    "a) Gestión.",
+    "b) Aprovisionamiento.",
+    "c) Suministro externo.",
+    "d) Logística."
+  ],
+  "correct": 2
+},
+{
+  "question": "167. Aquel material que tiene un coste superior a un mínimo establecido, demuestra una duración prolongada en el tiempo y es de fácil y concreta descripción se denomina:",
+  "options": [
+    "a) Material fungible.",
+    "b) Material reutilizable.",
+    "c) Material no desechable.",
+    "d) Material inventariable."
+  ],
+  "correct": 3
+},
+{
+  "question": "168. En un hospital existen siempre dos almacenes básicos, ¿sabrías decir cuáles son?",
+  "options": [
+    "a) Almacén general y almacén de farmacia.",
+    "b) Almacén de vestuario y almacén de lencería.",
+    "c) Almacén de impresos y almacén de equipos de oficina.",
+    "d) Almacén de impresos y almacén de menaje."
+  ],
+  "correct": 0
+},
+{
+  "question": "169. Son datos que se pueden tomar para el control de la calidad. Señala la respuesta incorrecta:",
+  "options": [
+    "a) Dictamen.",
+    "b) Devolución al proveedor.",
+    "c) Entrada a rotos.",
+    "d) Etiquetado de la mercancía."
+  ],
+  "correct": 3
+},
+{
+  "question": "170. ¿Cuáles son los objetivos fundamentales en la distribución del producto?",
+  "options": [
+    "a) Efectividad y orden.",
+    "b) Periodicidad y orden.",
+    "c) Rapidez y limpieza.",
+    "d) Rapidez y efectividad."
+  ],
+  "correct": 3
+},
+{
+  "question": "171. ¿Cuál es la clasificación general correcta del material en una Institución Sanitaria?",
+  "options": [
+    "a) Según sus características y duración, sanitario y no sanitario y por su peligrosidad infectiva.",
+    "b) Según sea sanitario o fungible.",
+    "c) Dependiendo de a quién pertenezca.",
+    "d) Según sean medicinas o mobiliarios."
+  ],
+  "correct": 0
+},
+{
+  "question": "172. El celador, ¿almacena por iniciativa propia la mercancía?",
+  "options": [
+    "a) Sí.",
+    "b) Depende de la cantidad.",
+    "c) No, su trabajo está siempre supervisado.",
+    "d) Según sea su turno de trabajo."
+  ],
+  "correct": 2
+},
+{
+  "question": "173. ¿Qué dato no es imprescindible que aparezca en un vale de pedidos?",
+  "options": [
+    "a) El profesional que traslada el material.",
+    "b) El servicio que solicita el material.",
+    "c) El código de los productos.",
+    "d) La firma del responsable de la unidad."
+  ],
+  "correct": 0
+},
+{
+  "question": "174. Qué criterio para la colocación de la mercancía tiene en cuenta colocar cerca los productos que se suelen solicitar juntos en el mismo pedido:",
+  "options": [
+    "a) Complementariedad.",
+    "b) Compatibilidad.",
+    "c) Popularidad, frecuencia o rotación.",
+    "d) Tamaño."
+  ],
+  "correct": 0
+},
+{
+  "question": "175. Los productos susceptibles de ser portadores de infecciones a los pacientes se clasifican en:",
+  "options": [
+    "a) Material fungible e inventariable.",
+    "b) Material crítico, semicrítico y no crítico.",
+    "c) Material semicrítico y muy crítico.",
+    "d) Críticos, muy críticos y no críticos."
+  ],
+  "correct": 1
+},
+{
+  "question": "176. ¿Cómo se realiza correctamente un inventario?",
+  "options": [
+    "a) Revisando uno por uno todos los artículos para comprobar si las existencias de los materiales en los almacenes son las mismas que están registradas en las fichas.",
+    "b) Sin ninguna supervisión.",
+    "c) Con ayuda del personal de enfermería.",
+    "d) Calculando a bulto que es lo que hay en el almacén."
+  ],
+  "correct": 0
+},
+{
+  "question": "177. ¿Cómo deben ser tratados los artículos que se consideran semicríticos?",
+  "options": [
+    "a) Limpiándolos.",
+    "b) Desinfectándolos.",
+    "c) Esterilizándolos.",
+    "d) No necesitan un tratamiento especial."
+  ],
+  "correct": 1
+},
+{
+  "question": "178. La petición de productos desde cada servicio dentro del suministro interno, ¿debe ir en formulario oficial?",
+  "options": [
+    "a) Sí, siempre.",
+    "b) Para la petición de productos no se emplea ningún formulario oficial.",
+    "c) No.",
+    "d) Depende de quién lo solicite."
+  ],
+  "correct": 0
+},
+{
+  "question": "179. ¿Cuál de estos materiales se considera crítico desde el punto de vista infectivo?",
+  "options": [
+    "a) Hilos de sutura.",
+    "b) Orinales.",
+    "c) Mascarillas.",
+    "d) Ropa de cama."
+  ],
+  "correct": 0
+},
+{
+  "question": "180. ¿Cuál de estos son objetivos fundamentales en el reparto del material?",
+  "options": [
+    "a) Efectividad y orden.",
+    "b) Rapidez y efectividad.",
+    "c) Rapidez y consecuencia.",
+    "d) Orden y caducidad."
+  ],
+  "correct": 1
+},
+{
+  "question": "181. Qué criterio para la colocación de la mercancía tiene en cuenta qué productos pueden estar almacenados unos junto a otros y cuáles no:",
+  "options": [
+    "a) Complementariedad.",
+    "b) Compatibilidad.",
+    "c) Popularidad, frecuencia o rotación.",
+    "d) Tamaño."
+  ],
+  "correct": 1
+},
+{
+  "question": "182. ¿Quién comprueba el movimiento de las mercancías en el almacén?",
+  "options": [
+    "a) El celador.",
+    "b) El controlador de suministro.",
+    "c) El jefe de la unidad.",
+    "d) El personal médico."
+  ],
+  "correct": 1
+},
+{
+  "question": "183. ¿Cuál de estos datos debe estar consignado en la ficha de almacén?",
+  "options": [
+    "a) De dónde viene el producto.",
+    "b) La referencia del producto.",
+    "c) Quién lo ha solicitado.",
+    "d) Cómo ha sido transportado el producto."
+  ],
+  "correct": 1
+},
+{
+  "question": "184. Qué criterio para la colocación de la mercancía tiene en cuenta que las mercancías que mayor actividad generan en el almacén se ubicarán próximas a la zona de expedición:",
+  "options": [
+    "a) Complementariedad.",
+    "b) Compatibilidad.",
+    "c) Popularidad, frecuencia o rotación.",
+    "d) Tamaño."
+  ],
+  "correct": 2
+},
+{
+  "question": "185. Es una estrategia logística que consiste en reunir las partes individuales que conforman un producto y con ellas crear un paquete:",
+  "options": [
+    "a) Picking.",
+    "b) Cross-docking.",
+    "c) Kitting.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "186. Son un método de almacenaje compacto que ofrece una máxima optimización del espacio disponible al suprimir los pasillos entre las estanterías:",
+  "options": [
+    "a) Cross-docking.",
+    "b) Almacenamiento a granel.",
+    "c) Estanterías “drive through”.",
+    "d) Estanterías “drive in”."
+  ],
+  "correct": 3
+},
+{
+  "question": "187. Este tipo de estanterías cuenta con dos zonas, una de carga y otra de descarga, una por cada extremo:",
+  "options": [
+    "a) Cross-docking.",
+    "b) Almacenamiento a granel.",
+    "c) Estanterías “drive through”.",
+    "d) Estanterías “drive in”."
+  ],
+  "correct": 2
+},
+{
+  "question": "188. Hace referencia a un tipo de preparación de pedidos en el que la mercancía se distribuye directamente al usuario sin pasar por un periodo de almacenamiento previo:",
+  "options": [
+    "a) Picking.",
+    "b) Cross-docking.",
+    "c) Kitting.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "189. ¿Cuál de estos artículos no pertenece al material inventariable?",
+  "options": [
+    "a) Bisturí.",
+    "b) Lámparas.",
+    "c) Sillas.",
+    "d) Aparatos de rayos X."
+  ],
+  "correct": 0
+},
+{
+  "question": "190. La extracción agrupada de pedidos se conoce en logística con el nombre de:",
+  "options": [
+    "a) Cooking.",
+    "b) Método ABC.",
+    "c) Drive out.",
+    "d) Picking."
+  ],
+  "correct": 3
+},
+{
+  "question": "191. Es la primera fase que se debe realizar en la tarea de suministros y consiste en conocer las necesidades del material preciso y necesario para el buen funcionamiento de la Institución Sanitaria:",
+  "options": [
+    "a) Previsión de aprovisionamientos.",
+    "b) Planificación de adquisiciones.",
+    "c) Procedimiento administrativo de contratación.",
+    "d) Petición de material."
+  ],
+  "correct": 0
+},
+{
+  "question": "192. La operación técnica de evaluación crítica de las mercancías del almacén que tiene por objeto la eliminación del almacén de los productos obsoletos o caducados se denomina:",
+  "options": [
+    "a) Obsolescencia técnica.",
+    "b) Obsolescencia física.",
+    "c) Caducidad.",
+    "d) Expurgo."
+  ],
+  "correct": 3
+},
+{
+  "question": "193. ¿Qué es lo que caracteriza al material fungible?",
+  "options": [
+    "a) Su función.",
+    "b) Su larga duración.",
+    "c) Su fragilidad, desaparece con el uso y tiene una vida corta.",
+    "d) Su coste."
+  ],
+  "correct": 2
+},
+{
+  "question": "194. Es la tarea intermedia, entre la previsión de aprovisionamientos y el procedimiento administrativo de contratación:",
+  "options": [
+    "a) Previsión de aprovisionamientos.",
+    "b) Planificación de adquisiciones.",
+    "c) Procedimiento administrativo de contratación.",
+    "d) Petición de material."
+  ],
+  "correct": 1
+},
+{
+  "question": "195. La cantidad máxima almacenada de un determinado producto es la definición de:",
+  "options": [
+    "a) Rotura de stock.",
+    "b) Stock máximo.",
+    "c) Stock mínimo.",
+    "d) Stock de seguridad."
+  ],
+  "correct": 1
+},
+{
+  "question": "196. Si en el envase de un medicamento observa un círculo blanco significa que:",
+  "options": [
+    "a) Su dispensación está sujeta a prescripción médica.",
+    "b) Es un medicamento radioactivo.",
+    "c) Es un medicamento fotosensible.",
+    "d) Es un medicamento que afecta a la capacidad de conducción."
+  ],
+  "correct": 0
+},
+{
+  "question": "197. Si en el envase de un medicamento observa un círculo negro significa que:",
+  "options": [
+    "a) Su dispensación está sujeta a prescripción médica.",
+    "b) Es un medicamento estupefaciente.",
+    "c) Es un medicamento fotosensible.",
+    "d) Es un medicamento que afecta a la capacidad de conducción."
+  ],
+  "correct": 1
+},
+{
+  "question": "198. Si en el envase de un medicamento observa una estrella de nieve significa que:",
+  "options": [
+    "a) Su dispensación está sujeta a prescripción médica.",
+    "b) Es un medicamento radioactivo.",
+    "c) Es un medicamento fotosensible.",
+    "d) Es un medicamento que se debe conservar en frigorífico."
+  ],
+  "correct": 3
+},
+{
+  "question": "199. Si en el envase de un medicamento observa un reloj de arena significa que:",
+  "options": [
+    "a) Su dispensación está sujeta a prescripción médica.",
+    "b) Es un medicamento radioactivo.",
+    "c) Es un medicamento con una caducidad inferior a cinco años.",
+    "d) Es un medicamento que afecta a la capacidad de conducción."
+  ],
+  "correct": 2
+},
+{
+  "question": "200. Si en el envase de un medicamento lee las siglas EFG significa que:",
+  "options": [
+    "a) Su dispensación está sujeta a prescripción médica.",
+    "b) Es un medicamento genérico.",
+    "c) Es un medicamento fotosensible.",
+    "d) Es un medicamento que afecta a la capacidad de conducción."
+  ],
+  "correct": 1
+},
+{
+  "question": "201. En relación a la fecha de caducidad de un medicamento, este se puede consumir hasta:",
+  "options": [
+    "a) El último día del mes que aparece reflejado en la fecha de caducidad.",
+    "b) El primer día del mes que aparece reflejado en la fecha de caducidad.",
+    "c) Siempre tendrá que venir reflejado el día hasta el que puede administrarse el medicamento.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "202. El sistema de almacenaje que supone una instalación perfecta para almacenar en profundidad cargas con la misma referencia, se denomina:",
+  "options": [
+    "a) Picking.",
+    "b) Drive in.",
+    "c) Índice de rotación.",
+    "d) Drive out."
+  ],
+  "correct": 1
+},
+{
+  "question": "203. Las estanterías en las que la entrada de la carga puede hacerse por los dos extremos de la instalación, se denomina:",
+  "options": [
+    "a) Drive in.",
+    "b) Drive out.",
+    "c) Drive through.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "204. Las vacunas deben conservarse refrigeradas a una temperatura entre:",
+  "options": [
+    "a) – 2º C y + 2º C.",
+    "b) 2º C y 8º C.",
+    "c) 5 º C y 15º C.",
+    "d) Mientras estén refrigeradas la temperatura no es importante."
+  ],
+  "correct": 1
+},
+{
+  "question": "205. Si clasificamos los inventarios según una concepción logística, cuál de los siguientes no pertenecería a dicha clasificación:",
+  "options": [
+    "a) Inventarios cíclicos o de lotes.",
+    "b) Inventarios de productos ya elaborados.",
+    "c) Inventarios estaciónales o periódicos.",
+    "d) Inventarios de seguridad."
+  ],
+  "correct": 1
+},
+{
+  "question": "206. La función de aprovisionamiento consta de dos etapas. Indique cuáles son:",
+  "options": [
+    "a) Precompra y almacenaje.",
+    "b) Precompra y compra.",
+    "c) Compra y postcompra.",
+    "d) Recepción y almacenaje."
+  ],
+  "correct": 1
+},
+{
+  "question": "207. El material y los productos de hostelería, menaje, comestibles y bebidas, ¿qué consideración tienen dentro de los grupos de artículos que consume un hospital?",
+  "options": [
+    "a) Material sanitario.",
+    "b) Material no sanitario.",
+    "c) Material volátil.",
+    "d) Otro material."
+  ],
+  "correct": 1
+},
+{
+  "question": "208. Indique cuál de los siguientes criterios para la colocación de las mercancías en el almacén son correctos:",
+  "options": [
+    "a) Complementariedad, compatibilidad, popularidad o frecuencia y tamaño.",
+    "b) Complementariedad, comodidad, variedad y tamaño.",
+    "c) Comodidad, accesibilidad, variedad y tamaño.",
+    "d) Complementariedad, compatibilidad, variedad y tamaño."
+  ],
+  "correct": 0
+},
+{
+  "question": "209. ¿Cómo se denomina el medio que sirve para transportar pequeños objetos en los hospitales?",
+  "options": [
+    "a) Tubo transportador.",
+    "b) Turbo de teletransporte.",
+    "c) Teletransportín.",
+    "d) Tubo neumático."
+  ],
+  "correct": 3
+},
+{
+  "question": "210. ¿Qué es un código de barras?",
+  "options": [
+    "a) Conjunto de signos formado por una serie de líneas y números asociados a ellas, que se pone sobre los productos de consumo y se utiliza para la gestión informática de las existencias.",
+    "b) Conjunto de estanterías limitadas por una serie de barras sucesivas para impedir el deterioro de las existencias.",
+    "c) Conjunto de líneas que sirven para identificar el precio máximo de los artículos.",
+    "d) Número de líneas continuas que identifican el volumen de producto de un almacén."
+  ],
+  "correct": 0
+},
+{
+  "question": "211. Dentro del servicio de almacén, ¿quién debe realizar la entrega de los pedidos programados a las personas que acuden a retirarlos?",
+  "options": [
+    "a) El celador del servicio al que corresponde el pedido.",
+    "b) El encargado de suministro.",
+    "c) El auxiliar administrativo del almacén.",
+    "d) El celador de almacén."
+  ],
+  "correct": 3
+},
+{
+  "question": "212. Qué es un inventario cíclico:",
+  "options": [
+    "a) Aquel en el que se acumula material hasta una cierta cantidad para poder servirlo de una vez.",
+    "b) Aquel donde se encuentran los productos que son demandados en función del periodo del año en el que nos encontremos.",
+    "c) Aquel en el que los productos son suministrados progresivamente.",
+    "d) El que se crea para cubrir el riesgo de las fluctuaciones de los pedidos."
+  ],
+  "correct": 0
+},
+{
+  "question": "213. Un concepto importante en la gestión de almacenes que mide el tiempo transcurrido desde que un artículo entra en el almacén hasta que se produce su salida, recibe el nombre de:",
+  "options": [
+    "a) Índice cronológico.",
+    "b) Índice aleatorio.",
+    "c) Índice operativo.",
+    "d) Índice de rotación."
+  ],
+  "correct": 3
+},
+{
+  "question": "214. ¿En qué zona del almacén se efectúa la clasificación de los productos?",
+  "options": [
+    "a) Muelle de descarga.",
+    "b) Zona de stock o almacenamiento.",
+    "c) Zona administrativa.",
+    "d) Recepción y control de mercancías."
+  ],
+  "correct": 3
+},
+{
+  "question": "215. Entre las funciones propias del celador en almacén no figura:",
+  "options": [
+    "a) Notificación de la disminución o agotamiento de productos, a fin de tomar medidas para su reposición.",
+    "b) Entrega de productos no programados, en su caso, o urgentes.",
+    "c) Colocación de los productos almacenables en sus ubicaciones respectivas.",
+    "d) Realizar informes mensuales con la valoración económica de los movimientos del almacén."
+  ],
+  "correct": 3
+},
+{
+  "question": "216. El término FIFO significa:",
+  "options": [
+    "a) El primero en entrar es el primero en salir.",
+    "b) El último en entrar es el primero en salir.",
+    "c) El primer consumo es la primera compra.",
+    "d) El último en entrar es el último en salir."
+  ],
+  "correct": 0
+},
+{
+  "question": "217. ¿Cuál es el objetivo final de los almacenes hospitalarios?",
+  "options": [
+    "a) Proporcionar puestos de trabajo a los celadores.",
+    "b) La distribución de pedidos.",
+    "c) Facilitar los suministros externos del hospital.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "218. Se entiende por “just in time”:",
+  "options": [
+    "a) La cantidad mínima de existencias almacenadas para evitar pedidos inesperados.",
+    "b) El producto almacenado sin salida.",
+    "c) La cantidad justa de productos que se tiene en el almacén.",
+    "d) La cantidad máxima de existencias almacenadas de un cierto producto para hacer frente a pedidos inesperados."
+  ],
+  "correct": 2
+},
+{
+  "question": "219. En cuanto a la organización del almacén, ¿tendrá el celador a su cargo, además de la vigilancia, el cierre de puertas de la zona de almacenaje?",
+  "options": [
+    "a) No, solo si son puertas del área de hospitalización.",
+    "b) Sí, cuando no haya guardia de seguridad.",
+    "c) Sí.",
+    "d) No, el cierre de puertas corresponde al personal de oficio."
+  ],
+  "correct": 2
+},
+{
+  "question": "220. Entre los siguientes criterios de valoración de las mercancías almacenadas, indica cuál de ellos intenta superar las ventajas del resto:",
+  "options": [
+    "a) Precio medio ponderado.",
+    "b) FIFO.",
+    "c) LIFO.",
+    "d) LILO."
+  ],
+  "correct": 0
+},
+{
+  "question": "221. Señale cuál de las siguientes es una tarea a desarrollar en la recepción de la mercancía:",
+  "options": [
+    "a) Colocar la mercancía en su ubicación.",
+    "b) Preservar los productos en las condiciones adecuadas de temperatura.",
+    "c) Registro de la mercancía en la ficha de entrada.",
+    "d) Control de la caducidad."
+  ],
+  "correct": 2
+},
+{
+  "question": "222. Los suministros que tienen como finalidad la de abastecer el almacén, desde los distintos proveedores, de la mercancía destinada al suministro interno y que previamente ha sido solicitada, se denominan:",
+  "options": [
+    "a) Suministros continuos.",
+    "b) Suministros externos.",
+    "c) Suministros internos.",
+    "d) Suministros centralizados."
+  ],
+  "correct": 1
+},
+{
+  "question": "223. En el almacenamiento nos referimos a stock como:",
+  "options": [
+    "a) La cantidad de productos que se encuentran en el almacén.",
+    "b) La cantidad de artículos consumidos.",
+    "c) El control de las existencias de cada artículo para evitar situaciones de desabastecimiento.",
+    "d) La cantidad de productos pedidos a los suministros externos."
+  ],
+  "correct": 0
+},
+{
+  "question": "224. En la utilización de la clasificación de Pareto para la ordenación del almacenamiento, indique qué tipo de productos son los que deberán situarse en una zona de máxima accesibilidad y cercana a la zona de expedición:",
+  "options": [
+    "a) Productos A.",
+    "b) Productos B.",
+    "c) Productos C.",
+    "d) Esta clasificación no se utiliza para la ordenación de los almacenes."
+  ],
+  "correct": 0
+},
+{
+  "question": "225. Señale cuál de las siguientes respuestas se relaciona directamente con el alojamiento de los productos en el almacén:",
+  "options": [
+    "a) Descargar, abrir cajas y envoltorios.",
+    "b) Evitar pérdidas, robos y mermas.",
+    "c) Identificación clara y precisa de las estanterías.",
+    "d) Determinar la existencia real."
+  ],
+  "correct": 2
+},
+{
+  "question": "226. Dentro de las funciones del celador de almacén se encuentra:",
+  "options": [
+    "a) Realizar informes mensuales con la valoración económica de los movimientos del almacén.",
+    "b) Control del gasto del almacén de los diferentes servicios peticionarios.",
+    "c) Contratar verbalmente la adquisición de un suministro hospitalario cuando al hacer el inventario detecte el stock agotado de un producto.",
+    "d) Ninguna de las respuestas anteriores es función del celador."
+  ],
+  "correct": 3
+},
+{
+  "question": "227. Es el resultado de restar al stock existente en el almacén, la demanda no satisfecha:",
+  "options": [
+    "a) Stock físico.",
+    "b) Stock óptimo.",
+    "c) Stock disponible.",
+    "d) Stock neto."
+  ],
+  "correct": 3
+},
+{
+  "question": "228. Son las existencias que nos ofrecen la máxima rentabilidad restando los costes de almacenaje:",
+  "options": [
+    "a) Stock físico.",
+    "b) Stock óptimo.",
+    "c) Stock disponible.",
+    "d) Stock neto."
+  ],
+  "correct": 1
+},
+{
+  "question": "229. Dentro de las funciones del almacén, al celador le corresponde:",
+  "options": [
+    "a) La limpieza de las estanterías, una vez al mes.",
+    "b) Cargar y descargar los productos del almacén.",
+    "c) Las respuestas a) y b) son correctas.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "230. Es el resultado de sumar al stock existente en el almacén los pedidos en curso a proveedores, y restarle los pedidos de clientes:",
+  "options": [
+    "a) Stock físico.",
+    "b) Stock óptimo.",
+    "c) Stock disponible.",
+    "d) Stock neto."
+  ],
+  "correct": 2
+},
+{
+  "question": "231. Señale la respuesta incorrecta:",
+  "options": [
+    "a) Un almacén es un espacio físico, edificio o local donde se depositan las mercancías enviadas por los proveedores para un fin.",
+    "b) Suministro interno hace referencia al conjunto de tareas encaminadas a facilitar, desde el almacén central, dando salida al género, todo lo necesario a los distintos servicios o unidades del centro sanitario, de la mercancía por ellos demandada para poder llevar a cabo la actividad asistencial.",
+    "c) Suministro externo hace referencia al conjunto de tareas dirigidas a abastecer al almacén central de todas las mercancías que previamente han sido solicitadas a los distintos proveedores, dando registro de entrada y codificando a cada producto, y destinada a ser distribuida, como suministro interno, a los Servicios o Unidades peticionarias del centro sanitario.",
+    "d) Los proveedores son las empresas encargadas de suministrar internamente el abastecimiento de todas las mercancías que necesita un almacén para realizar las actividades propias (recepción y almacenamiento de mercancías, control de las existencias y distribución de pedidos)."
+  ],
+  "correct": 3
+},
+{
+  "question": "232. El material que tras su uso requiere ser tratado para volver a ser utilizado nuevamente se llama:",
+  "options": [
+    "a) Consumible o fungible.",
+    "b) Desechable.",
+    "c) Reutilizable.",
+    "d) No consumible o inventariable."
+  ],
+  "correct": 2
+},
+{
+  "question": "233. ¿Qué es un servicio de farmacia hospitalaria?",
+  "options": [
+    "a) Es un servicio central al que tienen acceso todas las unidades hospitalarias.",
+    "b) Solamente atiende a los pacientes hospitalizados.",
+    "c) Todos los hospitales tienen servicio de farmacia.",
+    "d) La función del servicio de farmacia hospitalaria es solamente la dispensación de medicamentos."
+  ],
+  "correct": 0
+},
+{
+  "question": "234. Son funciones de las farmacias hospitalarias:",
+  "options": [
+    "a) Promover la prescripción correcta de los medicamentos.",
+    "b) Participar en ensayos clínicos.",
+    "c) Monitorizar el tratamiento farmacológico.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "235. Debe estar ubicado fuera del servicio de farmacia, el almacén de:",
+  "options": [
+    "a) Productos termolábiles.",
+    "b) Estupefacientes y psicótropos.",
+    "c) Productos inflamables.",
+    "d) Todos las respuestas anteriores son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "236. Generalmente un servicio de farmacia hospitalaria puede tener una de las siguientes áreas diferenciadas:",
+  "options": [
+    "a) Almacén y área de dispensación.",
+    "b) Área de reenvasado.",
+    "c) Área estéril.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "237. En un servicio de farmacia se denomina unidosis:",
+  "options": [
+    "a) A la conservación de una dosis de cada medicamento para su posterior análisis.",
+    "b) A la distribución de medicamentos según las necesidades de cada servicio.",
+    "c) A la dispensación de un mismo medicamento para todos los pacientes.",
+    "d) A la dispensación individualizada de medicamentos."
+  ],
+  "correct": 3
+},
+{
+  "question": "238. Usted es celador y desempeña sus funciones en el servicio de farmacia de un hospital. Al acceder al almacén de sueros de una de las plantas para depositar en él un pedido, encuentra líquido derramado que procede de una de las cajas que allí están almacenadas. Ante esa situación usted debe:",
+  "options": [
+    "a) Recoger el líquido del suelo, sacar al pasillo todas las cajas que se encuentran mojadas, depositar en el almacén de sueros de la planta el nuevo pedido y regresar al servicio de farmacia.",
+    "b) Dirigirse al control de la planta y comunicar al personal de enfermería la incidencia detectada.",
+    "c) Limitarse a depositar en el almacén de sueros de la planta el nuevo pedido y regresar al servicio de farmacia.",
+    "d) Depositar en el almacén de sueros de la planta el nuevo pedido y regresar al servicio de farmacia con todas las cajas que ha encontrado mojadas."
+  ],
+  "correct": 1
+},
+{
+  "question": "239. El pedido de las unidades a la farmacia lo realiza:",
+  "options": [
+    "a) El farmacéutico.",
+    "b) El celador de farmacia.",
+    "c) La supervisora de la unidad.",
+    "d) El auxiliar de enfermería."
+  ],
+  "correct": 2
+},
+{
+  "question": "240. No es función del celador de farmacia:",
+  "options": [
+    "a) El traslado de los carros de unidosis a las Unidades asistenciales.",
+    "b) Preparar los pedidos de sueros y su traslado a las Unidades peticionarias.",
+    "c) La distribución individual de la medicación a los pacientes.",
+    "d) La custodia de la farmacia."
+  ],
+  "correct": 2
+},
+{
+  "question": "241. Un celador del almacén de farmacia es requerido por un médico para que le suministre un analgésico. ¿Cómo debe actuar?",
+  "options": [
+    "a) Se lo dará y a continuación se lo comunicará al responsable de farmacia.",
+    "b) Solicitará del peticionario una previsión del gasto para mantener el stock.",
+    "c) Se lo dará comunicándolo a la Supervisora de Guardia.",
+    "d) Pasará la petición al farmacéutico responsable."
+  ],
+  "correct": 3
+},
+{
+  "question": "242. ¿A quién corresponde la custodia, conservación y dispensación de los medicamentos?",
+  "options": [
+    "a) A las oficinas de farmacia legalmente autorizadas.",
+    "b) A los servicios de farmacia de los hospitales y de los Centros de Salud.",
+    "c) A los servicios de las estructuras de Atención Primaria del Sistema Nacional de Salud.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "243. Un celador destinado en el servicio de farmacia de un hospital deberá:",
+  "options": [
+    "a) Trasladar los pedidos a los servicios que lo soliciten.",
+    "b) Atender con carácter de urgencia la expedición de medicamentos por orden del farmacéutico, ante la ausencia del personal autorizado.",
+    "c) Trasladar los medicamentos que se recepcionan en el almacén general hasta la farmacia del hospital.",
+    "d) Las respuestas a) y c) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "244. Un celador en el servicio de farmacia:",
+  "options": [
+    "a) Lleva los pedidos a las unidades destinatarias.",
+    "b) Embolsa las unidosis.",
+    "c) Ayuda en la realización de los preparados de nutrición artificial.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "245. Es función de la farmacia en el hospital:",
+  "options": [
+    "a) Establecer un sistema eficaz y seguro de distribución de medicamentos.",
+    "b) Establecer un servicio de información de medicamentos para todo el personal del hospital.",
+    "c) Establecer un sistema de farmacovigilancia intrahospitalario.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "246. ¿Qué organismo es el competente para valorar la idoneidad sanitaria de los medicamentos y demás productos y artículos sanitarios?",
+  "options": [
+    "a) La Comunidad Autónoma correspondiente.",
+    "b) La Unión Europea.",
+    "c) La Administración sanitaria del Estado.",
+    "d) El Colegio de Farmacéuticos."
+  ],
+  "correct": 2
+},
+{
+  "question": "247. ¿Cuál no es función del celador de animalario?",
+  "options": [
+    "a) Alimentación de los animales.",
+    "b) Vacunación de los animales.",
+    "c) Aseo de los animales.",
+    "d) Cuidado de los animales."
+  ],
+  "correct": 1
+},
+{
+  "question": "248. Los celadores destinados en el animalario, ¿tienen como una de sus funciones ayudar a los facultativos en el quirófano de experimentación?",
+  "options": [
+    "a) No, no es una de las funciones del Celador en el animalario, recogidas en el Estatuto de Personal No Sanitario (14.2.21).",
+    "b) No, si no reciben la instrucción del personal del animalario por escrito.",
+    "c) No, si no reciben la orden de los facultativos por escrito.",
+    "d) Sí, pero solo cuando se trate de animales de gran tamaño."
+  ],
+  "correct": 0
+},
+{
+  "question": "249. ¿Qué función tendrán los celadores con los animales utilizados en los quirófanos experimentales y en los laboratorios?",
+  "options": [
+    "a) Los cuidarán, limpiarán las jaulas y los asearán.",
+    "b) Los cuidarán alimentándolos, manteniendo limpias las jaulas y aseándoles, tanto antes de ser sometidos a las pruebas experimentales como después de aquellas y siempre bajo las indicaciones que reciban de los Médicos, Supervisoras o Enfermeras que les sustituyan en sus ausencias.",
+    "c) Ninguna, serán los veterinarios quienes se encarguen de dichos animales.",
+    "d) Los trasladarán al quirófano."
+  ],
+  "correct": 1
+},
+{
+  "question": "250. Según el estatuto del personal no sanitario al servicio de las instituciones sanitarias de la seguridad social, ¿a quién corresponde limpiar las jaulas de los animales utilizados en los laboratorios?",
+  "options": [
+    "a) Al personal de limpieza.",
+    "b) A los Celadores del animalario.",
+    "c) Al Auxiliar de Enfermería.",
+    "d) Al Técnico Especialista de Laboratorio."
+  ],
+  "correct": 1
+},
+{
+  "question": "251. En el animalario no es función del celador:",
+  "options": [
+    "a) Garantizar la correcta alimentación de los animales a su cargo.",
+    "b) Hacer uso del instrumental durante la intervención junto al experimentador.",
+    "c) Llevar los animales al quirófano y colocarlos en la mesa de intervenciones quirúrgicas a petición del experimentador.",
+    "d) Garantizar la limpieza regular y eficaz de los animales a su cargo."
+  ],
+  "correct": 1
+},
+{
+  "question": "252. ¿Cómo deben ser las paredes, techos y suelos del animalario?",
+  "options": [
+    "a) Estar recubiertos de materiales impermeables.",
+    "b) Es indiferente, no hay norma establecida.",
+    "c) Los materiales utilizados deben ser resistentes por el gran desgaste causado por los animales y los productos utilizados para su limpieza.",
+    "d) Las respuestas a) y c) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "253. El celador que presta sus servicios en el animalario deberá:",
+  "options": [
+    "a) Tener a su cargo los animales utilizados en los quirófanos experimentales.",
+    "b) Tener a su cargo los animales utilizados en los laboratorios.",
+    "c) Cuidar de los animales, alimentándolos, manteniendo limpias las jaulas y aseándoles.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "254. La alimentación de los animales utilizados en los quirófanos experimentales es función de:",
+  "options": [
+    "a) El Veterinario.",
+    "b) El Auxiliar de Enfermería.",
+    "c) El Celador del animalario.",
+    "d) La Unidad de Nutrición."
+  ],
+  "correct": 2
+},
+{
+  "question": "255. Es tarea propia del celador:",
+  "options": [
+    "a) Vigilar la distribución de las comidas a los pacientes.",
+    "b) Vigilar personalmente la limpieza de la institución.",
+    "c) Cuidar del uso indebido de los medicamentos en la farmacia hospitalaria.",
+    "d) Limpiar las jaulas de los animales en los laboratorios experimentales."
+  ],
+  "correct": 3
+},
+{
+  "question": "256. Indica cuál de estas funciones no corresponde al celador del animalario:",
+  "options": [
+    "a) Mantener limpias las jaulas de los animales utilizados en experimentación.",
+    "b) Alimentar y asear a los animales utilizados en experimentación.",
+    "c) Seccionar dichos animales en los quirófanos por indicación del personal facultativo.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "257. La alimentación de los animales utilizados en los quirófanos experimentales, será:",
+  "options": [
+    "a) Suministrada por el celador destinado en el animalario, a su criterio y cuando lo considere oportuno.",
+    "b) Adecuada a la especie y a las necesidades nutricionales de cada animal.",
+    "c) Preferentemente será una dieta vegetariana, alta en fibras.",
+    "d) Suministrada por el veterinario."
+  ],
+  "correct": 1
+},
+{
+  "question": "258. Todos los animales utilizados en los quirófanos experimentales y laboratorios deberán disponer:",
+  "options": [
+    "a) Permanentemente de agua no contaminada.",
+    "b) Siempre de estructuras de descanso o materiales de cama adaptadas a la especie.",
+    "c) Del espacio suficiente para limitar la competencia con otros animales.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "259. Señale la respuesta correcta en relación con las características de las instalaciones del animalario:",
+  "options": [
+    "a) Deben garantizar un ambiente que cubra todas las necesidades fisiológicas de las especies alojadas en ellas.",
+    "b) Asimismo, deben diseñarse y gestionarse con vistas a evitar el acceso de personas no autorizadas y la entrada o la huida de animales.",
+    "c) Deberá garantizar que todos los animales permanezcan alojados juntos, depredadores y presas.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "260. Señale la respuesta correcta sobre las condiciones de almacenamiento y conservación de los medicamentos:",
+  "options": [
+    "a) Los medicamentos termolábiles se conservarán en frigorífico-congelador a una temperatura entre -2 ºC y +2 ºC.",
+    "b) Los estupefacientes se identifican por llevar un círculo negro en el envase.",
+    "c) Las especialidades fotosensibles se deben proteger de la luz natural pero no es necesaria su protección de la luz artificial.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "261. ¿Cómo se denomina toda sustancia activa o inactiva, empleada en la fabricación de un medicamento, ya permanezca inalterada, se modifique o desaparezca en el transcurso del proceso?",
+  "options": [
+    "a) Fórmula magistral.",
+    "b) Preparado oficinal.",
+    "c) Forma galénica.",
+    "d) Materia prima."
+  ],
+  "correct": 3
+},
+{
+  "question": "262. Cuando un medicamento viene etiquetado con el símbolo de termolábil, ¿qué indica?",
+  "options": [
+    "a) Que es sensible a la luz.",
+    "b) Que es un medicamento para bajar la temperatura.",
+    "c) Que hay que guardarlo en el frigorífico y mantener la cadena del frío.",
+    "d) Que es dispensado con receta médica."
+  ],
+  "correct": 2
+},
+{
+  "question": "263. Un celador que presta sus servicios en la unidad de farmacia hospitalaria, en la recepción del material entregado por un proveedor, procederá de la siguiente forma:",
+  "options": [
+    "a) Entregará los paquetes, bultos y envases de medicamentos a los celadores de almacén de tarde y noche, impidiendo que nadie ajeno al servicio entre en el mismo.",
+    "b) Recepcionado el material lo entregará al personal sanitario junto con la copia del albarán para que los servicios administrativos contabilicen la entrada del mismo.",
+    "c) Realizará los recuentos periódicos del material del que sea responsable al objeto de comprobar las existencias reales de los productos almacenados en la farmacia.",
+    "d) Comprobará mediante cotejo que el material servido coincide con el que figura en el albarán de entrega."
+  ],
+  "correct": 3
+},
+{
+  "question": "264. La unidosis que se distribuye desde la farmacia se trasladará en los carros destinados a tal fin:",
+  "options": [
+    "a) Dependiendo de la cantidad del principio activo de la especialidad.",
+    "b) Siempre.",
+    "c) Cuando son EFG.",
+    "d) Cuando el celador conozca el número de pacientes hospitalizados."
+  ],
+  "correct": 1
+},
+{
+  "question": "265. Corresponde al celador de farmacia:",
+  "options": [
+    "a) Cargar el carro de unidosis con la medicación correspondiente.",
+    "b) Coordinar las tareas de inventariado del almacén de farmacia.",
+    "c) Trasladar a las plantas de hospitalización los carros de unidosis.",
+    "d) Colocar por orden alfabético los productos almacenados en el servicio de farmacia."
+  ],
+  "correct": 2
+},
+{
+  "question": "266. Dentro de las competencias asignadas al celador en relación a la administración de medicamentos:",
+  "options": [
+    "a) El celador podrá administrar la medicación al paciente cuando se lo ordene el médico responsable del paciente.",
+    "b) Excepcionalmente el celador podrá administrar la medicación al paciente siempre bajo la supervisión de la enfermera de planta.",
+    "c) Podrá administrar medicamentos, ya que es una función que corresponde al celador.",
+    "d) No podrá administrar ningún medicamento, ya que no es una función que corresponda al celador."
+  ],
+  "correct": 3
+},
+{
+  "question": "267. Usted es celador de farmacia en un centro hospitalario y mientras está trasladando un pedido al servicio de quirófano, se encuentra con el supervisor de paritorio. Este le comenta que en el almacén de paritorio hay medicación caducada para retirar. Ante esta situación usted:",
+  "options": [
+    "a) Pospone lo que está haciendo en ese momento y se dirige al paritorio para retirar la medicación caducada.",
+    "b) Toma nota y espera a que, por otro motivo, tenga que desplazarse al paritorio para así aprovechar la ocasión y retirarla sin tener que acudir allí expresamente para ello.",
+    "c) Lo pone en conocimiento del responsable de farmacia.",
+    "d) Comunica al supervisor de paritorio que esa tarea le corresponde al auxiliar de enfermería de cada servicio."
+  ],
+  "correct": 2
+},
+{
+  "question": "268. Entre las funciones del celador destinado en la farmacia no se encuentra:",
+  "options": [
+    "a) Dispensación de determinado material.",
+    "b) Control y dispensación de estupefacientes.",
+    "c) Recepción de material.",
+    "d) Acondicionamiento de determinado material."
+  ],
+  "correct": 1
+},
+{
+  "question": "269. Usted es celador de farmacia en un centro hospitalario y la persona responsable de la misma le solicita que retire 30 cajas de sueros del lugar en el que se encuentran, que busque otro lugar dentro del almacén para las mismas y que las traslade hasta allí. Ante esta petición, usted:",
+  "options": [
+    "a) No realiza la tarea que se le ha encargado porque el celador de farmacia solo traslada productos desde la farmacia hasta las plantas de hospitalización.",
+    "b) No realiza la tarea que se le ha encargado porque esta función le corresponde al personal auxiliar de farmacia.",
+    "c) Realiza todas las tareas que se le han encargado con la supervisión de la persona responsable de la farmacia.",
+    "d) Solicita al Jefe de Personal Subalterno la colaboración de otro celador, ya que este tipo de tareas está estipulado que se hagan entre dos personas."
+  ],
+  "correct": 2
+},
+{
+  "question": "270. ¿Cuál de los siguientes componentes de un medicamente ejerce la acción terapéutica?",
+  "options": [
+    "a) Receptor.",
+    "b) Principio activo.",
+    "c) Excipiente.",
+    "d) Placebo."
+  ],
+  "correct": 1
+},
+{
+  "question": "271. Trabajando en el quirófano, el celador de farmacia le ha entregado una medicación etiquetada como “termolábil”, ante lo cual deberá:",
+  "options": [
+    "a) Como es un medicamento sensible a la luz, lo llevará resguardado de la misma.",
+    "b) Entregárselo a la Supervisora para que lo guarde en la nevera y así mantener la cadena de frío.",
+    "c) Ponerse unos guantes de nitrilo para su transporte.",
+    "d) Todos los medicamentos de la Farmacia del hospital llevan esa etiqueta, no es necesaria ninguna medida adicional."
+  ],
+  "correct": 1
+},
+{
+  "question": "272. Es la cantidad de unidades de un producto que se deberán almacenar para hacer frente a una mayor demanda en una determinada época del año:",
+  "options": [
+    "a) Stock inactivo o muerto.",
+    "b) Stock activo o de ciclo.",
+    "c) Stock de seguridad.",
+    "d) Stock estacional."
+  ],
+  "correct": 3
+},
+{
+  "question": "273. Es el tipo de stock que hace frente a una demanda normal del producto expedido a su debido tiempo:",
+  "options": [
+    "a) Stock inactivo o muerto.",
+    "b) Stock activo o de ciclo.",
+    "c) Stock de seguridad.",
+    "d) Stock estacional."
+  ],
+  "correct": 1
+},
+{
+  "question": "274. Son funciones de los servicios de farmacia del hospital:",
+  "options": [
+    "a) Promover una prescripción correcta de los medicamentos.",
+    "b) Monitorizar el tratamiento farmacológico.",
+    "c) Colaborar con las estructuras de Atención Primaria de la zona.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "275. Actualmente se conocen varios sistemas de distribución de medicamentos. Señale el más habitual por presentar ciertas ventajas:",
+  "options": [
+    "a) Método tradicional por stocks.",
+    "b) Método LIFO.",
+    "c) Método unidosis.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "276. En el ámbito domiciliario, los medicamentos caducados o en malas condiciones se depositarán en un:",
+  "options": [
+    "a) Punto DIGRE.",
+    "b) Punto limpio.",
+    "c) Punto LIFO.",
+    "d) Punto SIGRE."
+  ],
+  "correct": 3
+},
+{
+  "question": "277. El excipiente en farmacología es:",
+  "options": [
+    "a) Una sustancia medicinal que se administra a personas o animales para prevenir, tratar o aliviar una enfermedad o dolencia.",
+    "b) Es una sustancia que activa un cambio en la acción biológica del organismo.",
+    "c) Es una sustancia que añadida a otra determina su biodisponibilidad.",
+    "d) Es la sustancia responsable de la acción terapéutica."
+  ],
+  "correct": 2
+},
+{
+  "question": "278. ¿Cómo deben conservarse los fármacos termolábiles?",
+  "options": [
+    "a) En frigorífico.",
+    "b) A temperatura ambiente.",
+    "c) Bajo una fuente de calor.",
+    "d) En el botiquín."
+  ],
+  "correct": 0
+},
+{
+  "question": "279. La custodia, conservación y dispensación de medicamentos de uso humano corresponderá exclusivamente:",
+  "options": [
+    "a) A los servicios de farmacia de los hospitales.",
+    "b) A los servicios de farmacia de los centros de salud.",
+    "c) A las oficinas de farmacia abiertas al público, legalmente autorizadas.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "280. El celador en el servicio de farmacia tiene como función:",
+  "options": [
+    "a) Controlar y eliminar la medicación caducada.",
+    "b) Ayudar a los técnicos de farmacia a preparar unidosis.",
+    "c) Distribuir medicación y demás productos farmacéuticos a las Unidades del Hospital.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "281. El suministro externo abastece a:",
+  "options": [
+    "a) El laboratorio.",
+    "b) El servicio de mantenimiento.",
+    "c) El almacén general.",
+    "d) El quirófano."
+  ],
+  "correct": 2
+},
+{
+  "question": "282. ¿Cuántos almacenes, como mínimo, hay en un hospital?",
+  "options": [
+    "a) El almacén general, el de farmacia y el de urgencias.",
+    "b) Dos, el almacén general y el de farmacia.",
+    "c) Uno, el almacén general.",
+    "d) Almacén general, almacén de farmacia y almacén de material fungible."
+  ],
+  "correct": 1
+},
+{
+  "question": "283. Las necesidades de material en el almacén general, normalmente se establecen con carácter:",
+  "options": [
+    "a) Diario.",
+    "b) Anual.",
+    "c) Mensual.",
+    "d) Semestral."
+  ],
+  "correct": 1
+},
+{
+  "question": "284. ¿Qué es la farmacovigilancia?",
+  "options": [
+    "a) Es la actividad de salud pública que tiene como objetivo la evaluación y prevención de los riesgos del uso de medicamentos y cosméticos una vez comercializados, permitiendo así el seguimiento de los posibles efectos adversos de los mismos.",
+    "b) Es la actividad de salud pública que tiene por objeto la identificación, cuantificación, permitiendo así el seguimiento de los posibles efectos adversos de los mismos.",
+    "c) Es la actividad de la salud pública que tiene por objeto la identificación, cuantificación, evaluación y prevención de los riesgos del uso de medicamentos una vez comercializados, permitiendo así el seguimiento de los posibles efectos beneficiosos de los mismos.",
+    "d) Es la actividad de salud pública que tiene como objetivo la identificación, cuantificación, evaluación y prevención de los riesgos del uso de medicamentos una vez comercializados, permitiendo así el seguimiento de los posibles efectos adversos de los mismos."
+  ],
+  "correct": 3
+},
+{
+  "question": "285. ¿Cuáles son las funciones del almacén?",
+  "options": [
+    "a) Custodiar, aprovisionar y distribuir.",
+    "b) Almacenar, proteger y contabilizar.",
+    "c) Custodiar, contabilizar y distribuir.",
+    "d) Proteger, distribuir y contabilizar."
+  ],
+  "correct": 0
+},
+{
+  "question": "286. Indique cuál no es una fase de la etapa de precompra:",
+  "options": [
+    "a) Elaboración de especificaciones.",
+    "b) Peticiones de ofertas.",
+    "c) Formulación del pedido.",
+    "d) Selección de proveedores y ofertas."
+  ],
+  "correct": 2
+},
+{
+  "question": "287. El principio de Pareto dice que:",
+  "options": [
+    "a) El 30 % de las causas genera el 70 % de los efectos.",
+    "b) El 20 % de las causas genera el 80 % de los efectos.",
+    "c) El 10 % de las causas genera el 90 % de los efectos.",
+    "d) El 40 % de las causas genera el 60 % de los efectos."
+  ],
+  "correct": 1
+},
+{
+  "question": "288. Es un zona delimitada dentro del almacén, donde se deposita mercancía de forma temporal como, por ejemplo, materias primas:",
+  "options": [
+    "a) Lay-out.",
+    "b) Drive in.",
+    "c) Búfer.",
+    "d) Drive through."
+  ],
+  "correct": 2
+},
+{
+  "question": "289. El mapa de almacén recibe también el nombre de:",
+  "options": [
+    "a) Lay-out.",
+    "b) Drive in.",
+    "c) Búfer.",
+    "d) Drive through."
+  ],
+  "correct": 0
+},
+{
+  "question": "290. Como finalidad el almacén tiene que:",
+  "options": [
+    "a) Garantizar el funcionamiento del mismo.",
+    "b) Garantizar el aprovisionamiento del mismo.",
+    "c) Garantizar el aprovisionamiento a las distintas unidades y servicios en todo momento y a un coste razonable.",
+    "d) Garantizar una buena organización del servicio, mediante la distribución de pedidos."
+  ],
+  "correct": 2
+},
+{
+  "question": "291. Entre las funciones del celador destinado en farmacia no se incluye:",
+  "options": [
+    "a) Dispensación de determinado material.",
+    "b) Recepción de material.",
+    "c) Acondicionamiento de determinado material.",
+    "d) Control y dispensación de estupefacientes."
+  ],
+  "correct": 3
+},
+{
+  "question": "292. En toda petición del material se ha de indicar:",
+  "options": [
+    "a) Denominación del material.",
+    "b) Código y cantidad solicitada.",
+    "c) Identificación del servicio, fecha y firma.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "293. La dispensación individualizada de medicamentos desde la farmacia del hospital se denomina:",
+  "options": [
+    "a) Dispensación aleatoria.",
+    "b) Dispensación general.",
+    "c) Dispensación en unidosis.",
+    "d) Dispensación anómala."
+  ],
+  "correct": 2
+},
+{
+  "question": "294. ¿Qué es el carro de unidosis?",
+  "options": [
+    "a) Es un carro en el que se traslada la medicación de los pacientes que se encuentran en el hospital de día en algunos centros hospitalarios.",
+    "b) Es un carro en el que se traslada la medicación de los pacientes ingresados en un determinado servicio, convenientemente clasificada, generalmente en cajetines etiquetados cada uno de ellos con la referencia de una cama o con el nombre del paciente.",
+    "c) Es un carro que se utiliza una sola vez para trasladar la medicación de un paciente aislado por riesgo de contagio.",
+    "d) Es un carro en el que se traslada desde el almacén de farmacia hasta las plantas de hospitalización el pedido semanal."
+  ],
+  "correct": 1
+},
+{
+  "question": "295. Documento mercantil que acredita la entrega de un pedido:",
+  "options": [
+    "a) Stock.",
+    "b) Expurgo.",
+    "c) Dictamen.",
+    "d) Albarán o nota de entrega."
+  ],
+  "correct": 3
+},
+{
+  "question": "296. En cuanto al tamaño del almacén, debe ser:",
+  "options": [
+    "a) Dos o tres veces el del volumen que se necesita para el almacenaje en sí.",
+    "b) Tres o cuatro veces el del volumen que se necesita para el almacenaje en sí.",
+    "c) Cinco o seis veces el del volumen que se necesita para el almacenaje en sí.",
+    "d) Todas las respuestas anteriores son incorrectas."
+  ],
+  "correct": 0
+},
+{
+  "question": "297. Los almacenes de distribución farmacéutica cuentan con un director técnico que debe ser:",
+  "options": [
+    "a) Un gestor de ventas.",
+    "b) Un abogado.",
+    "c) Un médico.",
+    "d) Un farmacéutico colegiado."
+  ],
+  "correct": 3
+},
+{
+  "question": "298. ¿Qué termino hace referencia a un tipo de preparación de pedidos en el que la mercancía se distribuye directamente al usuario sin pasar por un periodo de almacenamiento previo?",
+  "options": [
+    "a) Cross-docking.",
+    "b) Picking.",
+    "c) Drive in.",
+    "d) Drive through."
+  ],
+  "correct": 0
+},
+{
+  "question": "299. Para la valoración de existencias en un almacén se utilizan los métodos:",
+  "options": [
+    "a) LIFO: last in, first out.",
+    "b) FIFO: first in, first out.",
+    "c) PMP: precio medio ponderado.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "300. Es un almacén de uso relacionado directamente con el paciente y de uso relacionado con el funcionamiento del centro sanitario:",
+  "options": [
+    "a) Almacén de lencería.",
+    "b) Almacén de farmacia.",
+    "c) Almacén de papelería.",
+    "d) Almacén de material clínico fungible."
+  ],
+  "correct": 0
+},
+{
+  "question": "301. En el código EAN, las cinco posiciones que siguen a la clave del país, corresponden:",
+  "options": [
+    "a) Al código asignado a la empresa.",
+    "b) Al producto concreto.",
+    "c) A dígitos control.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "302. Es toda materia, cualquiera que sea su origen (humano, animal, vegetal, químico o de otro tipo) a la que se atribuye una actividad apropiada para constituir un medicamento:",
+  "options": [
+    "a) Excipiente.",
+    "b) Materia prima.",
+    "c) Principio activo.",
+    "d) Medicamento genérico."
+  ],
+  "correct": 2
+},
+{
+  "question": "303. Es la parte de la farmacología que se ocupa del estudio de la evolución del fármaco en el organismo:",
+  "options": [
+    "a) Farmacocinética.",
+    "b) Farmacodinamia.",
+    "c) Farmacotecnia.",
+    "d) Farmacopea."
+  ],
+  "correct": 0
+},
+{
+  "question": "304. Nombre del medicamento que corresponde a una marca registrada por un laboratorio con derechos legales:",
+  "options": [
+    "a) Nombre químico.",
+    "b) Nombre genérico.",
+    "c) Nombre comercial.",
+    "d) EFG."
+  ],
+  "correct": 2
+},
+{
+  "question": "305. Es la administración de sustancias nutritivas a través de una sonda alojada en el tubo digestivo:",
+  "options": [
+    "a) Nutrición parenteral.",
+    "b) Nutrición enteral.",
+    "c) Quimioterapia.",
+    "d) Radioterapia."
+  ],
+  "correct": 1
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
