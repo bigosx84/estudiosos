@@ -1,0 +1,3143 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [	 
+ {
+    "question": "1. El traslado de los pacientes fallecidos al mortuorio, es una función:",
+    "options": [
+      "a) De ayuda.",
+      "b) Exclusiva del celador.",
+      "c) Auxiliar del celador.",
+      "d) De cooperación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "2. ¿Debe amortajar el celador a un paciente fallecido en una planta del hospital?",
+    "options": [
+      "a) Sí.",
+      "b) No.",
+      "c) Excepcionalmente.",
+      "d) Solo el celador de autopsias."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "3. ¿El celador debe realizar las autopsias?",
+    "options": [
+      "a) Sí, en aquellas funciones que no requieran por su parte hacer uso de instrumental alguno sobre el cadáver.",
+      "b) Sí, y además limpiará la mesa y la propia sala de autopsias.",
+      "c) No.",
+      "d) Excepcionalmente y siempre bajo las indicaciones de Médicos, Supervisoras o Enfermeras."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "4. Finalizada la autopsia realizada a un cadáver, ¿cuál será la función del celador de autopsias, respecto a la mesa de autopsias y a la propia sala?",
+    "options": [
+      "a) Limpiará la mesa de autopsias, pero no la sala, cometido este último, propio del personal de limpieza de la Institución.",
+      "b) No es función del celador las labores de limpieza.",
+      "c) Deberá limpiar tanto la mesa de autopsias como la propia sala.",
+      "d) Deberá avisar al servicio de limpieza para que procedan a la limpieza de la mesa y de la sala de autopsias."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "5. El médico forense solicita al celador ayuda durante una autopsia; le encarga asear el cadáver, serrar el cráneo y posteriormente limpiar la sala de autopsias, ¿qué debe hacer el celador?",
+    "options": [
+      "a) Todo menos serrar el cráneo.",
+      "b) Todo, incluido serrar el cráneo ya que la sierra no se considera instrumental.",
+      "c) Todo menos limpiar la sala, que es función del personal de limpieza.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "6. Cuando un paciente fallece, el celador según sus funciones debe:",
+    "options": [
+      "a) Amortajarlo y trasladarlo al mortuorio.",
+      "b) Amortajarlo y avisar para que lo trasladen al mortuorio.",
+      "c) Ayudar a amortajarlo y avisar para que lo trasladen al mortuorio",
+      "d) Ayudar a amortajarlo y trasladarlo al mortuorio."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "7. Cuando un paciente fallece, ¿quién informa a los familiares de los trámites precisos para llevar a cabo el enterramiento, según el Estatuto de personal no sanitario?",
+    "options": [
+      "a) El celador.",
+      "b) El jefe de personal subalterno.",
+      "c) El médico o la Supervisora de planta.",
+      "d) El médico responsable de la asistencia del paciente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "8. Tras el fallecimiento de un paciente en el servicio de urgencias en el turno de noche, su traslado al mortuorio es función del:",
+    "options": [
+      "a) Personal del servicio funerario.",
+      "b) Celador de mortuorio.",
+      "c) Celador de urgencias.",
+      "d) Jefe de Personal Subalterno."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. En relación con los pacientes fallecidos, el celador:",
+    "options": [
+      "a) Solamente se encargará de su traslado.",
+      "b) No debe estar presente cuando se vaya a amortajar.",
+      "c) Informará a los familiares de las causas de la defunción.",
+      "d) Ayudará a las enfermeras o al personal encargado, a amortajar a los pacientes fallecidos."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "10. En relación con los enfermos fallecidos, los celadores:",
+    "options": [
+      "a) Informarán a los familiares de la causa de la defunción.",
+      "b) Ayudarán a las enfermeras o personas encargadas a amortajarlos.",
+      "c) Solamente trasladarán los cadáveres al mortuorio.",
+      "d) No es su función ayudar a amortajar a los enfermos fallecidos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "11. ¿Qué norma regula las autopsias clínicas en España?",
+    "options": [
+      "a) Real Decreto 2230/1982, de 18 de junio, sobre autopsias clínicas.",
+      "b) Decreto 2230/1992, de 18 de junio, sobre autopsias clínicas.",
+      "c) Ley 23/2002 de 18 de junio, sobre autopsias clínicas.",
+      "d) Real Decreto 2230/1991, de 18 de junio, sobre autopsias clínicas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "12. Los estudios autópsicos clínicos solamente podrán realizarse, de acuerdo con lo dispuesto en la norma correspondiente:",
+    "options": [
+      "a) En los Centros o establecimientos que, reúnan las condiciones adecuadas de locales.",
+      "b) En los Centros o establecimientos que, reúnan las condiciones adecuadas de medios físicos.",
+      "c) En los Centros o establecimientos que, reúnan las condiciones adecuadas de personal.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "13. La sala de autopsias debe de tener una superficie mínima de:",
+    "options": [
+      "a) 20 metros cuadrados.",
+      "b) 30 metros cuadrados.",
+      "c) 40 metros cuadrados.",
+      "d) 45 metros cuadrados."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "14. La sala de autopsias debe estar dotada, señala la respuesta incorrecta:",
+    "options": [
+      "a) Con una mesa de autopsias.",
+      "b) Ventilación no forzada.",
+      "c) Iluminación eléctrica adecuada.",
+      "d) Agua corriente fría y caliente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "15. Según la norma correspondiente, las salas de autopsias deben estar dotadas, en cualquier caso de:",
+    "options": [
+      "a) Sistemas de respiración asistida.",
+      "b) Ventilación indirecta.",
+      "c) Extractores de aire directos al exterior.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "16. Según la norma correspondiente, los locales para la realización de estudios autópsicos clínicos deberán reunir, entre otras, estas condiciones, señala la respuesta incorrecta:",
+    "options": [
+      "a) Local de Secretaría.",
+      "b) Aseos con duchas de agua caliente y fría.",
+      "c) Sala de autopsias.",
+      "d) Laboratorio histopatológico propio, en todo caso."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "17. Los refrigeradores de cadáveres deben tener una capacidad:",
+    "options": [
+      "a) Para dos cadáveres, en todo caso.",
+      "b) Para cuatro cadáveres cada doscientas camas de hospitalización o fracción.",
+      "c) Para dos cadáveres cada doscientas camas de hospitalización o fracción.",
+      "d) Para dos cadáveres cada cien camas de hospitalización o fracción."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "18. Se entiende por tanatopraxia:",
+    "options": [
+      "a) La limpieza y desinfección de tanatorios y salas mortuorias.",
+      "b) Toda práctica mortuoria que permite la conservación y exposición del cadáver con las debidas garantías.",
+      "c) La autopsia.",
+      "d) La cremación de cadáveres."
+    ],
+    "correct": 1
+  },
+    {
+    "question": "19. En una sala de autopsias, los celadores, entre otras funciones:",
+    "options": [
+      "a) Diseccionarán el cadáver preparándolo para que el médico intervenga posteriormente.",
+      "b) Solo podrán hacer uso de instrumental sobre el cadáver cuando se lo pida el Forense.",
+      "c) Limpiarán la mesa de autopsias y la propia sala.",
+      "d) Se encargarán del embalsamamiento después de la autopsia."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "20. Es una función del celador de autopsias:",
+    "options": [
+      "a) Limpiar el instrumental.",
+      "b) Limpiar la mesa de autopsia.",
+      "c) Colocar al cadáver en la mesa de autopsias.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "21. Señala la respuesta correcta:",
+    "options": [
+      "a) Se define cadáver como todo cuerpo humano durante los primeros quince años siguientes a la muerte real.",
+      "b) La muerte real se computará desde la fecha y hora que figure en la inscripción de defunción del Registro Civil.",
+      "c) Se define cadáver como todo cuerpo humano o animal durante los primeros dos años siguientes a la muerte real.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "22. ¿Qué método no tiene consideración de tanatopraxia?",
+    "options": [
+      "a) Climatización.",
+      "b) Refrigeración.",
+      "c) Incineración.",
+      "d) Embalsamamiento."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "23. Los métodos tanatopráxicos tienen como objetivo principal:",
+    "options": [
+      "a) Permitir la exposición del cadáver.",
+      "b) La conservación y exposición del cadáver con las debidas garantías sanitarias.",
+      "c) Retrasar la rigidez cadavérica para su exposición bajo las debidas garantías sanitarias.",
+      "d) Hacer desaparecer el cadáver bajo las debidas garantías sanitarias."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "24. ¿Qué es la tanatoplastia?",
+    "options": [
+      "a) Método de adecuación de cadáveres por medio de técnicas de reconstrucción.",
+      "b) Conjunto de técnicas de cosmética y modelado que permiten mejorar la apariencia externa del cadáver.",
+      "c) Reducción a cenizas del cadáver por medio del calor.",
+      "d) Mantenimiento de un cadáver a temperatura muy baja."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "25. Se le conoce como 'frío de la muerte':",
+    "options": [
+      "a) Livor mortis.",
+      "b) Rigor mortis.",
+      "c) Algor mortis.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "26. El Algor Mortis es el enfriamiento del cuerpo después del fallecimiento; se produce en condiciones normales a razón de:",
+    "options": [
+      "a) Medio grado centígrado por hora hasta alcanzar la temperatura ambiente.",
+      "b) Un grado centígrado por hora hasta alcanzar la temperatura ambiente.",
+      "c) Dos grados centígrados por hora hasta alcanzar la temperatura ambiente.",
+      "d) Un grado y medio por hora hasta alcanzar la temperatura ambiente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "27. ¿Cuál de los siguientes conceptos significa 'muerte'?",
+    "options": [
+      "a) Obitus.",
+      "b) Receso.",
+      "c) Cadáver.",
+      "d) Éxitus."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "28. ¿Qué tipo de autopsia es el examen realizado sobre el cadáver de una persona fallecida a causa de una enfermedad?",
+    "options": [
+      "a) Cualquier tipo de autopsia.",
+      "b) Autopsia clínica.",
+      "c) Autopsia judicial.",
+      "d) Autopsia médico legal."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "29. ¿Qué tipo de autopsia es el estudio de un cadáver o restos humanos con el fin de informar a la autoridad judicial de las causas y circunstancias de su muerte?",
+    "options": [
+      "a) Autopsia no judicial.",
+      "b) Autopsia clínica.",
+      "c) Autopsia médico legal.",
+      "d) Autopsia sanitaria."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "30. El sudario también es conocido como:",
+    "options": [
+      "a) Mortaja.",
+      "b) Cadáver.",
+      "c) Crematorio.",
+      "d) Mortuorio."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "31. De los siguientes conceptos, ¿cuál consiste en la disección y examen del cuerpo de una persona fallecida, para determinar la causa de la defunción o la presencia de un proceso patológico?",
+    "options": [
+      "a) Tanatopsia.",
+      "b) Autopsia.",
+      "c) Necropsias postmorten.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "32. ¿Qué práctica está prohibida en cadáveres de personas cuya causa de defunción represente un riesgo sanitario tanto de tipo profesional para el personal funerario, como para el conjunto de la población?",
+    "options": [
+      "a) Tanatopraxia.",
+      "b) Tanatoplastia.",
+      "c) Tanatoestética.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "33. De los siguientes métodos tanatopráxicos, ¿cuál es el acondicionamiento térmico que permite mantener al cadáver durante las primeras 24-48 horas retrasando los procesos de putrefacción?",
+    "options": [
+      "a) Refrigeración.",
+      "b) Congelación.",
+      "c) Climatización.",
+      "d) Embalsamamiento."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "34. La putrefacción es la descomposición de la materia orgánica muerta por la acción de:",
+    "options": [
+      "a) Las células.",
+      "b) Los virus.",
+      "c) La sangre.",
+      "d) Las bacterias."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "35. La tanatopraxia es toda práctica que permite con las debidas garantías sanitarias:",
+    "options": [
+      "a) La conservación del cadáver.",
+      "b) La exposición del cadáver.",
+      "c) La eliminación del cadáver mediante calor.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "36. Lo que queda del cuerpo humano una vez transcurridos los cinco años siguientes a la muerte real, se conoce como:",
+    "options": [
+      "a) Cadáver.",
+      "b) Restos cadavéricos.",
+      "c) Restos humanos.",
+      "d) Restos necrópticos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "37. Una parte del cuerpo humano de entidad suficiente procedente de una mutilación tras una operación quirúrgica, recibe el nombre de:",
+    "options": [
+      "a) Restos cadavéricos.",
+      "b) Restos humanos.",
+      "c) Restos quirúrgicos.",
+      "d) Pieza del cadáver."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "38. El Rigor Mortis es el endurecimiento del cuerpo que se produce de:",
+    "options": [
+      "a) Una a dos horas después de la muerte.",
+      "b) Dos a seis horas después de la muerte.",
+      "c) 30 minutos a una hora después de la muerte.",
+      "d) Dos a cuatro horas después de la muerte."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "39. La tanatología se entiende como la suma de conocimientos relativos a la muerte, especialmente:",
+    "options": [
+      "a) Desde el punto de vista clínico.",
+      "b) Desde el punto de vista médico legal.",
+      "c) Desde el punto de vista no jurídico.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+    {
+    "question": "40. Se produce el livor mortis como consecuencia del cese de la circulación sanguínea, los hematíes comienzan a romperse decolorando los tejidos al liberar:",
+    "options": [
+      "a) Insulina.",
+      "b) Hemoglobina.",
+      "c) Bacterias.",
+      "d) Leucocitos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "41. Establecimiento funerario habilitado para la incineración de cadáveres y restos humanos o cadavéricos:",
+    "options": [
+      "a) Cremación.",
+      "b) Incineración.",
+      "c) Tanatorio.",
+      "d) Crematorio."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "42. El control sanitario de los cementerios y la sanidad mortuoria corresponde:",
+    "options": [
+      "a) A las corporaciones locales.",
+      "b) Al Estado.",
+      "c) A las CCAA.",
+      "d) A la Autoridad Sanitaria."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "43. De los siguientes signos que informan del fallecimiento del paciente, ¿cuál es un signo tardío?",
+    "options": [
+      "a) Ausencia de movimientos respiratorios.",
+      "b) Enfriamiento del cadáver.",
+      "c) Ausencia de latido cardíaco.",
+      "d) Ausencia de pulso."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "44. Según Gisbert Calabuig la muerte tiene:",
+    "options": [
+      "a) 3 fases.",
+      "b) 4 fases.",
+      "c) 5 fases.",
+      "d) 6 fases."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "45. La tercera fase de la muerte según Gisbert Calabuig se denomina:",
+    "options": [
+      "a) Muerte absoluta.",
+      "b) Muerte relativa.",
+      "c) Muerte intermedia.",
+      "d) Muerte aparente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "46. La última fase de la muerte según Gisbert Calabuig se denomina:",
+    "options": [
+      "a) Muerte absoluta.",
+      "b) Muerte relativa.",
+      "c) Muerte intermedia.",
+      "d) Muerte aparente."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "47. La prolongación de la agonía, según Gisbert Calabuig, pertenece a qué fase:",
+    "options": [
+      "a) Primera.",
+      "b) Segunda.",
+      "c) Tercera.",
+      "d) Cuarta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "48. Los cadáveres que van a estar unos días en el depósito de cadáveres de un hospital, deben conservarse refrigerados a una temperatura:",
+    "options": [
+      "a) Mayor de 10 ºC.",
+      "b) De 4 ºC.",
+      "c) Bajo cero.",
+      "d) Menor de 1 ºC."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "49. En caso de defunción de una paciente en el hospital, ¿podrá ser requerido el celador que se encuentra de servicio en la planta de la persona fallecida, para ayudar al personal de enfermería a amortajarla?",
+    "options": [
+      "a) No, esta función la debe realizar solamente el personal de enfermería.",
+      "b) Solamente si el éxitus se ha producido cuando la movilizaba.",
+      "c) No, esta función la debe realizar solamente la celadora del mortuorio.",
+      "d) Sí."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "50. Actualmente las mesas de autopsias son de:",
+    "options": [
+      "a) Porcelana.",
+      "b) Acero inoxidable.",
+      "c) Cerámica.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "51. La apertura del abdomen y del tórax se lleva a cabo mediante una incisión:",
+    "options": [
+      "a) Desde el cuello hasta el pubis.",
+      "b) Desde el ombligo hasta el pubis.",
+      "c) Desde el cuello hasta el ombligo.",
+      "d) Desde el tórax hasta el pubis."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "52. En una autopsia, no se realiza la apertura del:",
+    "options": [
+      "a) Cráneo.",
+      "b) Abdomen.",
+      "c) Músculo temporal.",
+      "d) Raquis."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "53. Para la apertura del raquis en una autopsia se coloca al paciente en:",
+    "options": [
+      "a) Decúbito lateral.",
+      "b) Decúbito supino.",
+      "c) Sims.",
+      "d) Decúbito prono."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "54. La incisión en la apertura del raquis se realiza sobre:",
+    "options": [
+      "a) Las apófisis vertebrales.",
+      "b) Las apófisis coracoides.",
+      "c) Las apófisis espinosas.",
+      "d) El isquion."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "55. Las autopsias clínicas, según su procedencia, pueden ser, señala la respuesta incorrecta:",
+    "options": [
+      "a) Autopsias médico legal.",
+      "b) Autopsias clínicas hospitalarias.",
+      "c) Autopsias clínicas extrahospitalarias.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "56. ¿Qué tipo de autopsia clínica, según su procedencia, se le realizaría a un paciente que fallece en el servicio de Urgencias?",
+    "options": [
+      "a) Autopsia clínica hospitalaria.",
+      "b) Autopsia clínica privada.",
+      "c) Autopsia clínica extrahospitalaria.",
+      "d) Autopsia clínica jurídica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "57. ¿Qué tipo de autopsia clínica, según su procedencia, se le realizaría a un paciente que fallece en su domicilio?",
+    "options": [
+      "a) Autopsia clínica hospitalaria.",
+      "b) Autopsia clínica privada.",
+      "c) Autopsia clínica extrahospitalaria.",
+      "d) Autopsia clínica jurídica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "58. Las autopsias fetales son aquellas realizadas:",
+    "options": [
+      "a) A los fetos fallecidos al nacer.",
+      "b) A los fetos fallecidos antes de nacer.",
+      "c) A los fetos fallecidos antes de las 24 horas del nacimiento.",
+      "d) A los fetos fallecidos antes de las 48 horas del nacimiento."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "59. Según la OMS, las muertes fetales son consideradas abortos y no se autopsian, cuando:",
+    "options": [
+      "a) Ocurren antes de las 22 semanas de gestación.",
+      "b) Ocurren a fetos menores de 500 gramos de peso.",
+      "c) Ocurren en fetos que no son viables.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "60. ¿En cuál de las siguientes situaciones está indicada la práctica de una autopsia clínica?",
+    "options": [
+      "a) Muertes en la que la autopsia pueda contribuir a la explicación de las complicaciones médicas surgidas.",
+      "b) En los casos en los que la causa de la muerte o el diagnóstico principal no sea conocido con seguridad.",
+      "c) En los casos en los que la autopsia aporte a la familia o a la sociedad en general datos importantes.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "61. Al conjunto de operaciones encaminadas a investigar lesiones capaces de producir muertes, se les denomina:",
+    "options": [
+      "a) Técnica de autopsia.",
+      "b) Cuidados postmortem.",
+      "c) Necropsias postmortem.",
+      "d) Autopsia clínica."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "62. Todas las incisiones cutáneas que se le realizan al cadáver deben ser:",
+    "options": [
+      "a) Lineales.",
+      "b) Perpendiculares a la superficie del cuerpo.",
+      "c) Paralelas a la superficie del cuerpo.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "63. La técnica de autopsia usada más frecuentemente en los hospitales es la:",
+    "options": [
+      "a) Técnica de Ghon.",
+      "b) Técnica de Kocher.",
+      "c) Técnica de Virchow.",
+      "d) Técnica de Letulle."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "64. La técnica de autopsia que consiste en la disección de los órganos por separado es la:",
+    "options": [
+      "a) Técnica de Ghon.",
+      "b) Técnica de Kocher.",
+      "c) Técnica de Virchow.",
+      "d) Técnica de Letulle."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "65. La técnica de Ghon consiste en extraer los órganos en:",
+    "options": [
+      "a) Dos bloques.",
+      "b) Tres bloques.",
+      "c) Cuatro bloques.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "66. La técnica de autopsia que consiste en la extracción en un solo bloque de todas las vísceras toracoabdominales se denomina:",
+    "options": [
+      "a) Técnica de Ghon.",
+      "b) Técnica de Kocher.",
+      "c) Técnica de Virchow.",
+      "d) Técnica de Letulle."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "67. No es una técnica de autopsia:",
+    "options": [
+      "a) Técnica de Ghon.",
+      "b) Técnica de Kocher.",
+      "c) Técnica de Letulle.",
+      "d) Técnica de Virchow."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "68. Ante el cadáver:",
+    "options": [
+      "a) Se deben tener las mismas consideraciones que con el cuerpo vivo.",
+      "b) Se creará un ambiente de respeto e intimidad.",
+      "c) No se permitirá la entrada a personas ajenas a la realización de la autopsia.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "69. A la autopsia médico legal se le denomina también:",
+    "options": [
+      "a) Forense.",
+      "b) Judicial.",
+      "c) Obducción.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "70. La autopsia que realizan por disposición judicial, médicos oficialmente designados (médicos forenses), con el fin de establecer la causa y circunstancias que rodean a la muerte, se denomina:",
+    "options": [
+      "a) Autopsia médico forense.",
+      "b) Autopsia médico legal.",
+      "c) Autopsia judicial.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "71. No es una 'muerte miscelánea':",
+    "options": [
+      "a) Muertes sospechosas de personas que mantienen litigios.",
+      "b) Cadáveres no identificados.",
+      "c) Muerte de pacientes por procedimientos clínicos-quirúrgicos.",
+      "d) Muerte por suicidio."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "72. No se considera una muerte no violenta:",
+    "options": [
+      "a) Suicidio.",
+      "b) Muerte súbita.",
+      "c) Muerte natural sin tratamiento médico reciente.",
+      "d) Todas las anteriores se consideran muertes no violentas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "73. Es una función del celador de autopsias:",
+    "options": [
+      "a) Traslado de cadáveres desde el depósito hasta la mesa de autopsias.",
+      "b) Limpiar la mesa, la sala y el material de autopsias.",
+      "c) Recomponer y asear al cadáver una vez efectuada la autopsia.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "74. No es una función del celador de autopsias:",
+    "options": [
+      "a) Limpieza interna y externa del cadáver, rellenando los huecos viscerales.",
+      "b) Volver a amortajar y colocar el cadáver, cuidando el aspecto externo del difunto.",
+      "c) El traslado de los pacientes fallecidos en el servicio de urgencias hasta la mesa de autopsias.",
+      "d) Realizar los movimientos del cadáver durante la realización de la autopsia."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "75. En las autopsias, los huecos viscerales se rellenan, generalmente:",
+    "options": [
+      "a) Con torundas desechables.",
+      "b) Con algodones.",
+      "c) Con papel de celulosa.",
+      "d) Con torundas estériles."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "76. La mesa de autopsia deberá estar diseñada con unas medidas determinadas que son:",
+    "options": [
+      "a) 2 metros de longitud por 0,5 metros de anchura.",
+      "b) 2 metros de longitud por 0,75 metros de anchura.",
+      "c) 2,30 metros de longitud por 0,5 metros de anchura.",
+      "d) 1,80 metros de longitud por 1 metro de anchura."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "77. ¿Debe un celador de autopsias trasladar la documentación que le encomiende el patólogo?",
+    "options": [
+      "a) Sí.",
+      "b) No.",
+      "c) No, es función del técnico de anatomía patológica.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "78. La mesa de autopsias debe presentar unas características, señala la respuesta incorrecta:",
+    "options": [
+      "a) Debe ser de diseño sencillo.",
+      "b) Nunca podrá ser de piedra.",
+      "c) Uno de sus lados puede estar graduado en centímetros para facilitar la lectura de la talla.",
+      "d) Debe contar con un sistema de drenaje."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "79. No forma parte de los equipos que se encuentran en la sala de autopsias:",
+    "options": [
+      "a) Equipo de Rayos X.",
+      "b) Equipo de Emergencia Vital (RCP).",
+      "c) Equipo fotográfico.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "80. ¿Qué instrumento se usa en una autopsia para no dañar las paredes de los órganos a la hora de cortarlos?",
+    "options": [
+      "a) Costótomo.",
+      "b) Enterótomo.",
+      "c) Tijeras y cuchillos.",
+      "d) Sonda metálica."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "81. Es una especie de tijera grande que se utiliza para cortar los cartílagos costales:",
+    "options": [
+      "a) Pinza de dientes de ratón.",
+      "b) Enterótomo.",
+      "c) Costótomo.",
+      "d) Bisturí."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "82. Los celadores ayudarán a la práctica de autopsias:",
+    "options": [
+      "a) Sí, siempre.",
+      "b) Nunca.",
+      "c) En aquellas funciones auxiliares que no requieran por su parte hacer uso de instrumental alguno sobre el cadáver.",
+      "d) En aquellas funciones auxiliares que sí requieran por su parte hacer uso de instrumental sobre el cadáver."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "83. Cuando al cadáver haya que realizarle una autopsia:",
+    "options": [
+      "a) Será conducido por el celador a la sala correspondiente.",
+      "b) Será depositado en una cámara frigorífica.",
+      "c) Será trasladado inicialmente al cementerio.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "84. ¿Cuál de las siguientes no es función de los celadores?",
+    "options": [
+      "a) Amortajar a los enfermos fallecidos.",
+      "b) Trasladar a los cadáveres al mortuorio.",
+      "c) Informar a los familiares de los trámites precisos para llevar a cabo los enterramientos.",
+      "d) Las respuestas a) y c) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "85. La gestión de los restos humanos y residuos anatómicos procedentes de abortos, mutilaciones y operaciones quirúrgicas, queda regulada por:",
+    "options": [
+      "a) El Reglamento Sanitario Mortuorio.",
+      "b) El Reglamento de Policía Sanitaria Mortuoria.",
+      "c) El Reglamento de Policía Mortuoria.",
+      "d) El Reglamento de Policía Sanitaria."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "86. ¿Qué son los clamps?",
+    "options": [
+      "a) Instrumentos de prensa.",
+      "b) Instrumentos de medición.",
+      "c) Un medio de sutura.",
+      "d) Un medio de reproducción gráfica."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "87. Señala el instrumento de prensa:",
+    "options": [
+      "a) Enteróstato.",
+      "b) Compás de espesor.",
+      "c) Microscopio de disección.",
+      "d) Enterótomo."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "88. No es un instrumento de medición:",
+    "options": [
+      "a) Balanza.",
+      "b) Erina.",
+      "c) Cucharones.",
+      "d) Copas graduadas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "89. Una de las siguientes respuestas con respecto a los cuidados postmorten es incorrecta:",
+    "options": [
+      "a) La identificación se colocará en el exterior del sudario y adicionalmente en el tobillo.",
+      "b) Se desconectarán los dispositivos, taponando los orificios con apósitos limpios.",
+      "c) El traslado al mortuorio se realizará por lugares poco transitados y de la forma más discreta posible.",
+      "d) La posición final del cadáver será en decúbito prono."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "90. Con respecto a los guantes que usa el celador en las autopsias, ¿cuál de estas respuestas es incorrecta?",
+    "options": [
+      "a) Deben utilizarse siempre que tenga heridas o cortes en la mano.",
+      "b) Se recomienda que los guantes sean de látex.",
+      "c) Los guantes son la protección de barrera más importante.",
+      "d) Una vez utilizados, pueden lavarse con jabón para un nuevo uso."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "91. Tras finalizar una autopsia, ¿coserá el celador el cadáver si el forense se lo requiriese?",
+    "options": [
+      "a) Sí, es una de las funciones recogidas en el Estatuto de 1971. Además, cobrará la dieta especial estipulada por este cometido concreto.",
+      "b) No, coser a los cadáveres tras la autopsia es una función del personal de enfermería y podría considerarse intrusismo profesional.",
+      "c) No, está claramente explicitado que el celador no hará uso de instrumental alguno sobre el cadáver.",
+      "d) Sí, es una de las funciones del celador de autopsias."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "92. Cuando hablamos de 'la vestimenta que envuelve al cadáver para enterrarlo' nos referimos a:",
+    "options": [
+      "a) La tanatopsia.",
+      "b) El éxitus.",
+      "c) La mortaja.",
+      "d) El embalsamamiento."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "93. La tanatopraxia es:",
+    "options": [
+      "a) Una institución situada en un edificio separado del hospital, que presta servicios funerarios.",
+      "b) Toda práctica mortuoria que consiste en la disección y examen del cuerpo de una persona fallecida para determinar la presencia de un proceso patológico.",
+      "c) Toda práctica mortuoria que permite la conservación y exposición del cadáver con las debidas garantías sanitarias",
+      "d) La ciencia que se ocupa de todo aquello relativo a las defunciones y los funerales."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "94. Señale cuál de los siguientes conceptos es sinónimo de óbito:",
+    "options": [
+      "a) Éxitus.",
+      "b) Mortuorio.",
+      "c) Postmorten.",
+      "d) Necropsia."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "95. El livor mortis es:",
+    "options": [
+      "a) El endurecimiento del cuerpo que se produce de dos a cuatro horas después de la muerte.",
+      "b) La suma de conocimientos relativos a la muerte.",
+      "c) El inicio del proceso de descomposición de la materia orgánica.",
+      "d) La decoloración de los tejidos como consecuencia del cese de la circulación sanguínea."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "96. Una de las funciones del celador de autopsia es incorrecta:",
+    "options": [
+      "a) Asear el cadáver.",
+      "b) Limpiar el instrumental empleado en la autopsia.",
+      "c) Conducir el cadáver desde la cámara frigorífica hasta la mesa de autopsias y si hubiera que desamortajarlo llamará al personal sanitario para que lo haga.",
+      "d) Entregar las muestras al servicio correspondiente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "97. La valoración y certificación de la muerte es competencia del:",
+    "options": [
+      "a) Personal médico.",
+      "b) Celador.",
+      "c) Personal presente en el momento del deceso.",
+      "d) Enfermero de guardia."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "98. La ausencia de movimientos en el tórax y en el abdomen, y de movimientos respiratorios en la auscultación, son considerados signos:",
+    "options": [
+      "a) Tardíos de muerte.",
+      "b) Precoces de muerte.",
+      "c) De predefunción.",
+      "d) Para la actuación urgente del personal sanitario."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "99. Señale cuál de las siguientes funciones no le corresponde al celador en caso de deceso de un paciente:",
+    "options": [
+      "a) Ayudar a las enfermeras.",
+      "b) Ayudar a las personas encargadas a amortajar.",
+      "c) Trasladar el cadáver al mortuorio.",
+      "d) Informar al personal sanitario de que el deceso se ha producido."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "100. La escalera analgésica:",
+    "options": [
+      "a) Consta de 3 peldaños.",
+      "b) Está recomendada por la OMS.",
+      "c) En cada escalón hay una categoría de analgésicos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "101. La preparación del cadáver para ser velado por los familiares se denomina:",
+    "options": [
+      "a) Amortajamiento.",
+      "b) Embalsamamiento",
+      "c) Aseo del cadáver.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 0
+  },
+    {
+    "question": "102. El amortajamiento del cadáver se debe realizar:",
+    "options": [
+      "a) Antes de que aparezca el livor mortis.",
+      "b) Después de reunir todos los permisos necesarios para proceder al entierro.",
+      "c) Antes de que aparezca el rigor mortis.",
+      "d) Después de cumplirse seis horas del deceso."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "103. Señale cuál de las siguientes actuaciones no forma parte del amortajamiento:",
+    "options": [
+      "a) Sujetar los tobillos con una venda.",
+      "b) Sujetar los brazos flexionados con una venda y cerrar los dedos de las manos.",
+      "c) Taponar los orificios naturales.",
+      "d) Cerrar los ojos y la boca del cadáver."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "104. El término éxitus, para referirse al fallecimiento es frecuente utilizarlo en:",
+    "options": [
+      "a) El lenguaje coloquial.",
+      "b) Los partes de defunción.",
+      "c) La historia clínica.",
+      "d) Las respuestas b) y c) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "105. La autopsia consiste en la apertura del:",
+    "options": [
+      "a) Cráneo, tórax y abdomen.",
+      "b) Cráneo, raquis y tórax.",
+      "c) Tórax, abdomen y raquis.",
+      "d) Cráneo, tórax, abdomen y raquis."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "106. El síndrome del Burnout aparece si falla uno de los siguientes aspectos psicológicos relacionado con los cuidados paliativos:",
+    "options": [
+      "a) Empatía.",
+      "b) Control de la implicación emocional.",
+      "c) Uso del lenguaje adecuado.",
+      "d) Respeto a las creencias del paciente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "107. El síndrome de 'burnout' se conoce como:",
+    "options": [
+      "a) Crisis de ansiedad.",
+      "b) Estrés laboral.",
+      "c) 'Estar quemado'.",
+      "d) Depresión crónica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "108. El enfermo con gran sufrimiento y muy próximo a la muerte recibe el nombre de:",
+    "options": [
+      "a) Cadáver.",
+      "b) Terminal.",
+      "c) Agónico.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "109. El algor mortis cesa:",
+    "options": [
+      "a) A las 20 horas tras la defunción.",
+      "b) Al alcanzar el cadáver la temperatura ambiente.",
+      "c) A las 10 h tras la defunción en verano.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "110. Si existe una exposición accidental con sangre del cadáver, pero la piel del profesional no ha sufrido ninguna lesión, se procederá a:",
+    "options": [
+      "a) Lavar la piel expuesta con agua y jabón.",
+      "b) Lavar la piel expuesta con agua y jabón y posteriormente utilizar algún antiséptico.",
+      "c) Utilizar algún antiséptico en el área expuesta de la piel.",
+      "d) Ninguna de las opciones anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "111. En el amortajamiento la primera maniobra a realizar es:",
+    "options": [
+      "a) Confeccionar la mortaja.",
+      "b) Lavar el cuerpo.",
+      "c) Tapar los orificios naturales.",
+      "d) Desconectar y retirar los dispositivos (sondas y catéteres) que tuviera el cadáver."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "112. ¿Qué autor expuso que los médicos deben tener cuidado de no dar más información al paciente que la que él desea saber?",
+    "options": [
+      "a) Kübler-Ross.",
+      "b) Cappon.",
+      "c) Engel.",
+      "d) Schulz."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "113. Para la sección de huesos durante la autopsia, ¿qué instrumentos serán necesarios?",
+    "options": [
+      "a) Costótomo.",
+      "b) Legras.",
+      "c) Sierras.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "114. Para seccionar partes blandas durante la autopsia utilizaremos:",
+    "options": [
+      "a) Condrótomos.",
+      "b) Escoplos.",
+      "c) Mielótomos.",
+      "d) Legras."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "115. Señala el instrumental de prensa que puede utilizarse durante una autopsia:",
+    "options": [
+      "a) Pinzas de forcipresión.",
+      "b) Clamps.",
+      "c) Enteróstatos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "116. Para explorar en una autopsia el conducto de la uretra, el conducto cístico y las arterias coronarias, se utilizará:",
+    "options": [
+      "a) Un costótomo.",
+      "b) Una pinza larga con dientes.",
+      "c) Una sonda metálica de 1 a 4 mm de diámetro.",
+      "d) Una pinza corta sin dientes."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "117. ¿Qué es el éxitus?",
+    "options": [
+      "a) Palabra que viene del latín y significa salida.",
+      "b) Palabra que viene del latín y significa descanso.",
+      "c) Significa muerte y es sinónimo de defunción, deceso u óbito.",
+      "d) Palabra que viene del inglés y significa salida."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "118. ¿Qué es el tanatorio?",
+    "options": [
+      "a) Dependencia hospitalaria donde se encuentran temporalmente los cadáveres.",
+      "b) Ciencia que estudia la muerte.",
+      "c) Examen del cuerpo de la persona fallecida.",
+      "d) Institución situada en un edificio separado del hospital que presta servicios funerarios."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "119. ¿Qué es el sudario?",
+    "options": [
+      "a) A diferencia de la mortaja el sudario es la vestimenta que envuelve al cadáver para enterrarlo.",
+      "b) Vestimenta que envuelve al cadáver para enterrarlo, también se denomina mortaja.",
+      "c) Donde se vela al cadáver.",
+      "d) Zona del tanatorio donde descansan los familiares."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "120. El rigor mortis:",
+    "options": [
+      "a) Desaparece gradualmente a los 10 ó 15 días.",
+      "b) Desaparece gradualmente a las 2 ó 4 horas.",
+      "c) Desaparece gradualmente a los 3 ó 4 días.",
+      "d) Desaparece gradualmente a los 7 días."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "121. ¿Qué es la tanatología?",
+    "options": [
+      "a) La suma de conocimientos relativos a la vida desde el punto de vista médico legal especialmente.",
+      "b) La suma de conocimientos relativos a la muerte desde el punto de vista médico-efectivo especialmente.",
+      "c) La suma de conocimientos relativos a la muerte desde el punto de vista médico legal especialmente.",
+      "d) La suma de conocimientos relativos a la muerte desde el punto de vista médico-clínico especialmente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "122. ¿Qué es un cadáver?",
+    "options": [
+      "a) Todo cuerpo humano durante los 5 primeros años siguientes a la muerte real desde la fecha y hora que figure en la inscripción de defunción en el registro civil.",
+      "b) Todo cuerpo humano durante los 3 primeros años siguientes a la muerte real desde la fecha y hora que figure en la inscripción de defunción en el registro civil.",
+      "c) Todo cuerpo humano durante los 4 primeros años siguientes a la muerte real desde la fecha y hora que figure en la inscripción de defunción en el registro civil.",
+      "d) Todo cuerpo humano durante los 6 primeros años siguientes a la muerte real desde la fecha y hora que figure en la inscripción de defunción en el registro civil."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "123. ¿Qué son los restos cadavéricos?",
+    "options": [
+      "a) Todo lo que queda del cuerpo humano empezados los fenómenos de la destrucción de la materia orgánica una vez transcurridos los 5 años a la muerte real.",
+      "b) Todo lo que queda del cuerpo humano empezados los fenómenos de la destrucción de la materia orgánica una vez transcurridos entre los 5 y los 10 años a la muerte real.",
+      "c) Todo lo que queda del cuerpo humano cuando ha terminado la destrucción de la materia orgánica sin límite de tiempo.",
+      "d) Todo lo que queda del cuerpo humano terminados los fenómenos de la destrucción de la materia orgánica una vez transcurridos los 5 años siguientes a la muerte real."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "124. Si nos referimos a signos de muerte inminente, ¿qué es el denominado estertor agónico?",
+    "options": [
+      "a) Disminución del movimiento ocular.",
+      "b) Aparición de palidez.",
+      "c) Sonido producido por la acumulación de moco y secreciones en las vías respiratorias.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "125. En la autopsia, la apertura de la caja torácica se realiza:",
+    "options": [
+      "a) Con un enterótomo.",
+      "b) Con un periostótomo.",
+      "c) Con un costótomo.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "126. ¿Qué es el rigor mortis?",
+    "options": [
+      "a) Endurecimiento del cuerpo que se produce de 2 a 4 horas después de la muerte.",
+      "b) Endurecimiento del cuerpo que se produce de 1 a 8 horas después de la muerte.",
+      "c) Endurecimiento del cuerpo que se produce de 3 a 10 horas después de la muerte.",
+      "d) Endurecimiento del cuerpo que se produce inmediatamente después de la muerte."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "127. ¿Qué son las livideces cadavéricas?",
+    "options": [
+      "a) O rigor mortis, es la decoloración de la piel debido al cese de la circulación sanguínea.",
+      "b) O livor vivus, es la decoloración de la piel debido al cese de la circulación sanguínea.",
+      "c) O livor mortis, es la decoloración de la piel debido al cese de la circulación sanguínea.",
+      "d) O rigor vivus, es la decoloración de la piel debido al cese de la circulación sanguínea."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "128. ¿Qué es el algor mortis?",
+    "options": [
+      "a) Es el enfriamiento del cuerpo después del fallecimiento, a razón de 1 grado centígrado por hora, hasta alcanzar la temperatura ambiente. También es conocido como el frío de la muerte.",
+      "b) Es el enfriamiento del cuerpo después del fallecimiento, a razón de 2 grados por hora. También es conocido como el frío de la muerte.",
+      "c) Es el enfriamiento del cuerpo después del fallecimiento a razón de 1 grado por cada 2 horas. También es conocido como el frío de la muerte.",
+      "d) Es el enfriamiento del cuerpo después del fallecimiento a razón de 5 grados por hora. También es conocido como el frío final."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "129. ¿Qué es la putrefacción?",
+    "options": [
+      "a) Es la descomposición de la materia inorgánica debida a las bacterias.",
+      "b) Es la descomposición de la materia orgánica debida a los virus.",
+      "c) Es la descomposición de la materia orgánica debida a las bacterias.",
+      "d) Es la descomposición de la materia inorgánica debido a los gusanos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "130. Para realizar la técnica de apertura craneal y toracoabdominal del cadáver, este debe ser colocado en la siguiente posición:",
+    "options": [
+      "a) En decúbito prono con un zócalo debajo de la cabeza.",
+      "b) Trendelenburg con un zócalo debajo de la cabeza.",
+      "c) En decúbito ventral con un zócalo debajo de la cabeza.",
+      "d) En decúbito supino con un zócalo debajo de la cabeza."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "131. ¿Qué es la tanatoplastia?",
+    "options": [
+      "a) Método de adecuación del cadáver por medio de construcción.",
+      "b) Método de adecuación del cadáver por medio de técnicas estéticas.",
+      "c) Método de estudio del cadáver por medio de reconstrucción.",
+      "d) Método de adecuación del cadáver por medio de técnicas de reconstrucción."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "132. ¿Qué es la tanatoestética?",
+    "options": [
+      "a) Conjunto de técnicas de cosmética y modelado que permiten mejorar la apariencia externa del cadáver.",
+      "b) Conjunto de técnicas de cosmética y modelado que permiten mejorar la apariencia interna del cadáver.",
+      "c) Conjunto de técnicas de cosmética y modelado que permiten mejorar la apariencia externa e interna del cadáver.",
+      "d) Conjunto de técnicas de reconstrucción y modelado que permiten mejorar la apariencia externa del cadáver."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "133. ¿Qué es el crematorio?",
+    "options": [
+      "a) Establecimiento funerario habilitado para la incineración de cadáveres, pero no de restos humanos.",
+      "b) Establecimiento funerario habilitado para la incineración de cadáveres y restos humanos.",
+      "c) Establecimiento funerario habilitado para el acondicionamiento de cadáveres y restos humanos.",
+      "d) Establecimiento funerario habilitado para la incineración de objetos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "134. ¿Qué es la incineración?",
+    "options": [
+      "a) Reducción a cenizas del cadáver, restos cadavéricos o restos humanos por medio del calor.",
+      "b) Reducción a cenizas del cadáver, restos cadavéricos o restos humanos por medio del frío.",
+      "c) Reducción a trozos muy pequeños del cadáver, restos cadavéricos o restos humanos por medio del calor.",
+      "d) Reducción a cenizas del cadáver, restos cadavéricos o restos humanos por medio de prensas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "135. La legislación española establece que los locales destinados a la realización de estudios autópsicos clínicos, deben tener:",
+    "options": [
+      "a) Una superficie máxima de 20 metros cuadrados.",
+      "b) Refrigeradores con capacidad para dos cadáveres por cada doscientas camas de hospitalización o fracción.",
+      "c) Refrigeradores con capacidad para dos cadáveres por cada trescientas camas de hospital.",
+      "d) Una superficie mínima de 15 metros cuadrados."
+    ],
+    "correct": 1
+  },
+    {
+    "question": "136. En relación con los pacientes fallecidos en la institución, si es necesario realizarles la autopsia, se encargará de ello:",
+    "options": [
+      "a) El celador del servicio donde ha fallecido el paciente.",
+      "b) El celador destinado en el Servicio de Anatomía Patológica.",
+      "c) El celador de apoyo.",
+      "d) Todas las respuestas anteriores son incorrectas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "137. Según la SECPAL, la enfermedad terminal queda definida por:",
+    "options": [
+      "a) Presencia de una enfermedad.",
+      "b) Falta de posibilidades razonables de respuesta al tratamiento específico.",
+      "c) Presencia de un problema.",
+      "d) Gran impacto emocional solo en el paciente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "138. ¿Cuál de los siguientes es un concepto básico en los cuidados paliativos?",
+    "options": [
+      "a) Apoyo emocional.",
+      "b) Control de los síntomas.",
+      "c) Cambios en la organización.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "139. En los pacientes con cuidados paliativos es imprescindible:",
+    "options": [
+      "a) Un buen grado de comunicación con el paciente y la familia.",
+      "b) Saber manejar todas las situaciones.",
+      "c) Disponer siempre de las respuestas adecuadas.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "140. El acercamiento a personas cercanas a la muerte hace que nos enfrentemos con nuestra propia muerte; será una señal de madurez:",
+    "options": [
+      "a) La negación de la realidad.",
+      "b) La resolución del conflicto.",
+      "c) La solicitud de otra opinión.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "141. La empatía es:",
+    "options": [
+      "a) La capacidad de decir no sin ofender al que tenemos delante.",
+      "b) La capacidad de solucionar los problemas del paciente.",
+      "c) La capacidad para comprender, aceptar y compartir los sentimientos del paciente.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "142. ¿Cuándo debe realizarse una autopsia?",
+    "options": [
+      "a) Cuando la muerte ha sido por suicidio.",
+      "b) Cuando la muerte ha sido por envenenamiento.",
+      "c) Cuando la muerte ha sido por causa desconocida.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "143. Dentro del material inicial de una autopsia común, si nos referimos al término 'escoplo', hablamos de:",
+    "options": [
+      "a) Instrumento para seccionar partes blandas y cartílagos.",
+      "b) Instrumento necesario para la sección de huesos.",
+      "c) Una especie de tijera que corta los cartílagos costales.",
+      "d) Instrumento para la apertura de cavidades."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "144. El método que consiste en la reducción a cenizas del cadáver por la acción del calor, se denomina:",
+    "options": [
+      "a) Radioionización.",
+      "b) Incineración.",
+      "c) Cremación.",
+      "d) Las respuestas b) y c) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "145. ¿Cuántas etapas describe la doctora Kübler-Ross en su teoría del duelo?",
+    "options": [
+      "a) 2.",
+      "b) 5.",
+      "c) 6.",
+      "d) 10."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "146. La primera etapa del duelo que describe Kübler-Ross es:",
+    "options": [
+      "a) Negación.",
+      "b) Ira.",
+      "c) Aislamiento.",
+      "d) Aceptación."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "147. La última etapa del duelo que describe Kübler-Ross es:",
+    "options": [
+      "a) Negación.",
+      "b) Ira.",
+      "c) Aislamiento.",
+      "d) Aceptación."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "148. ¿Cuál de las siguientes técnicas no es de autopsia?",
+    "options": [
+      "a) Técnica de Ghon.",
+      "b) Técnica de Virchow.",
+      "c) Técnica de Letulle.",
+      "d) Técnica de Volkov."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "149. Es un derecho fundamental de las personas en situación terminal:",
+    "options": [
+      "a) Derecho a recibir atención médica y soporte personal.",
+      "b) Derecho a ser tratados con la mayor dignidad.",
+      "c) Derecho a recibir información detallada.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "150. Una persona en situación terminal tendrá derecho a recibir información detallada sobre:",
+    "options": [
+      "a) Su estado de salud.",
+      "b) El desarrollo del tratamiento.",
+      "c) Los resultados esperados.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "151. Según la O.M.S., ¿cuál de las siguientes respuestas no es una finalidad de los cuidados paliativos?",
+    "options": [
+      "a) Apoyar a la familia durante el proceso terminal y el duelo.",
+      "b) Calmar el dolor.",
+      "c) Prolongar la vida.",
+      "d) Controlar los síntomas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "152. Denominamos óbito:",
+    "options": [
+      "a) A la defunción.",
+      "b) A la práctica mortuoria.",
+      "c) A la autopsia.",
+      "d) Al sudario."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "153. Según Kübler-Ross, ¿en qué etapa el paciente es consciente de que su enfermedad progresa y no se cura?",
+    "options": [
+      "a) Negación.",
+      "b) Ira.",
+      "c) Negociación.",
+      "d) Depresión."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "154. ¿Cuál sería la etapa del duelo, según Kübler-Ross, en la que el paciente se entrega y deja de luchar?",
+    "options": [
+      "a) Depresión.",
+      "b) Aceptación.",
+      "c) Negociación o pacto.",
+      "d) Negación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "155. La disección y el examen del cuerpo de una persona fallecida se denomina:",
+    "options": [
+      "a) Autopsia.",
+      "b) Tanatopsia.",
+      "c) Necropsia.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "156. La defunción también se denomina:",
+    "options": [
+      "a) Éxitus.",
+      "b) Deceso.",
+      "c) Óbito.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "157. El conjunto de actuaciones que no buscan acortar o alargar la vida deliberadamente, se denomina:",
+    "options": [
+      "a) Eutanasia",
+      "b) Ortotanasia",
+      "c) Distanasia",
+      "d) Distonimia"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "158. Señale la respuesta correcta sobre la eutanasia activa:",
+    "options": [
+      "a) Implica una actuación dirigida expresamente a facilitar o provocar la muerte del enfermo.",
+      "b) Supone la renuncia al uso de medidas para el mantenimiento de la vida.",
+      "c) Es la prolongación innecesaria de la vida.",
+      "d) Consiste en retrasar la muerte todo lo posible y por todos los medios disponibles, aunque no haya esperanza ninguna de curación."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "159. La finalidad de la autopsia médico legal es:",
+    "options": [
+      "a) Confirmar la causa de la muerte por enfermedad.",
+      "b) Informar de la patología del paciente antes de producirse el fallecimiento.",
+      "c) Informar a la autoridad judicial de las causas y circunstancias de la muerte.",
+      "d) Diseccionar el cadáver para comprobar actos violentos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "160. La ciencia que estudia lo relativo a la muerte, se conoce como:",
+    "options": [
+      "a) Tanatopraxia.",
+      "b) Tanatología.",
+      "c) Necropsia.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "161. El endurecimiento del cuerpo que se produce por alteraciones musculares producidas después de la muerte, se denomina:",
+    "options": [
+      "a) Rigor mortis.",
+      "b) Livor mortis.",
+      "c) Sugilación.",
+      "d) Lividez."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "162. Las livideces cadavéricas son:",
+    "options": [
+      "a) La decoloración producida por el cese de la circulación sanguínea tras producirse la muerte.",
+      "b) El endurecimiento del cuerpo.",
+      "c) La descomposición del cuerpo por acción de las bacterias.",
+      "d) La ausencia de circulación sanguínea con la consiguiente coagulación de la sangre."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "163. La putrefacción es producida por la acción de:",
+    "options": [
+      "a) Productos de desecho.",
+      "b) Artrópodos.",
+      "c) Larvas y moscas.",
+      "d) Bacterias."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "164. Uno de los primeros signos que aparece tras el fallecimiento, no es:",
+    "options": [
+      "a) Ausencia de movimientos respiratorios en la auscultación.",
+      "b) Pérdida de sensibilidad.",
+      "c) Enfriamiento del cadáver.",
+      "d) Ausencia de tono muscular."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "165. Uno de los siguientes signos que se citan a continuación, es una manifestación tardía de la muerte, señala la respuesta incorrecta:",
+    "options": [
+      "a) Rigidez cadavérica.",
+      "b) Aparición de livideces cadavéricas.",
+      "c) Putrefacción cadavérica.",
+      "d) Desaparición del pulso."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "166. El rigor mortis aparece en el cadáver a las:",
+    "options": [
+      "a) 24 horas después del fallecimiento.",
+      "b) 2-4 horas después del fallecimiento.",
+      "c) 12 horas después del fallecimiento.",
+      "d) 72 horas después del fallecimiento."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "167. El amortajamiento deberá realizarse:",
+    "options": [
+      "a) A la mayor brevedad posible.",
+      "b) En la mayor intimidad posible.",
+      "c) Ayudado por el celador.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "168. No es un signo precoz del fallecimiento:",
+    "options": [
+      "a) Enfriamiento del cadáver.",
+      "b) Ausencia de movimientos respiratorios.",
+      "c) Ausencia de latido cardíaco.",
+      "d) Desaparición del pulso."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "169. El amortajamiento consiste en acondicionar el cadáver, para ello:",
+    "options": [
+      "a) Se desconectan y retiran todos los dispositivos, sondas y catéteres que tuviera el cadáver.",
+      "b) Se retiran los objetos personales del cuerpo, excepto aquellos que la familia quiera que el fallecido lleve.",
+      "c) Se abren los orificios naturales con la finalidad de drenar los líquidos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "170. Señale la respuesta incorrecta. Las funciones del celador en relación con los pacientes fallecidos son:",
+    "options": [
+      "a) Ayudar a las enfermeras o personas encargadas a amortajar a los enfermos fallecidos.",
+      "b) Trasladar los cadáveres al mortuorio.",
+      "c) Desconectar y retirar sondas y catéteres que tuviera el cadáver.",
+      "d) Colaborar con el personal sanitario en el aseo del paciente fallecido."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "171. La autopsia o necropsia es:",
+    "options": [
+      "a) La intervención que se realiza en un cadáver para examinar sus órganos con el objetivo de averiguar las causas de la muerte.",
+      "b) El estudio celular del cuerpo humano en personas fallecidas.",
+      "c) La apertura de los órganos para la realización de biopsias con la finalidad de estudiar la patología que produjo la muerte.",
+      "d) Cualquier procedimiento de apertura del cuerpo de un fallecido."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "172. Según la Sociedad Española de Cuidados Paliativos, la característica que no debe concurrir para definir una enfermedad terminal es:",
+    "options": [
+      "a) Presencia de una enfermedad avanzada, progresiva, incurable.",
+      "b) Falta de posibilidades razonables de respuesta al tratamiento específico.",
+      "c) Presencia de numerosos problemas o síntomas intensos, múltiples, multifactoriales y cambiantes.",
+      "d) Presencia de una patología aguda."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "173. Un celador está ayudando a un enfermero a amortajar un cadáver para su traslado al mortuorio. Cuando el enfermero le indica que retire la sonda vesical del cadáver, el celador:",
+    "options": [
+      "a) Se pondrá los guantes y la retirará, con cuidado de no romperla.",
+      "b) Le indicará al enfermero que no es función suya.",
+      "c) Le pedirá al enfermero que antes vacíe el globo de sujeción.",
+      "d) No la retirará, y llamará al Jefe de Personal Subalterno para informar."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "174. Las cenizas procedentes de la incineración de un cadáver se denominan:",
+    "options": [
+      "a) Cadáver durante los 5 primeros años.",
+      "b) Restos cadavéricos después de los 5 años posteriores a la muerte.",
+      "c) Restos cadavéricos.",
+      "d) Todas las respuestas anteriores son incorrectas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "175. Una sala de autopsia está equipada con diferentes equipos e instrumental, señala cuál es un instrumental propio de esta sala:",
+    "options": [
+      "a) Condrótomo.",
+      "b) Cerebrótomo.",
+      "c) Mielótomo.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "176. ¿Qué equipo es necesario para la medición de líquidos corporales en una sala de autopsia?",
+    "options": [
+      "a) Palangana.",
+      "b) Copa graduada.",
+      "c) Batea.",
+      "d) Cuña."
+    ],
+    "correct": 1
+  },
+    {
+    "question": "177. En relación con los pacientes fallecidos el celador:",
+    "options": [
+      "a) No debe estar presente cuando se vaya a realizar el amortajamiento.",
+      "b) Solamente se encargará de trasladar los cadáveres al mortuorio.",
+      "c) Informará a los familiares de las causas de la defunción.",
+      "d) Ayudará a las enfermeras o auxiliares de enfermería en el amortajamiento."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "178. Se entiende por el agarrotamiento de los músculos por perdida de elasticidad que aparece en el cadáver entre dos y cuatro horas después de la muerte:",
+    "options": [
+      "a) Algor mortis.",
+      "b) Rigor mortis.",
+      "c) Livor mortis.",
+      "d) Albor mortis."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "179. ¿Cómo se denomina el instrumental que corta los cartílagos costales y es una especie de tijera?",
+    "options": [
+      "a) Enterótomo.",
+      "b) Costótomo.",
+      "c) Sonda metálica.",
+      "d) Bisturí."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "180. ¿Cuál de las siguientes características no se corresponde con una situación de enfermedad terminal?",
+    "options": [
+      "a) Presencia de una enfermedad avanzada, progresiva e incurable.",
+      "b) Falta de posibilidades razonables de respuesta al tratamiento específico.",
+      "c) Pronóstico de vida inferior a doce meses.",
+      "d) Gran impacto emocional en el paciente, la familia y el equipo terapéutico, relacionado con la presencia, explícita o no, de la muerte."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "181. La ausencia de movimientos respiratorios en la auscultación, sin movimientos del tórax, ni del abdomen, se conocen como:",
+    "options": [
+      "a) Algor mortis.",
+      "b) Signos precoces de muerte.",
+      "c) Rigor mortis.",
+      "d) Signos tardíos de muerte."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "182. El enterótomo es un instrumento que se utiliza en las autopsias para:",
+    "options": [
+      "a) La exploración del conducto de la uretra.",
+      "b) Cortar los cartílagos costales.",
+      "c) La apertura del intestino, el estómago o la tráquea.",
+      "d) Suturar."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "183. La sonda metálica utilizada como instrumental en la sala de autopsias tiene un diámetro de:",
+    "options": [
+      "a) 1 a 4 cm.",
+      "b) 2 a 4 mm.",
+      "c) 1 a 4 mm.",
+      "d) 2 a 4 cm."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "184. En las autopsias, para la exploración del conducto de la uretra, el conducto cístico, las arterias coronarias y el útero, el instrumento que se utiliza es:",
+    "options": [
+      "a) El mielótomo.",
+      "b) La sonda metálica.",
+      "c) El costótomo.",
+      "d) El enterótomo."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "185. No es un instrumental de prensa utilizado en las autopsias:",
+    "options": [
+      "a) Pinzas de disección.",
+      "b) Regla.",
+      "c) Clamps.",
+      "d) Enteróstatos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "186. Son funciones del celador en las autopsias:",
+    "options": [
+      "a) Conducir el cadáver desde las cámaras frigoríficas hasta la mesa de autopsia.",
+      "b) Colocar el cadáver en la mesa de autopsia.",
+      "c) Asear el cadáver si fuera necesario.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "187. El algor mortis se define como:",
+    "options": [
+      "a) La decoloración de la piel que aparece en las zonas inferiores del cuerpo después de la muerte.",
+      "b) La disminución gradual de la temperatura del cuerpo después de la muerte.",
+      "c) El aumento del funcionamiento del hipotálamo antes de la muerte.",
+      "d) Todas las respuesta anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "188. Los pacientes terminales son subsidiarios de recibir cuidados paliativos integrales en las áreas:",
+    "options": [
+      "a) Física y psicológica.",
+      "b) Social y espiritual.",
+      "c) Física, psicológica, social y espiritual.",
+      "d) Los cuidados paliativos integrales no se refieren a estas áreas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "189. ¿En qué situaciones el celador tendrá que utilizar guantes en la sala de autopsias?",
+    "options": [
+      "a) Cuando se vaya a tocar directamente sangre o fluidos corporales.",
+      "b) En el manejo o limpieza de los instrumentos.",
+      "c) Cuando tenga heridas o cortes en las manos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "190. ¿Qué barrera se usará en la sala de autopsia para impedir que las salpicaduras de sangre alcancen el tronco del profesional?",
+    "options": [
+      "a) Gorros permeables.",
+      "b) Guantes impermeables.",
+      "c) Batas permeables de un solo uso.",
+      "d) Batas impermeables de un solo uso."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "191. Para evitar enfermedades que se transmiten por vía respiratoria, el elemento de protección individual que se debe usar en la sala de autopsia es:",
+    "options": [
+      "a) Lavado de manos y cara.",
+      "b) Batas impermeables.",
+      "c) Mascarillas oronasales de alta resolución.",
+      "d) Guantes de cota de malla."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "192. Forma parte del amortajamiento:",
+    "options": [
+      "a) Posicionar al fallecido en posición vertical.",
+      "b) Proceder a la higiene del cadáver.",
+      "c) Dejar los drenajes y sondas para así evitar la salida de fluidos.",
+      "d) Retirar la almohada de la cabeza."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "193. ¿Cómo se debe colocar el cuerpo del paciente después de la muerte?",
+    "options": [
+      "a) En decúbito prono, con los brazos a los lados, las palmas de las manos hacia abajo o cruzadas debajo de su abdomen.",
+      "b) En decúbito supino, con los brazos a los lados, las palmas de las manos hacia abajo o cruzadas sobre el abdomen.",
+      "c) En decúbito prono, con los brazos extendidos y las palmas de las manos hacia arriba.",
+      "d) En decúbito supino, con los brazos extendidos y las palmas de las manos hacia arriba."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "194. ¿Cómo se definen los cuidados administrados al paciente terminal?",
+    "options": [
+      "a) Cuidados intensivos.",
+      "b) Cuidados de apoyo.",
+      "c) Cuidados paliativos o de confort.",
+      "d) Cuidados intensivos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "195. Según la doctora Kübler-Ross, ¿qué dos tipos de depresión existen en una de las etapas por las que pasa el paciente terminal?",
+    "options": [
+      "a) Depresión externa y depresión interna.",
+      "b) Depresión reactiva y depresión preparatoria.",
+      "c) Depresión activa y depresión reactiva.",
+      "d) Depresión reactiva y depresión precipitada."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "196. Las manchas extensas de color rojo-violáceo que aparecen en los cadáveres reciben el nombre de:",
+    "options": [
+      "a) Livideces cadavéricas.",
+      "b) Livor mortis.",
+      "c) Algor mortis.",
+      "d) Las respuestas a) y b) son correctas."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "197. Según Kübler-Ross, las etapas del duelo son:",
+    "options": [
+      "a) Aceptación, depresión, negociación, ira.",
+      "b) Negación, negociación, ira y aceptación.",
+      "c) Negación, cólera, negociación, depresión y aceptación.",
+      "d) Ira, negación, negociación, depresión y aceptación."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "198. El celador tendrá un comportamiento adecuado ante el paciente terminal. Señale de las siguientes respuestas la que no es correcta:",
+    "options": [
+      "a) Escuchar al paciente y dialogar con él.",
+      "b) Compartir sus sentimientos.",
+      "c) Demostrar actitud de apatía.",
+      "d) Respetar las creencias y necesidades religiosas del paciente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "199. Los cuidados de confort que cubren el bienestar físico y psicológico del paciente terminal son:",
+    "options": [
+      "a) Higiene y actividad física.",
+      "b) Ocupación del tiempo libre.",
+      "c) Reposo, sueño y alimentación.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "200. La muerte o fallecimiento recibe distintos nombres, excepto:",
+    "options": [
+      "a) Éxitus.",
+      "b) Fracaso.",
+      "c) Deceso.",
+      "d) Óbito."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "201. El traslado de un fallecido desde el servicio de urgencias de un hospital hasta el mortuorio es una función del:",
+    "options": [
+      "a) Auxiliar de enfermería.",
+      "b) Personal de la funeraria.",
+      "c) Celador.",
+      "d) Encargado de turno."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "202. De las siguientes, ¿cuál no es una etapa del duelo, según la doctora Kübler-Ross?",
+    "options": [
+      "a) Negación.",
+      "b) Descanso y relajación.",
+      "c) Aceptación y paz.",
+      "d) Rebeldía."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "203. En relación con el amortajamiento, no es correcto:",
+    "options": [
+      "a) Realizar la higiene del cuerpo.",
+      "b) Poner el cuerpo en decúbito prono.",
+      "c) Colocar la cama en posición horizontal.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "204. De las siguientes acciones respecto al amortajamiento, ¿cuál de ellas no es correcta?",
+    "options": [
+      "a) Cerrar los ojos y la boca del cadáver.",
+      "b) Retirar los objetos personales del cuerpo.",
+      "c) Maquillar la cara.",
+      "d) Lavar el cuerpo."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "205. El traslado de un paciente fallecido desde el servicio de urgencias de un hospital hasta el mortuorio es una función del:",
+    "options": [
+      "a) Celador de hospitalización.",
+      "b) Celador de quirófano.",
+      "c) Celador de urgencias.",
+      "d) Celador de autopsia."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "206. ¿Qué se entiende por cuidados paliativos?",
+    "options": [
+      "a) Cuidados que se dispensan al paciente crónico.",
+      "b) Cuidados específicos relacionados con algún tipo de cáncer.",
+      "c) Cuidados que proporcionan alivio y mitigan los síntomas.",
+      "d) Cuidados psicológicos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "207. Según la doctora Kübler-Ross, la etapa en la que el paciente va aceptando la idea de la muerte, se denomina:",
+    "options": [
+      "a) De aceptación.",
+      "b) De depresión.",
+      "c) De negociación.",
+      "d) De negación."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "208. La O.M.S. señala que los cuidados paliativos tienen como propósito:",
+    "options": [
+      "a) Proporcionar apoyo psicológico, social y espiritual, tanto al paciente como a la familia.",
+      "b) Mantener la vida, sin alargarla ni acortarla.",
+      "c) Calmar el dolor y controlar los síntomas de la enfermedad.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "209. Es muy importante la comunicación con los pacientes terminales, la actitud que debe asumir el celador incluye:",
+    "options": [
+      "a) Es mejor dejarlo solo para no molestarlo.",
+      "b) Actitud de empatía y comprensión.",
+      "c) No dejarle que manifieste su tristeza ni su llanto.",
+      "d) Evitar que el paciente hable sobre su enfermedad."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "210. ¿Quién debe comunicar la defunción del paciente?",
+    "options": [
+      "a) La enfermera.",
+      "b) El auxiliar de enfermería.",
+      "c) El médico.",
+      "d) Cualquiera de ellos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "211. En qué consiste la técnica de autopsia de Ghon:",
+    "options": [
+      "a) En la extracción de los órganos en 3 bloques, realizándose la disección separada de cada bloque.",
+      "b) Se trata de la extracción en un solo bloque de todas las vísceras.",
+      "c) La disección se realiza fuera del cadáver.",
+      "d) Consiste en la disección de los órganos por separado, comenzando por la cavidad craneal."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "212. ¿Cuál es el artículo del Estatuto de Personal No Sanitario donde se recogen las funciones de los celadores en relación con los enfermos fallecidos?",
+    "options": [
+      "a) El 14.2.18.",
+      "b) El 14.2.20.",
+      "c) El 14.2.17.",
+      "d) El 14.2.19."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "213. En relación con los pacientes fallecidos, los celadores:",
+    "options": [
+      "a) Informarán a los familiares de las causas de la defunción.",
+      "b) Ayudarán a las enfermeras o auxiliares de enfermería a amortajar.",
+      "c) Solo trasladarán el cadáver al mortuorio.",
+      "d) Informarán a los familiares sobre los trámites precisos para llevar a cabo el enterramiento."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "214. En relación con los pacientes fallecidos, el celador deberá:",
+    "options": [
+      "a) Identificar al fallecido.",
+      "b) Amortajar al fallecido.",
+      "c) Informar a los familiares.",
+      "d) Trasladar el cadáver al mortuorio."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "215. Después del fallecimiento de una persona, ¿en qué momento se deben aplicar los cuidados postmortem?",
+    "options": [
+      "a) Antes de que aparezca el rigor mortis.",
+      "b) Después de que aparezca el rigor mortis.",
+      "c) Cuando aparece el livor mortis.",
+      "d) Cuando aparece el algor mortis."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "216. La colocación de los brazos de un cadáver depende de:",
+    "options": [
+      "a) No depende de nada siempre se colocan igual.",
+      "b) Depende de si se le va a realizar autopsia o no.",
+      "c) Las respuestas a) y b) son correctas.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "217. Cuando a un cadáver se le va a realizar una autopsia, los brazos se le colocan:",
+    "options": [
+      "a) Extendidos.",
+      "b) Extendidos, pegados a lo largo del cuerpo con las palmas de las mano hacia abajo.",
+      "c) Cruzados.",
+      "d) Sobre la nuca."
+    ],
+    "correct": 1
+  },
+  {
+  "question": "218. La disminución gradual de la temperatura del cuerpo después de la muerte, se denomina:",
+  "options": [
+    "a) Algor mortis.",
+    "b) Albor mortis.",
+    "c) Rigor motriz.",
+    "d) Livor mortis."
+  ],
+  "correct": 0
+},
+{
+  "question": "219. En la ficha identificativa que se debe realizar antes del traslado del cadáver al mortuorio, debe figurar el siguiente dato:",
+  "options": [
+    "a) La localidad donde reside.",
+    "b) Fecha de nacimiento.",
+    "c) El número de historia clínica.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "220. ¿Cómo se debe realizar el traslado de un cadáver al mortuorio?",
+  "options": [
+    "a) Totalmente tapado.",
+    "b) De manera discreta.",
+    "c) Procurando que no haya personas en los pasillos.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "221. ¿Quién debe informar a los familiares del fallecimiento de un paciente?",
+  "options": [
+    "a) Los médicos.",
+    "b) Las enfermeras.",
+    "c) Los celadores.",
+    "d) El director del hospital."
+  ],
+  "correct": 0
+},
+{
+  "question": "222. ¿Cuál de los siguientes datos no debe figurar en la ficha identificativa que se debe rellenar antes de trasladar al cadáver al mortuorio?",
+  "options": [
+    "a) Fecha de nacimiento.",
+    "b) Nombre y apellidos del fallecido.",
+    "c) Día de ingreso en el hospital.",
+    "d) Día del fallecimiento."
+  ],
+  "correct": 0
+},
+{
+  "question": "223. ¿Quién debe informar a los familiares de un paciente fallecido acerca de los trámites para el enterramiento según el Estatuto de Personal no Sanitario?",
+  "options": [
+    "a) Los celadores.",
+    "b) Los médicos.",
+    "c) El personal de enfermería.",
+    "d) El jefe de personal subalterno."
+  ],
+  "correct": 3
+},
+{
+  "question": "224. ¿De quién es función el traslado del cadáver desde la habitación a la sala de mortuorio?",
+  "options": [
+    "a) Del celador del mortuorio.",
+    "b) Del celador de la planta.",
+    "c) Del celador de retén.",
+    "d) Del encargado de turno."
+  ],
+  "correct": 1
+},
+{
+  "question": "225. El mortuorio es aquella dependencia del hospital donde el paciente fallecido:",
+  "options": [
+    "a) Permanece al menos 24 horas.",
+    "b) Es enterrado.",
+    "c) Permanece al menos 48 horas.",
+    "d) Permanece temporalmente."
+  ],
+  "correct": 3
+},
+{
+  "question": "226. Una vez el cadáver en el mortuorio, el celador no podrá introducirlo en la cámara frigorífica antes de:",
+  "options": [
+    "a) Transcurridas 20 horas.",
+    "b) Transcurridas 24 horas.",
+    "c) Transcurridas 10 horas.",
+    "d) Transcurridas 30 horas."
+  ],
+  "correct": 1
+},
+{
+  "question": "227. ¿En cuál de las siguientes circunstancias puede introducirse el cadáver en la cámara frigorífica antes de las 24 horas?",
+  "options": [
+    "a) Cuando lo solicite la familia.",
+    "b) Cuando lo decida la funeraria.",
+    "c) Cuando haya una intervención judicial.",
+    "d) Nunca se puede introducir antes de las 24 horas."
+  ],
+  "correct": 2
+},
+{
+  "question": "228. ¿Cuál de las siguientes funciones no corresponde al celador destinado en el mortuorio?",
+  "options": [
+    "a) Llevar el control del libro de registro.",
+    "b) Informar a los familiares acerca de las dependencias del hospital.",
+    "c) Revisar periódicamente el cadáver.",
+    "d) Informar a los familiares acerca de los trámites del enterramiento."
+  ],
+  "correct": 3
+},
+{
+  "question": "229. ¿Cuál de los siguientes datos del paciente fallecido debe figurar en el libro de registro de la sala de mortuorio?",
+  "options": [
+    "a) Número de orden de registro.",
+    "b) Servicio de procedencia, planta y cama.",
+    "c) Fecha y hora de entrada en el mortuorio.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "230. ¿Quién tiene competencia para regular en materia de Sanidad Mortuoria?",
+  "options": [
+    "a) Las comunidades autónomas.",
+    "b) El INGESA.",
+    "c) El Ministerio de Sanidad.",
+    "d) El área de salud."
+  ],
+  "correct": 0
+},
+{
+  "question": "231. Un cadáver es:",
+  "options": [
+    "a) Todo cuerpo humano a partir del momento de la muerte hasta su total destrucción orgánica.",
+    "b) Todo proceso que conduce a la descomposición de la materia orgánica.",
+    "c) Todo cuerpo humano durante los cinco primeros años siguientes a la muerte real.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "232. El crematorio es el lugar donde se:",
+  "options": [
+    "a) Incineran los cadáveres.",
+    "b) Incineran los restos humanos.",
+    "c) Incineran los restos cadavéricos.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "233. ¿Desde cuándo se computará el tiempo para la definición de cadáver?",
+  "options": [
+    "a) Desde el momento del fallecimiento.",
+    "b) Desde el momento que se celebra el enterramiento.",
+    "c) Desde el momento de la salida del mortuorio.",
+    "d) Desde la fecha y hora que figure en la inscripción de defunción en el registro civil."
+  ],
+  "correct": 3
+},
+{
+  "question": "234. La tanatopraxia es toda práctica mortuoria que permite:",
+  "options": [
+    "a) El estudio del cadáver.",
+    "b) La conservación del cadáver.",
+    "c) La exposición del cadáver.",
+    "d) Las respuestas b) y c) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "235. Pertenecen al grupo I, los cadáveres cuya causa de defunción es por:",
+  "options": [
+    "a) Cólera.",
+    "b) Peste.",
+    "c) Carbunco.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "236. ¿Cuál de los siguientes no es un destino final de todo cadáver?",
+  "options": [
+    "a) La exposición.",
+    "b) El enterramiento en lugar autorizado.",
+    "c) La incineración o cremación.",
+    "d) La utilización para fines científicos o de enseñanza. Este caso no eximirá de que el destino final sea el entierro o la incineración."
+  ],
+  "correct": 0
+},
+{
+  "question": "237. De las siguientes respuestas, cuál de ellas define al paciente terminal:",
+  "options": [
+    "a) Presencia de una enfermedad avanzada, progresiva e incurable.",
+    "b) Falta de posibilidades razonables de respuesta a tratamiento específico.",
+    "c) Pronóstico de vida inferior a 6 meses.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "238. ¿Podrán conducirse fuera del límite de la Comunidad Autónoma de Extremadura los cadáveres del Grupo I?",
+  "options": [
+    "a) No, en ningún caso.",
+    "b) Sí, siempre que no representen peligro para la salud pública.",
+    "c) No, salvo en circunstancias excepcionales determinadas por la Dirección General de Salud Pública.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "239. ¿Quién realiza los embalsamamientos y las conservaciones temporales?",
+  "options": [
+    "a) El anatomopatólogo.",
+    "b) El encargado de la funeraria.",
+    "c) El celador del mortuorio.",
+    "d) Los licenciados en medicina y cirugía."
+  ],
+  "correct": 3
+},
+{
+  "question": "240. ¿En qué lugares podrán realizarse las autopsias clínicas?",
+  "options": [
+    "a) En los centros regionales de patología adscritos a un hospital.",
+    "b) En los hospitales que cuenten con una sala de autopsias debidamente dotada.",
+    "c) En los hospitales con servicios plenamente dotados de anatomía patológica.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "241. La mesa de autopsia tendrá una altura de:",
+  "options": [
+    "a) 2 metros.",
+    "b) 75 cm.",
+    "c) 70-80 cm.",
+    "d) 1 metro."
+  ],
+  "correct": 2
+},
+{
+  "question": "242. La disminución gradual de la temperatura del cuerpo después de la muerte se denomina:",
+  "options": [
+    "a) Algor mortis.",
+    "b) Rigor mortis.",
+    "c) Rictus mortis.",
+    "d) Alter mortis."
+  ],
+  "correct": 0
+},
+{
+  "question": "243. Se considera enfermedad terminal aquella:",
+  "options": [
+    "a) Que tiene un pronóstico de vida inferior a 8 meses.",
+    "b) Que tiene un pronóstico de vida superior a 8 meses.",
+    "c) Que tiene un pronóstico de vida inferior a 6 meses.",
+    "d) Que tiene un pronóstico de vida superior a 6 meses."
+  ],
+  "correct": 2
+},
+{
+  "question": "244. Señale la respuesta incorrecta respecto a la preparación del cuerpo del paciente fallecido:",
+  "options": [
+    "a) Se procederá al aseo.",
+    "b) Se cerrarán los ojos y la boca.",
+    "c) Los párpados se mantendrán abiertos.",
+    "d) Se colocará una almohada debajo de la cabeza y de los hombros para impedir que la sangre decolore la cara acumulándose en ella."
+  ],
+  "correct": 2
+},
+{
+  "question": "245. El rigor mortis pertenece a los signos:",
+  "options": [
+    "a) Precoces de muerte.",
+    "b) Tardíos de muerte.",
+    "c) De muerte inminente.",
+    "d) Prematuros de muerte."
+  ],
+  "correct": 1
+},
+{
+  "question": "246. ¿Es función del celador amortajar al paciente fallecido en una planta de hospitalización?",
+  "options": [
+    "a) Sí.",
+    "b) No.",
+    "c) No. El celador colabora en la práctica del amortajamiento ayudando a las enfermeras o personas encargadas.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "247. Las siglas SECPAL significan:",
+  "options": [
+    "a) Sociedad Española de Cuidados Paliativos.",
+    "b) Sociedad Española de Cuidados post-mortem.",
+    "c) Sociedad Española de Centros Paliativos.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "248. ¿Cuál es el síntoma más temido por los enfermos terminales?",
+  "options": [
+    "a) El estreñimiento.",
+    "b) Los vómitos.",
+    "c) El dolor.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "249. El estreñimiento se puede prevenir:",
+  "options": [
+    "a) Mediante la utilización de laxantes.",
+    "b) Administrando al paciente agua y zumos de fruta.",
+    "c) Mediante la administración de enemas con sonda rectal.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "250. La sequedad bucal (xerostomía):",
+  "options": [
+    "a) Se previene disminuyendo la ingesta de líquidos.",
+    "b) Suele ser debida a una excesiva ingesta de alimentos.",
+    "c) Se previene disminuyendo la ingesta de alimentos.",
+    "d) Puede ir acompañada de sequedad de los labios."
+  ],
+  "correct": 3
+},
+{
+  "question": "251. La candidiasis:",
+  "options": [
+    "a) Es una infección provocada por hongos.",
+    "b) Se caracteriza por la aparición de prurito.",
+    "c) Las respuestas a) y b) son incorrectas.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "252. Una vez que la enfermera notifica el fallecimiento de un paciente al médico, el primer paso es:",
+  "options": [
+    "a) Realizar la higiene del cadáver.",
+    "b) Retirar los objetos personales.",
+    "c) Sujetar los tobillos con una venda.",
+    "d) Comprobar el fallecimiento por parte del médico."
+  ],
+  "correct": 3
+},
+{
+  "question": "253. Forma parte de los cuidados postmortem:",
+  "options": [
+    "a) El cuidado del cuerpo con dignidad.",
+    "b) Dejar la cabeza ligeramente más baja para que la sangre mantenga la cara decolorada.",
+    "c) Mantener el cuerpo caliente para retrasar la descomposición.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "254. ¿En qué fase de la teoría del duelo de Kübler-Ross, aparece la protesta en un paciente terminal?",
+  "options": [
+    "a) Negociación.",
+    "b) Depresión.",
+    "c) Ira.",
+    "d) Negociación."
+  ],
+  "correct": 2
+},
+{
+  "question": "255. ¿Cuándo se deben efectuar los cuidados postmortem?",
+  "options": [
+    "a) Antes de que los familiares conozcan la muerte del paciente.",
+    "b) Cuando el médico haya certificado el fallecimiento.",
+    "c) Después de que aparezca el rigor mortis.",
+    "d) Cuando el cuerpo esté debidamente aislado."
+  ],
+  "correct": 1
+},
+{
+  "question": "256. La anuria consiste en:",
+  "options": [
+    "a) La imposibilidad del paciente de orinar.",
+    "b) La ausencia parcial de micción.",
+    "c) La ausencia total de micción.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "257. La frecuencia de las náuseas y los vómitos puede reducirse:",
+  "options": [
+    "a) Echando colonia de olor fuerte alrededor del paciente.",
+    "b) Forzando al paciente a ingerir alimentos.",
+    "c) Aconsejando al paciente respirar profundamente.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "258. No es un signo clínico de muerte inminente:",
+  "options": [
+    "a) La disminución de la presión arterial.",
+    "b) El cambio de la temperatura corporal.",
+    "c) La contracción de las pupilas.",
+    "d) La desaparición gradual de los reflejos."
+  ],
+  "correct": 2
+},
+{
+  "question": "259. Es una función del Celador antes de la autopsia:",
+  "options": [
+    "a) Sacar el cadáver de la cámara frigorífica y conducirlo a la sala de autopsia.",
+    "b) Preparar el material y los elementos auxiliares.",
+    "c) Desamortajar el cadáver si procede, y prepararlo sobre la mesa de autopsia, en posición adecuada para la realización de la autopsia.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "260. ¿Qué tipo de dieta se recomienda para la diarrea?",
+  "options": [
+    "a) Astringente.",
+    "b) Blanda.",
+    "c) Purgante.",
+    "d) Depurativa."
+  ],
+  "correct": 0
+},
+{
+  "question": "261. ¿Cómo se realiza el cierre del cadáver después de la autopsia?",
+  "options": [
+    "a) Mediante el cosido de la piel.",
+    "b) Mediante el pegado de la piel.",
+    "c) Mediante el uso de silicona orgánica.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "262. ¿Cómo se realiza la apertura del tórax y del abdomen en las autopsias?",
+  "options": [
+    "a) Con una incisión desde el cuello hasta el ano, completada para el tórax, con una resección de la parte ósea que comprende el esternón y la parte anterior de las costillas.",
+    "b) Con una incisión desde el cuello hasta el pubis, completada para el tórax, con una resección de la parte ósea que comprende el esternón y la parte anterior de las costillas.",
+    "c) Con una incisión desde el cuello hasta el pubis, completada para el tórax, con una resección de la parte ósea que comprende el omóplato y la parte posterior de las costillas.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "263. En una autopsia judicial, ¿dónde se buscan en particular las señales de violencia?",
+  "options": [
+    "a) En los órganos genitales.",
+    "b) En el cuello.",
+    "c) En las piernas.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "264. En la autopsia, ¿cómo se realiza la apertura del raquis?",
+  "options": [
+    "a) Mediante 2 incisiones longitudinales a lo largo de la columna vertebral, y de una sección de las vértebras con raquítomo.",
+    "b) Mediante 3 incisiones longitudinales a lo largo de la columna vertebral, y de una sección de las vértebras con raquítomo.",
+    "c) Mediante 2 incisiones longitudinales a lo largo de la columna vertebral, y de dos secciones de las vértebras con raquítomo.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "265. La autopsia puede denominarse también:",
+  "options": [
+    "a) Exhumación.",
+    "b) Necropsia.",
+    "c) Disección.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "266. ¿Cuántas son las cavidades del cuerpo en relación a la práctica de autopsia?",
+  "options": [
+    "a) 3.",
+    "b) 5.",
+    "c) 4.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "267. No es una cavidad del cuerpo en relación a la práctica de autopsia:",
+  "options": [
+    "a) El tórax.",
+    "b) El abdomen.",
+    "c) El ano.",
+    "d) El cráneo."
+  ],
+  "correct": 2
+},
+{
+  "question": "268. ¿Qué instrumento se utiliza para la apertura del cráneo en la autopsia?",
+  "options": [
+    "a) Bisturí.",
+    "b) Pinza de Kocher.",
+    "c) Sierra.",
+    "d) Tenazas."
+  ],
+  "correct": 2
+},
+{
+  "question": "269. Es la escala más utilizada para la valoración del paciente oncológico en fase terminal:",
+  "options": [
+    "a) Escala de Karnofsky.",
+    "b) Escala de Lawton y Brody.",
+    "c) Escala de incapacidad física de la Cruz Roja.",
+    "d) Índice de Katz."
+  ],
+  "correct": 0
+},
+{
+  "question": "270. ¿A qué escalón de la escalera analgésica de la OMS pertenece la morfina?",
+  "options": [
+    "a) Primer escalón.",
+    "b) Segundo escalón.",
+    "c) Tercer escalón.",
+    "d) Cuarto escalón."
+  ],
+  "correct": 2
+},
+{
+  "question": "271. La escalera analgésica consta de 4 escalones si se utilizan:",
+  "options": [
+    "a) Fármacos no opioides.",
+    "b) Fármacos opioides débiles.",
+    "c) Fármacos opioides potentes.",
+    "d) Técnicas intervencionistas."
+  ],
+  "correct": 3
+},
+{
+  "question": "272. La causa más común de estreñimiento en el paciente terminal es:",
+  "options": [
+    "a) La deshidratación.",
+    "b) La inmovilidad.",
+    "c) La desnutrición.",
+    "d) El uso de morfina."
+  ],
+  "correct": 3
+},
+{
+  "question": "273. ¿A qué se denomina xerostomía?",
+  "options": [
+    "a) A la anorexia.",
+    "b) A la sequedad de la boca.",
+    "c) A la disnea.",
+    "d) A la anuria."
+  ],
+  "correct": 1
+},
+{
+  "question": "274. En la relación con el paciente, el celador debe saber que la empatía es:",
+  "options": [
+    "a) El uso de un lenguaje adecuado.",
+    "b) La capacidad para comprender, aceptar y compartir los sentimientos del paciente.",
+    "c) La flexibilidad en el trato.",
+    "d) El control de la implicación emocional."
+  ],
+  "correct": 1
+},
+{
+  "question": "275. ¿Qué escala valora la sobrecarga del cuidador principal del paciente?",
+  "options": [
+    "a) Escala de Karnofsky.",
+    "b) Escala de Lawton y Brody.",
+    "c) Escala de incapacidad física de la Cruz Roja.",
+    "d) Escala de Zarit."
+  ],
+  "correct": 3
+},
+{
+  "question": "276. Tipo de eutanasia que supone la renuncia al uso de medidas para el mantenimiento de la vida:",
+  "options": [
+    "a) Activa.",
+    "b) Pasiva.",
+    "c) Voluntaria.",
+    "d) Involuntaria."
+  ],
+  "correct": 1
+},
+{
+  "question": "277. Tipo de eutanasia que implica una actuación dirigida expresamente a facilitar o provocar la muerte del enfermo:",
+  "options": [
+    "a) Activa.",
+    "b) Pasiva.",
+    "c) Voluntaria.",
+    "d) Involuntaria."
+  ],
+  "correct": 0
+},
+{
+  "question": "278. En España la eutanasia está regulada por:",
+  "options": [
+    "a) La Ley Orgánica 3/2021, de 24 de marzo.",
+    "b) El Decreto 2263/1974, de 20 de julio.",
+    "c) El Decreto 161/2002, de 19 de noviembre.",
+    "d) La Ley 29/1980, de 21 de junio."
+  ],
+  "correct": 0
+},
+{
+  "question": "279. Consiste en retrasar la muerte todo lo posible, por todos los medios disponibles, aunque no haya esperanza ninguna de curación:",
+  "options": [
+    "a) Eutanasia.",
+    "b) Distanasia.",
+    "c) Ortotanasia.",
+    "d) Tanatopraxia."
+  ],
+  "correct": 1
+},
+{
+  "question": "280. La mancha verde abdominal, indicativa de putrefacción en el cadáver, se inicia en:",
+  "options": [
+    "a) La fosa iliaca derecha.",
+    "b) La fosa iliaca izquierda.",
+    "c) El hipocondrio derecho.",
+    "d) El hipogastrio."
+  ],
+  "correct": 0
+},
+{
+  "question": "281. Es la fase final de desintegración de la materia muerta, desde la separación de los restos óseos sin partes blandas ni medios unitivos del esqueleto hasta la total mineralización:",
+  "options": [
+    "a) Radioionización.",
+    "b) Putrefacción.",
+    "c) Esqueletización.",
+    "d) Pallor mortis."
+  ],
+  "correct": 2
+},
+{
+  "question": "282. Es la palidez postmortem, que aparece casi instantáneamente por ausencia de circulación sanguínea a nivel de los vasos cutáneos:",
+  "options": [
+    "a) Algor mortis.",
+    "b) Rigor mortis.",
+    "c) Livor mortis.",
+    "d) Pallor mortis."
+  ],
+  "correct": 3
+},
+{
+  "question": "283. Método de conservación del cadáver por medio de la hipotermia:",
+  "options": [
+    "a) Climatización.",
+    "b) Refrigeración.",
+    "c) Congelación.",
+    "d) Embalsamamiento."
+  ],
+  "correct": 2
+},
+{
+  "question": "284. Prueba que se utiliza como diagnóstico cierto de muerte:",
+  "options": [
+    "a) Electroencefalograma plano.",
+    "b) Electrocardiograma plano.",
+    "c) Ausencia de pulso.",
+    "d) Midriasis."
+  ],
+  "correct": 0
+},
+{
+  "question": "285. Los cadáveres incluidos en el Grupo I no podrán ser trasladados fuera del límite de la Comunidad Autónoma de Extremadura, salvo:",
+  "options": [
+    "a) En circunstancias excepcionales determinadas por la Dirección General de Salud Pública.",
+    "b) En circunstancias excepcionales determinadas por el Ministerio de Sanidad.",
+    "c) En circunstancias excepcionales determinadas por la Gerencia de Área.",
+    "d) En circunstancias excepcionales determinadas por la Consejería de Sanidad."
+  ],
+  "correct": 0
+},
+{
+  "question": "286. La conservación temporal de un cadáver será obligatoria:",
+  "options": [
+    "a) Cuando el traslado del cadáver hasta su destino final vaya a realizarse después de 48 horas y antes de las 72 horas desde el fallecimiento.",
+    "b) Cuando vaya a ser expuestos en lugares públicos.",
+    "c) En los traslados al extranjero.",
+    "d) Las respuestas a) y b) son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "287. El embalsamamiento de un cadáver será obligatorio:",
+  "options": [
+    "a) En los casos en que la inhumación no pueda realizarse antes de las 96 horas desde el momento de fallecimiento.",
+    "b) En los traslados al extranjero y por vía aérea o marítima.",
+    "c) En los enterramientos en criptas.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "288. Las prácticas de embalsamamiento y conservación se podrán realizar una vez obtenida la certificación médica de defunción y:",
+  "options": [
+    "a) Antes de las 24 horas desde el fallecimiento.",
+    "b) Antes de las 48 horas desde el fallecimiento.",
+    "c) Antes de las 72 horas desde el fallecimiento.",
+    "d) Antes de las 96 horas desde el fallecimiento."
+  ],
+  "correct": 1
+},
+{
+  "question": "289. No se entiende formalmente como autopsia las tomas de muestras y exploraciones realizadas dentro de las:",
+  "options": [
+    "a) 24 horas siguientes al fallecimiento, con el objetivo de comprobar la causa de la muerte.",
+    "b) 48 horas siguientes al fallecimiento, con el objetivo de comprobar la causa de la muerte.",
+    "c) 72 horas siguientes al fallecimiento, con el objetivo de comprobar la causa de la muerte.",
+    "d) 96 horas siguientes al fallecimiento, con el objetivo de comprobar la causa de la muerte."
+  ],
+  "correct": 0
+},
+{
+  "question": "290. Según el criterio temporal se harán autopsias fetales a fetos fallecidos después de:",
+  "options": [
+    "a) Las 14 semanas de gestación.",
+    "b) Las 10 semanas de gestación.",
+    "c) Las 22 semanas de gestación.",
+    "d) Ninguna de las respuestas anteriores es correcta."
+  ],
+  "correct": 0
+},
+{
+  "question": "291. Las autopsias infantiles:",
+  "options": [
+    "a) Se realizan a los niños fallecidos durante el primer año de vida.",
+    "b) Incluyen las autopsias neonatales precoces y tardías.",
+    "c) Incluyen las autopsias postneonatales.",
+    "d) Todas las respuestas anteriores son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "292. Instrumento médico destinado a seccionar las vísceras de los cadáveres, para la retirada de fragmentos para análisis anatomopatológicos:",
+  "options": [
+    "a) Costótomo.",
+    "b) Enterótomo.",
+    "c) Viscerótomo.",
+    "d) Periostótomo."
+  ],
+  "correct": 2
+},
+{
+  "question": "293. Instrumento que se emplea en las autopsias para la apertura del raquis y la extracción de la médula espinal:",
+  "options": [
+    "a) Costótomo.",
+    "b) Enterótomo.",
+    "c) Viscerótomo.",
+    "d) Raquítomo."
+  ],
+  "correct": 3
+},
+{
+  "question": "294. Instrumento utilizado en las autopsias para desprender la bóveda del cráneo:",
+  "options": [
+    "a) Escoplo en “T”.",
+    "b) Enterótomo.",
+    "c) Viscerótomo.",
+    "d) Raquítomo."
+  ],
+  "correct": 0
+},
+{
+  "question": "295. La sala de autopsia con respecto a las áreas adyacentes, es aconsejable que se mantenga con:",
+  "options": [
+    "a) Presión positiva.",
+    "b) Presión negativa.",
+    "c) Presión neutra.",
+    "d) Presión alterna."
+  ],
+  "correct": 1
+},
+{
+  "question": "296. El amortajamiento de un cadáver debe realizarse:",
+  "options": [
+    "a) En el plazo de 24 horas desde el fallecimiento, en la mayor intimidad.",
+    "b) En el menor plazo y en la mayor intimidad posible.",
+    "c) Transcurridas 24 horas desde el fallecimiento, en la mayor intimidad.",
+    "d) En el menor plazo posible, en presencia de dos de sus familiares."
+  ],
+  "correct": 1
+},
+{
+  "question": "297. ¿Quién será el encargado de la preparación del cadáver para la realización de la autopsia?",
+  "options": [
+    "a) El médico forense.",
+    "b) El auxiliar de enfermería.",
+    "c) El celador.",
+    "d) El anatomopatólogo."
+  ],
+  "correct": 2
+},
+{
+  "question": "298. ¿A quién corresponde la función de amortajamiento de un paciente fallecido?",
+  "options": [
+    "a) A los técnicos en cuidados auxiliares de enfermería.",
+    "b) Al médico.",
+    "c) A los enfermeros, que podrán delegar en un técnico en cuidados auxiliares de enfermería.",
+    "d) Al celador, con ayuda de los técnicos en cuidados auxiliares de enfermería."
+  ],
+  "correct": 2
+},
+{
+  "question": "299. ¿Cuál no es una función del Celador de Autopsias?",
+  "options": [
+    "a) Recomponer y asear el cadáver una vez finalizada la autopsia.",
+    "b) Limpiar la mesa, la sala y el material de autopsias.",
+    "c) Colocar el cadáver para realizar la autopsia, así como efectuar los movimientos de este que fueran necesarios para su práctica.",
+    "d) Vigilar que acceda a las dependencias personal no autorizado para ello."
+  ],
+  "correct": 3
+},
+{
+  "question": "300. Uno de los requisitos indispensables en el traslado del cadáver al mortuorio será:",
+  "options": [
+    "a) El celador irá siempre acompañado por un familiar.",
+    "b) El traslado se hará por zonas frecuentadas acompañado por otro celador y de forma discreta.",
+    "c) Una vez que se haya recibido el parte de traslado correspondiente y por lugares poco frecuentados.",
+    "d) El traslado del cadáver sin cubrir hasta el depósito de este en la cámara frigorífica."
+  ],
+  "correct": 2
+},
+{
+  "question": "301. En lo referido a las autopsias, ¿en qué consiste la técnica de Letulle?",
+  "options": [
+    "a) Disección de los órganos por separado comenzando por la cavidad craneal y siguiendo por el cuello, cavidad torácica y abdomen.",
+    "b) Extracción de los órganos en tres bloques, cuello y tórax, abdomen y retroperitoneo.",
+    "c) Extracción en un solo bloque de todas las vísceras realizándose la disección fuera del cadáver.",
+    "d) Disección de los órganos por separado comenzando por la cavidad craneal y siguiendo por el abdomen y la cavidad torácica."
+  ],
+  "correct": 2
+},
+{
+  "question": "302. Las medidas mínimas de la mesa de autopsias deben ser:",
+  "options": [
+    "a) 2 m de longitud por 0,75 m de anchura.",
+    "b) 2,10 m de longitud por 0,75 m de anchura.",
+    "c) 2 m de longitud por 0,70 m de anchura.",
+    "d) 2,05 m de longitud por 0,75 m de anchura."
+  ],
+  "correct": 0
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
