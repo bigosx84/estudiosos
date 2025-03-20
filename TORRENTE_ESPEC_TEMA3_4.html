@@ -1,0 +1,723 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. Cuando un trabajador detecte un incendio en el hospital debe comunicarlo de inmediato, llamando a:",
+  "options": [
+    "a) Central telefónica del Hospital",
+    "b) Puesto del Control de Seguridad del Hospital",
+    "c) Central de Coordinación de Emergencias (112)",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "2. La vigencia del plan de autoprotección será:",
+  "options": [
+    "a) De 3 años",
+    "b) De 4 años",
+    "c) De 5 años",
+    "d) Indeterminada"
+  ],
+  "correct": 3
+},
+{
+  "question": "3. Señales relativas a la lucha contra incendios son:",
+  "options": [
+    "a) Pictograma amarillo sobre fondo negro",
+    "b) Pictograma blanco sobre fondo rojo",
+    "c) Pictograma amarillo sobre fondo azul",
+    "d) Pictograma rojo sobre fondo negro"
+  ],
+  "correct": 1
+},
+{
+  "question": "4. En el ámbito de seguridad en las instituciones sanitarias un extintor compuesto de polvo polivalente y gas impulsor, ¿contra qué tipos de fuego se puede emplear?",
+  "options": [
+    "a) Fuegos de tipo C",
+    "b) Fuegos de tipo A",
+    "c) Fuegos de tipo B",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "5. ¿Cuáles de estos documentos deben formar parte obligatoriamente de un plan de emergencia?",
+  "options": [
+    "a) Planos de situación y emplazamiento",
+    "b) Inventario de los utensilios de cocina",
+    "c) Plano de emergencia parcial",
+    "d) Control de los enfermos ambulantes existentes en cada momento en el hospital"
+  ],
+  "correct": 0
+},
+{
+  "question": "6. Entre los factores de riesgo que justifican la implantación de planes de emergencia, cabría destacar por su importancia:",
+  "options": [
+    "a) Densidad de ocupación",
+    "b) Altura",
+    "c) Número de camas",
+    "d) Todas las respuestas son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "7. En un incendio:",
+  "options": [
+    "a) Se cerrarán puertas y abrirán ventanas para evitar la expansión del humo y el fuego y su afectación a los pacientes",
+    "b) Se tiene que mantener la calma y hacerse cargo de la posible evacuación del Centro hospitalario, si ésta se tuviera que realizar",
+    "c) Se mantendrá a los pacientes en sus habitaciones hasta la llegada de los bomberos",
+    "d) Todas las respuestas anteriores son falsas"
+  ],
+  "correct": 1
+},
+{
+  "question": "8. En materia de protección contra incendios, los EPI son:",
+  "options": [
+    "a) Los equipos personales imprescindibles",
+    "b) Los equipos de protección individual",
+    "c) Los equipos de primera intervención",
+    "d) Los equipos para intervenir"
+  ],
+  "correct": 2
+},
+{
+  "question": "9. Para los fuegos que no sean eléctricos, utilizaremos un extintor:",
+  "options": [
+    "a) De polvo polivalente ABC",
+    "b) De agua tratada",
+    "c) De nitrógeno líquido",
+    "d) De CO2"
+  ],
+  "correct": 0
+},
+{
+  "question": "10. Sobre los planes de emergencia contra incendios se puede afirmar que:",
+  "options": [
+    "a) Tienen el objetivo primordial de minimizar el tiempo de espera de los servicios de emergencia",
+    "b) Tienen como finalidad la formación del personal sanitario en la lucha contra incendios y otras catástrofes y emergencias",
+    "c) Ante una determinada situación de riesgo, el plan o planes de emergencia contra incendios, pueden ser enunciados como la planificación y organización humana, para la utilización óptima de los medios técnicos previstos, con la finalidad de reducir al máximo las posibles consecuencias económicas y humanas de la emergencia",
+    "d) Tienen como objetivo primordial la dotación de medios técnicos para la lucha contra incendios a los centros sanitarios en el ámbito nacional o autonómico según el tipo de plan"
+  ],
+  "correct": 2
+},
+{
+  "question": "11. El agua es el agente extintor por excelencia, pero uno de sus inconvenientes es:",
+  "options": [
+    "a) Provoca daños excesivos en la estructura y mobiliario de los edificios",
+    "b) Requiere equipos de bombeo",
+    "c) Es inadecuado para fuegos de materiales sólidos",
+    "d) Conduce la electricidad"
+  ],
+  "correct": 3
+},
+{
+  "question": "12. Respecto de toda persona que pueda verse involucrada en una emergencia, es correcto afirmar que:",
+  "options": [
+    "a) Debe ser avisada con antelación sobre lo que debe hacer y cómo debe hacerlo",
+    "b) La realización de simulacros periódicos no mejora en nada la preparación de los intervinientes en una posible emergencia",
+    "c) Es la única responsable de su propia información y formación sobre emergencias",
+    "d) Debe saber y poder manejar todos los equipos de extinción existentes en el mercado"
+  ],
+  "correct": 0
+},
+{
+  "question": "13. El emplazamiento de los extintores permitirá:",
+  "options": [
+    "a) Que sean fácilmente visibles y accesibles",
+    "b) Que estén lo más retirados a los puntos donde se estime mayor probabilidad de iniciarse el incendio",
+    "c) A ser posible lejanos a las salidas de evacuación",
+    "d) Fijados a paramentos verticales como mínimo a 1.70 metros sobre el suelo"
+  ],
+  "correct": 0
+},
+{
+  "question": "14. En caso de tener que utilizar un extintor en caso de un conato de incendio el procedimiento correcto será:",
+  "options": [
+    "a) Presionará la válvula y dirigirá el agente extintor a la base de las llamas",
+    "b) Presionará la válvula y dirigirá el agente extintor a la base de las llamas en zigzag",
+    "c) Presionará la válvula y dirigirá el agente extintor a la base de las llamas en zigzag, avanzando a medida que las llamas se van apagando",
+    "d) Presionará la válvula y dirigirá el agente extintor a la base de las llamas en zigzag, avanzando a medida que las llamas se van apagando, asegurándose que el fuego está apagado y permanecerá alerta"
+  ],
+  "correct": 3
+},
+{
+  "question": "15. En caso de evacuación por incendio de un hospital se debe:",
+  "options": [
+    "a) Dirigir a los ocupantes a los sótanos del edificio",
+    "b) Dirigir a los ocupantes hacia el exterior del edificio, a los puntos de reunión",
+    "c) Dirigir a los ocupantes a las terrazas superiores del edificio",
+    "d) Se aconseja permanecer en el puesto de trabajo hasta que llegue la ayuda exterior"
+  ],
+  "correct": 1
+},
+{
+  "question": "16. Si hay un incendio y tiene que utilizar un extintor, ¿hacia dónde dirigirá el chorro?",
+  "options": [
+    "a) Hacia la parte superior de las llamas",
+    "b) Por encima de las llamas",
+    "c) Hacia la base de las llamas",
+    "d) Es indiferente"
+  ],
+  "correct": 2
+},
+{
+  "question": "17. Antes de tocar a un accidentado en contacto con corriente eléctrica debe:",
+  "options": [
+    "a) Cortar la corriente",
+    "b) Avisar a los compañeros",
+    "c) Utilizar agua",
+    "d) Protegerse con material no aislante"
+  ],
+  "correct": 0
+},
+{
+  "question": "18. Un fuego de clase ''B'' es el que:",
+  "options": [
+    "a) Fuegos de líquidos o sólidos licuables",
+    "b) Fuegos de metales",
+    "c) Fuegos de materiales sólidos",
+    "d) Fuegos de gases"
+  ],
+  "correct": 0
+},
+{
+  "question": "19. ¿Qué tipo de extintor se utiliza en caso de fuego eléctrico?",
+  "options": [
+    "a) De nitrógeno líquido",
+    "b) De polvo polivalente",
+    "c) De agua tratada",
+    "d) De CO2"
+  ],
+  "correct": 3
+},
+{
+  "question": "20. Dentro de la clasificación de las emergencias, y según el factor de gravedad de las mismas, aquel accidente que puede ser controlado rápidamente por el personal del centro y los medios allí disponibles, sería:",
+  "options": [
+    "a) Emergencia parcial",
+    "b) Emergencia general",
+    "c) Conato de emergencia",
+    "d) Emergencia leve"
+  ],
+  "correct": 2
+},
+{
+  "question": "21. Cuando en las indicaciones de los agentes extintores, según la clase de fuego, en gases, se relaciona con la letra:",
+  "options": [
+    "a) A",
+    "b) B",
+    "c) C",
+    "d) D"
+  ],
+  "correct": 2
+},
+{
+  "question": "22. Para que exista un incendio es necesaria la presencia de:",
+  "options": [
+    "a) Calor, comburente y oxígeno",
+    "b) Fuente de ignición, combustible y oxígeno",
+    "c) Fuente de calor, nitrógeno y combustible",
+    "d) Hidrógeno, combustible y comburente"
+  ],
+  "correct": 1
+},
+{
+  "question": "23. Cuando en las indicaciones de los agentes extintores, según la clase de fuego, en metales especiales, se relaciona con la letra:",
+  "options": [
+    "a) A",
+    "b) B",
+    "c) C",
+    "d) D"
+  ],
+  "correct": 3
+},
+{
+  "question": "24. En el manejo de bocas de incendios ante un conato de incendio se conseguirá una mayor rapidez y eficacia en la extinción del fuego:",
+  "options": [
+    "a) Rompiendo el cristal y abriendo la válvula que da paso al agua para facilitar la extensión de la manguera",
+    "b) Rompiendo el cristal y abriendo la válvula que da paso al agua para facilitar la extensión de la manguera y dirigir la lanza hacia la base de las llamas",
+    "c) Rompiendo o abriendo el cristal, desenrollando la manguera, abriendo la válvula que da paso al agua, regular la salida de agua, girar la boquilla de la lanza y dirigirla sobre el foco del fuego",
+    "d) Rompiendo el cristal, desenrollando la manguera, abrir la válvula a su máximo caudal y dirigir la lanza hacia las llamas"
+  ],
+  "correct": 2
+},
+{
+  "question": "25. En una emergencia general:",
+  "options": [
+    "a) Se requiere ayuda externa",
+    "b) No se requiere nunca ayuda externa",
+    "c) Suele ser suficiente con la intervención de los equipos de alarma y evacuación propios",
+    "d) Suele ser suficiente con la intervención de los equipos de primera intervención"
+  ],
+  "correct": 0
+},
+{
+  "question": "26. Los extintores:",
+  "options": [
+    "a) Son una instalación fija de agua",
+    "b) Están conectados a una red exterior de agua",
+    "c) Son medios portátiles de extinción de incendios",
+    "d) Son medios fijos de extinción de incendios"
+  ],
+  "correct": 2
+},
+{
+  "question": "27. En caso de incendio, ¿cuál es el mayor peligro?",
+  "options": [
+    "a) El fuego",
+    "b) El humo",
+    "c) La confusión",
+    "d) La evacuación"
+  ],
+  "correct": 1
+},
+{
+  "question": "28. La situación en la que el riesgo o accidente que lo provoca puede ser controlado de forma sencilla y rápida, es:",
+  "options": [
+    "a) Emergencia final",
+    "b) Emergencia parcial",
+    "c) Emergencia general",
+    "d) Conato"
+  ],
+  "correct": 3
+},
+{
+  "question": "29. En caso de incendio, ¿qué métodos de traslado de pacientes existen?",
+  "options": [
+    "a) Por arrastre con silla",
+    "b) Por arrastre con colchón",
+    "c) Por levantamiento",
+    "d) Todas las respuestas anteriores son métodos de traslado"
+  ],
+  "correct": 3
+},
+{
+  "question": "30. Respecto al emplazamiento de los extintores, señale la respuesta incorrecta:",
+  "options": [
+    "a) Fácilmente visibles y accesibles",
+    "b) Estarán situados próximos a los puntos donde se estime mayor probabilidad de iniciarse el incendio",
+    "c) La parte superior del extintor quede situada entre 0,70 y 1,10 m sobre el suelo",
+    "d) Próximos a las salidas de evacuación y a ser posibles colocados sobre soportes fijos"
+  ],
+  "correct": 2
+},
+{
+  "question": "31. De las siguientes características, ¿cuáles corresponden al agente extintor espuma física?",
+  "options": [
+    "a) Adecuada para fuegos de clase A",
+    "b) Está formada por agua en más de un 95%",
+    "c) No se puede utilizar en fuegos de alcohol",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "32. ¿Qué medidas de prevención se deberán realizar para evitar la exposición a los gases tóxicos provocados por los incendios?",
+  "options": [
+    "a) Respirar el aire a nivel del suelo",
+    "b) Caminar a gatas",
+    "c) Proteger la nariz y la boca con un pañuelo húmedo",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "33. Las señales de salvamento o socorro son de color:",
+  "options": [
+    "a) Rojo",
+    "b) Azul",
+    "c) Verde",
+    "d) Amarillo"
+  ],
+  "correct": 2
+},
+{
+  "question": "34. Para elegir los métodos de traslado de enfermos en una evacuación es necesario tener en cuenta los siguientes factores:",
+  "options": [
+    "a) Trazado y amplitud de las vías a utilizar",
+    "b) Tipo de enfermos a evacuar",
+    "c) Tipo de evacuación (vertical u horizontal)",
+    "d) Las tres respuestas anteriores son válidas"
+  ],
+  "correct": 3
+},
+{
+  "question": "35. En aquellos hospitales que tengan implementado un plan de autoprotección, ¿será obligatoria la realización de un simulacro de emergencia?",
+  "options": [
+    "a) Es recomendable, pero no obligatorio",
+    "b) Sí, al menos una vez al año",
+    "c) Sí, al menos una vez cada dos años",
+    "d) Sí, al menos una vez cada tres años"
+  ],
+  "correct": 1
+},
+{
+  "question": "36. Señale cuál de los siguientes capítulos no forma parte del contenido mínimo que ha de comprender el plan de autoprotección:",
+  "options": [
+    "a) Inventario, análisis y evaluación de riesgos",
+    "b) Registro de indicadores de actividades críticas",
+    "c) Mantenimiento de la eficacia y actualización del Plan de Autoprotección",
+    "d) Plan de actuación ante emergencias"
+  ],
+  "correct": 1
+},
+{
+  "question": "37. Determine cuál de las siguientes no se considera una norma de utilización adecuada en la utilización de un extintor portátil:",
+  "options": [
+    "a) Dirigir el chorro a la base de las llamas",
+    "b) Apretar la maneta y, en caso de que exista, apretar la palanca de accionamiento de la boquilla",
+    "c) Acercarse al fuego dejando como máximo un metro de distancia hasta él",
+    "d) En el caso de que el extintor posea manguera asirla por la boquilla para evitar la salida incontrolada del agente extintor"
+  ],
+  "correct": 2
+},
+{
+  "question": "38. Cuando nos referimos a un BIE, lo hacemos de:",
+  "options": [
+    "a) Sistemas de bombeo interno de extracción de humos",
+    "b) Un tipo de extintor portátil de incendio para materiales sólidos licuables",
+    "c) Sistemas de bocas de incendio equipadas",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "39. ¿Cuál es la altura máxima a la que debe estar colocado un extintor, contando desde el suelo hasta la parte superior del extintor?",
+  "options": [
+    "a) 1,70 metros",
+    "b) 1,40 metros",
+    "c) 1,20 metros",
+    "d) 1,10 metros"
+  ],
+  "correct": 2
+},
+{
+  "question": "40. Es norma a tener en cuenta en una evacuación en caso de incendio:",
+  "options": [
+    "a) Al activarse la señal de evacuación, salir corriendo lo más rápido posible",
+    "b) Mantener la calma. Indicar al personal de la zona la necesidad de evacuar el centro, por las salidas definidas (siempre que estas estén practicables).",
+    "c) Permitir la recogida de objetos personales a los ocupantes del edificio",
+    "d) Usar los ascensores para una más rápida y ordenada evacuación."
+  ],
+  "correct": 1
+},
+{
+  "question": "41. ¿Qué agente extintor es adecuado para sólidos, líquidos y gases?",
+  "options": [
+    "a) Polvo ABC convencional.",
+    "b) Polvo ABC polivalente.",
+    "c) Espuma física.",
+    "d) Anhídrido carbónico."
+  ],
+  "correct": 1
+},
+{
+  "question": "42. ¿De qué color es el pictograma de un extintor de Clase B?",
+  "options": [
+    "a) Blanco.",
+    "b) Verde",
+    "c) Rojo",
+    "d) Amarillo."
+  ],
+  "correct": 0
+},
+{
+  "question": "43. No es un extintor de polvo:",
+  "options": [
+    "a) Extintores de polvo convencional",
+    "b) Extintores de polvo especial para metales",
+    "c) Extintores de polvo químico",
+    "d) Extintores de polvo polivalente"
+  ],
+  "correct": 2
+},
+{
+  "question": "44. La elección de un agente extintor y su forma de aplicación dependen de diferentes variables entre las que no cabe destacar:",
+  "options": [
+    "a) La ubicación de los factores de riesgo",
+    "b) El coste del equipo de extinción",
+    "c) Los tipos de mangueras",
+    "d) El tipo de fuego."
+  ],
+  "correct": 2
+},
+{
+  "question": "45. Las clases de fuegos se clasifican en:",
+  "options": [
+    "a) Clase 1, Clase 11, Clase 111 y Clase IV.",
+    "b) Clase 1, Clase 2, Clase 3, Clase 4.",
+    "c) Clase A, Clase B, Clase C y Clase D.",
+    "d) Todas son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "46. Los extintores más utilizados son:",
+  "options": [
+    "a) De polvo polivalente y de agua.",
+    "b) De polvo polivalente y anhídrido carbónico",
+    "c) De agua y de espuma.",
+    "d) De dióxido de carbono y de agua"
+  ],
+  "correct": 1
+},
+{
+  "question": "47. Los extintores de agua pueden ser:",
+  "options": [
+    "a) De agua pulverizada.",
+    "b) De agua a chorro.",
+    "c) De agua destilada.",
+    "d) Son correctas las opciones a y b."
+  ],
+  "correct": 3
+},
+{
+  "question": "48. En el plan de emergencias, la figura del jefe de emergencia:",
+  "options": [
+    "a) Es la máxima autoridad en el establecimiento durante las emergencias",
+    "b) Actuará desde el centro de control a la vista de las informaciones que reciba",
+    "c) Poseerá sólidos conocimientos de seguridad contra incendios y del Plan de Autoprotección",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "49. En los extintores, la letra indica:",
+  "options": [
+    "a) Clase de fuego",
+    "b) Agente extintor",
+    "c) Tamaño del fuego",
+    "d) Capacidad del extintor"
+  ],
+  "correct": 0
+},
+{
+  "question": "50. ¿Cuál es la letra que indica, en un agente extintor, que la clase de fuego es un líquido?",
+  "options": [
+    "a) A",
+    "b) B",
+    "c) C",
+    "d) D"
+  ],
+  "correct": 1
+},
+{
+  "question": "51. El Plan de Autoprotección habrá de estar redactado y firmado por:",
+  "options": [
+    "a) El titular de la actividad",
+    "b) Un técnico competente capacitado sobre aspectos relacionados con la autoprotección frente a los riesgos a los que esté sujeta la actividad",
+    "c) El gerente del Área de salud al que pertenezca el hospital",
+    "d) El director gerente del hospital o director médico si no existe director gerente"
+  ],
+  "correct": 1
+},
+{
+  "question": "52. Los procedimientos de actuación en emergencia deberán garantizar, al menos:",
+  "options": [
+    "a) La alarma",
+    "b) La detección y alerta",
+    "c) El refugio, la evacuación y el socorro",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "53. El plan de autoprotección es:",
+  "options": [
+    "a) Marco orgánico y funcional previsto para una actividad, centro, establecimiento, espacio, instalación o dependencia, con el objeto de prevenir y controlar los riesgos sobre las personas y los bienes y dar respuesta adecuada a las posibles situaciones de emergencias, en la zona bajo responsabilidad del titular, garantizando la integración de estas actuaciones en el sistema público de protección civil.",
+    "b) Documento en el que se prevé la organización de la respuesta ante situaciones de emergencias clasificadas, las medidas de protección e intervención a adoptar, y los procedimientos y secuencia de actuación para dar respuesta a las posibles emergencias",
+    "c) Documento perteneciente al plan de emergencias en el que se prevé la organización de la respuesta ante situaciones de emergencias clasificadas, las medidas de protección e intervención a adoptar, y los procedimientos y secuencia de actuación para dar respuesta a las posibles emergencias.",
+    "d) El marco orgánico y funcional perteneciente al plan de emergencias en el que se prevé la organización de la respuesta ante situaciones de emergencias clasificadas, las medidas de protección e intervención a adoptar, y los procedimientos y secuencia de actuación para dar respuesta a las posibles emergencias."
+  ],
+  "correct": 0
+},
+{
+  "question": "54. No son equipos de protección activa contra incendios:",
+  "options": [
+    "a) Las bocas de incendio",
+    "b) Los extintores",
+    "c) Las mangueras",
+    "d) Todas las anteriores son medidas activas"
+  ],
+  "correct": 3
+},
+{
+  "question": "55. Forman parte de la protección pasiva contra incendios:",
+  "options": [
+    "a) Los medios para detección del incendio",
+    "b) Los medios para supresión del fuego",
+    "c) Los medios de protección estructural",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 2
+},
+{
+  "question": "56. A la hora de evacuar a enfermos, los primeros que deben ser evacuados son:",
+  "options": [
+    "a) Enfermos impedidos más próximos a la zona de salida.",
+    "b) Enfermos encamados que no pueden moverse por sí mismos, que estén más alejados de la zona de salida.",
+    "c) Enfermos que puedan desplazarse por sí mismos.",
+    "d) Cualquier respuesta de las anteriores es válida, lo importante es salvar vidas sin importar el orden de evacuación."
+  ],
+  "correct": 2
+},
+{
+  "question": "57. De las técnicas de traslado en caso de incendio o emergencia, el más rápido es:",
+  "options": [
+    "a) Por arrastre directo",
+    "b) Por levantamiento",
+    "c) Por arrastre con colchón",
+    "d) Por arrastre con silla"
+  ],
+  "correct": 1
+},
+{
+  "question": "58. No serán misiones de los celadores que no formen parte del equipo de segunda intervención:",
+  "options": [
+    "a) Abrir las ventanas y puertas, etc. de almacenes y servicios",
+    "b) Cerrar las ventanas y puertas, etc. de almacenes y servicios",
+    "c) Paralizar montacamas y ascensores en la planta baja",
+    "d) Ayudar al movimiento de pacientes que acudan por las escaleras próximas y sacar los que acudan por el montacamas"
+  ],
+  "correct": 0
+},
+{
+  "question": "59. Un hospital se considera:",
+  "options": [
+    "a) Evacuable",
+    "b) No evacuable",
+    "c) Incontrolable",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "60. Deberán elaborar un plan de autoprotección, los centros sanitarios:",
+  "options": [
+    "a) En los que se prestan cuidados médicos en régimen de hospitalización y/o tratamiento intensivo o quirúrgico, con una disponibilidad igual o superior a 100 camas",
+    "b) Una ocupación igual o superior a 1000 personas",
+    "c) El que disponga de una altura de evacuación igual o superior a 28 m",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 2
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
