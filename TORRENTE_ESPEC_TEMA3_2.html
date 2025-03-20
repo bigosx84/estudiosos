@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "01. EN LA HIGIENE DE LA CARA DEL PACIENTE, LO PRIMERO QUE SE LIMPIA ES:",
+  "options": [
+    "a) La boca",
+    "b) Las orejas",
+    "c) Los ojos",
+    "d) Las aletas de la nariz"
+  ],
+  "correct": 2
+},
+{
+  "question": "02. ¿CUÁL DE ESTAS CAPAS DE LA PIEL ES MÁS PROFUNDA?",
+  "options": [
+    "a) Dermis reticular",
+    "b) Dermis",
+    "c) Epidermis",
+    "d) Hipodermis"
+  ],
+  "correct": 3
+},
+{
+  "question": "03. ¿EN QUÉ ORDEN SE DEBE REALIZAR EL BAÑO COMPLETO DEL PACIENTE?",
+  "options": [
+    "a) Cara, cuello y orejas - brazos y manos - tórax - abdomen - extremidades inferiores - espalda y nalgas - genitales externos",
+    "b) Cara, cuerpo, cuello y orejas",
+    "c) Cuerpo, cuello y cara",
+    "d) Cara, cuello, zona genital y resto del cuerpo"
+  ],
+  "correct": 0
+},
+{
+  "question": "04. LA SUPERVISORA DE PLANTA LE INDICA AL CELADOR QUE AYUDE AL ASEO DE UN PACIENTE ENCAMADO, ¿QUÉ ZONA DEL CUERPO SE DEJARÁ PARA EL FINAL?",
+  "options": [
+    "a) Región perineal",
+    "b) Extremidades superiores",
+    "c) Extremidades inferiores",
+    "d) Región dorsal"
+  ],
+  "correct": 0
+},
+{
+  "question": "05. EL MOVIMIENTO DE LOS PACIENTES ENCAMADOS PARA HACERLES LA CAMA CORRESPONDE:",
+  "options": [
+    "a) A los enfermeros",
+    "b) A los auxiliares de enfermería",
+    "c) A los celadores",
+    "d) Al personal de enfermería y ayudantes de plantas, ayudados por el celador cuando los enfermos encamados requieran un trato especial en razón de sus dolencias para hacerles las camas"
+  ],
+  "correct": 3
+},
+{
+  "question": "06. A LA HORA DE REALIZAR UN ASEO DEL PACIENTE SE DEBE TENER EN CUENTA:",
+  "options": [
+    "a) La temperatura ambiental adecuada en la habitación será de 18 a 20° C",
+    "b) Evitar corrientes de aire",
+    "c) Lavar cada zona del cuerpo dos veces",
+    "d) La temperatura adecuada del agua para el baño es de 24ºC aproximadamente"
+  ],
+  "correct": 1
+},
+{
+  "question": "07. PARA REALIZAR EL ASEO A UNA PERSONA PORTADORA DE SUERO:",
+  "options": [
+    "a) Sacamos primero la manga del pijama del brazo que tiene el suero y después la manga del brazo que no tiene el suero",
+    "b) Cerraremos el sistema, quitamos la botella y quitamos el pijama",
+    "c) Cerramos el sistema, quitamos la botella y la colocamos sobre la cama en el lado contrario al que vayamos a realizar el aseo",
+    "d) Sacamos primero la manga del pijama del brazo que no tiene el suero y después la manga del suero"
+  ],
+  "correct": 3
+},
+{
+  "question": "08. PARA REALIZAR EL BAÑO DEL PACIENTE ENCAMADO SE NECESITA:",
+  "options": [
+    "a) Tijeras punta roma",
+    "b) Dos palanganas",
+    "c) Cuña",
+    "d) Todo lo anterior"
+  ],
+  "correct": 3
+},
+{
+  "question": "09. LA FORMA CORRECTA DE POSICIONAR AL PACIENTE AL REALIZARLE EL ASEO, ES:",
+  "options": [
+    "a) Primero decúbito supino y a continuación, decúbito lateral derecho e izquierdo",
+    "b) Decúbito lateral derecho e izquierdo",
+    "c) Decúbito lateral y a continuación decúbito prono",
+    "d) Dependerá de la patología del paciente"
+  ],
+  "correct": 3
+},
+{
+  "question": "10. ¿CUÁL ES LA FINALIDAD GENERAL DEL ASEO Y LA HIGIENE?",
+  "options": [
+    "a) Estimular la circulación sanguínea",
+    "b) Evitar la acumulación de secreciones y la proliferación bacteriana de la piel",
+    "c) Aumentar la temperatura corporal en casos de hipertermia",
+    "d) Las respuestas A y B son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "11. LA SECUENCIA A LA HORA DE REALIZAR UN BAÑO ES:",
+  "options": [
+    "a) Lavado, enjabonado y centrifugado",
+    "b) Lavado, enjuague o aclarado y secado",
+    "c) Enjabonado, enjuague o aclarado y estimulante",
+    "d) Enjabonado, enjuague y secado"
+  ],
+  "correct": 3
+},
+{
+  "question": "12. EN CUANTO AL ORDEN DEL LAVADO EN EL PACIENTE LO ÚLTIMO EN LAVAR SERÁ:",
+  "options": [
+    "a) Espalda",
+    "b) Piernas y pies",
+    "c) Región genital",
+    "d) Cara"
+  ],
+  "correct": 2
+},
+{
+  "question": "13. EN EL PROCEDIMIENTO DE ASEO EN LA CAMA DEL PACIENTE, ¿QUÉ RESPUESTA ES CORRECTA?",
+  "options": [
+    "a) Para vestir al paciente, se comenzará por el brazo portador de la vía",
+    "b) Para desvestir al paciente, se comenzará por el brazo de la vía",
+    "c) Para vestir al paciente, se comenzará por el brazo libre de la vía",
+    "d) Es indiferente por el brazo que se comience a vestir al paciente, lo importante es el aseo"
+  ],
+  "correct": 0
+},
+{
+  "question": "14. LOS ASEOS DE LOS PACIENTES PODRÁN SER REALIZADOS:",
+  "options": [
+    "a) En la bañera y en la cama",
+    "b) En la ducha y en la cama",
+    "c) En la ducha, en la cama y en la bañera",
+    "d) De pie y acostado"
+  ],
+  "correct": 2
+},
+{
+  "question": "15. EL LAVADO DE LOS GENITALES EXTERNOS DE UN PACIENTE ENCAMADO DEBE HACERSE SIGUIENDO EL SIGUIENTE ORDEN:",
+  "options": [
+    "a) De zona anal a pubis",
+    "b) De pubis a ano",
+    "c) Es indiferente",
+    "d) Todas las respuestas anteriores son falsas"
+  ],
+  "correct": 1
+},
+{
+  "question": "16. EL BAÑO AL PACIENTE ENCAMADO HAY QUE REALIZARLO POR PARTES. LO PRIMERO QUE DEBE LAVARSE SON:",
+  "options": [
+    "a) Las extremidades inferiores",
+    "b) Espalda y nalgas",
+    "c) Cara, cuello y orejas",
+    "d) Manos"
+  ],
+  "correct": 2
+},
+{
+  "question": "17. ¿QUIÉN PODRÍA ORDENAR A UN CELADOR BAÑARA UN PACIENTE CUANDO NO PUEDA HACERLO POR SI MISMO?",
+  "options": [
+    "a) El auxiliar de enfermería",
+    "b) El jefe de personal subalterno",
+    "c) El supervisor de planta",
+    "d) Nadie"
+  ],
+  "correct": 2
+},
+{
+  "question": "18. PARA LAVAR A UN PACIENTE ENCAMADO, LA PARTE POSTERIOR DEL CUELLO Y LA ESPALDA, ¿EN QUÉ POSICIÓN SE LE COLOCARÁ?",
+  "options": [
+    "a) En decúbito prono",
+    "b) En decúbito lateral",
+    "c) En Roser",
+    "d) En decúbito supino"
+  ],
+  "correct": 1
+},
+{
+  "question": "19. EL ASEO DEL PACIENTE SE INICIA POR:",
+  "options": [
+    "a) La espalda",
+    "b) La cara",
+    "c) Los OJOS",
+    "d) El tórax"
+  ],
+  "correct": 2
+},
+{
+  "question": "20. PARA EL ASEO DEL PACIENTE QUE SE REALIZA FUERA DE LA CAMA, SE RECOMIENDA QUE LA TEMPERATURA DEL AGUA SEA:",
+  "options": [
+    "a) De 45° a 50° C",
+    "b) De 40° a 47° C",
+    "c) De 37° a 40° C",
+    "d) De 22° a 24° C"
+  ],
+  "correct": 2
+},
+{
+  "question": "21. CUANDO SE REALICE EL ASEO A UN PACIENTE ENCAMADO SE RECOMIENDA, SEÑALE LA RESPUESTA INCORRECTA:",
+  "options": [
+    "a) Informar al paciente",
+    "b) Preservar su intimidad",
+    "c) Mantener aireada la habitación con la ventana abierta mientras se realiza el aseo",
+    "d) Pedir la colaboración del paciente"
+  ],
+  "correct": 2
+},
+{
+  "question": "22. PARA EL ASEO DEL PACIENTE ENCAMADO, LA TEMPERATURA DEL AGUA SE RECOMIENDA QUE SEA:",
+  "options": [
+    "a) Entre 40° y 46° C",
+    "b) Entre 55° y 60° C",
+    "c) Entre 37° y 40° C",
+    "d) Entre 60° y 65° C"
+  ],
+  "correct": 2
+},
+{
+  "question": "23. PARA MEDIR LA TEMPERATURA DEL AGUA DEL BAÑO, SE UTILIZA:",
+  "options": [
+    "a) Un higrómetro",
+    "b) Un termómetro",
+    "c) Un termostato",
+    "d) Un tensiómetro"
+  ],
+  "correct": 1
+},
+{
+  "question": "24. ANTE UN PACIENTE QUE NO PUEDE LEVANTARSE, EL BAÑO COMPLETO EN CAMA:",
+  "options": [
+    "a) No debe realizarse en ningún caso",
+    "b) Debe realizarse todos los días y las veces que sean necesarias",
+    "c) Debe realizarse en casos excepcionales",
+    "d) Se realizará cada tres días"
+  ],
+  "correct": 1
+},
+{
+  "question": "25. EL BAÑO O DUCHA DEL PACIENTE CUMPLE MÚLTIPLES FINALIDADES EXCEPTO UNA, SEÑÁLELA:",
+  "options": [
+    "a) Estimular la circulación sanguínea",
+    "b) Conservar la integridad de la piel",
+    "c) Modificar el pH de la piel para evitar la sudoración",
+    "d) Contribuye a mantener o mejorar la autoestima del paciente"
+  ],
+  "correct": 2
+},
+{
+  "question": "26. SEÑALE LA AFIRMACIÓN CORRECTA EN RELACIÓN AL ASEO DE UN PACIENTE ENCAMADO QUE NO PUEDE REALIZAR ESTA TAREA POR SÍ MISMO:",
+  "options": [
+    "a) Es aconsejable desnudar totalmente al paciente antes de iniciar el aseo",
+    "b) Se debe seguir un orden, realizando por completo el aseo de una parte del cuerpo antes de comenzar con la siguiente parte",
+    "c) Está desaconsejada la colaboración del paciente durante la realización del aseo, pues entorpece el trabajo",
+    "d) Debe evitarse el aseo en las zonas sometidas a presión"
+  ],
+  "correct": 1
+},
+{
+  "question": "27. LOS CELADORES A LOS ENFERMOS ENCAMADOS O QUE NO PUEDAN REALIZARLO POR SÍ MISMOS:",
+  "options": [
+    "a) Es competencia del personal auxiliar sanitario",
+    "b) Sí, por estar esta función recogida en su estatuto",
+    "c) Excepcionalmente, y atendiendo a las indicaciones de la supervisora de planta o servicio",
+    "d) No, por ser una de sus funciones"
+  ],
+  "correct": 2
+},
+{
+  "question": "28. CON UNA HOJA DE AFEITAR A CUÁNTOS PACIENTES SE PUEDE RASURAR LA CARA, EN UNA HORA:",
+  "options": [
+    "a) Una",
+    "b) Tres",
+    "c) Cinco",
+    "d) Dependerá de la calidad de la hoja de afeitar"
+  ],
+  "correct": 0
+},
+{
+  "question": "29. ¿QUIÉN REALIZA EL ASEO DEL PACIENTE DE MANERA HABITUAL?",
+  "options": [
+    "a) Las enfermeras",
+    "b) Los celadores",
+    "c) Las auxiliares de enfermería",
+    "d) Las cuidadoras"
+  ],
+  "correct": 2
+},
+{
+  "question": "30. ¿CUÁL ES LA CAPA MÁS SUPERFICIAL DE LA PIEL?",
+  "options": [
+    "a) Queratina",
+    "b) Dermis",
+    "c) Epidermis",
+    "d) Hipodermis"
+  ],
+  "correct": 2
+},
+{
+  "question": "31. LA ENTREMETIDA SE UTILIZA PARA:",
+  "options": [
+    "a) Evitar el enfriamiento de la zona lumbar del paciente",
+    "b) Prevenir las úlceras de presión al paciente encamado",
+    "c) Movilizar al paciente encamado",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "32. CUANDO SE PROCEDE A LA RETIRADA DE LAS SÁBANAS SUCIAS DE UNA CAMA:",
+  "options": [
+    "a) Se deben tirar al suelo",
+    "b) Se deben dejar encima de la cama",
+    "c) Se deben introducir dentro de una bolsa de plástico"
+	"d)	Se deben dejar encima de la silla para volverlas a poner"
+  ],
+  "correct": 2
+},
+{
+  "question": "33. EN LAS HABITACIONES CON MÁS DE UNA UNIDAD DE PACIENTE, SE PROTEGERÁ LA INTIMIDAD DE CADA PACIENTE UTILIZANDO:",
+  "options": [
+    "a) Biombos",
+    "b) Cortinas de separación",
+    "c) No es necesario ningún dispositivo de separación",
+    "d) Las respuestas A y B son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "34. LA ROPA DE LA CAMA QUE SE RETIRA:",
+  "options": [
+    "a) Se dejará en la ventana de la habitación",
+    "b) Se dejará en la bolsa de ropa sucia",
+    "c) Se dejará en el suelo hasta terminar el procedimiento",
+    "d) Se dejará en el sillón del paciente"
+  ],
+  "correct": 1
+},
+{
+  "question": "35. LA SABANA TRAVESERA:",
+  "options": [
+    "a) Se coloca cubriendo la mitad inferior de la cama",
+    "b) Suele ser impermeable y ajustable",
+    "c) Recibe también el nombre de sábana de arrastre y entremetida",
+    "d) No forma parte de la lencería"
+  ],
+  "correct": 2
+},
+{
+  "question": "36. LA LENCERIA DE UNA CAMA HOSPITALARIA INCLUYE:",
+  "options": [
+    "a) Hule, entremetida, cubrecolchón",
+    "b) Sábanas y cubrecamas",
+    "c) Funda de almohada y manta",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "37. LA ROPA LIMPIA SE DEJARÁ:",
+  "options": [
+    "a) Se meterá el carro de la ropa a la habitación",
+    "b) Se dejará en la ventana de la habitación",
+    "c) Se dejará en el sillón del paciente",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 2
+},
+{
+  "question": "38. AL HACER LA CAMA, ¿CÓMO SE COLOCARÁ LA SÁBANA ENCIMERA?",
+  "options": [
+    "a) Se dobla a lo ancho y con el derecho hacia el interior",
+    "b) Se dobla a lo largo y con el revés hacia el interior",
+    "c) Se dobla a lo largo y con el derecho hacia el interior",
+    "d) Se dobla a lo ancho y con el revés hacia el interior"
+  ],
+  "correct": 3
+},
+{
+  "question": "39. RESPECTO A LAS TÉCNICAS DE ARREGLO DE LA CAMA SEÑALE LA INCORRECTA:",
+  "options": [
+    "a) La sábana encimera, manta y colcha, deben cubrir al paciente hasta los hombros",
+    "b) Antes de preparar la cama hay que preparar el equipo necesario y lavarse las manos",
+    "c) La sábana encimera, manta y colcha se ajustan bajo el colchón, en la zona de los pies, remetiéndolas por los lados",
+    "d) El cubre colchón, la sábana bajera y la entremetida no deben tener arrugas"
+  ],
+  "correct": 2
+},
+{
+  "question": "40. RESPECTO A LAS TÉCNICAS DE ARREGLO DE LA CAMA HOSPITALARIA:",
+  "options": [
+    "a) Se emplea un carro de ropa limpia, y otro de ropa de sucia",
+    "b) El carro de la ropa limpia se introduce en la habitación del paciente",
+    "c) El carro de la ropa sucia debe permanecer en el pasillo",
+    "d) Las respuestas A y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "41. AL HACER LA CAMA, ¿CÓMO SE COLOCARÁ LA SÁBANA BAJERA?",
+  "options": [
+    "a) Se dobla a lo largo y con el derecho hacia el interior",
+    "b) Se dobla a lo ancho y con el revés hacia el interior",
+    "c) Se dobla a lo ancho y con el derecho hacia el interior",
+    "d) Se dobla a lo largo y con el revés hacia el interior"
+  ],
+  "correct": 0
+},
+{
+  "question": "42. CON RESPECTO AL ASEO DEL PACIENTE ENCAMADO:",
+  "options": [
+    "a) Está desaconsejada su colaboración",
+    "b) Deben evitarse las zonas sometidas a presión",
+    "c) Se debe completar el aseo de una zona antes de comenzar con la siguiente",
+    "d) Es aconsejable descubrirlo totalmente si está encamado"
+  ],
+  "correct": 2
+},
+{
+  "question": "43. EL LAVADO GENITAL FEMENINO SE HARÁ:",
+  "options": [
+    "a) Es indiferente",
+    "b) En círculos",
+    "c) De delante hacia atrás",
+    "d) De atrás hacia delante"
+  ],
+  "correct": 2
+},
+{
+  "question": "44. EL PROCEDIMIENTO PARA EL ASEO DE ESPALDA Y GLÚTEOS DE UNA PERSONA ENCAMADA ES:",
+  "options": [
+    "a) Poner decúbito supino, lavar, aclarar y dar un masaje",
+    "b) Poner decúbito supino, lavar, aclarar y secar bien",
+    "c) Poner decúbito lateral, lavar, aclarar y secar bien",
+    "d) Poner decúbito supino, lavar, aclarar, secar bien y vigilar la aparición de úlceras por presión"
+  ],
+  "correct": 2
+},
+{
+  "question": "45. EL ASEO COMPLETO EN LA CAMA, ¿POR QUÉ PARTE DEL CUERPO DEBEMOS COMENZAR?",
+  "options": [
+    "a) Abdomen; insistir en la limpieza del ombligo",
+    "b) Tórax y mamas; en especial la zona submamaria",
+    "c) Cara, cuello y orejas",
+    "d) Brazos y manos"
+  ],
+  "correct": 2
+},
+{
+  "question": "46. PARA REALIZAR UN ASEO COMPLETO A UN PACIENTE ENCAMADO Y TENIENDO EN CUENTA QUE LO PRIMERO SIEMPRE SERÁ LA CARA Y CUELLO Y LO ÚLTIMO GENITALES Y PERINÉ, INDIQUE LA RESPUESTA CORRECTA EN EL SIGUIENTE ORDEN PLANTEADO:",
+  "options": [
+    "a) En cuarto lugar, extremidades superiores",
+    "b) En quinto lugar, extremidades inferiores",
+    "c) En tercer lugar, cuello y tórax",
+    "d) En segundo lugar, espalda y nalgas"
+  ],
+  "correct": 1
+},
+{
+  "question": "47. EN CUANTO AL ORDEN DEL LAVADO EN EL PACIENTE ENCAMADO, LO ÚLTIMO EN LAVAR DE LA SIGUIENTE RELACIÓN SERÁ:",
+  "options": [
+    "a) Espalda",
+    "b) Axilas",
+    "c) Cara",
+    "d) Piernas y pies"
+  ],
+  "correct": 0
+},
+{
+  "question": "48. RESPECTO AL BAÑO COMPLETO DEL PACIENTE NO ENCAMADO, ¿CUÁL DE LAS SIGUIENTES AFIRMACIONES NO ES CORRECTA?",
+  "options": [
+    "a) El aseo no debe durar más de quince minutos",
+    "b) El baño tendrá agarraderas o barandillas",
+    "c) Se debe permitir al paciente que cierre la puerta del cuarto de baño por dentro para garantizar su intimidad",
+    "d) Se debe controlar la temperatura del agua"
+  ],
+  "correct": 2
+},
+{
+  "question": "49. DESPUÉS DE REALIZAR EL ASEO DE UN PACIENTE ENCAMADO CON RIESGO DE CAÍDA DE LA CAMA ES IMPRESCINDIBLE VERIFICAR:",
+  "options": [
+    "a) Que se han colocado adecuadamente las medidas de sujeción utilizadas según el protocolo establecido",
+    "b) Que se le ha dejado el timbre cerca",
+    "c) Que se ha dejado la mesilla separada de la cama",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "50. ¿QUÉ TEMPERATURA DEBERÁ TENER LA HABITACIÓN DEL PACIENTE PARA REALIZAR CUALQUIER TÉCNICA DE HIGIENE EN UN PACIENTE ENCAMADO?",
+  "options": [
+    "a) Entre 18 y 20° C",
+    "b) Entre 24 y 26° C",
+    "c) Entre 22 y 28° C",
+    "d) A partir de 30° C"
+  ],
+  "correct": 1
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
