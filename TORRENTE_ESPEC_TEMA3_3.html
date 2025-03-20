@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "01. ¿CUÁL DE LAS OPCIONES RESPETA EL ORDEN CORRECTO DE COLOCACIÓN DE LOS ELEMENTOS DE LA LENCERÍA EN UNA CAMA HOSPITALARIA?",
+  "options": [
+    "a) Bajera, entremetida, hule y encimera",
+    "b) Hule, bajera, encimera, entremetida",
+    "c) Bajera, hule, entremetida, encimera",
+    "d) Hule, bajera, entremetida, encimera"
+  ],
+  "correct": 2
+},
+{
+  "question": "02. LA ROPA SUCIA QUE SE RETIRA DE UNA CAMA NO DEBE:",
+  "options": [
+    "a) Depositarse provisionalmente sobre otra cama",
+    "b) Depositarse provisionalmente sobre una silla de la habitación",
+    "c) Depositarse en una bolsa de plástico y esta a su vez en el carro de la ropa sucia",
+    "d) Las respuestas A y B son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "03. LAS RUEDAS DE UNA CAMA HOSPITALARIA DEBERÁN SER:",
+  "options": [
+    "a) De goma",
+    "b) De plástico",
+    "c) Deberán tener un mínimo de 15cm de diámetro",
+    "d) Las respuestas A y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "04. ¿QUIÉN DEBE COLOCAR EL ARMAZÓN DE BALKAN EN UNA CAMA DE JUDET?",
+  "options": [
+    "a) El personal de mantenimiento",
+    "b) Los mecánicos del hospital",
+    "c) El traumatólogo ya que es muy importante la colocación de las poleas en el armazón para las correctas tracciones sobre músculos y huesos del paciente con fracturas",
+    "d) El celador"
+  ],
+  "correct": 2
+},
+{
+  "question": "05. LA SÁBANA ENCIMERA SE DOBLA:",
+  "options": [
+    "a) A lo largo y con el derecho hacia dentro",
+    "b) A lo ancho y con el revés hacia adentro",
+    "c) A lo ancho y con el derecho hacia adentro",
+    "d) A lo largo y con el revés hacia fuera"
+  ],
+  "correct": 2
+},
+{
+  "question": "06. INDIQUE LAS CARACTERÍSTICAS DE UNA CAMA CERRADA:",
+  "options": [
+    "a) Es aquella cama que espera a la persona recién operada y estará cerrada hasta su salida del despertar",
+    "b) Es aquella que corresponde a la persona enferma que la ocupa, que puede levantarse y por ello está cerrada",
+    "c) Permanece vacía hasta la admisión de una persona enferma",
+    "d) Permanece vacía hasta que la persona enferma se encuentre muy cansada y se acueste"
+  ],
+  "correct": 2
+},
+{
+  "question": "07. INDICAR EL ORDEN CORRECTO DE LA LENCERÍA AL HACER UNA CAMA:",
+  "options": [
+    "a) Colchón, entremetida, encimera, manta",
+    "b) Colchón, hule, encimera, colcha",
+    "c) Funda, bajera, encimera, manta, colcha",
+    "d) Colchón y funda bajera, hule, entremetida, encimera, manta, colcha, almohada y su funda"
+  ],
+  "correct": 3
+},
+{
+  "question": "08. CUANDO LA PACIENTE SE VAYA DE ALTA, ¿LA CAMA EN QUÉ TIPO SE CONVIERTE?",
+  "options": [
+    "a) Abierta",
+    "b) Quirúrgica",
+    "c) Cerrada",
+    "d) Ocupada"
+  ],
+  "correct": 0
+},
+{
+  "question": "09. LA SÁBANA BAJERA SE DOBLA:",
+  "options": [
+    "a) A lo ancho y el revés hacia dentro",
+    "b) A lo largo y con el derecho hacia adentro",
+    "c) A lo largo y con el derecho hacia fuera",
+    "d) A lo ancho y el revés hacia fuera"
+  ],
+  "correct": 1
+},
+{
+  "question": "10. UNA CAMA ABIERTA ES:",
+  "options": [
+    "a) Una cama vacía, a la espera del ingreso de un paciente",
+    "b) Una cama que puede ser abierta ocupada o abierta desocupada por un paciente que se encuentra hospitalizado",
+    "c) Una cama que acaba de ser hecha por el auxiliar de enfermería",
+    "d) Una cama desprovista de barandillas de seguridad"
+  ],
+  "correct": 1
+},
+{
+  "question": "11. LA SÁBANA ENTREMETIDA SE DOBLA:",
+  "options": [
+    "a) A lo ancho y con el derecho hacia el interior",
+    "b) A lo largo y con el derecho hacia el interior",
+    "c) A lo ancho y con el revés hacia el interior",
+    "d) No existe la sábana entremetida"
+  ],
+  "correct": 0
+},
+{
+  "question": "12. EL MOVIMIENTO DE LOS PACIENTES ENCAMADOS PARA HACERLES LA CAMA CORRESPONDE:",
+  "options": [
+    "a) A los/las enfermeros/as",
+    "b) A los/las auxiliares de enfermería",
+    "c) A los/las celadores/as",
+    "d) Al personal de enfermería y ayudantes de plantas, ayudados por el/la celador/a cuando los/las enfermos/as encamados/as requieran un trato especial debido a sus dolencias para hacerles las camas"
+  ],
+  "correct": 3
+},
+{
+  "question": "13. ¿CUÁNDO SE CAMBIARÁ LA ROPA EN UNA CAMA ABIERTA?",
+  "options": [
+    "a) Por la noche, para que el paciente tenga un buen descanso",
+    "b) Después de las comidas, ya que el paciente encamado se suele manchar",
+    "c) Por la mañana, tras el baño o aseo del paciente, y siempre que sea necesario",
+    "d) Es indiferente, estará en función de las órdenes del personal de enfermería"
+  ],
+  "correct": 2
+},
+{
+  "question": "14. LA CAMA PREPARADA PARA RECIBIR AL PACIENTE QUE HA SIDO SOMETIDO A UNA INTERVENCIÓN QUIRÚRGICA RECIBE EL NOMBRE DE:",
+  "options": [
+    "a) Mesa de operaciones",
+    "b) Cama quirúrgica o cama de postoperatorio",
+    "c) Cama cerrada",
+    "d) Cama abierta desocupada"
+  ],
+  "correct": 1
+},
+{
+  "question": "15. LA ROPA SUCIA RETIRADA DE LA CAMA:",
+  "options": [
+    "a) No debe agitarse nunca",
+    "b) No debe dejarse en el suelo",
+    "c) Nunca entrará en contacto con la ropa limpia",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "16. ¿CUÁL ES LA CAMA A LA QUE SE LE AÑADE UN HULE Y UNA ENTREMETIDA MÁS?",
+  "options": [
+    "a) La cama cerrada",
+    "b) La cama abierta ocupada",
+    "c) La cama abierta desocupada",
+    "d) La cama quirúrgica"
+  ],
+  "correct": 1
+},
+{
+  "question": "17. LA SÁBANA ENCIMERA, LA MANTA Y LA COLCHA QUE CUBREN AL PACIENTE, ¿CUÁL SERÁ LA FORMA ADECUADA DE ARROPARLO?",
+  "options": [
+    "a) Hasta la cabeza del paciente",
+    "b) Hasta los hombros del paciente",
+    "c) La manta nunca debe estar en contacto directo con la piel del paciente",
+    "d) Las respuestas B y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "18. LA HIGIENE DE LOS OJOS PARA ELIMINAR SECRECIONES DESECADAS SE REALIZARÁ:",
+  "options": [
+    "a) Desde la comisura externa a la interna",
+    "b) Desde la comisura interna a la externa",
+    "c) Se puede hacer en los dos sentidos, es indiferente",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "19. EN EL ASEO DEL ENFERMO ENCAMADO SE SIGUE UN ORDEN PREESTABLECIDO CUYA SECUENCIA ES:",
+  "options": [
+    "a) Enjabonado-secado-aclarado",
+    "b) Aclarado-enjabonado-secado",
+    "c) Enjabonado-aclarado-secado",
+    "d) Peinado-enjabonado-secado"
+  ],
+  "correct": 2
+},
+{
+  "question": "20. TIPO DE ASEO QUE DEBEN REALIZAR LOS PACIENTES QUE PUEDEN LEVANTARSE Y MOVERSE SIN DIFICULTAD:",
+  "options": [
+    "a) Aseo parcial",
+    "b) Aseo en la cama",
+    "c) Aseo en ducha o bañera",
+    "d) Baño en cama"
+  ],
+  "correct": 2
+},
+{
+  "question": "21. AL REALIZAR LA HIGIENE DE LA REGIÓN GENITAL DEL PACIENTE HAY UNA INDICACIÓN QUE NO SE DEBE OLVIDAR, ¿CUÁL?",
+  "options": [
+    "a) La higiene de los genitales se hace en dirección de la región anal a los genitales",
+    "b) La higiene de los genitales se hace en dirección de los genitales a la región anal",
+    "c) Es indiferente la dirección del lavado",
+    "d) Todas las respuestas anteriores son falsas"
+  ],
+  "correct": 1
+},
+{
+  "question": "22. EL ORDEN A SEGUIR PARA REALIZAR EL BAÑO DEL PACIENTE ENCAMADO ES:",
+  "options": [
+    "a) Cara, cuello y orejas - Brazos y manos - Tórax - Abdomen - Extremidades inferiores - Genitales externos - Espalda y nalgas",
+    "b) Cara, cuello y orejas - Brazos y manos - Tórax - Abdomen - Espalda y nalgas - Extremidades inferiores - Genitales externos",
+    "c) Brazos y manos - Cara, cuello y orejas - Tórax - Abdomen - Extremidades inferiores - Espalda y nalgas - Genitales externos",
+    "d) Cara, cuello y orejas - Brazos y manos - Tórax y mamas - Abdomen - Extremidades inferiores - Espalda y nalgas - Genitales externos"
+  ],
+  "correct": 3
+},
+{
+  "question": "23. EL CELADOR DESTINADO EN UNA PLANTA DE HOSPITALIZACIÓN, ¿DEBE BAÑAR A LOS PACIENTES MASCULINOS?",
+  "options": [
+    "a) Sí, en cualquier caso, siguiendo las indicaciones de las Supervisoras de Planta o Servicios, o personas que las sustituyan",
+    "b) No, nunca",
+    "c) Cuando el paciente no pueda hacerlo por sí mismo",
+    "d) Excepcionalmente, siguiendo las indicaciones de Supervisoras de Planta o Servicios, o personal que las sustituyan"
+  ],
+  "correct": 3
+},
+{
+  "question": "24. UNA DE LAS SIGUIENTES AFIRMACIONES ES CORRECTA. SEÑALE CUÁL:",
+  "options": [
+    "a) La ducha tiene un efecto relajante",
+    "b) El baño tiene un efecto estimulante",
+    "c) Para realizar el aseo del paciente encamado hay que desnudarlo completamente",
+    "d) En caso de fiebre del paciente adulto, el baño debe ser tibio o frío, con el fin de bajar la temperatura corporal"
+  ],
+  "correct": 3
+},
+{
+  "question": "25. EL ASEO DEL PACIENTE ENCAMADO",
+  "options": [
+    "a) Se debe dejar al descubierto todo el cuerpo del paciente para realizar una higiene efectiva",
+    "b) Se debe evitar la higiene de las zonas de apoyo para no lesionar la piel con el fin de evitar las úlceras por presión",
+    "c) Se debe proteger al máximo la intimidad del paciente",
+    "d) Todas las respuestas son correctas"
+  ],
+  "correct": 2
+},
+{
+  "question": "26. LA CAMA DE JUDET ESTÁ INDICADA PARA:",
+  "options": [
+    "a) Pacientes que sufren fracturas o parálisis en las extremidades",
+    "b) Exploraciones ginecológicas",
+    "c) Pacientes que sufren lesiones medulares",
+    "d) Pacientes con grandes quemaduras"
+  ],
+  "correct": 0
+},
+{
+  "question": "27. A UN COLCHÓN SE LE DENOMINA ANTIÚLCERAS CUANDO ES:",
+  "options": [
+    "a) Regulable",
+    "b) Aulcerante",
+    "c) De presión alterna",
+    "d) Impermeable"
+  ],
+  "correct": 2
+},
+{
+  "question": "28. SE PIDE AL CELADOR QUE TRAIGA UN TRIÁNGULO DE BALKAN, ¿EN QUÉ TIPO DE CAMA LO DEJARÁ INSTALADO?",
+  "options": [
+    "a) Cama articulada",
+    "b) Cama de Judet",
+    "c) Cama circoeléctrica",
+    "d) Cama roto-rest"
+  ],
+  "correct": 1
+},
+{
+  "question": "29. CUANDO ESTAMOS HABLANDO DE UNA CAMA QUE POSEE UN SOMIER METÁLICO FORMADO POR DOS O TRES SEGMENTOS MÓVILES Y ADAPTABLES A LAS NECESIDADES DEL PACIENTE, NOS ESTAMOS REFIRIENDO A UNA CAMA:",
+  "options": [
+    "a) Rígida",
+    "b) Camilla de Transferencia",
+    "c) Articulada",
+    "d) De Tijera"
+  ],
+  "correct": 2
+},
+{
+  "question": "30. ANTES DE INICIAR EL PROCESO DEL ASEO DEL PACIENTE, SE TENDRÁ EN CUENTA:",
+  "options": [
+    "a) Estimular la circulación",
+    "b) Determinar su grado de autonomía",
+    "c) Patologías del paciente, para prevenir posibles complicaciones durante la realización del procedimiento",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "31. NO ES LA FINALIDAD GENERAL DE LA HIGIENE Y ASEO DEL PACIENTE:",
+  "options": [
+    "a) Evitar la proliferación bacteriana excesiva",
+    "b) Eliminar células descamadas, suciedad, exceso de grasa",
+    "c) Mejorar su confort y bienestar",
+    "d) Resolver la infección nosocomial"
+  ],
+  "correct": 3
+},
+{
+  "question": "32. INDIQUE CUÁL DE LAS SIGUIENTES AFIRMACIONES ES LA CORRECTA EN CUANTO A LA HIGIENE DE LOS PACIENTES:",
+  "options": [
+    "a) Debemos asear a todos los pacientes en la cama sean válidos o no",
+    "b) En los pacientes encamados es necesario realizar siempre un correcto secado de la piel, poniendo especial atención en ingles, axilas y pliegues cutáneos",
+    "c) Es suficiente hacer la cama con sábanas limpias. El aseo siempre debe realizarlo la familia",
+    "d) Nunca debemos lavar la cabeza de los pacientes aun cuando no haya ninguna contraindicación"
+  ],
+  "correct": 1
+},
+{
+  "question": "33. EL TCAE TIENE QUE REALIZAR EL ASEO DE UN PACIENTE ENCAMADO, PARA ELLO DEBE DE:",
+  "options": [
+    "a) Se realizará preferiblemente entre dos personas para favorecer la movilidad del paciente",
+    "b) Se aprovechará el momento del aseo para masajear la piel y así favorecer la circulación",
+    "c) Se aplicarán cremas hidratantes en aquellas zonas donde haya descamación",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "34. ¿CUÁL ES LA PRÁCTICA ADECUADA A LA HORA DE VESTIR Y DESVESTIR A UN PACIENTE CON VÍA DE SUERO?",
+  "options": [
+    "a) El miembro portador es el primero en vestir y el último en desvestir",
+    "b) El miembro portador es el último en vestir y primero en desvestir",
+    "c) El miembro portador es el primero en vestir y desvestir",
+    "d) El miembro portador es el último en vestir y desvestir"
+  ],
+  "correct": 1
+},
+{
+  "question": "35. EL LAVADO HIGIÉNICO DEL PACIENTE DEBE REALIZARSE CON UN JABÓN CON UN PH:",
+  "options": [
+    "a) Alcalino",
+    "b) Ácido",
+    "c) Básico",
+    "d) Neutro"
+  ],
+  "correct": 3
+},
+{
+  "question": "36. LA HIGIENE BUCAL EN UN PACIENTE INCONSCIENTE SE REALIZA:",
+  "options": [
+    "a) Con una jeringa cargada de antiséptico bucal",
+    "b) Con el método de cepillado vertical",
+    "c) Con el paciente en posición Roser",
+    "d) Con una torunda mojada con gel antiséptico y la cabeza ladeada"
+  ],
+  "correct": 3
+},
+{
+  "question": "37. LA CAMA INDICADA PARA PACIENTES QUE NECESITAN INMOVILIZACIÓN PROLONGADA EN EL TIEMPO, SEÑALE LA RESPUESTA CORRECTA:",
+  "options": [
+    "a) La cama de Judet",
+    "b) La cama electrocircular",
+    "c) La cama libro",
+    "d) La cama Gatch"
+  ],
+  "correct": 3
+},
+{
+  "question": "38. RESPECTO A LA CAMA DE LEVITACIÓN, SEÑALE LA RESPUESTA INCORRECTA:",
+  "options": [
+    "a) Se emplea en grandes quemados",
+    "b) También se llama Clinitron",
+    "c) Permite la angulación lateral",
+    "d) Utiliza un flujo continuo e intenso de aire"
+  ],
+  "correct": 2
+},
+{
+  "question": "39. DE LA SIGUIENTE SECUENCIA, INDIQUE EL ORDEN CORRECTO QUE SE DEBE SEGUIR EN LA HIGIENE DEL PACIENTE ENCAMADO:",
+  "options": [
+    "a) Abdomen-tórax y mamas-extremidades inferiores",
+    "b) Extremidades inferiores-espalda y nalgas-genitales externos",
+    "c) Espalda y nalgas-extremidades inferiores-tórax y mamas",
+    "d) Abdomen-tórax y mamas-brazos y manos"
+  ],
+  "correct": 0
+},
+{
+  "question": "40. EN RELACIÓN CON LAS CAMAS, SON SISTEMAS DE TRANSFERENCIA, PARA INCORPORARSE, CAMBIAR LA POSICIÓN O PASARSE A UNA SILLA DE RUEDAS:",
+  "options": [
+    "a) Las barandillas plegables",
+    "b) Los trapecios",
+    "c) Las respuestas A y B son correctas",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "41. DE LAS SIGUIENTES OPCIONES RESPECTO A LA LENCERÍA DE LA CAMA HOSPITALARIA, SEÑALE LA RESPUESTA CORRECTA:",
+  "options": [
+    "a) La sábana encimera se coloca entre la sábana entremetida y la manta",
+    "b) A la sábana bajera se le realizará la esquina de mitra o inglete",
+    "c) La entremetida se colocará transversalmente sobre la sábana bajera",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "42. EL CUADRO BALCÁNICO ES...",
+  "options": [
+    "a) Un conjunto de síntomas de una enfermedad",
+    "b) Un armazón que inmoviliza las camas en las habitaciones",
+    "c) Un aparato mecánico que utiliza exclusivamente el personal de mantenimiento",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 3
+},
+{
+  "question": "43. AL CELADOR QUE PRESTA SUS SERVICIOS EN UNA PLANTA DE HOSPITALIZACIÓN, LE REQUIEREN UNA CAMA ESPECIAL PARA UN PACIENTE CON FRACTURA DE COLUMNA. EL CELADOR LLEVARÁ:",
+  "options": [
+    "a) Una cama electrocircular",
+    "b) Una cama Striker",
+    "c) Una cama articulada",
+    "d) Una cama de Judet"
+  ],
+  "correct": 1
+},
+{
+  "question": "44. SE LLAMA COLCHÓN ANTIESCARAS A UN COLCHÓN...",
+  "options": [
+    "a) De presión continua",
+    "b) De presión alternante",
+    "c) Rígido",
+    "d) Impermeabilizado"
+  ],
+  "correct": 1
+},
+{
+  "question": "45. UNA CAMA ABIERTA EN ABANICO LATERAL ESTÁ PREPARADA PARA LA RECEPCIÓN DE UN PACIENTE:",
+  "options": [
+    "a) Ambulatorio",
+    "b) Sin información específica previa",
+    "c) Quirúrgico",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "46. LA CAMA DE JUDET TIENE LAS SIGUIENTES CARACTERÍSTICAS ESPECÍFICAS:",
+  "options": [
+    "a) Marco o armazón para volteo",
+    "b) Marco alrededor de la cama que sujeta varias anillas",
+    "c) Marco por encima de la cama que sujeta varias anillas",
+    "d) Marco por debajo de la cama donde van sujetos varios accesorios de la cama"
+  ],
+  "correct": 2
+},
+{
+  "question": "47. LA CAMA ELECTROCIRCULAR, CUANDO GIRA A UN PACIENTE, DA UN GIRO DE:",
+  "options": [
+    "a) 45 grados",
+    "b) 90 grados",
+    "c) 180 grados",
+    "d) 360 grados"
+  ],
+  "correct": 3
+},
+{
+  "question": "48. LA CAMA DE LEVITACIÓN MECANIZADA CON UN COLCHÓN QUE TIENE UN FLUJO CONTINUO DE AIRE ENTRE SUS BOLITAS O ESFERAS, SE DENOMINA:",
+  "options": [
+    "a) Cama Roto Rest",
+    "b) Cama de esferas fluidificada Clinitron",
+    "c) Cama de sedestación Gatch",
+    "d) Cama electrocircular o circoeléctrica"
+  ],
+  "correct": 1
+},
+{
+  "question": "49. ¿CUÁL DE LOS SIGUIENTES ACCESORIOS SE UTILIZA PARA EVITAR LAS LESIONES DEL PACIENTE?",
+  "options": [
+    "a) Armazón de Balkman",
+    "b) Cuñas tope o quesitos",
+    "c) Centinela de cama",
+    "d) Triángulo de Balkman"
+  ],
+  "correct": 1
+},
+{
+  "question": "50. EN LA HIGIENE DE LOS OJOS, LA LIMPIEZA DEL OJO DEBERÁ HACERSE CON:",
+  "options": [
+    "a) Solución desinfectante",
+    "b) Pomada lubricante",
+    "c) Colirio",
+    "d) Suero"
+  ],
+  "correct": 3
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
