@@ -1,0 +1,1023 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. En una habitación de hospital habrá tantas unidades de pacientes como:",
+  "options": [
+    "a) Pacientes haya en el hospital (incluido consultas externas)",
+    "b) Número de camas.",
+    "c) Pacientes haya en el hospital dividido por factor de corrección constante.",
+    "d) Número de camas multiplicado por factor de corrección constante."
+  ],
+  "correct": 1
+},
+{
+  "question": "2. De lo indicado a continuación, no se considera requisito de calidad en la unidad del paciente:",
+  "options": [
+    "a) Que sea confortable la habitación.",
+    "b) Que tenga seguridad, para evitar accidentes.",
+    "c) Que posea condiciones ambientales favorables.",
+    "d) Que haya en ella escasa privacidad, para vigilar mejor al paciente."
+  ],
+  "correct": 3
+},
+{
+  "question": "3. ¿Qué útil o herramienta no debe poseer la unidad del paciente tipo?",
+  "options": [
+    "a) Lencería de cama y accesorios.",
+    "b) Lámpara de luz directa",
+    "c) Timbre de alarma.",
+    "d) Toma de oxígeno."
+  ],
+  "correct": 1
+},
+{
+  "question": "4. ¿Qué aspecto no entra dentro de la unidad de paciente tipo?",
+  "options": [
+    "a) La cama.",
+    "b) El armario",
+    "c) El control de enfermería.",
+    "d) La mesita de noche."
+  ],
+  "correct": 2
+},
+{
+  "question": "5. ¿De qué color deben ser pintadas las paredes de una habitación de hospital?",
+  "options": [
+    "a) Negro u oscuro.",
+    "b) Marrón claro o amarillo.",
+    "c) Blanco mate.",
+    "d) Ninguno de los anteriores"
+  ],
+  "correct": 2
+},
+{
+  "question": "6. Todas las características mínimas que debe reunir la habitación del enfermo que se exponen son ciertas, excepto:",
+  "options": [
+    "a) Espacio suficiente.",
+    "b) Debe recibir luz directa del sol, a ser posible y de fácil ventilación",
+    "c) Temperatura por encima de la media habitual (superior a 30 grados)",
+    "d) Tranquila y a poder ser sin ruidos."
+  ],
+  "correct": 2
+},
+{
+  "question": "7. La altura de los techos mínima (en cm) de la habitación del paciente debe ser:",
+  "options": [
+    "a) 220 cm",
+    "b) 250 cm",
+    "c) 270 cm.",
+    "d) 285 cm"
+  ],
+  "correct": 1
+},
+{
+  "question": "8. ¿Qué tipo de iluminación es indispensable en la habitación del paciente?",
+  "options": [
+    "a) Luz natural (sol)",
+    "b) Luz artificial día",
+    "c) Luz artificial -noche.",
+    "d) Luz artificial halógena"
+  ],
+  "correct": 0
+},
+{
+  "question": "9. ¿Cuánto tiempo al día habrá que abrir ventanas para ventilar, si el hospital no dispone de aire acondicionado o está averiado?",
+  "options": [
+    "a) De 10 a 15 minutos, en diferentes intervalos",
+    "b) De 30 a 45 minutos, en diferentes intervalos.",
+    "c) De 1 a 2 horas, en diferentes intervalos.",
+    "d) Más de 4 horas en diferentes intervalos."
+  ],
+  "correct": 1
+},
+{
+  "question": "10. ¿Qué color claro es el idóneo para las paredes de la habitación del paciente?",
+  "options": [
+    "a) Blanco mate.",
+    "b) Blanco marfil.",
+    "c) Blanco brillo.",
+    "d) Amarillo limón."
+  ],
+  "correct": 0
+},
+{
+  "question": "11. Respecto a la sonorización en la unidad del paciente todo lo que se dice es cierto, excepto que:",
+  "options": [
+    "a) El Técnico de cuidados de enfermería debe velar a la hora del descanso de que no se produzcan ruidos",
+    "b) El personal sanitario utilizará calzado con suela dura, para que dicho ruido dé pista al enfermo y se sepa dónde se localiza",
+    "c) Las habitaciones deben ser tranquilas y sin ruidos, ya que un excesivo ruido ambiental afectaría al enfermo",
+    "d) Los modernos hospitales están construidos teniendo en cuenta la necesidad de un aislamiento acústico de las habitaciones."
+  ],
+  "correct": 1
+},
+{
+  "question": "12. La temperatura de las habitaciones del hospital debe oscilar entre:",
+  "options": [
+    "a) 16°C-18°C",
+    "b) 20°C-22°C",
+    "c) 26°C-28°C",
+    "d) 30°C-32°C"
+  ],
+  "correct": 1
+},
+{
+  "question": "13. Los límites que se consideran aceptables de humedad en habitación del enfermo oscilan entre:",
+  "options": [
+    "a) 20-30 %",
+    "b) 30-40 %",
+    "c) 40-60 %",
+    "d) 65-85 %"
+  ],
+  "correct": 2
+},
+{
+  "question": "14. ¿Qué mobiliario de la habitación del paciente no es imprescindible?",
+  "options": [
+    "a) Mesita de noche y armario.",
+    "b) Cama.",
+    "c) Sofá pequeño",
+    "d) Silla y/o sillón."
+  ],
+  "correct": 2
+},
+{
+  "question": "15. ¿Qué es incorrecto del cuarto de baño de la habitación del paciente?",
+  "options": [
+    "a) Debe poseer todas las piezas de un baño completo",
+    "b) No es necesario que presente barras de seguridad en sanitarios ni en ducha o bañera.",
+    "c) El baño está incorporado a las habitaciones.",
+    "d) Debe poseer medidas de seguridad para evitar accidentes."
+  ],
+  "correct": 1
+},
+{
+  "question": "16. ¿En cuántos segmentos móviles se divide el somier metálico de la cama articulada?",
+  "options": [
+    "a) En 2",
+    "b) En 3",
+    "c) En 4",
+    "d) No tiene divisiones."
+  ],
+  "correct": 2
+},
+{
+  "question": "17. ¿Qué parte corporal aloja el segmento móvil central del somier metálico de la cama articulada?",
+  "options": [
+    "a) Tórax.",
+    "b) Abdomen.",
+    "c) Pelvis.",
+    "d) Extremidades superiores."
+  ],
+  "correct": 1
+},
+{
+  "question": "18. La cama articulada de somier rígido impide al paciente colocarlo en la posición de:",
+  "options": [
+    "a) Decúbito supino.",
+    "b) Decúbito prono.",
+    "c) Decúbito lateral.",
+    "d) Fowler."
+  ],
+  "correct": 3
+},
+{
+  "question": "19. ¿Cómo se denomina también a la cama ortopédica o traumatológica?",
+  "options": [
+    "a) Cama de Judet.",
+    "b) Potro ginecológico.",
+    "c) Somier.",
+    "d) Bouchat"
+  ],
+  "correct": 0
+},
+{
+  "question": "20. El triángulo de Balkan lo posee la cama:",
+  "options": [
+    "a) Ortopédica de Judet.",
+    "b) Bouchat",
+    "c) De levitación",
+    "d) Electrocircular o de Stryker."
+  ],
+  "correct": 0
+},
+{
+  "question": "21. ¿Qué tipo de cama está indicada para pacientes que sufren fracturas de las extremidades?",
+  "options": [
+    "a) Cama ortopédica de Judet.",
+    "b) Cama hospitalaria",
+    "c) Cama de levitación.",
+    "d) Cama Electrocircular o de Stryker."
+  ],
+  "correct": 0
+},
+{
+  "question": "22. El denominado potro se emplea para:",
+  "options": [
+    "a) Encamar a quemados.",
+    "b) Exploración ginecológica.",
+    "c) Encamar a pacientes con UPP",
+    "d) Encamar a enfermos con grandes traumatismos."
+  ],
+  "correct": 1
+},
+{
+  "question": "23. La incubadora se emplea para alcanzar todos los objetivos que se exponen, excepto:",
+  "options": [
+    "a) Proporcionar oxígeno.",
+    "b) Conservar el calor corporal y mantener la humedad.",
+    "c) Prevenir las infecciones.",
+    "d) Evitar fracturas indeseadas."
+  ],
+  "correct": 3
+},
+{
+  "question": "24. El armazón para el volteo Foster se emplea:",
+  "options": [
+    "a) Para facilitar al paciente la respiración.",
+    "b) Para el cambio postural.",
+    "c) Evitar infecciones micóticas",
+    "d) Para liberar de estrés al paciente"
+  ],
+  "correct": 1
+},
+{
+  "question": "25. ¿Hasta qué grado de giro permite el volteo la cama de Stryker?",
+  "options": [
+    "a) Hasta los 30°",
+    "b) Hasta los 60°",
+    "c) Hasta los 90°",
+    "d) Hasta los 180°"
+  ],
+  "correct": 3
+},
+{
+  "question": "26. ¿De qué otra cama es variante la cama libro?",
+  "options": [
+    "a) De la cama de levitación",
+    "b) De la cama de exploración o potro ginecológico",
+    "c) De la cama articulada.",
+    "d) De la cama Stryker."
+  ],
+  "correct": 3
+},
+{
+  "question": "27. ¿Para qué tipo de pacientes se emplea la cama de levitación?",
+  "options": [
+    "a) En fractura de miembros superiores",
+    "b) En grandes quemados.",
+    "c) En fractura de miembros inferiores.",
+    "d) En enfermos con úlceras por presión."
+  ],
+  "correct": 1
+},
+{
+  "question": "28. La cama roto-rest se emplea en:",
+  "options": [
+    "a) Prevención de infecciones en general.",
+    "b) En fractura de miembros inferiores.",
+    "c) Inmovilización de pacientes",
+    "d) Prevención de úlceras por presión (UPP)."
+  ],
+  "correct": 3
+},
+{
+  "question": "29. ¿Qué función posee la barra de tracción?",
+  "options": [
+    "a) Protector de metal lateral, que evita caídas del enfermo de la cama.",
+    "b) Dar mayor rigidez a la cama hospitalaria.",
+    "c) Facilitar la incorporación del enfermo",
+    "d) Adaptar al paciente a la cabecera de la cama"
+  ],
+  "correct": 3
+},
+{
+  "question": "30. ¿Qué dispositivo o accesorio de la cama hospitalaria es aquel que se coloca sobre el enfermo para que la ropa de la cama descanse sobre él y evitar al paciente el peso de la misma?",
+  "options": [
+    "a) Arco de protección o férula de acero",
+    "b) Centinelas de cama",
+    "c) Pupitre",
+    "d) Soporte."
+  ],
+  "correct": 0
+},
+{
+  "question": "31. ¿Qué pieza o elemento se ubica entre la sábana bajera y la entremetida?",
+  "options": [
+    "a) Sábana encimera",
+    "b) Cubierta colchón",
+    "c) Hule",
+    "d) Colcha"
+  ],
+  "correct": 2
+},
+{
+  "question": "32. ¿Cuál de estos elementos es el primero en el orden de lencería?",
+  "options": [
+    "a) Hule",
+    "b) Entremetida.",
+    "c) Manta.",
+    "d) Colcha"
+  ],
+  "correct": 0
+},
+{
+  "question": "33. ¿Qué procedimiento hay que seguir para quitar la sábana bajera de la cama desocupada?",
+  "options": [
+    "a) Hay que seguir el mismo procedimiento empleado para la manta.",
+    "b) Hay que seguir el mismo procedimiento empleado para la entremetida.",
+    "c) Hay que seguir el mismo procedimiento empleado para la sábana superior.",
+    "d) Hay que seguir el mismo procedimiento empleado para la sábana inferior."
+  ],
+  "correct": 3
+},
+{
+  "question": "34. ¿Qué número de celador es recomendable para la técnica de hacer la cama ocupada?",
+  "options": [
+    "a) Ninguno, ya que se encarga el celador.",
+    "b) Uno.",
+    "c) Dos",
+    "d) Tres."
+  ],
+  "correct": 2
+},
+{
+  "question": "35. ¿Qué procedimiento se añadirá en la técnica para hacer la cama quirúrgica diferente al de la cama desocupada?",
+  "options": [
+    "a) El mismo que para la cama desocupada, pero añadiendo una bajera y una encimera más",
+    "b) El mismo que para la cama desocupada, pero quitando el hule y añadiendo una entremetida más, que se colocarán en la cabecera de la cama",
+    "c) El mismo que para la cama desocupada, pero añadiendo un hule y una entremetida más, que se colocarán en la cabecera de la cama o en la parte alta de la bajera",
+    "d) Nada, ya que son maneras muy diferentes de hacer la cama."
+  ],
+  "correct": 2
+},
+{
+  "question": "36. ¿Qué elementos de estos no puede haber en una cama quirúrgica?",
+  "options": [
+    "a) Hule o protector.",
+    "b) Entremetida",
+    "c) Colchón.",
+    "d) Almohada"
+  ],
+  "correct": 3
+},
+{
+  "question": "37. ¿De qué manera abrimos la cama desocupada si para ello tenemos que coger los dos extremos del embozo y doblarlos hacia los pies de la cama para luego volver a subirlos hacia la mitad de la cama en sentido inverso?",
+  "options": [
+    "a) En triángulo o pico.",
+    "b) En derrape o arrastre.",
+    "c) En tracción anterior.",
+    "d) En abanico o fuelle."
+  ],
+  "correct": 3
+},
+{
+  "question": "38. ¿Cómo se puede abrir la cama quirúrgica, una vez que se lleva a cabo una especie de embozo o dobladillo a los pies de la misma, para la recepción del enfermo?",
+  "options": [
+    "a) En triángulo o pico",
+    "b) En derrape o arrastre",
+    "c) En tracción anterior.",
+    "d) Son ciertas las respuestas a) y c)."
+  ],
+  "correct": 3
+},
+{
+  "question": "39. ¿Quién es el/la responsable del funcionamiento de la planta de hospitalización?",
+  "options": [
+    "a) La gobernanta.",
+    "b) La supervisora de enfermería.",
+    "c) El médico de la unidad",
+    "d) La enfermera de planta"
+  ],
+  "correct": 1
+},
+{
+  "question": "40. ¿De quién deben recibir instrucciones los celadores o las celadoras para bañar a los enfermos masculinos cuando no puedan hacerlo por sí mismos?",
+  "options": [
+    "a) De la Auxiliar de Enfermería",
+    "b) Del Ayudante de Planta",
+    "c) De las Supervisoras de plantas o servicios o personas que las sustituyan.",
+    "d) De la enfermera responsable."
+  ],
+  "correct": 3
+},
+{
+  "question": "41. Si la Enfermera o Ayudante de planta solicita que se coloque y, posteriormente, retire la cuña a un paciente para la recogida de excretas, el celador o la celadora:",
+  "options": [
+    "a) Ayudará cuando por circunstancias especiales concurrentes en el enfermo no pueda este ser movido solo por la Enfermera o Ayudante de planta.",
+    "b) Solicitará permiso a su inmediato superior.",
+    "c) Ayudará e informará al Jefe del Servicio.",
+    "d) Lo realizará si el supervisor le concede permiso."
+  ],
+  "correct": 0
+},
+{
+  "question": "42. El celador o celadora tiene una serie de funciones a desarrollar. De las siguientes, indica la que le corresponde:",
+  "options": [
+    "a) Informar a los familiares acerca del estado clínico del paciente.",
+    "b) Vigilar que se cumplan las normas y se mantenga el orden de las instalaciones.",
+    "c) Autorizar el alta de un paciente.",
+    "d) Completar los datos de la historia clínica"
+  ],
+  "correct": 1
+},
+{
+  "question": "43. Cuando el celador o la celadora observen desperfectos o anomalías que haya en la limpieza y conservación del edificio y material deberán comunicarlo a:",
+  "options": [
+    "a) El personal de limpieza",
+    "b) Sus compañeros",
+    "c) Sus inmediatos superiores",
+    "d) El jefe adjunto a urgencias"
+  ],
+  "correct": 2
+},
+{
+  "question": "44. En relación con los pacientes fallecidos, la actuación del celador o la celadora se centrará en:",
+  "options": [
+    "a) Ayudar al personal encargado a amortajar y trasladar el cadáver hasta el mortuorio",
+    "b) Movilizar y asear el cadáver.",
+    "c) Informar a las familias sobre el fallecimiento",
+    "d) Cumplimentar los datos de los informes de fallecimiento"
+  ],
+  "correct": 0
+},
+{
+  "question": "45. Señala cuál de las siguientes tareas no es propia de un celador:",
+  "options": [
+    "a) Ascensorista si las necesidades lo requieren.",
+    "b) Ayudarán al personal Sanitario o personas encargadas a amortajar a los enfermos fallecidos.",
+    "c) Labores de limpieza que se les encomiende cuando su realización por el personal femenino no sea idónea o decorosa en orden a la situación, emplazamiento, dificultad de manejo, peso de los objetos o locales a limpiar",
+    "d) Reparar pequeños desperfectos que se detecten en algún artículo del mobiliario (cortinas, persianas, bombillas, etc.)"
+  ],
+  "correct": 3
+},
+{
+  "question": "46. ¿Qué profesional es el responsable de la higiene de los pacientes enfermos, sobre todos los hospitalizados?",
+  "options": [
+    "a) El celador/a.",
+    "b) El auxiliar de enfermería.",
+    "c) El enfermero/a",
+    "d) La supervisor/a de planta."
+  ],
+  "correct": 1
+},
+{
+  "question": "47. ¿Qué tipo de higiene se realiza cuando el paciente conserva la movilidad pero no puede levantarse, por lo que él asume su higiene siendo auxiliado en caso necesario por la enfermera (espalda, pies, etc.)?",
+  "options": [
+    "a) Baño completo en la cama.",
+    "b) Baño parcial.",
+    "c) Baño en la cama",
+    "d) Baño en bañera"
+  ],
+  "correct": 1
+},
+{
+  "question": "48. ¿Cómo se llaman las estructuras complementarias de la piel?",
+  "options": [
+    "a) Fanecas",
+    "b) Fanegas.",
+    "c) Faneras.",
+    "d) Fanebas."
+  ],
+  "correct": 2
+},
+{
+  "question": "49. La piel está formada por varias capas. Señala la respuesta incorrecta:",
+  "options": [
+    "a) Glándulas sudoríparas.",
+    "b) Hipodermis",
+    "c) Epidermis.",
+    "d) Dermis."
+  ],
+  "correct": 0
+},
+{
+  "question": "50. ¿Cuál es la capa media de la piel?",
+  "options": [
+    "a) Epidermis.",
+    "b) Hipodermis.",
+    "c) Tejido subcutáneo.",
+    "d) Dermis."
+  ],
+  "correct": 3
+},
+{
+  "question": "51. Señala la respuesta incorrecta. Con un correcto aseo del paciente se pretende:",
+  "options": [
+    "a) Conservar el buen estado de la piel.",
+    "b) Estimular la circulación sanguínea.",
+    "c) Refrescar al paciente.",
+    "d) Curar la patología que pueda haberse producido por infecciones bacterianas"
+  ],
+  "correct": 3
+},
+{
+  "question": "52. Si el celador o la celadora tuviera que asear a un paciente enfermo empezaría por:",
+  "options": [
+    "a) El tórax y las extremidades superiores",
+    "b) Los pies",
+    "c) La cara, el cuello y las orejas.",
+    "d) La zona genital"
+  ],
+  "correct": 2
+},
+{
+  "question": "53. El cambio de camisón del enfermo encamado con suero se hará:",
+  "options": [
+    "a) Sacando la manga del camisón del brazo libre del sistema de suero.",
+    "b) Teniendo la precaución de no bajar el bote de suero por debajo de la zona del brazo del paciente en la que está insertado el catéter.",
+    "c) Quitar el bote del palo de suero y después sacar la manga del brazo que tiene el sistema, considerando el sistema de suero y el recipiente del mismo como partes del brazo",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "54. ¿De quién deben recibir instrucciones los celadores o las celadoras para bañar a los enfermos masculinos cuando no puedan hacerlo por sí mismos?",
+  "options": [
+    "a) Del Técnico de planta",
+    "b) Del Ayudante de Planta",
+    "c) Del Gerente.",
+    "d) De las Supervisoras de plantas o servicios o personas que las sustituyan."
+  ],
+  "correct": 3
+},
+{
+  "question": "55. Tanto si se trata de baño completo o parcial, uno de los principios a seguir a la hora de abordar al enfermo es:",
+  "options": [
+    "a) Actuar lentamente para disminuir el riesgo de cansancio.",
+    "b) Moverlo rápidamente.",
+    "c) Cubrir al paciente con una sábana de forma parcial.",
+    "d) Descubrir todo el cuerpo y cubrir la zona a limpiar."
+  ],
+  "correct": 0
+},
+{
+  "question": "56. El baño en la cama completo se hará como mínimo:",
+  "options": [
+    "a) Cuando cambie cada turno",
+    "b) Cuando el paciente lo solicite.",
+    "c) Mínimo una vez al día, por la mañana",
+    "d) Al menos una vez a la semana"
+  ],
+  "correct": 2
+},
+{
+  "question": "57. La preparación del material necesario para el aseo del paciente se realizará:",
+  "options": [
+    "a) Después de preparar el agua entre 37 y 40°C",
+    "b) Después de informar al paciente.",
+    "c) Antes de comenzar el procedimiento.",
+    "d) Una vez que se ha lavado al paciente"
+  ],
+  "correct": 2
+},
+{
+  "question": "58. El aseo de aquellos pacientes que, conservando o no la movilidad, deben permanecer en la cama, exige como procedimiento que:",
+  "options": [
+    "a) Se desnude completamente al paciente.",
+    "b) Se destapen aquellas partes que vayan a ser lavadas",
+    "c) Se coloque al paciente en posición de decúbito lateral.",
+    "d) El celador se coloque un delantal antes del inicio del procedimiento."
+  ],
+  "correct": 1
+},
+{
+  "question": "59. Señala la respuesta incorrecta. Una norma general para el aseo es:",
+  "options": [
+    "a) Temperatura del agua para el baño entre 27° - 30° C.",
+    "b) Lavar cada zona del cuerpo una vez.",
+    "c) Secar perfectamente al paciente.",
+    "d) Procurar preservar la intimidad del paciente."
+  ],
+  "correct": 0
+},
+{
+  "question": "60. El baño completo en la cama para los pacientes que están hospitalizados encamados debe realizarse:",
+  "options": [
+    "a) En casos excepcionales.",
+    "b) Tantas veces como sea necesario.",
+    "c) Cuando la enfermera lo indique.",
+    "d) Cada dos días."
+  ],
+  "correct": 1
+},
+{
+  "question": "61. Una de las siguientes normas para realizar el aseo de un paciente es un error. Indica cuál:",
+  "options": [
+    "a) Mantener la habitación a una temperatura adecuada.",
+    "b) Preparar el material necesario y tenerlo a mano.",
+    "c) Colocar al paciente en la posición más cómoda posible.",
+    "d) Ventilar la habitación durante el baño"
+  ],
+  "correct": 3
+},
+{
+  "question": "62. Señala, de los siguientes materiales, cuál de ellos no sería material de protección para el baño:",
+  "options": [
+    "a) Hule.",
+    "b) Toallas.",
+    "c) Manta de baño.",
+    "d) Biombo."
+  ],
+  "correct": 1
+},
+{
+  "question": "63. ¿Qué tipo de pinza debe llevarse entre el material para el lavado?",
+  "options": [
+    "a) Pinza de Sengstaken-Blakemore (SSB).",
+    "b) Pinza de Replogle.",
+    "c) Pinza de Kocher.",
+    "d) Pinza de Kelly"
+  ],
+  "correct": 3
+},
+{
+  "question": "64. En relación con el procedimiento del aseo de un paciente encamado:",
+  "options": [
+    "a) Lo último que lavaremos será la región perineal.",
+    "b) Comenzaremos por el abdomen, tórax y mamas.",
+    "c) En la zona de la cara, cuello y orejas se comenzará por el cuello.",
+    "d) Las extremidades inferiores se lavan de abajo hacia arriba"
+  ],
+  "correct": 0
+},
+{
+  "question": "65. Para realizar el aseo de los genitales de un paciente encamado es imprescindible:",
+  "options": [
+    "a) Hacerlo con antiséptico desbridante.",
+    "b) Hacerlo en la dirección de región anal a genitales.",
+    "c) Colocar una cuña debajo del periné.",
+    "d) No secar la zona después del lavado."
+  ],
+  "correct": 1
+},
+{
+  "question": "66. En los pacientes con venoclisis o traumatismo en un miembro, el miembro afectado debe ser:",
+  "options": [
+    "a) Dejado sin vestir hasta la recuperación",
+    "b) El primero en ser desvestido",
+    "c) El primero en ser vestido.",
+    "d) El último en ser vestido"
+  ],
+  "correct": 3
+},
+{
+  "question": "67. Para poner un camisón limpio a un paciente que tiene un sistema de suero se introduce primero:",
+  "options": [
+    "a) El brazo libre del sistema.",
+    "b) El brazo que porta el sistema.",
+    "c) El palo del suero.",
+    "d) El bote de suero y el sistema"
+  ],
+  "correct": 1
+},
+{
+  "question": "68. ¿Qué es lo primero que se lava a un paciente que está encamado?",
+  "options": [
+    "a) El torso.",
+    "b) El cuello.",
+    "c) El pelo.",
+    "d) Los ojos."
+  ],
+  "correct": 4
+},
+{
+  "question": "69. En el aseo del paciente en cama:",
+  "options": [
+    "a) Se desnuda completamente al paciente.",
+    "b) Se lavan las zonas varias veces.",
+    "c) Se lava por zonas una sola vez.",
+    "d) Se enjabona y aclara el cuerpo todo de una vez."
+  ],
+  "correct": 2
+},
+{
+  "question": "70. El procedimiento para lavar los ojos del paciente encamado será con:",
+  "options": [
+    "a) Una esponja humedecida en agua y desinfectante.",
+    "b) Una torunda mojada en agua sujeta con unas pinzas.",
+    "c) Una toalla húmeda",
+    "d) Agua proyectada con una jeringa"
+  ],
+  "correct": 1
+},
+{
+  "question": "71. ¿Qué cuestión no se pretende con un correcto aseo del paciente?",
+  "options": [
+    "a) Conservar el buen estado de la piel, eliminando la suciedad, el mal olor y el sudor",
+    "b) Cubrir parte de las necesidades de seguridad del paciente al prevenir la aparición de infecciones",
+    "c) Refrescar al paciente, para que sienta sensación de confort y bienestar.",
+    "d) Evitar la necesidad de aseo en los genitales varias veces al día, debido a su efecto yatrogénico"
+  ],
+  "correct": 3
+},
+{
+  "question": "72. ¿Qué elementos o materiales necesarios para el aseo del paciente son de lavado?",
+  "options": [
+    "a) Hule.",
+    "b) Manta de baño",
+    "c) Esponjas y guantes",
+    "d) Cuña"
+  ],
+  "correct": 2
+},
+{
+  "question": "73. ¿Qué material de estos lo incluirías dentro de los elementos de protección respecto a la higiene de la piel?",
+  "options": [
+    "a) Ropa del enfermo.",
+    "b) Sábana pequeña",
+    "c) Palangana.",
+    "d) Cuña"
+  ],
+  "correct": 1
+},
+{
+  "question": "74. El lavado de cabellos del paciente debe realizarse aproximadamente:",
+  "options": [
+    "a) Todos los días.",
+    "b) Cada tres días.",
+    "c) Una vez a la semana.",
+    "d) Depende de la suciedad que este tenga"
+  ],
+  "correct": 3
+},
+{
+  "question": "75. El orinal plano es un material o elemento de:",
+  "options": [
+    "a) Evacuación.",
+    "b) Protección.",
+    "c) Lavado",
+    "d) Recambio."
+  ],
+  "correct": 0
+},
+{
+  "question": "76. ¿Cuál debe ser la temperatura del agua para el baño, si se realiza la técnica del baño completo en la cama?",
+  "options": [
+    "a) 180°",
+    "b) Entre 22-24°C",
+    "c) Entre 30-32°C",
+    "d) Entre 37-40°C"
+  ],
+  "correct": 3
+},
+{
+  "question": "77. ¿Qué afirmación es incorrecta del vestido y desvestido del enfermo?",
+  "options": [
+    "a) Al paciente hay que taparlo con una toalla o con la sábana a la hora de desnudarlo.",
+    "b) El camisón se retira por la cadera, hasta miembros inferiores, sacándolo por debajo de los pies.",
+    "c) El Celador debe colocarse guantes para realizar este procedimiento.",
+    "d) La chaqueta del pijama se desabrocha y se saca primero un brazo y después el otro."
+  ],
+  "correct": 2
+},
+{
+  "question": "78. ¿Qué cuestión no es cierta en la recogida de excretas?",
+  "options": [
+    "a) Las mujeres pueden usar las cuñas, tanto para miccionar como para defecar.",
+    "b) Las cuñas empleadas fundamentalmente en recogida de excretas son de plástico o acero.",
+    "c) El procedimiento del uso de la cuña no tiene por qué explicarlo el Celador.",
+    "d) Hay cuñas especiales para pacientes traumatizados, siendo generalmente de menor altura para favorecer su colocación."
+  ],
+  "correct": 2
+},
+{
+  "question": "79. La cama que consta de un marco que sujeta unas varillas metálicas para acoplar poleas que, mediante cuerdas, soportan diferentes tipos de pesas, se llama:",
+  "options": [
+    "a) Cama articulada.",
+    "b) Cama ortopédica.",
+    "c) Cama electrocircular.",
+    "d) Cama o armazón de Foster."
+  ],
+  "correct": 0
+},
+{
+  "question": "80. Indique cuál de las siguientes funciones no es del celador de puerta:",
+  "options": [
+    "a) Vigilar las entradas, permitiéndola exclusivamente al personal autorizado",
+    "b) Informar sobre la localización de los distintos servicios del hospital",
+    "c) Proporcionar los informes pertinentes a los pacientes al abandonar el centro hospitalario.",
+    "d) Controlarán la autorización de todos los pacientes, que deben mostrársela al abandonar el hospital"
+  ],
+  "correct": 2
+},
+{
+  "question": "81. Indique cuál de las siguientes afirmaciones no se corresponde con las precauciones generales que debe guardar un celador en una habitación de un paciente:",
+  "options": [
+    "a) Precaución al arrastrar los muebles y objetos",
+    "b) Llevar zapatos silenciosos.",
+    "c) Exigir a las visitas un tono de voz moderado.",
+    "d) Todas son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "82. Si cuando está trasladando a un enfermo que tiene puesto un gotero, se acaba el suero de la botella, el celador:",
+  "options": [
+    "a) Cierra el dispositivo de paso, para que no entre aire.",
+    "b) Sustituirá la botella de suero",
+    "c) Lo comunicará a su inmediato superior.",
+    "d) Lo comunicará al personal sanitario."
+  ],
+  "correct": 4
+},
+{
+  "question": "83. La cama utilizada para pacientes con fracturas, se llama:",
+  "options": [
+    "a) De levitación.",
+    "b) De Judet.",
+    "c) Ortopédica",
+    "d) Son correctas b) y c)."
+  ],
+  "correct": 4
+},
+{
+  "question": "84. Indique el grado de elevación máximo de la cama de libro",
+  "options": [
+    "a) 45.",
+    "b) 55",
+    "c) 62",
+    "d) Ninguna es correcta"
+  ],
+  "correct": 4
+},
+{
+  "question": "85. ¿Cuál será la colocación de la cama en la habitación?:",
+  "options": [
+    "a) La que nos permita acceder a ella, al menos por dos de sus lados",
+    "b) La que nos permita acceder a ella, al menos por tres de sus lados",
+    "c) Separada de la pared 2 m",
+    "d) Todas son correctas"
+  ],
+  "correct": 4
+},
+{
+  "question": "86. ¿Qué función no es competencia del celador en la planta de hospitalización?:",
+  "options": [
+    "a) Ayudar a levantar al paciente.",
+    "b) Ayudar a acostar al paciente",
+    "c) Bañar a los enfermos masculinos que no puedan hacerlo por sí mismos.",
+    "d) Dar la comida a los enfermos que no puedan hacerlo por sí mismos."
+  ],
+  "correct": 4
+},
+{
+  "question": "87. No son partes de una cama:",
+  "options": [
+    "a) Colchón de una o varias piezas, cubierto con una funda para su protección, que debe estar fabricado en un material elástico, transpirable al vapor e impermeable al agua y debe ser hipoalérgico e ignífugo.",
+    "b) Barandillas laterales como medida de protección del paciente.",
+    "c) Accesorios triángulo, barras de tracción, pesas, poleas.",
+    "d) Todas las anteriores forman parte de una cama hospitalaria."
+  ],
+  "correct": 4
+},
+{
+  "question": "88. La cama que nos permite levantar al paciente hasta poder colocarlo en posición de sentado, se denomina:",
+  "options": [
+    "a) Cama UCI, tipo Gatch.",
+    "b) Cama Clinitron.",
+    "c) Cama Ortopédica.",
+    "d) Cama Libro."
+  ],
+  "correct": 4
+},
+{
+  "question": "89. Indique cuál de los siguientes elementos no es necesario en el uso de la grúa:",
+  "options": [
+    "a) Arnés.",
+    "b) Auxiliar de enfermería.",
+    "c) Gafas protectoras.",
+    "d) Guantes"
+  ],
+  "correct": 3
+},
+{
+  "question": "90. Indique en cuántos bloques está cortado el colchón de espuma:",
+  "options": [
+    "a) 36",
+    "b) 24.",
+    "c) 28.",
+    "d) 48."
+  ],
+  "correct": 4
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
