@@ -1,0 +1,624 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "01. ¿Cómo deberemos subir a un paciente hacia el cabecero de la cama, si éste colabora?",
+  "options": [
+    "A) Poner la cama en posición horizontal o en ligero Trendelenburg",
+    "B) Pedir al paciente que flexione las rodillas y que coloque los pies de tal manera que pueda impulsarse con ellos",
+    "C) Comprobar que la cama esté frenada.",
+    "D) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "02. Un paciente necesita ser trasladado de la cama a la camilla. Señale cuál de las siguientes opciones es la correcta:",
+  "options": [
+    "A) Si el paciente es colaborador, colocaremos la camilla perpendicular a la cama, de modo que coincidan los pies de la cama con la cabecera de la camilla",
+    "B) Si el paciente no colabora, se colocará la camilla perpendicular a la cama, de modo que coincidan los pies de la cama con la cabecera de la camilla",
+    "C) Si el paciente colabora, se colocará la silla a los pies de la cama para que sea más sencillo el traslado",
+    "D) Si el paciente no colabora, se colocará la silla a los pies de la cama para que sea más sencillo el traslado"
+  ],
+  "correct": 1
+},
+{
+  "question": "03. Cuando el paciente está en bipedestación y para conseguir la deambulación, a veces será necesario el empleo de medidas auxiliares como:",
+  "options": [
+    "A) Andadores",
+    "B) Conseguida la bipedestación el paciente no necesita ninguna ayuda",
+    "C) Bastón",
+    "D) Las respuestas a y c son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "04. Para realizar la movilización de un paciente entre varias personas, sería necesario que:",
+  "options": [
+    "A) El movimiento se realice rápidamente",
+    "B) Una de las personas dirija la maniobra",
+    "C) Todos ellos realicen el movimiento a una misma altura",
+    "D) Lo hayan realizado varias veces antes"
+  ],
+  "correct": 1
+},
+{
+  "question": "05. Cuando un paciente usa bastón, adelantará a la vez que el bastón:",
+  "options": [
+    "A) La pierna no afectada",
+    "B) La pierna afectada",
+    "C) Es indiferente",
+    "D) Ninguna de las dos piernas"
+  ],
+  "correct": 1
+},
+{
+  "question": "06. ¿Qué tipo de muleta es la de Lofstrand?",
+  "options": [
+    "A) Muleta de codo",
+    "B) Muleta de plataforma",
+    "C) Muleta de antebrazo",
+    "D) Muleta axilar"
+  ],
+  "correct": 2
+},
+{
+  "question": "07. De las siguientes posiciones anatómicas, ¿cuál de ellas no se incluye dentro de un programa de cambios posturales?",
+  "options": [
+    "A) Posición de Fowler",
+    "B) Litotomía",
+    "C) Posición de decúbito supino",
+    "D) Posición de decúbito lateral"
+  ],
+  "correct": 1
+},
+{
+  "question": "08. ¿Cuál es la finalidad de los cambios posturales en los pacientes encamados?",
+  "options": [
+    "A) Proporcionar la incomodidad máxima al paciente",
+    "B) Favorecer la aparición de úlceras por presión",
+    "C) No tener que utilizar protectores de protuberancias para evitar el roce de la piel",
+    "D) Evitar la aparición de UPP en puntos de presión debido a la gravedad"
+  ],
+  "correct": 3
+},
+{
+  "question": "09. Para cambiar de posición a un paciente encamado con hemiplejia, el celador deberá actuar:",
+  "options": [
+    "a) Del lado que no conserva su movilidad",
+    "b) Frente al paciente sujetando las axilas",
+    "c) Del lado que conserva su movilidad",
+    "d) Del lado con hemiplejia proporcionando un apoyo seguro, para así compensar la falta de fuerza de ese lado"
+  ],
+  "correct": 3
+},
+{
+  "question": "10. Cuando un paciente lleva conectada una vía de suero, ¿quién lo trasladará al servicio donde le van a realizar las pruebas?",
+  "options": [
+    "a) El personal sanitario",
+    "b) El celador",
+    "c) Al llevar conectada una vía deberá hacerlo una enfermera",
+    "d) Un auxiliar de enfermería"
+  ],
+  "correct": 2
+},
+{
+  "question": "11. ¿Deberá el celador ayudar a realizar la movilización de un paciente intubado?",
+  "options": [
+    "a) No, tiene que realizarla el personal sanitario",
+    "b) Sí, si se lo ordena el médico de guardia",
+    "c) Sí, con mucha precaución y siempre siguiendo las instrucciones del personal sanitario encargado del paciente",
+    "d) No, en ningún caso"
+  ],
+  "correct": 2
+},
+{
+  "question": "12. Para transferir un paciente que se encuentra en camilla y pasarlo a una cama con transfer, entre dos personas:",
+  "options": [
+    "a) Se coloca al paciente en decúbito prono en la camilla y se desliza hacia la cama dando la vuelta, quedando el paciente en decúbito supino",
+    "b) Nos alejamos lo máximo posible de la cama del paciente para que el esfuerzo sea menor",
+    "c) Se colocará la camilla en posición horizontal y paralelo al plano de la cama, frenando ambas",
+    "d) Se colocará la camilla y cama en plano vertical deslizando al paciente hacia la cama, frenando ambas"
+  ],
+  "correct": 2
+},
+{
+  "question": "13. La manipulación manual de toda carga puede entrañar un potencial riesgo dorsolumbar no tolerable si se manipula en condiciones ergonómicas desfavorables si pesa más de:",
+  "options": [
+    "A) 3 kg.",
+    "B) 25 kg",
+    "C) 20 kg",
+    "D) 15 kg"
+  ],
+  "correct": 1
+},
+{
+  "question": "14. Respecto a las reglas elementales de la mecánica corporal, señale la respuesta correcta:",
+  "options": [
+    "A) Situar los pies lo más cerca posible del peso a levantar",
+    "B) Utilizar la mayor cantidad de músculos",
+    "C) Utiliza el peso de tu cuerpo en favor del movimiento que pretendas realizar",
+    "D) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "15. ¿Cuál es la posición correcta que deberá adoptar el celador para evitar lesionarse para realizar un cambio postural del paciente encamado?",
+  "options": [
+    "A) Pies juntos y las rodillas ligeramente flexionadas",
+    "B) Pies separados y las rodillas flexionadas",
+    "C) Pies juntos y las piernas ligeramente separadas",
+    "D) Pies separados y las piernas juntas"
+  ],
+  "correct": 1
+},
+{
+  "question": "16. Con respecto a la movilización de pacientes, todo es cierto excepto que:",
+  "options": [
+    "A) Deberemos tener en cuenta la posibilidad de movimientos bruscos",
+    "B) Al movilizar el paciente se deben mantener las piernas flexionadas para así conseguir mejor apoyo postural",
+    "C) Es recomendable movilizar al paciente una sola persona para evitar posibles descoordinaciones en la movilización",
+    "D) Deberemos acondicionar la carga antes de iniciar cualquier movimiento"
+  ],
+  "correct": 2
+},
+{
+  "question": "17. Previo a la movilización de pacientes, habrá que ponerse guantes cuando sea previsible el contacto con: (señala la incorrecta)",
+  "options": [
+    "A) Sudor",
+    "B) Sangre",
+    "C) Orina",
+    "D) Heces"
+  ],
+  "correct": 0
+},
+{
+  "question": "18. La grúa es un medio mecánico para facilitar la movilización de pacientes. Señale la respuesta incorrecta:",
+  "options": [
+    "A) Están equipadas con un arnés, que debemos colocar previamente al paciente",
+    "B) Se emplea para la movilización de pacientes impedidos o demasiado pesados, garantizando así mayor seguridad y menor riesgo de lesiones para el paciente y para el personal de enfermería y personal celador",
+    "C) Una vez colocado el arnés al paciente, se acercará la grúa a la cama o silla, colocando las bandas en los enganches correspondientes, enganchando en primer lugar la zona del tronco o cuerpo y posteriormente los enganches de las piernas",
+    "D) El cuerpo del paciente deberá estar en contacto con el arnés"
+  ],
+  "correct": 3
+},
+{
+  "question": "19. Si la supervisora de planta ordena al celador que ayude al TCAE en la movilización de un paciente encamado para hacerle la cama, ¿deberá el celador acatar dicha orden?",
+  "options": [
+    "A) No, el celador no puede tocar a los pacientes",
+    "B) Sí, pero la movilización la realizará él solo",
+    "C) Ninguna de las respuestas es correcta",
+    "D) Sí, pero solo si el paciente es masculino"
+  ],
+  "correct": 3
+},
+{
+  "question": "20. Para sentar a un paciente que no colabora en una silla de ruedas desde la cama entre dos personas, se colocarán:",
+  "options": [
+    "A) Uno enfrente del paciente y el otro sujetando la silla una vez sentado en la cama",
+    "B) Uno a cada lado del paciente una vez sentado en la cama",
+    "C) Los dos al mismo lado del paciente una vez sentado en la cama",
+    "D) Está prohibido sentar en una silla de ruedas a un paciente que no colabora"
+  ],
+  "correct": 1
+},
+{
+  "question": "21. ¿Cómo debe el celador abordar la movilización de un enfermo?",
+  "options": [
+    "A) Debe hacerlo buscando exclusivamente la seguridad del enfermo",
+    "B) Debe hacerlo buscando exclusivamente la confortabilidad del enfermo",
+    "C) Debe hacerlo buscando la confortabilidad y la seguridad, tanto de sí mismo como del enfermo",
+    "D) Debe hacerlo buscando exclusivamente su propia confortabilidad"
+  ],
+  "correct": 2
+},
+{
+  "question": "22. Cuando hay que realizar la transferencia de un paciente, de un medio a otro, ¿qué criterio deberíamos atender?",
+  "options": [
+    "A) La petición del paciente",
+    "B) La petición de los familiares según antecedentes del paciente",
+    "C) La prescripción facultativa",
+    "D) El nuestro propio"
+  ],
+  "correct": 2
+},
+{
+  "question": "23. Cuando traslademos a un enfermo con sonda vesical, la bolsa recolectora debe ir:",
+  "options": [
+    "A) Por encima de la cintura del paciente y sobre la cama, si se realiza en ella",
+    "B) Por debajo de la cintura del paciente",
+    "C) Lo más elevada posible",
+    "D) Vacía en todo caso"
+  ],
+  "correct": 1
+},
+{
+  "question": "24. ¿Cuál de los siguientes elementos no encontraremos en una silla de ruedas?",
+  "options": [
+    "A) Mangos de empuje",
+    "B) Aros propulsores",
+    "C) Nivel de burbuja",
+    "D) Chasis y reposapiés"
+  ],
+  "correct": 2
+},
+{
+  "question": "25. Para introducirnos en un ascensor con un paciente en una silla de ruedas, ¿quién entra primero?",
+  "options": [
+    "A) El paciente",
+    "B) El celador",
+    "C) Solamente si está vacío entra primero el paciente",
+    "D) Es indiferente quien entre primero"
+  ],
+  "correct": 0
+},
+{
+  "question": "26. La bajada de una rampa con un paciente en silla de ruedas se debe llevar a cabo:",
+  "options": [
+    "A) Con el celador detrás del paciente y de cara al sentido de la marcha",
+    "B) Con el paciente y el celador de espaldas al sentido de la marcha",
+    "C) Con el paciente de espaldas al sentido de la marcha y el celador de cara al sentido de la marcha",
+    "D) Para realizar esta función son necesarios dos celadores"
+  ],
+  "correct": 2
+},
+{
+  "question": "27. Durante el traslado de un paciente en silla de ruedas, tenemos que descender por una rampa. ¿Cuál será la forma más adecuada?",
+  "options": [
+    "A) Descenderemos empujando la silla de frente",
+    "B) Descenderemos de espaldas",
+    "C) Descenderemos la rampa frenando cuando notemos que la silla se acelera demasiado para así proteger al paciente de una posible caída",
+    "D) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "28. Ordenan al celador trasladar a un paciente de la cama a la camilla. ¿Qué deberá tener en cuenta para dicha movilización?",
+  "options": [
+    "A) Colocar la camilla en posición perpendicular a la cama y frenar ambas",
+    "B) Colocar al paciente en posición de decúbito prono",
+    "C) Colocar la camilla en paralelo junto a la cama y frenar ambas",
+    "D) Deslizar nuestras manos en sentido oblicuo bajo las articulaciones del paciente"
+  ],
+  "correct": 2
+},
+{
+  "question": "29. El plano anatómico vertical que divide el cuerpo humano en una parte anterior y otra posterior se denomina:",
+  "options": [
+    "A) Plano sagital o axial",
+    "B) Plano coronal o frontal",
+    "C) Plano transversal",
+    "D) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "30. La posición quirúrgica en la cual el paciente se coloca en decúbito prono, la cara dirigida hacia abajo, la cabeza sobresaliendo del borde de la mesa quirúrgica, la frente apoyada en un soporte especial para que la cabeza quede suspendida y alineada con el resto del cuerpo y los brazos se mantienen extendidos a lo largo del cuerpo, se denomina:",
+  "options": [
+    "A) Laminectomía",
+    "B) Kraske",
+    "C) Proetz",
+    "D) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "31. Entre las zonas más susceptibles de aparición de una UPP (úlcera por presión) en posición de decúbito supino no se encuentra:",
+  "options": [
+    "A) Talones",
+    "B) Sacro",
+    "C) Cresta iliaca",
+    "D) Occipucio"
+  ],
+  "correct": 2
+},
+{
+  "question": "32. ¿Cuál es la posición idónea para cirugía para reparación del riñón derecho?",
+  "options": [
+    "A) Decúbito lateral derecho",
+    "B) Decúbito lateral izquierdo",
+    "C) Decúbito supino",
+    "D) Todas las respuestas anteriores son falsas"
+  ],
+  "correct": 1
+},
+{
+  "question": "33. La posición de Sims que se utiliza para la administración de un enema a un paciente, es:",
+  "options": [
+    "A) Es una posición de decúbito lateral izquierdo con el brazo y la pierna de este lado extendida y la extremidad inferior flexionada a nivel de la cadera y rodilla",
+    "B) Es una posición de decúbito supino con las piernas flexionadas sobre los muslos y los muslos en abducción y flexión sobre la pelvis",
+    "C) La persona se coloca abajo, apoyándose sobre las rodillas y el pecho, con la cabeza ladeada y los muslos perpendiculares a la cama",
+    "D) Es una posición de decúbito lateral derecho con el brazo y la pierna de este lado extendida y la extremidad inferior flexionada a nivel de la cadera y la rodilla"
+  ],
+  "correct": 0
+},
+{
+  "question": "34. Un facultativo que va a realizar una punción lumbar a un paciente le pide que lo coloque, ¿en qué posición debe colocar al paciente?",
+  "options": [
+    "A) Sims",
+    "B) Trendelenburg",
+    "C) Raquídea",
+    "D) Fowler"
+  ],
+  "correct": 2
+},
+{
+  "question": "35. En el caso de que un paciente requiera un buen aporte sanguíneo cerebral está indicada la posición:",
+  "options": [
+    "A) Antitrendelenburg",
+    "B) Morestin",
+    "C) Trendelenburg",
+    "D) Litotomía"
+  ],
+  "correct": 2
+},
+{
+  "question": "36. El movimiento por el que un brazo se aproxima al plano medio del cuerpo:",
+  "options": [
+    "A) Aducción",
+    "B) Abducción",
+    "C) Eversión",
+    "D) Rotación"
+  ],
+  "correct": 0
+},
+{
+  "question": "37. Le solicitan colaboración para poner a un paciente en posición de Morestín. ¿cómo quedará colocado dicho paciente?",
+  "options": [
+    "A) Tumbado en decúbito prono en un plano oblicuo de 45° respecto al suelo, con la cabeza más elevada que los pies",
+    "B) Tumbado en decúbito supino en un plano oblicuo de 45° respecto al suelo, con la cabeza más alta que los pies",
+    "C) Tumbado en decúbito supino en un plano oblicuo de 45° respecto al suelo, con la cabeza más baja que los pies",
+    "D) Tumbado en decúbito prono en un plano oblicuo de 45° respecto al suelo, con la cabeza más elevada que los pies"
+  ],
+  "correct": 1
+},
+{
+  "question": "38. En general, para trasladar a un paciente en cama o camilla, el celador debe colocarse detrás de la cabeza del paciente y empujar (desde el cabecero), de manera que el paciente va en el sentido de la marcha, excepto si:",
+  "options": [
+    "A) Si lleva vías y drenajes",
+    "B) Si va a la URPA",
+    "C) Cuando se sale de un ascensor",
+    "D) Cuando se dirige al quirófano"
+  ],
+  "correct": 2
+},
+{
+  "question": "39. En un paciente inmovilizado en decúbito lateral no es una zona frecuente de aparición de úlceras por presión la siguiente:",
+  "options": [
+    "A) Maléolos.",
+    "B) Sacro.",
+    "C) Cadera.",
+    "D) Oreja."
+  ],
+  "correct": 1
+},
+{
+  "question": "40. ¿Cuál de entre las siguientes no es zona frecuente de aparición de úlceras por decúbito?",
+  "options": [
+    "A) Sacro.",
+    "B) Talones",
+    "C) Orejas.",
+    "D) Epigastrio"
+  ],
+  "correct": 3
+},
+{
+  "question": "41. Para lograr la deambulación de una persona hemipléjica lo más pronto posible:",
+  "options": [
+    "A) Se pone énfasis en el lado sano que ayudará a compensar el lado afectado.",
+    "B) Se realizará con la ayuda de un apoyo externo (bastón en el lado afectado).",
+    "C) Siempre usarán unas muletas (un par).",
+    "D) Ninguna es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "42. Para trasladar a un paciente en una silla de ruedas, ¿en qué situación no caminará el celador hacia atrás?",
+  "options": [
+    "A) Al subir una rampa.",
+    "B) Al cruzar una puerta de hojas elásticas.",
+    "C) Al entrar en un ascensor",
+    "D) Al bajar una rampa."
+  ],
+  "correct": 3
+},
+{
+  "question": "43. Al sentar a un paciente con hemiplejia en el sillón, ¿se dejará que el brazo afectado quede en cualquier posición?",
+  "options": [
+    "A) Sí, porque si queda flácido y colgando está más relajado",
+    "B) Es indiferente, ya que al no tener sensibilidad en el brazo, no siente nada",
+    "C) Se le colocarán almohadas para facilitar su posición anatómica",
+    "D) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "44. El disco de Böhler o Freeman es:",
+  "options": [
+    "A) Utilizado para la realización de diferentes ejercicios propioceptivos",
+    "B) Fortalecimiento de cuádriceps",
+    "C) Para la recuperación funcional de las extremidades superiores.",
+    "D) Se coloca fijo a la pared. Se utiliza para realizar ejercicios de hombro."
+  ],
+  "correct": 0
+},
+{
+  "question": "45. Con relación a los bipedestadores, señala la respuesta incorrecta:",
+  "options": [
+    "A) Están diseñados para levantar de la cama por elevación y trasladar al paciente al sillón o a una silla de ruedas",
+    "B) Los pacientes pasan de posición de sentado a posición de sentado",
+    "C) Los pacientes pasan de posición de sentado a posición de bipedestación",
+    "D) Puede ser utilizada para vestirse, para cambio de pañales entre otras..."
+  ],
+  "correct": 1
+},
+{
+  "question": "46. Para bajar escaleras con muletas:",
+  "options": [
+    "A) 1° bajar la pierna sana y luego las muletas junto con la afectada",
+    "B) 1ª Bajar ambas muletas lentamente junto con la pierna lesionada al otro escalón.",
+    "C) 1° Bajar lentamente la pierna sana al escalón junto con la afectada y las muletas",
+    "D) Ninguna es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "47. La secuencia correcta para la deambulación con bastón es:",
+  "options": [
+    "A) Primero bastón, luego pierna afectada y por último pierna sana",
+    "B) Primero pierna sana, luego bastón y por último pierna afectada",
+    "C) Primero bastón, luego pierna sana y por último pierna afectada",
+    "D) Todas las respuestas son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "48. El uso de un bastón está indicado en lesiones:",
+  "options": [
+    "A) Bilaterales",
+    "B) Unilaterales",
+    "C) Bilaterales y Unilaterales",
+    "D) Bilaterales con afectación del tronco"
+  ],
+  "correct": 1
+},
+{
+  "question": "49. Respecto a la grúa de percha, señala la respuesta correcta",
+  "options": [
+    "A) La grúa de percha es una grúa para la elevación y transferencia",
+    "B) Se utiliza en grandes inmovilizados",
+    "C) Tiene un capazo (arnés) que abarca el cuerpo del paciente desde sus hombros hasta las nalgas",
+    "D) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "50. En el ámbito asistencial la grúa más extendida es:",
+  "options": [
+    "A) Grúas de bipedestación",
+    "B) Grúa de baño",
+    "C) Grúa de percha",
+    "D) Grúa de bandeja"
+  ],
+  "correct": 2
+}
+
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
