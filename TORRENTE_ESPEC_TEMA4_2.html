@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. ¿CUÁL SERÁ LA POSICIÓN CORRECTA QUE DEBE ADOPTAR UN CELADOR PARA LA MOVILIZACIÓN DE UN PACIENTE HEMIPLÉJICO?",
+  "options": [
+    "a) Abrir lo máximo posible las piernas para disminuir la base de apoyo",
+    "b) Colocar el peso lo más alejado de su cuerpo",
+    "c) Contraer los músculos abdominales y glúteos para estabilizar la pelvis antes de la movilización del paciente",
+    "d) Utilizar los músculos de la espalda"
+  ],
+  "correct": 2
+},
+{
+  "question": "2. ¿CUÁL DE LAS SIGUIENTES ACTUACIONES ESTÁ DESACONSEJADA PARA LA MOVILIZACIÓN Y TRASLADO DE PACIENTES?",
+  "options": [
+    "a) Utilizar los medios mecánicos disponibles",
+    "b) Respetar los principios de mecánica corporal",
+    "c) Mantener los pies juntos",
+    "d) Utilización de apoyos"
+  ],
+  "correct": 2
+},
+{
+  "question": "3. ¿CUÁL ES EL PESO MÁXIMO RECOMENDADO PARA UNA CARGA EN CONDICIONES IDEALES DE LEVANTAMIENTO, PARA TRABAJADORES ENTRENADOS FÍSICAMENTE Y DE FORMA ESPORÁDICA?",
+  "options": [
+    "a) 50 kg.",
+    "b) 25 kg.",
+    "c) 30 kg",
+    "d) 40 kg."
+  ],
+  "correct": 1
+},
+{
+  "question": "4. UNA DE LAS NORMAS FUNDAMENTALES DE LA MECÁNICA CORPORAL ES:",
+  "options": [
+    "a) Levantar un objeto supone menos esfuerzo que deslizar o empujar",
+    "b) Aumentar la estabilidad corporal, ampliando la base de la sustentación y descender el centro de gravedad",
+    "c) Doblar la cintura al levantar un objeto pesado del suelo",
+    "d) No contraer los músculos abdominales y glúteos"
+  ],
+  "correct": 1
+},
+{
+  "question": "5. SEGÚN EL REAL DECRETO 487/1997, 14 DE ABRIL ¿CUÁL DE ESTAS MEDIDAS NO ES OBLIGATORIA PARA EL EMPRESARIO RESPECTO A LA MMC?",
+  "options": [
+    "a) Evaluar los riesgos de la MMC si no se ha podido evitar",
+    "b) Vigilancia de la salud",
+    "c) Evitar la manipulación de cargas en la medida de lo posible",
+    "d) Todas las medidas anteriores son obligatorias"
+  ],
+  "correct": 0
+},
+{
+  "question": "6. PARA LA MOVILIZACIÓN O TRANSFERENCIA DE UN ENFERMO, DEBEMOS COLOCAR:",
+  "options": [
+    "a) Espalda recta, piernas flexionadas y la carga lo más alejada posible de nuestro cuerpo",
+    "b) Espalda recta, piernas flexionadas y los pies lo más juntos posible",
+    "c) Espalda recta, piernas flexionadas y la carga lo más cerca posible de nuestro cuerpo",
+    "d) Espalda recta, piernas rectas y la carga lo más cerca posible de nuestro cuerpo"
+  ],
+  "correct": 2
+},
+{
+  "question": "7. SEGÚN EL REAL DECRETO 487/1997, DE 14 DE ABRIL, SOBRE DISPOSICIONES MÍNIMAS DE SEGURIDAD Y SALUD RELATIVAS A LA MANIPULACIÓN MANUAL DE CARGAS QUE ENTRAÑE RIESGOS, EN PARTICULAR DORSOLUMBARES, PARA LOS TRABAJADORES, NO SE DEBERÍAN MANEJAR CARGAS POR ENCIMA DE:",
+  "options": [
+    "a) 180 cm",
+    "b) 220 cm",
+    "c) 175 cm",
+    "d) 170 cm"
+  ],
+  "correct": 2
+},
+{
+  "question": "8. UNA CARGA PUEDE ENTRAÑAR RIESGOS NO TOLERABLES DURANTE LA MMC, EN PARTICULAR DORSOLUMBARES A PARTIR DE:",
+  "options": [
+    "a) 15 Kg",
+    "b) 3 Kg",
+    "c) 25 Kg",
+    "d) 5 Kg"
+  ],
+  "correct": 2
+},
+{
+  "question": "9. EL PESO MÁXIMO QUE SE RECOMIENDA NO SOBREPASAR CON CARÁCTER GENERAL EN LA MMC ES DE:",
+  "options": [
+    "a) 35 kilos",
+    "b) 15 kilos",
+    "c) 25 kilos",
+    "d) 10 kilos"
+  ],
+  "correct": 2
+},
+{
+  "question": "10. LOS CELADORES, EN LA MOVILIZACIÓN DE PACIENTES COMO PARTE DE UN PLAN DE CAMBIOS POSTURALES O TRANSFERENCIAS DE PACIENTES:",
+  "options": [
+    "a) Proporcionar una base segura de apoyo, manteniendo los pies juntos, para lograr un mayor impulso",
+    "b) Hacer el máximo uso de su centro de gravedad sosteniendo los objetos cerca del cuerpo",
+    "c) Nunca contraer los músculos abdominales y glúteos, pues podría ocasionar lesión de espalda y ocasionar hernias",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "11. UN CELADOR QUE TRASLADA A UN PACIENTE DESDE LA PLANTA DE MEDICINA INTERNA HASTA UNA CONSULTA PARA REALIZARSE UNA PRUEBA, ESTARÁ REALIZANDO UN TRANSPORTE:",
+  "options": [
+    "a) Primario (Casa a hospital)",
+    "b) Secundario (Hospital)",
+    "c) Terciario (Centro del hospital)",
+    "d) Ninguna de las respuestas anteriores son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "12. LA APARICIÓN DE UPP EN EL SACRO, SE RELACIONA CON LA POSICIÓN:",
+  "options": [
+    "a) Decúbito lateral",
+    "b) Laminectomía",
+    "c) Decúbito supino",
+    "d) Decúbito prono"
+  ],
+  "correct": 2
+},
+{
+  "question": "13. PARTIENDO DE LA POSICIÓN ANATÓMICA, CUANDO ALEJAMOS UNA EXTREMIDAD INFERIOR EN DIRECCIÓN TRANSVERSAL, ESTAMOS REALIZANDO UN MOVIMIENTO DE:",
+  "options": [
+    "a) Aducción",
+    "b) Abducción",
+    "c) Flexión",
+    "d) Extensión"
+  ],
+  "correct": 1
+},
+{
+  "question": "14. POSICIÓN IDÓNEA DEL PACIENTE PARA ADMINISTRACIÓN DE ENEMAS Y MEDICACIÓN VÍA RECTAL:",
+  "options": [
+    "a) Decúbito lateral derecho",
+    "b) Genupectoral",
+    "c) Litotomía",
+    "d) Inglesa o semiprona"
+  ],
+  "correct": 3
+},
+{
+  "question": "15. AL PASAR A UN PACIENTE DE LA CAMA A LA CAMILLA UTILIZANDO UN TRANSFER:",
+  "options": [
+    "a) El piecero de la cama debe coincidir con el cabecero de la camilla",
+    "b) La cabecera de la camilla se coloca en perpendicular al piecero de la cama",
+    "c) La cabecera de la cama debe coincidir con el cabecero de la camilla de manera perpendicular",
+    "d) La camilla se coloca paralela a la cama y la cabecera de la cama debe de coincidir con la cabecera de la camilla"
+  ],
+  "correct": 4
+},
+{
+  "question": "16. DURANTE EL DESCANSO NOCTURNO, SERÁ DE ELECCIÓN PARA ALIVIO DE SINTOMATOLOGÍA EN LOS PACIENTES CON HERNIA DE HIATO LA POSICIÓN:",
+  "options": [
+    "a) Inglesa",
+    "b) Trendelenburg",
+    "c) Morestin",
+    "d) Sims"
+  ],
+  "correct": 3
+},
+{
+  "question": "17. SOBRE LOS CAMBIOS POSTURALES ES CIERTO:",
+  "options": [
+    "a) Se deben realizar a demanda y según criterio del TCAE",
+    "b) Se realizan durante las 24 h. del día cada 30 minutos",
+    "c) Se realizan cada 2-3 h. a lo largo del día",
+    "d) Se realizan según la disponibilidad de celadores."
+  ],
+  "correct": 3
+},
+{
+  "question": "18. PARA REALIZAR UNA R.C.P. HAY QUE COLOCAR AL PACIENTE EN POSICIÓN:",
+  "options": [
+    "a) Decúbito ventral",
+    "b) Decúbito supino",
+    "c) Decúbito lateral",
+    "d) Posición lateral de seguridad"
+  ],
+  "correct": 1
+},
+{
+  "question": "19. EN LA POSICIÓN DECÚBITO VENTRAL, EL PACIENTE ENCAMADO PODRÍA DESARROLLAR ÚLCERAS U.P.P EN:",
+  "options": [
+    "a) Sacro",
+    "b) Rodillas",
+    "c) Nuca",
+    "d) Caderas"
+  ],
+  "correct": 2
+},
+{
+  "question": "20. EN PACIENTES CON DIFICULTAD RESPIRATORIA, CARDIOPATÍA Y HERNIA DE HIATO, ¿QUÉ POSICIÓN ES MÁS INDICADA?",
+  "options": [
+    "a) Trendelenburg",
+    "b) Genupectoral",
+    "c) Roser",
+    "d) Fowler"
+  ],
+  "correct": 3
+},
+{
+  "question": "21. LLAMAMOS PRONACIÓN A:",
+  "options": [
+    "a) Orientación de la mano con la palma hacia los pies",
+    "b) Rotación hacia el exterior de un antebrazo",
+    "c) Acercamiento al plano latero-oblicuo",
+    "d) Colocar los pies más bajos que la cabeza"
+  ],
+  "correct": 0
+},
+{
+  "question": "22. UN PACIENTE ENCAMADO LO INCORPORAREMOS DE LA CAMA MEDIANTE EL PROCEDIMIENTO DE:",
+  "options": [
+    "a) Entrecruzamiento de piernas y brazos",
+    "b) Entrecruzamiento de brazos",
+    "c) Tirando de las manos y axilas con cuidado",
+    "d) Tirar de las caderas y hombros en un movimiento sinérgico y con cuidado"
+  ],
+  "correct": 3
+},
+{
+  "question": "23. PARA REALIZAR UNA INTERVENCIÓN SE LE SOLICITA POSICIONAR LA MANO DEL PACIENTE EN POSICIÓN DE SUPINACIÓN, ¿QUÉ MOVIMIENTO DEL ANTEBRAZO REALIZARÁ?",
+  "options": [
+    "a) Levantará el antebrazo hasta formar un ángulo de cuarenta y cinco grados con la mesa de mano",
+    "b) Realizará la rotación del antebrazo que permite situar la mano con el dorso hacia abajo",
+    "c) Realizará la rotación del antebrazo que permite situar la mano con el dorso hacia arriba",
+    "d) Levantará el antebrazo hasta que la mano quede posicionada sobre el tórax"
+  ],
+  "correct": 2
+},
+{
+  "question": "24. DESDE DECÚBITO SUPINO A LA POSICIÓN DE DECÚBITO LATERAL, ¿CÓMO COLOCARÁ LA PIERNA CONTRARIA HACIA EL LADO AL QUE SE VA A REALIZAR EL GIRO?",
+  "options": [
+    "a) Se pondrá completamente estirada",
+    "b) Se flexionará",
+    "c) Es indiferente como se coloque",
+    "d) La separaremos para evitar que el paciente rote hacia el lado contrario a la movilización"
+  ],
+  "correct": 1
+},
+{
+  "question": "25. TUMBADO SOBRE SU ESPALDA EN UN PLANO PARALELO AL SUELO, CON LOS BRAZOS EXTENDIDOS JUNTO AL CUERPO, LAS PIERNAS FLEXIONADAS Y SEPARADAS CON LAS PLANTAS DE LOS PIES APOYADAS SOBRE LA CAMA, EL PACIENTE SE ENCUENTRA EN POSICIÓN:",
+  "options": [
+    "a) Trendelenburg modificada",
+    "b) Inglesa",
+    "c) Ginecológica",
+    "d) Decúbito lateral dorsal"
+  ],
+  "correct": 1
+},
+{
+  "question": "26. LA POSICIÓN DE ELECCIÓN PARA PACIENTES CON LIPOTIMIAS O SÍNCOPES ES, PRINCIPALMENTE:",
+  "options": [
+    "a) Morestin",
+    "b) Roser",
+    "c) Trendelenburg",
+    "d) Fowler"
+  ],
+  "correct": 2
+},
+{
+  "question": "27. EL MOVIMIENTO DE ALEJAMIENTO DEL PLANO MEDIO, ¿CÓMO SE DENOMINA?",
+  "options": [
+    "a) Abducción",
+    "b) Circunducción",
+    "c) Aducción",
+    "d) Eversión"
+  ],
+  "correct": 0
+},
+{
+  "question": "28. EL PLANO SAGITAL:",
+  "options": [
+    "a) Divide al cuerpo en dos mitades: superior e inferior",
+    "b) Divide al cuerpo en dos mitades: anterior y posterior",
+    "c) Divide al cuerpo en dos mitades: derecha e izquierda",
+    "d) Todas las respuestas anteriores son falsas"
+  ],
+  "correct": 2
+},
+{
+  "question": "29. LAS POSICIONES DE SUPINO, SIMS, MORESTIN, GINECOLÓGICA Y MAHOMETANA, SE LLAMAN TAMBIÉN RESPECTIVAMENTE:",
+  "options": [
+    "a) Ventral, semiprona, Trendelenburg, litotomía y genupectoral",
+    "b) Dorsal, semiprona, Antitrendelenburg, litotomía y genupectoral",
+    "c) Dorsal, semiprona, Trendelenburg, ginecológica y genupectoral",
+    "d) Dorsal, semiprona, Trendelenburg, litotomía y Fowler"
+  ],
+  "correct": 2
+},
+{
+  "question": "30. RESPECTO A LA POSICIÓN DE SIMS, SEÑALE LA RESPUESTA INCORRECTA:",
+  "options": [
+    "a) También se denomina Semiprona",
+    "b) Se emplea en la administración de enemas",
+    "c) Posición para colocar pacientes inconscientes que respiran",
+    "d) Las respuestas A y B son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "31. ACOSTADO SOBRE SU ABDOMEN Y PECHO, TIENE LA CABEZA GIRADA LATERALMENTE, LOS BRAZOS Y PIERNAS EXTENDIDAS Y EL PLANO DEL CUERPO ESTÁ SITUADO PARALELO AL SUELO, EL PACIENTE ESTÁ EN POSICIÓN:",
+  "options": [
+    "a) Jackknife",
+    "b) Decúbito prono",
+    "c) Genupectoral",
+    "d) Morestin"
+  ],
+  "correct": 1
+},
+{
+  "question": "32. EN LA POSICIÓN GENUPECTORAL EL PACIENTE SE ENCUENTRA:",
+  "options": [
+    "a) Con el tronco hacia atrás, descansando sobre las rodillas, con los brazos pegados al cuerpo y la cabeza inclinada hacia un lado",
+    "b) Con el tronco hacia delante, descansando sobre las rodillas, con los brazos cruzados y la cabeza apoyada entre ellos",
+    "c) Con el tronco hacia delante, descansando sobre las rodillas, con las palmas de las manos sobre la cama, y el cuello extendido",
+    "d) Boca abajo, con las piernas flexionadas hacia arriba"
+  ],
+  "correct": 1
+},
+{
+  "question": "33. EN LA POSICIÓN DE SENTADO, LOS CAMBIOS POSTURALES SE TRATAN CADA:",
+  "options": [
+    "a) 15-30 min",
+    "b) 1 hora",
+    "c) 2-3 horas",
+    "d) No deben dilatarse más de 3 horas"
+  ],
+  "correct": 3
+},
+{
+  "question": "34. LAS DISPOSICIONES MÍNIMAS DE SEGURIDAD Y SALUD RELATIVAS A LA MANIPULACIÓN MANUAL DE CARGAS QUE ENTRAÑE RIESGOS, EN PARTICULAR DORSOLUMBARES, PARA LOS TRABAJADORES SE ENCUENTRAN RECOGIDAS EN:",
+  "options": [
+    "a) Real Decreto 487/1997, de 14 de abril",
+    "b) Orden Ministerial del 5 de Julio de 1971",
+    "c) Decreto 55/2006",
+    "d) Decreto 55/2003"
+  ],
+  "correct": 0
+},
+{
+  "question": "35. CUALQUIER OPERACIÓN DE TRANSPORTE O SUJECIÓN DE UNA CARGA POR PARTE DE UNO O VARIOS TRABAJADORES, COMO EL LEVANTAMIENTO, LA COLOCACIÓN, EL EMPUJE, LA TRACCIÓN O EL DESPLAZAMIENTO, QUE POR SUS CARACTERÍSTICAS INADECUADAS ENTRAÑE RIESGOS, EN PARTICULAR DORSOLUMBARES, PARA LOS TRABAJADORES ES:",
+  "options": [
+    "a) Manipulación Mecánica de Cargas",
+    "b) Manipulación de Cargas",
+    "c) Manipulación Manual de Cargas",
+    "d) Manipulación Automática de Cargas"
+  ],
+  "correct": 2
+},
+{
+  "question": "36. SI NO SE MANEJAN CARGAS SUPERIORES A 15 KG",
+  "options": [
+    "a) Se protegería al 95% de la población trabajadora sana",
+    "b) Protegiendo así al 85% de la población trabajadora sana",
+    "c) Se protegería a un 90% de mujeres, trabajadores jóvenes y mayores.",
+    "d) Las respuestas a y c son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "37. EL MAYOR PESO TEÓRICO RECOMENDADO QUE CORRESPONDE A LA POSICIÓN DE LA CARGA, PEGADA AL CUERPO, A UNA ALTURA COMPRENDIDA ENTRE LOS CODOS Y LOS NUDILLOS SERÁ DE:",
+  "options": [
+    "a) 35 kilos",
+    "b) 15 kilos",
+    "c) 25 kilos",
+    "d) 10 kilos"
+  ],
+  "correct": 2
+},
+{
+  "question": "38. EL MAYOR PESO TEÓRICO RECOMENDADO QUE CORRESPONDE A LA POSICIÓN DE LA CARGA, ALEJADA DEL CUERPO, A UNA ALTURA COMPRENDIDA ENTRE LOS CODOS Y LOS NUDILLOS SERÁ DE:",
+  "options": [
+    "a) 13 kg",
+    "b) 20 kg",
+    "c) 25 kg",
+    "d) 5 kg"
+  ],
+  "correct": 0
+},
+{
+  "question": "39. LA POSICIÓN EN LA QUE EL PACIENTE ESTÁ COLOCADO EN DECÚBITO PRONO CON LA CABEZA SOBRESALIENDO DEL BORDE DE LA CAMA Y LA FRENTE APOYADA EN UN SOPORTE QUEDANDO LA CABEZA SUSPENDIDA Y ALINEADA CON EL RESTO DEL CUERPO, SE DENOMINA:",
+  "options": [
+    "a) Roser",
+    "b) Purkinje",
+    "c) Craneotomía",
+    "d) Jackknife"
+  ],
+  "correct": 1
+},
+{
+  "question": "40. LA POSICIÓN INGLESA:",
+  "options": [
+    "a) No existe",
+    "b) Es la indicada para la administración de enemas y endoscopias vía rectal",
+    "c) Los puntos corporales que mayor presión soportan en esta posición son, la parte posterior de la cabeza, las escápulas (omóplatos), los codos, la zona sacra y los talones",
+    "d) Es la misma que la posición llamada Jackknife"
+  ],
+  "correct": 1
+},
+{
+  "question": "41. EN CUANTO A LOS MOVIMIENTOS QUE PUEDEN REALIZAR LAS EXTREMIDADES, DEFINIMOS LA ADUCCIÓN COMO:",
+  "options": [
+    "a) Giro del antebrazo que coloca la palma de la mano hacia atrás",
+    "b) Giro del antebrazo que coloca la palma de la mano hacia abajo",
+    "c) Giro del antebrazo que coloca la palma de la mano hacia delante",
+    "d) Movimiento de acercamiento al plano medio"
+  ],
+  "correct": 3
+},
+{
+  "question": "42. EN UN PACIENTE QUE SUFRE EPOC, ¿QUÉ POSICIÓN SERÍA LA MÁS INDICADA?",
+  "options": [
+    "a) Decúbito lateral",
+    "b) Posición de Antitrendelenburg",
+    "c) Posición de Fowler",
+    "d) Decúbito supino"
+  ],
+  "correct": 2
+},
+{
+  "question": "43. EL VACÍO RENAL IZQUIERDO Y DERECHO Y EL MESOGASTRIO SE AGRUPAN DENTRO DE:",
+  "options": [
+    "a) Cuadrantes superiores",
+    "b) Cuadrantes medios",
+    "c) Cuadrantes inferiores",
+    "d) Cuadrantes del abdomen anteroposteriores"
+  ],
+  "correct": 1
+},
+{
+  "question": "44. EL EJE CORPORAL QUE ATRAVIESA EL CUERPO DE FORMA VENTRODORSAL, SIENDO PERPENDICULAR A LOS EJES LONGITUDINAL Y TRANSVERSAL:",
+  "options": [
+    "a) Eje coronal",
+    "b) Eje laterolateral",
+    "c) Eje sagital",
+    "d) Eje frontal"
+  ],
+  "correct": 2
+},
+{
+  "question": "45. EL PLANO AXIAL SE FORMA POR ASOCIACIÓN DE:",
+  "options": [
+    "a) Eje sagital (anteroposterior) y del eje transversal (laterolateral)",
+    "b) Eje sagital (anteroposterior) y longitudinal (craneocaudal)",
+    "c) Eje transversal (laterolateral) y longitudinal (craneocaudal)",
+    "d) Eje perpendicular (laterolateral) y oblicuo (craneocaudal)"
+  ],
+  "correct": 0
+},
+{
+  "question": "46. CON RESPECTO AL EXTERIOR DEL CUERPO LO QUE ESTÁ MÁS EXTERNO ES:",
+  "options": [
+    "a) Anterior",
+    "b) Proximal",
+    "c) Superficial",
+    "d) Distal"
+  ],
+  "correct": 2
+},
+{
+  "question": "47. LO QUE ESTÁ HACIA ABAJO, INFERIOR O MÁS CERCA DE LOS PIES PUEDE DEFINIRSE COMO:",
+  "options": [
+    "a) Caudal",
+    "b) Proximal",
+    "c) Posterior",
+    "d) Distal"
+  ],
+  "correct": 0
+},
+{
+  "question": "48. UN MOVIMIENTO DE PROTRUSIÓN ES:",
+  "options": [
+    "a) Movimiento hacia anterior (adelante) de una estructura",
+    "b) Movimiento hacia posterior (atrás) de una estructura",
+    "c) Es el movimiento contrario a la elevación, hacia inferior (abajo)",
+    "d) Movimiento del centro de la planta del pie hacia adentro del plano sagital."
+  ],
+  "correct": 0
+},
+{
+  "question": "49. EN GENERAL, PARA TRASLADAR A UN PACIENTE EN CAMA O CAMILLA, EL CELADOR DEBE COLOCARSE:",
+  "options": [
+    "a) El celador debe colocarse detrás de la cabeza del paciente y empujar desde el cabecero",
+    "b) El celador debe colocarse detrás de los pies del paciente y empujar desde el piecero",
+    "c) El celador debe colocarse detrás de la cabeza del paciente y empujar desde el piecero",
+    "d) El celador debe colocarse detrás de los pies del paciente y empujar desde el cabecero"
+  ],
+  "correct": 1
+},
+{
+  "question": "50. CUANDO EL CELADOR TENGA QUE CRUZAR CON UN PACIENTE EN CAMILLA PUERTAS AUTOMÁTICAS O ABATIBLES U HOJAS ELÁSTICAS.",
+  "options": [
+    "a) Pasará primero el celador caminando hacia atrás, tirando desde el cabecero de la cama o camilla para evitar lesionar al paciente.",
+    "b) Pasará último el celador caminando hacia atrás, tirando desde el cabecero de la cama o camilla para evitar lesionar al paciente.",
+    "c) Pasará primero el celador caminando hacia atrás, tirando desde el piecero de la cama o camilla para evitar lesionar al paciente.",
+    "d) Pasará último el celador caminando hacia adelante, tirando desde el cabecero de la cama o camilla para evitar lesionar al paciente."
+  ],
+  "correct": 0
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
