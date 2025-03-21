@@ -1,0 +1,374 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. En su espacio interior, la UCI debería cumplir los siguientes requisitos:",
+  "options": [
+    "a) Observación directa de todos los enfermos de la unidad desde cualquier punto y en especial desde los puestos de control de enfermería",
+    "b) Distribución de cada habitación de manera que posibilite su anulación parcial de la Unidad",
+    "c) Independencia de forma que los pacientes no puedan verse entre sí sometidos a conexiones, aparatos, terapias espectaculares...",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "2. La UCI requiere una conexión espacial y funcional más directa con otros servicios del hospital tales como (indique la respuesta incorrecta):",
+  "options": [
+    "a) El bloque quirúrgico",
+    "b) Urgencias, radiodiagnóstico",
+    "c) Gabinetes de exploraciones funcionales centrales (hemodinámica, electrofisiología, etc.)",
+    "d) Admisión para informar a los familiares de dónde está ubicado el enfermo, dada la gravedad"
+  ],
+  "correct": 3
+},
+{
+  "question": "3. El celador de UVI ayudará a la movilización de enfermos encamados:",
+  "options": [
+    "a) Cuando requieran trato especial en razón de sus dolencias para hacerles las camas",
+    "b) Cuando puedan hacerlo por sí mismas las enfermeras o supervisoras",
+    "c) Cuando puedan hacerlo conjuntamente la supervisora y la Auxiliar de enfermería de planta",
+    "d) Son correctas a) y c)"
+  ],
+  "correct": 3
+},
+{
+  "question": "4. La humedad relativa del aire en la UCI se debe situar entre:",
+  "options": [
+    "a) Entre el 45 y el 55 %",
+    "b) Entre el 55 y el 60 %",
+    "c) Entre el 45 y el 75 %",
+    "d) Entre el 30 y el 55 %"
+  ],
+  "correct": 0
+},
+{
+  "question": "5. En UCI, el celador deberá:",
+  "options": [
+    "a) Lavarse las manos tras el contacto con cada paciente",
+    "b) El celador debe familiarizarse y conocer los gérmenes más frecuentes en la unidad",
+    "c) Cada vez que se abandone la UCI para traslado de pacientes se debe desechar la bata",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "6. El enfermo necesitará balas de oxígeno cuando sufra:",
+  "options": [
+    "a) Paro cardíaco",
+    "b) Shock",
+    "c) Asfixia",
+    "d) Todas son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "7. La temperatura en la UCI debe considerar las condiciones de los pacientes semidesnudos y será de:",
+  "options": [
+    "a) Entre 24 y 26°C",
+    "b) Entre 21 y 20°C",
+    "c) Entre 21 y 24°C",
+    "d) Entre 22 y 24°C"
+  ],
+  "correct": 2
+},
+{
+  "question": "8. Cuando una habitación de aislamiento tiene presión negativa, el celador debe conocer que:",
+  "options": [
+    "a) Dicha presión no permite que entre aire desde el exterior hacia la habitación",
+    "b) Dicha presión permite que entre aire desde el exterior hacia el interior de la habitación",
+    "c) Dicha presión no permite que salga aire desde dentro de la habitación hacia el exterior",
+    "d) Las respuestas b y c son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "9. En un traslado a UCI tras una intervención quirúrgica señale la respuesta incorrecta:",
+  "options": [
+    "a) El celador siempre irá acompañado del personal sanitario",
+    "b) Tras realizar la transferencia del paciente al servicio de destino, deberá recoger el aparataje del servicio de origen",
+    "c) El celador deberá secuestrar el ascensor para un traslado más rápido",
+    "d) Todas las respuestas son incorrectas"
+  ],
+  "correct": 2
+},
+{
+  "question": "10. Indique cuál de las siguientes afirmaciones no se corresponde con las funciones de los celadores en la UCI:",
+  "options": [
+    "a) Vigilarán que se cumplan las debidas normas higiénicas e impidiendo a los mismos el acceso fuera del horario establecido, orientándolos hacia dichas bandas horarias",
+    "b) Realizarán el aseo del paciente junto con la TCAE pero sólo inmovilizando al paciente",
+    "c) Trasladará a los pacientes, acompañado de médico y personal de enfermería, para la realización de pruebas diagnósticas que no puedan llevarse a efecto en la Unidad de Cuidados Intensivos",
+    "d) Cuando haya que trasladar a un paciente de la UCI, el celador debe encargarse de colocar la bala de oxígeno y asegurarse de que tiene oxígeno suficiente para el traslado"
+  ],
+  "correct": 1
+},
+{
+  "question": "11. De los siguientes elementos, señale cuál no es necesario que esté disponible antes de empezar a realizar el traslado de un paciente a la UCI:",
+  "options": [
+    "a) Vía venosa",
+    "b) Oxígeno",
+    "c) Medicación",
+    "d) Todas son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "12. El celador de UVI (señale la incorrecta):",
+  "options": [
+    "a) Trasladará los aparatos y el material necesario",
+    "b) Transportará y colocará, cuando no exista instalación centralizada, la botella de oxígeno a la cabecera del enfermo, bajo la vigilancia de la enfermera",
+    "c) Transportará y colocará, cuando no exista instalación centralizada, la botella de oxígeno a la cabecera del enfermo, sin ser necesaria la vigilancia de la enfermera",
+    "d) Tendrá a su cargo el traslado de los enfermos"
+  ],
+  "correct": 2
+},
+{
+  "question": "13. Un paciente de UCI, le requiere para regular la orientación y la altura de la mesita de comida. Usted:",
+  "options": [
+    "a) La regulará",
+    "b) Avisará a un auxiliar de enfermería para que se la regule y le enseñe su uso y manejo",
+    "c) Avisará a la pinche que sirve las comidas para que proceda a hacerlo y le instruya en ello",
+    "d) Le dirá que todas están reguladas a la misma altura, acorde a la de la cama y que no le está permitido variar dicha regulación"
+  ],
+  "correct": 0
+},
+{
+  "question": "14. En la UVI el celador debe:",
+  "options": [
+    "a) Mantenerse siempre en silencio",
+    "b) No mover a los enfermos, esto deberá realizarlo personal cualificado",
+    "c) Ayudar a enfermeras y auxiliares en la movilización de los pacientes siguiendo sus indicaciones",
+    "d) Tener siempre puestos gorro, bata y mascarilla"
+  ],
+  "correct": 2
+},
+{
+  "question": "15. Un accidentado precisa ser ingresado en la UCI y le asignan esa tarea. Para realizarla deberá tener en cuenta una serie de principios. ¿Cuál de los siguientes principios estaría errado?",
+  "options": [
+    "a) Un paciente en la UCI debe ser siempre movilizado de forma suave",
+    "b) En los movimientos una cuidadosa coordinación del personal",
+    "c) Los tubos de drenaje y las sondas vesicales estarán en todo momento más altos que el paciente",
+    "d) Deberá respetar los protocolos que la unidad tiene establecidos para cada tipo de patología"
+  ],
+  "correct": 2
+},
+{
+  "question": "16. El traslado de un fallecido de la UCI que ha fallecido en el turno de noche, hasta el mortuorio es una función de:",
+  "options": [
+    "a) Jefe de Personal Subalterno",
+    "b) Celador del mortuorio",
+    "c) Personal de la funeraria",
+    "d) Celador de UCI"
+  ],
+  "correct": 3
+},
+{
+  "question": "17. Hay que trasladar una mesa y dos sillas de la UVI al despacho del facultativo de guardia, en este caso los celadores:",
+  "options": [
+    "a) Harán el traslado lo antes posible",
+    "b) Harán el traslado cuando crean oportuno",
+    "c) Son incorrectas a) y b)",
+    "d) No lo harán porque no les corresponde"
+  ],
+  "correct": 0
+},
+{
+  "question": "18. Señale la opción correcta. Un enfermo de la UVI debe ser tratado:",
+  "options": [
+    "a) Con máxima atención.",
+    "b) Con amabilidad",
+    "c) Con respeto y cortesía.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "19. ¿Es una función del celador de la UVI informar a los familiares de las novedades que se produzcan sobre el pronóstico del paciente?",
+  "options": [
+    "a) Claro, siempre que trabaje en algún servicio de urgencias.",
+    "b) Sí, pero con discreción.",
+    "c) No",
+    "d) Sí, ya que estos familiares no tienen acceso directo a sus enfermos."
+  ],
+  "correct": 2
+},
+{
+  "question": "20. La unidad del paciente en UCI deberá (señale la respuesta incorrecta):",
+  "options": [
+    "a) Dotación suficiente de tomas eléctricas y gases medicinales.",
+    "b) Espacio para otros equipos portátiles (ecógrafo, radiología, etc.)",
+    "c) El sistema de iluminación debe proporcionar un nivel adecuado para la realización del trabajo del personal (máximo de 800 lux)",
+    "d) La iluminación para la atención de situaciones de emergencia o tratamientos especiales (entre 1.000 y 1.500 lux)"
+  ],
+  "correct": 2
+},
+{
+  "question": "21. La movilización de los/as pacientes ingresados en la UCI, intubados o no; ¿Deberá realizarla el/la Celador/a?",
+  "options": [
+    "a) No, ya que tiene que realizarla el personal sanitario",
+    "b) Sí, debiendo realizarla con mucha precaución y siempre en colaboración y siguiendo las instrucciones del equipo sanitario encargado de dicho paciente",
+    "c) Sí, únicamente si lo ordena el/la facultativo/a de guardia",
+    "d) No, en ningún caso"
+  ],
+  "correct": 1
+},
+{
+  "question": "22. Un celador de UCI deberá saber:",
+  "options": [
+    "a) Administrar sedantes a una paciente en caso de necesidad urgente",
+    "b) Intubar a los pacientes en caso de necesidad urgente",
+    "c) Hacer la reparación de las camas o camillas del servicio",
+    "d) Ayudar en los cambios posturales de las pacientes"
+  ],
+  "correct": 3
+},
+{
+  "question": "23. Para evitar la aparición de infección nosocomial en las Unidades de Críticos se llevan a cabo una serie de técnicas y cuidados en las que están incluidas:",
+  "options": [
+    "a) El celador debe familiarizarse y conocer los gérmenes más frecuentes de la unidad.",
+    "b) El celador de la UCI/UVI se cambiará la bata aséptica una vez cada turno.",
+    "c) Si existe posibilidad de que los líquidos orgánicos del paciente pueden salpicar al personal se utilizarán gafas protectoras y mascarilla.",
+    "d) Son correctas a y c."
+  ],
+  "correct": 3
+},
+{
+  "question": "24. En la UVI el celador debe (señala la respuesta correcta):",
+  "options": [
+    "a) Informar a los familiares de las ventanas horarias para la visita de pacientes y de cualquier otro aspecto relacionado con el estado del paciente.",
+    "b) Movilizar a los pacientes siguiendo las instrucciones del personal sanitario cualificado cuando se le vaya a realizar una prueba de rayos x tomando las medidas preventivas necesarias y colocar el chasis",
+    "c) Administrar oxígeno al paciente siguiendo las instrucciones del personal sanitario.",
+    "d) Todas las respuestas anteriores son incorrectas"
+  ],
+  "correct": 3
+},
+{
+  "question": "25. Con respecto a las UCI cerradas, señala la respuesta incorrecta:",
+  "options": [
+    "a) No permiten la visualización de todos los pacientes desde el control de enfermería.",
+    "b) Son más eficientes que las abiertas a la hora de prevenir las infecciones nosocomiales.",
+    "c) Están provistas de boxes para los pacientes.",
+    "d) Son más adecuadas para cuidados o vigilancia de tipo intensiva."
+  ],
+  "correct": 0
+}
+
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
