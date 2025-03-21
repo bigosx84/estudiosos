@@ -1,0 +1,603 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. (ATB 2024) ¿QUÉ POSICIÓN DEBERÍA ADOPTAR UN PACIENTE AL QUE SE LE VA A APLICAR UN ENEMA DE LIMPIEZA O REALIZAR UNA COLONOSCOPIA?",
+  "options": [
+    "a) Posición Genupectoral o Mahometana",
+    "b) Posición de Sims",
+    "c) Posición Ginecológica o de Litotomía",
+    "d) Posición de Purkinje"
+  ],
+  "correct": 0
+},
+{
+  "question": "2. (ATB 2024) SI NO TIENE CONTRAINDICACIÓN POR PARTE FACULTATIVA, LA POSICIÓN MÁS ADECUADA DE ENTRE LAS SIGUIENTES PARA ADMINISTRAR OXÍGENO ES:",
+  "options": [
+    "a) Fowler",
+    "b) Posición Lateral de seguridad",
+    "c) Decúbito supino",
+    "d) Roser"
+  ],
+  "correct": 0
+},
+{
+  "question": "3. (ATB 2024) ¿CUÁLES SON LAS POSICIONES BÁSICAS QUE PODRÍA ADOPTAR EL PACIENTE EN LA CAMA COMO PARTE DE UN PLAN DE CAMBIOS POSTURALES?",
+  "options": [
+    "a) Decúbito supino, decúbito prono, Kraske y decúbito lateral",
+    "b) Decúbito lateral izquierdo, decúbito lateral derecho, decúbito prono y litotomía",
+    "c) Decúbito supino, decúbito lateral, decúbito prono y decúbito genupectoral",
+    "d) Decúbito supino o decúbito dorsal, decúbito lateral y decúbito prono"
+  ],
+  "correct": 3
+},
+{
+  "question": "4. (ATB 2024) ¿CUÁL ES LA POSICIÓN ANATÓMICA KRASKE?",
+  "options": [
+    "a) En decúbito prono con la mesa quebrada a la altura de las caderas",
+    "b) En decúbito supino sobre la cama o camilla, con una inclinación de 45º, con la cabeza más baja que los pies",
+    "c) En decúbito prono, con la pelvis apoyada en el borde de la mesa",
+    "d) En decúbito supino sobre la cama o camilla, con una inclinación de 15º, con la cabeza más baja que los pies y las piernas apoyadas sobre las perneras."
+  ],
+  "correct": 0
+},
+{
+  "question": "5. (ATB 2024) PARA ORIENTARNOS EN ANATOMÍA PARTIMOS DE LA DENOMINADA POSICIÓN ANATÓMICA, ¿QUÉ CARACTERÍSTICAS TIENE DICHA POSICIÓN?",
+  "options": [
+    "a) Sujeto erguido, con los miembros inferiores juntos y superiores pegados al cuerpo y con las palmas de las manos supinadas pegadas a los miembros inferiores",
+    "b) Sujeto en decúbito supino",
+    "c) Sujeto erguido, con los miembros inferiores y superiores pegados al cuerpo y con las palmas de las manos pronadas",
+    "d) Sujeto en decúbito supino o prono"
+  ],
+  "correct": 0
+},
+{
+  "question": "6. (ATB 2024) A UNA PERSONA INCONSCIENTE PERO QUE TIENE RESPIRACIÓN Y PULSO, ¿EN QUÉ POSICIÓN DEBEMOS MANTENERLA HASTA QUE SEA ATENDIDA POR PERSONAL SANITARIO?",
+  "options": [
+    "a) Anti-shock de seguridad",
+    "b) Trendelenburg de recuperación",
+    "c) Fowler alta",
+    "d) Posición lateral de seguridad"
+  ],
+  "correct": 3
+},
+{
+  "question": "7. (ATB 2024) UN PACIENTE QUE VA A SER SOMETIDO A UNA OPERACIÓN QUIRÚRGICA COLOCADO EN UN PLANO OBLICUO DE 45° CON RESPECTO AL SUELO Y LA CABEZA MÁS BAJA QUE LOS PIES, ESTARÍA EN POSICIÓN:",
+  "options": [
+    "a) Antitrendelenburg",
+    "b) Trendelenburg",
+    "c) Morestin",
+    "d) Trendelenburg modificada"
+  ],
+  "correct": 1
+},
+{
+  "question": "8. (ATB 2024) UNA PERSONA CON SOSPECHA DE FRACTURA DE COLUMNA VERTEBRAL, SE LE COLOCARÁ:",
+  "options": [
+    "a) Boca arriba sobre un plano duro",
+    "b) Boca abajo sobre un plano duro",
+    "c) Boca arriba, con la cabeza elevada",
+    "d) Boca arriba, con la cabeza vuelta hacia un lado para evitar posibles broncoaspiraciones"
+  ],
+  "correct": 0
+},
+{
+  "question": "9. (ATB 2024) EL MOVIMIENTO QUE IMPLICA PLEGAR O DOBLAR UNA EXTREMIDAD SOBRE UNA ARTICULACIÓN SE DENOMINA:",
+  "options": [
+    "a) Extensión",
+    "b) Flexión",
+    "c) Eversión",
+    "d) Aducción"
+  ],
+  "correct": 1
+},
+{
+  "question": "10. (ATB 2024) CUANDO ALEJAMOS UNA PARTE DEL CUERPO RESPECTO DEL PLANO MEDIO, HABLAMOS DE:",
+  "options": [
+    "a) Abducción",
+    "b) Extensión",
+    "c) Circunducción",
+    "d) Aducción"
+  ],
+  "correct": 0
+},
+{
+  "question": "11. (ATB 2024) UN PACIENTE QUE ESTÁ EN LA POSICIÓN DE MORESTÍN",
+  "options": [
+    "a) Descansa en decúbito dorsal, de forma que los hombros coinciden con el final de la superficie de apoyo y con la cabeza ligeramente ladeada",
+    "b) Descansa en decúbito dorsal, en un plano inclinado de 45° con la cabeza más alta que los pies",
+    "c) Descansa en decúbito prono con la mesa quebrada a la altura de las caderas",
+    "d) Descansa con el respaldo de la cama elevado formando un ángulo de 45° con respecto a la cama, y las piernas extendidas con las rodillas ligeramente flexionadas"
+  ],
+  "correct": 1
+},
+{
+  "question": "12. (ATB 2024) PARA COLOCAR A UN PACIENTE EN DECÚBITO LATERAL, TENDREMOS QUE:",
+  "options": [
+    "a) Desplazarlo hasta la orilla de la cama contraria al lado hacia el que se va a girar el cuerpo",
+    "b) Desplazarlo hasta la orilla del mismo lado de la cama hacia el que se va a girar el cuerpo",
+    "c) Colocarlo previamente en decúbito prono para facilitar la maniobra",
+    "d) Todas las respuestas anteriores son incorrectas"
+  ],
+  "correct": 1
+},
+{
+  "question": "13. (ATB 2024) ¿CÓMO SE DENOMINA LA POSICIÓN EN LA QUE LA CABEZA CUELGUE FUERA DE LA CAMILLA PERO DISPUESTA LATERALMENTE?",
+  "options": [
+    "a) Posición de litotomía lateral",
+    "b) Posición Jackknife",
+    "c) Posición de Purkinje",
+    "d) Posición de Sims"
+  ],
+  "correct": 2
+},
+{
+  "question": "14. (ATB 2024) EL GIRO DEL ANTEBRAZO QUE TIENE COMO RESULTADO PONER LA PALMA DE LA MANO HACIA ATRÁS O HACIA ABAJO, SE DENOMINA:",
+  "options": [
+    "a) Pronación",
+    "b) Supinación",
+    "c) Depresión",
+    "d) Circunducción"
+  ],
+  "correct": 0
+},
+{
+  "question": "15. (ATB 2024) EL MOVIMIENTO DE ACERCAMIENTO DEL PLANO MEDIO QUE SE REALIZA EN EL PLANO CORONAL, SE DENOMINA:",
+  "options": [
+    "a) Rotación",
+    "b) Abducción",
+    "c) Aducción",
+    "d) Supinación"
+  ],
+  "correct": 2
+},
+{
+  "question": "16. (ATB 2024) UN PACIENTE SE ENCUENTRA DE RODILLAS EN LA CAMA CON LOS BRAZOS CRUZADOS APOYADOS EN EL COLCHÓN Y LA CABEZA SOBRE ELLOS, ESTÁ EN POSICIÓN:",
+  "options": [
+    "a) Mahometana",
+    "b) Morestin",
+    "c) Genupectoral",
+    "d) Las respuestas A y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "16. (ATB 2024) UN PACIENTE SE ENCUENTRA DE RODILLAS EN LA CAMA CON LOS BRAZOS CRUZADOS APOYADOS EN EL COLCHÓN Y LA CABEZA SOBRE ELLOS, ESTÁ EN POSICIÓN:",
+  "options": [
+    "a) Mahometana",
+    "b) Morestin",
+    "c) Genupectoral",
+    "d) Las respuestas A y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "17. (ATB 2024) LA POSICIÓN EN LA QUE HAY QUE COLOCAR A LOS PACIENTES PARA REALIZAR UNA REANIMACIÓN CARDIOPULMONAR ES LA:",
+  "options": [
+    "a) Posición de recuperación",
+    "b) Anti-shock",
+    "c) Decúbito dorsal",
+    "d) Decúbito lateral de seguridad"
+  ],
+  "correct": 2
+},
+{
+  "question": "18. (ATB 2024) PARA REALIZAR UNA EXPLORACIÓN DE ABDOMEN COLOCAREMOS AL PACIENTE EN POSICIÓN:",
+  "options": [
+    "a) Ventral",
+    "b) Dorsal",
+    "c) Decúbito prono",
+    "d) Todas son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "19. (ATB 2024) MODIFICACIÓN DEL 'DECÚBITO PRONO', EN LA QUE EL PACIENTE SE COLOCA CON LAS CADERAS ELEVADAS RESPECTO AL RESTO DEL CUERPO:",
+  "options": [
+    "a) Roser",
+    "b) Laminectomía",
+    "c) Trendelenburg",
+    "d) Litotomía"
+  ],
+  "correct": 1
+},
+{
+  "question": "20. (ATB 2024) EL MOVIMIENTO CIRCULAR ALREDEDOR DEL EJE DEL CUERPO SE DENOMINA:",
+  "options": [
+    "a) Rotación",
+    "b) Circunducción",
+    "c) Inversión",
+    "d) Aducción"
+  ],
+  "correct": 1
+},
+{
+  "question": "21. (ATB 2024) ¿DÓNDE SE LOCALIZA EL MESOGASTRIO?",
+  "options": [
+    "a) En los cuadrantes inferiores de la cavidad abdominal",
+    "b) En los cuadrantes superiores de la cavidad torácica",
+    "c) En los cuadrantes medios de la cavidad abdominal",
+    "d) En los cuadrantes medios de la cavidad torácica"
+  ],
+  "correct": 2
+},
+{
+  "question": "22. (ATB 2024) EL PLANO FORMADO POR LOS EJES VENTRODORSAL Y LONGITUDINAL:",
+  "options": [
+    "a) Divide al cuerpo en dos mitades: superior e inferior y se denomina transversal",
+    "b) Divide al cuerpo en dos mitades: anterior y posterior y se denomina coronal",
+    "c) Divide al cuerpo en dos mitades: derecha e izquierda y se denomina sagital",
+    "d) Todas las respuestas anteriores son falsas"
+  ],
+  "correct": 1
+},
+{
+  "question": "23. (ATB 2024) EL PLANO TRANSVERSAL SE FORMA POR:",
+  "options": [
+    "a) La unión de los ejes longitudinal y el plano sagital",
+    "b) La unión de los ejes transversal y sagital",
+    "c) La unión de los ejes laterolateral y transversal",
+    "d) La unión entre el plano sagital y plano coronal"
+  ],
+  "correct": 1
+},
+{
+  "question": "24. (ATB 2024) DE LAS SIGUIENTES POSICIONES, ¿CUÁL DE ELLAS ELEGIRÍAS PARA UN PACIENTE CON PROBLEMAS RESPIRATORIOS?",
+  "options": [
+    "a) Las posiciones de Sims, Fowler",
+    "b) Las posiciones de Fowler, Morestin",
+    "c) La posición de Recuperación",
+    "d) Las posiciones de Fowler, Morestin y Mahometana"
+  ],
+  "correct": 1
+},
+{
+  "question": "25. (ATB 2024) UN PACIENTE COLOCADO EN POSICIÓN INGLESA SE ENCUENTRA:",
+  "options": [
+    "a) Acostado con las rodillas flexionadas y los pies descansando sobre el plano horizontal de la cama",
+    "b) Con el plano del cuerpo inclinado 45° respecto al plano del suelo estando la cabeza mucho más elevada que los pies",
+    "c) En una postura similar a la de decúbito lateral, pero el brazo que queda en la parte inferior está hacia atrás y el otro brazo está flexionado a nivel del codo",
+    "d) En decúbito supino, las rodillas separadas y flexionadas y los pies apoyados en la cama"
+  ],
+  "correct": 3
+},
+{
+  "question": "26. (ATB 2024) EN LA POSICIÓN DE ROSER:",
+  "options": [
+    "a) El paciente permanece tumbado en decúbito supino sobre la cama o camilla, con la cabeza más baja que los pies",
+    "b) El paciente descansa en un plano inclinado de 45° respecto al suelo, con la cabeza más elevada que los pies",
+    "c) El paciente está tumbado en decúbito supino con la cabeza colgando",
+    "d) En una postura similar a la de decúbito lateral, pero el brazo que queda en la parte inferior está hacia atrás y el otro brazo está flexionado a nivel del codo"
+  ],
+  "correct": 0
+},
+{
+  "question": "27. (ATB 2024) EN POSICIÓN DE TRENDELEMBURG, ¿CÓMO QUEDARÁ COLOCADO DICHO PACIENTE?",
+  "options": [
+    "a) Tumbado en decúbito prono en un plano oblicuo de 45° respecto al suelo, con la cabeza más elevada que los pies",
+    "b) Tumbado en decúbito supino en un plano oblicuo de 45° respecto al suelo, con la cabeza más alta que los pies",
+    "c) Tumbado en decúbito supino en un plano oblicuo de 45° respecto al suelo, con la cabeza más baja que los pies",
+    "d) Tumbado en decúbito prono en un plano oblicuo de 45° respecto al suelo, con la cabeza más elevada que los pies"
+  ],
+  "correct": 2
+},
+{
+  "question": "28. (ATB 2024) LA POSICIÓN DE LITOTOMÍA ES UTILIZADA PARA:",
+  "options": [
+    "a) Pacientes con problemas respiratorios",
+    "b) Exploraciones rectales",
+    "c) Exploraciones ginecológicas",
+    "d) Ninguna de las preguntas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "29. (ATB 2024) EN POSICIÓN DE LAMINECTOMÍA, EL PACIENTE:",
+  "options": [
+    "a) El paciente se coloca en decúbito prono, con alguna modificación, y con la colocación de un soporte especial llamado trineo que eleva el tronco",
+    "b) El paciente se coloca en decúbito supino, con alguna modificación, y con la cabeza sobresaliendo al borde de la mesa y la frente apoyada en un soporte llamado Sugita",
+    "c) El paciente se coloca en decúbito lateral con la espalda flexionada, intentando acercar al máximo la cabeza y las rodillas",
+    "d) El paciente se coloca en decúbito supino y las piernas estarán elevadas y apoyadas sobre unos estribos o perneras con elevación variable del respaldo"
+  ],
+  "correct": 0
+},
+{
+  "question": "30. (ATB 2024) LA POSICIÓN EN LA QUE EL PACIENTE ESTÁ TUMBADO EN DECÚBITO SUPINO, LOS HOMBROS COINCIDEN CON EL EXTREMO SUPERIOR DE LA SUPERFICIE DE APOYO Y LOS BRAZOS SE MANTIENEN EXTENDIDOS, A LO LARGO DEL CUERPO CON LA CABEZA COLGANDO SE DENOMINA:",
+  "options": [
+    "a) Inglesa",
+    "b) Litotomía",
+    "c) Proetz",
+    "d) Craneotomía"
+  ],
+  "correct": 2
+},
+{
+  "question": "31. (ATB 2024) PARA PROCEDER A INTUBAR A UN PACIENTE EN UNA PLANTA DE HOSPITALIZACIÓN:",
+  "options": [
+    "a) Colocará al paciente en posición de Roser",
+    "b) Habrá que retirar el cabecero de la cama",
+    "c) Ninguna respuesta es correcta",
+    "d) Las respuestas A y B son correctas"
+  ],
+  "correct": 3
+  },
+  {
+  "question": "35. (ATB 2024) COMO CELADORES DEBEMOS CONOCER QUE:",
+  "options": [
+    "a) Levantar un objeto supone menos esfuerzo que deslizar o empujar",
+    "b) Aumentar la estabilidad corporal, ampliando la base de la sustentación y descender el centro de gravedad",
+    "c) Para realizar giros con una carga es mejor hacerlo en un solo movimiento",
+    "d) Contraer los músculos abdominales y glúteos mientras doblamos la espalda es la manera más segura para realizar un levantamiento"
+  ],
+  "correct": 1
+},
+{
+  "question": "36. (ATB 2024) SEGÚN LA NORMATIVA ESPAÑOLA SOBRE DISPOSICIONES MÍNIMAS DE SEGURIDAD RELATIVAS A LA MANIPULACIÓN DE CARGAS, ¿CUÁL DE ESTAS MEDIDAS NO ES OBLIGATORIA PARA EL EMPRESARIO?",
+  "options": [
+    "a) Evitar la manipulación de cargas en la medida de lo posible",
+    "b) Vigilancia de la salud",
+    "c) Evaluar los riesgos si la manipulación manual de cargas es inevitable",
+    "d) Todas las medidas anteriores son obligatorias"
+  ],
+  "correct": 0
+},
+{
+  "question": "37. (ATB 2024) AL ABORDAR LA MOVILIZACIÓN DE CARGAS, DEBEMOS PONER ATENCIÓN A HACERLO ADOPTANDO LOS SIGUIENTES PRINCIPIOS DE MECÁNICA CORPORAL:",
+  "options": [
+    "a) Espalda recta, piernas flexionadas y la carga lo más alejada posible de nuestro cuerpo",
+    "b) Espalda recta, piernas flexionadas y los pies lo más juntos posible",
+    "c) Espalda recta, piernas flexionadas y la carga lo más cerca posible de nuestro cuerpo",
+    "d) Espalda recta, piernas rectas y la carga lo más cerca posible de nuestro cuerpo"
+  ],
+  "correct": 2
+},
+{
+  "question": "38. (ATB 2024) LA NORMATIVA ESPAÑOLA SOBRE QUE CONTIENE LAS DISPOSICIONES MÍNIMAS DE SEGURIDAD Y SALUD RELATIVAS A LA MANIPULACIÓN DE CARGAS QUE ENTRAÑE RIESGOS, EN PARTICULAR DORSOLUMBARES, PARA LOS TRABAJADORES SE ENCUENTRA RECOGIDA EN:",
+  "options": [
+    "a) Decreto 497/1997, de 14 de abril",
+    "b) Real Decreto 497/1997, de 14 de abril",
+    "c) Decreto 487/1997, de 14 de abril",
+    "d) Real Decreto 487/1997, de 14 de abril"
+  ],
+  "correct": 3
+},
+{
+  "question": "39. (ATB 2024) A PARTIR DE QUÉ PESO LA MMC PUEDE ENTRAÑAR UN POTENCIAL RIESGO DORSOLUMBAR:",
+  "options": [
+    "a) 1 Kg",
+    "b) 3 Kg",
+    "c) 25 Kg",
+    "d) 5 Kg"
+  ],
+  "correct": 2
+},
+{
+  "question": "40. (ATB 2024) EL PESO MÁXIMO RECOMENDADO NO SOBREPASAR CON CARÁCTER GENERAL PARA LA MMC YA QUE MUY PROBABLEMENTE LA CARGA CONSTITUYA UN RIESGO EN SÍ MISMA ES:",
+  "options": [
+    "a) 35 kilos",
+    "b) 15 kilos",
+    "c) 25 kilos",
+    "d) 10 kilos"
+  ],
+  "correct": 2
+},
+{
+  "question": "41. (ATB 2024) LA APARICIÓN DE ÚLCERAS POR PRESIÓN EN EL SACRO SE RELACIONA CON LA POSICIÓN DE:",
+  "options": [
+    "a) Decúbito lateral izquierdo",
+    "b) Decúbito lateral derecho",
+    "c) Decúbito supino",
+    "d) Decúbito prono"
+  ],
+  "correct": 2
+},
+{
+  "question": "42. (ATB 2024) ¿CUÁL ES LA POSICIÓN IDÓNEA DEL PACIENTE PARA LA ADMINISTRACIÓN DE ENEMAS Y MEDICACIÓN VÍA RECTAL?",
+  "options": [
+    "a) Fowler",
+    "b) Genupectoral",
+    "c) Litotomía",
+    "d) Inglesa o semiprona"
+  ],
+  "correct": 3
+},
+{
+  "question": "43. (ATB 2024) LA POSICIÓN DE ELECCIÓN PARA ALIVIAR LOS SÍNTOMAS EN LOS PACIENTES CON HERNIA DE HIATO DURANTE EL DESCANSO NOCTURNO SERÁ:",
+  "options": [
+    "a) Genupectoral",
+    "b) Trendelenburg",
+    "c) Morestin",
+    "d) Sims"
+  ],
+  "correct": 2
+},
+{
+  "question": "44. (ATB 2024) SOBRE LOS CAMBIOS POSTURALES ES CIERTO:",
+  "options": [
+    "a) Se deben realizar según la disponibilidad del celador",
+    "b) Se realizarán como mínimo 2 veces al día",
+    "c) Se realizarán cada 2-3 h a lo largo del día",
+    "d) Se realizan según la disponibilidad y criterio del paciente y familiares en todo momento"
+  ],
+  "correct": 2
+},
+{
+  "question": "45. (ATB 2024) EL REAL DECRETO 487/1997, DE 14 DE ABRIL, SOBRE DISPOSICIONES MÍNIMAS DE SEGURIDAD Y SALUD RELATIVAS A LA MANIPULACIÓN MANUAL DE CARGAS QUE ENTRAÑE RIESGOS, EN PARTICULAR DORSOLUMBARES, PARA LOS TRABAJADORES, DISPONE QUE EL TRABAJADOR NO DEBERÍA MANEJAR CARGAS POR ENCIMA DE:",
+  "options": [
+    "a) 2 metros",
+    "b) 225 cm",
+    "c) 175 cm",
+    "d) 2 metros y medio"
+  ],
+  "correct": 0
+},
+{
+  "question": "46. (ATB 2024) SIEMPRE QUE LA MANIPULACIÓN MANUAL DE CARGAS NO SE HAYA PODIDO EVITAR EL EMPRESARIO VENDRÁ OBLIGADO A EVALUAR LOS RIESGOS DE DICHA MANIPULACIÓN TENIENDO EN CUENTA:",
+  "options": [
+    "a) Características de la carga",
+    "b) Características del medio de trabajo",
+    "c) Factores individuales de riesgo",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "47. (ATB 2024) SI LA POBLACIÓN EXPUESTA ESTÁ FORMADA POR MUJERES, TRABAJADORES JÓVENES O MAYORES, O SI SE QUIERE PROTEGER A LA MAYORÍA DE LA POBLACIÓN, NO SE DEBERÍAN MANEJAR CARGAS SUPERIORES A:",
+  "options": [
+    "a) 10 kg",
+    "b) 15 kg",
+    "c) 5 kg",
+    "d) 20 kg"
+  ],
+  "correct": 1
+},
+{
+  "question": "48. (ATB 2024) A MAYOR ALEJAMIENTO DE LAS CARGAS RESPECTO AL CENTRO DE GRAVEDAD DEL CUERPO DEL TRABAJADOR, AUMENTAN LAS FUERZAS COMPRESIVAS QUE SE GENERAN EN LA COLUMNA VERTEBRAL, POR TANTO EN FUNCIÓN DE LA ZONA EN LA QUE SE MANIPULE LA CARGA SE RECOMENDARÁN UNOS PESOS U OTROS. PARA UNA CARGA MANIPULADA CERCA DEL CUERPO Y A LA ALTURA DEL CODO SERÁN:",
+  "options": [
+    "a) 25 kg",
+    "b) 13 kg",
+    "c) 19 kg",
+    "d) 20 kg"
+  ],
+  "correct": 2
+},
+{
+  "question": "49. (ATB 2024) A MAYOR ALEJAMIENTO DE LAS CARGAS RESPECTO AL CENTRO DE GRAVEDAD DEL CUERPO DEL TRABAJADOR, AUMENTAN LAS FUERZAS COMPRESIVAS QUE SE GENERAN EN LA COLUMNA VERTEBRAL, POR TANTO EN FUNCIÓN DE LA ZONA EN LA QUE SE MANIPULE LA CARGA SE RECOMENDARÁN UNOS PESOS U OTROS. PARA UNA CARGA MANIPULADA CERCA DEL CUERPO Y A LA ALTURA DE LOS NUDILLOS SERÁN:",
+  "options": [
+    "a) 20 kg",
+    "b) 13 kg",
+    "c) 25 kg",
+    "d) 7 kg"
+  ],
+  "correct": 0
+},
+{
+  "question": "50. (ATB 2024) EL PESO RECOMENDADO DE LA CARGA SI SE QUIERE PROTEGER AL 95% DE LA POBLACIÓN TRABAJADORA SANA NO DEBE SOBREPASAR LOS:",
+  "options": [
+    "a) 15 kg",
+    "b) 12 kg",
+    "c) 20 kg",
+    "d) 5 kg"
+  ],
+  "correct": 0
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
