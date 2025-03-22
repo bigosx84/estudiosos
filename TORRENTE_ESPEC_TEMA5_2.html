@@ -1,0 +1,624 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "01. LA ZONA DEL QUIRÓFANO DONDE NO SE NECESITA UNA ESPECIAL INDUMENTARIA SE DENOMINA:",
+  "options": [
+    "a) Limpia",
+    "b) Intercambio",
+    "c) Estéril",
+    "d) Ingreso"
+  ],
+  "correct": 1
+},
+{
+  "question": "02. EL PERIODO INTRAOPERATORIO:",
+  "options": [
+    "a) Se inicia con la llegada del paciente al quirófano y termina con la salida del mismo a la sala de recuperación postanestésica",
+    "b) Es el periodo que dura la intervención quirúrgica",
+    "c) Se inicia con la preparación del paciente para la operación y finaliza con el alta del mismo",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "03. ¿QUÉ DEBERÁ UTILIZAR HABITUALMENTE EL CELADOR Y CUALQUIER PERSONAL DE QUIRÓFANO COMO MEDIDA DE HIGIENE?",
+  "options": [
+    "a) Nada, no es necesario nada en absoluto",
+    "b) Unos zuecos nuevos",
+    "c) Uniforme aséptico, calzas, mascarilla y gorro",
+    "d) Unos guantes no estériles únicamente"
+  ],
+  "correct": 2
+},
+{
+  "question": "04. DENTRO DEL QUIRÓFANO EL ENFERMERO LE ENCOMIENDA AL CELADOR VARIAS TAREAS. ¿CUÁL DE LAS SIGUIENTES DEBERÁ REALIZAR?",
+  "options": [
+    "a) Revisar los quirófanos pertenecientes al bloque quirúrgico y reponer el mobiliario preciso en cada uno de ellos",
+    "b) Colocar el aparato de anestesia y la mesa de quirófano de la forma por él especificada",
+    "c) Preparar lo necesario para una extracción de órganos destinada a un trasplante",
+    "d) Usted realizará todas las tareas enunciadas en los apartados anteriores"
+  ],
+  "correct": 1
+},
+{
+  "question": "05. EL ENCARGADO DE TURNO LE INDICA QUE ACUDA AL BLOQUE QUIRÚRGICO, ANTES DE ENTRAR EN EL MISMO, DEBERÁ:",
+  "options": [
+    "a) Ponerse ropa de uso exclusivo",
+    "b) Cambiar el calzado",
+    "c) Colocarse una mascarilla",
+    "d) Son correctas las respuestas A y C"
+  ],
+  "correct": 3
+},
+{
+  "question": "06. DURANTE UNA INTERVENCIÓN QUIRÚRGICA, Y ANTES DE QUE EL CIRUJANO PROCEDA A LA SUTURA DE LA INCISIÓN, ¿QUIÉN ES EL ENCARGADO DE VERIFICAR EL RECUENTO DE COMPRESAS REALIZADO POR LA ENFERMERA CIRCULANTE?",
+  "options": [
+    "a) El anestesista",
+    "b) El cirujano ayudante",
+    "c) La enfermera instrumentista",
+    "d) Nadie, porque ya lo ha realizado la enfermera circulante"
+  ],
+  "correct": 2
+},
+{
+  "question": "07. HABLAMOS DE CIRUGÍA URGENTE, CUANDO:",
+  "options": [
+    "a) El paciente requiere atención quirúrgica inmediata",
+    "b) El paciente requiere atención quirúrgica en 24/48 horas",
+    "c) El paciente requiere atención quirúrgica antes de 7 días",
+    "d) El paciente requiere atención quirúrgica antes de 15 días"
+  ],
+  "correct": 1
+},
+{
+  "question": "08. LAS DIMENSIONES DE LOS QUIRÓFANOS SON VARIABLES, PERO SE RECOMIENDA QUE SU SUPERFICIE OSCILE ENTRE LOS:",
+  "options": [
+    "a) 36 y 42 m2",
+    "b) 20 y 40 m2",
+    "c) 40 y 50 m2",
+    "d) 50 y 60 m2"
+  ],
+  "correct": 0
+},
+{
+  "question": "09. EN LOS QUIRÓFANOS, LOS CELADORES:",
+  "options": [
+    "a) Informarán a los familiares de los pacientes intervenidos sobre el diagnóstico y tratamiento que se les aplica",
+    "b) Auxiliarán en aquellas labores propias de los celadores destinados en estos servicios, así como en las que sean ordenadas por los Médicos, Supervisoras o Enfermeras",
+    "c) No existen celadores destinados en los quirófanos",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "10. HABLAMOS DE CIRUGÍA DE ALTO RIESGO, CUANDO:",
+  "options": [
+    "a) La intervención se alarga en el tiempo",
+    "b) La zona a intervenir es de difícil acceso",
+    "c) La suma de los padecimientos del enfermo puede llevar a un resultado no deseado, que puede incluir la muerte del paciente",
+    "d) La intervención se realiza sobre órganos importantes"
+  ],
+  "correct": 2
+},
+{
+  "question": "11. UN PACIENTE DEBE SER TRASLADADO DESDE LA HABITACIÓN DE LA PLANTA HASTA EL QUIRÓFANO, EL CELADOR COMPROBARÁ:",
+  "options": [
+    "a) Que el paciente va rasurado",
+    "b) Que se ha preparado correctamente al paciente para la intervención",
+    "c) Que la identidad del paciente se corresponde con la historia clínica que le acompaña",
+    "d) Las respuestas B y C son correctas"
+  ],
+  "correct": 2
+},
+{
+  "question": "12. LA ZONA DE ACCESO LIMITADO DEL ÁREA QUIRÚRGICA ES AQUELLA EN LA QUE:",
+  "options": [
+    "a) Se puede deambular con ropa de calle, aunque el acceso es restringido",
+    "b) Se encuentran los vestuarios de los trabajadores",
+    "c) Tienen lugar todos los procedimientos estériles que se desarrollan dentro del área",
+    "d) Se encuentra la sala de descanso del personal que trabaja en el Área Quirúrgica"
+  ],
+  "correct": 2
+},
+{
+  "question": "13. AYUDAR AL ENFERMERO CIRCULANTE A COLOCAR O A RETIRAR AL ENFERMO DE LA MESA QUIRÚRGICA, ES UNA FUNCIÓN DEL:",
+  "options": [
+    "a) Anestesista",
+    "b) Cirujano",
+    "c) Enfermera instrumentista",
+    "d) Celador"
+  ],
+  "correct": 3
+},
+{
+  "question": "14. UN QUIRÓFANO DESTINADO A TRASPLANTES DE ÓRGANOS DEBERÍA TENER UNA SUPERFICIE QUE PUDIERA ALCANZAR:",
+  "options": [
+    "a) 60 m2",
+    "b) 70 m2",
+    "c) 80 m2",
+    "d) 50 m2"
+  ],
+  "correct": 0
+},
+{
+  "question": "15. ¿CUÁNDO SE INICIA EL PERIODO PREOPERATORIO?",
+  "options": [
+    "a) En el momento de decidir que se va a llevar a cabo una intervención quirúrgica",
+    "b) El día anterior a la intervención",
+    "c) 10 horas antes de empezar la intervención quirúrgica",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "16. LOS CELADORES DESTINADOS EN QUIRÓFANOS ESTARÁN SUPEDITADOS A LAS ÓRDENES DE:",
+  "options": [
+    "a) El Director Médico del Centro",
+    "b) El coordinador de urgencias",
+    "c) Médicos, supervisores, enfermeras",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "17. ¿CUÁNDO COMIENZA EL PERIODO POSTOPERATORIO?",
+  "options": [
+    "a) Cuando el cirujano termina la intervención",
+    "b) Cuando el paciente es trasladado a la habitación",
+    "c) Cuando termina la intervención quirúrgica y el paciente ingresa en la sala de recuperación",
+    "d) Cuando el paciente sale de la unidad asistencial y llega a su habitación"
+  ],
+  "correct": 2
+},
+{
+  "question": "18. LA CIRUGÍA CURATIVA ES AQUELLA EN LA QUE SE CONSIGUE:",
+  "options": [
+    "a) Solucionar la causa de la patología",
+    "b) Realizar un diagnóstico de la patología",
+    "c) Investigar la causa de la patología",
+    "d) Paliar las consecuencias de la patología"
+  ],
+  "correct": 0
+},
+{
+  "question": "19. ES FUNCIÓN DEL CELADOR ASIGNADO A QUIRÓFANO:",
+  "options": [
+    "a) La preparación del material para su esterilización",
+    "b) El transporte de muestras al servicio de anatomía patológica",
+    "c) La recogida de material utilizado en el quirófano",
+    "d) La reposición de batas y mascarillas"
+  ],
+  "correct": 1
+},
+{
+  "question": "20. EN EL QUIRÓFANO CON RESPECTO A LAS CONDICIONES DE HUMEDAD Y TEMPERATURA, SE RECOMIENDA QUE LA:",
+  "options": [
+    "a) Humedad sea alta y la temperatura alta",
+    "b) Humedad sea baja y la temperatura alta",
+    "c) Humedad sea alta y la temperatura baja",
+    "d) Humedad sea baja y temperatura baja"
+  ],
+  "correct": 2
+},
+{
+  "question": "21. DURANTE UNA INTERVENCIÓN QUIRÚRGICA EL CELADOR PERMANECERÁ:",
+  "options": [
+    "a) El antequirófano",
+    "b) La sala de reanimación",
+    "c) Los pasillos del quirófano",
+    "d) Cualquier sitio, ya que el celador puede moverse por cualquier lugar del Área Quirúrgica"
+  ],
+  "correct": 0
+},
+{
+  "question": "22. EL PERIODO QUE TRANSCURRE DESDE QUE EL PACIENTE ES COLOCADO EN LA MESA DE OPERACIONES HASTA QUE ABANDONA EL QUIRÓFANO CAMINO DE REANIMACIÓN SE DENOMINA:",
+  "options": [
+    "a) Preoperatorio",
+    "b) Perioperatorio",
+    "c) Transoperatorio",
+    "d) Postoperatorio"
+  ],
+  "correct": 2
+},
+{
+  "question": "23. ¿QUÉ ORDEN SE DEBE SEGUIR EN LA COLOCACIÓN DE PRENDAS QUE SE NECESITAN PARA LA ASEPSIA QUIRÚRGICA?",
+  "options": [
+    "a) Calzas, gorro, bata, guantes, mascarilla",
+    "b) Calzas, gorro, bata, mascarilla, guantes",
+    "c) Calzas, gorro, mascarilla, bata, guantes",
+    "d) Calzas, mascarilla, gorro, bata, guantes"
+  ],
+  "correct": 2
+},
+{
+  "question": "24. SEGÚN LA COMPLEJIDAD, LA CIRUGÍA SE CLASIFICA EN:",
+  "options": [
+    "a) Cirugía de alto y bajo riesgo",
+    "b) Cirugía mayor y menor",
+    "c) Cirugía paliativa, exploradora y curativa",
+    "d) Cirugía de urgencias, urgente, necesaria, electiva y opcional"
+  ],
+  "correct": 1
+},
+{
+  "question": "25. EN EL QUIRÓFANO, UNA DE LAS PRINCIPALES TAREAS DEL CELADOR ES:",
+  "options": [
+    "a) Trasladar a los pacientes desde sus respectivas habitaciones a las zonas de quirófano",
+    "b) Ayudar dentro del quirófano a entregar el instrumental al personal médico y sanitario",
+    "c) Las dos respuestas anteriores son correctas",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "26. LOS QUIRÓFANOS PERTENECEN A:",
+  "options": [
+    "a) Zona semirrestringida",
+    "b) Zona semipública",
+    "c) Zona limpia-desinfectada",
+    "d) Zona estéril"
+  ],
+  "correct": 3
+},
+{
+  "question": "27. DURANTE UNA INTERVENCIÓN, EL CELADOR PERMANECE DENTRO DEL QUIRÓFANO POR SI SE LE NECESITA. ¿ES CORRECTA SU ACTUACIÓN?",
+  "options": [
+    "a) Sí",
+    "b) No, deberá permanecer en el antequirófano",
+    "c) Sí, si no habla ni distrae al cirujano",
+    "d) Sí, por si es necesaria su colaboración"
+  ],
+  "correct": 1
+},
+{
+  "question": "28. EL CELADOR DE QUIRÓFANO RECIBE LA ORDEN DE RETIRAR A UN ENFERMO/A DE LA MESA DE OPERACIONES; EL CELADOR:",
+  "options": [
+    "a) Lo hará por ser parte de sus funciones",
+    "b) Dentro del quirófano no puede entrar el celador",
+    "c) Debe proceder a su retirada sólo el personal sanitario",
+    "d) Lo hará sólo en casos excepcionales"
+  ],
+  "correct": 0
+},
+{
+  "question": "29. ¿QUIÉN DE LOS SIGUIENTES DEBERÁ LLEVAR OBLIGATORIAMENTE MASCARILLA DENTRO DEL QUIRÓFANO?",
+  "options": [
+    "a) La enfermera instrumentista y además deberá llevar guantes estériles",
+    "b) La enfermera circulante y además deberá llevar guantes estériles",
+    "c) La anestesista y además deberá llevar guantes estériles",
+    "d) El ayudante del cirujano y además llevará guantes no estériles ya que sólo ayuda al cirujano y no es necesario."
+  ],
+  "correct": 0
+},
+{
+  "question": "30. DENTRO DEL QUIRÓFANO, LA PERSONA RESPONSABLE DE PROPORCIONAR LOS CUIDADOS DE ENFERMERÍA AL PACIENTE DURANTE LA INTERVENCIÓN, ES:",
+  "options": [
+    "a) La enfermera circulante",
+    "b) La supervisora del bloque quirúrgico",
+    "c) La enfermera instrumentista",
+    "d) La enfermera de reanimación"
+  ],
+  "correct": 0
+},
+{
+  "question": "31. ATENDIENDO AL OBJETIVO QUE SE PERSIGUE EN LAS INTERVENCIONES QUIRÚRGICAS AQUELLA QUE DETERMINA LA CAUSA DE LOS SÍNTOMAS SE DENOMINA CIRUGÍA:",
+  "options": [
+    "a) Diagnóstica",
+    "b) Curativa",
+    "c) Paliativa",
+    "d) Estética"
+  ],
+  "correct": 0
+},
+{
+  "question": "32. EL CELADOR DESTINADO EN EL QUIRÓFANO NO DEBE:",
+  "options": [
+    "a) Ayudar a colocar al enfermo para una intervención",
+    "b) Trasladar a los pacientes desde sus respectivas habitaciones hasta el quirófano",
+    "c) Rasurar en caso de intervenciones urgentes a pacientes masculinos",
+    "d) Permanecer en el interior del quirófano durante la intervención, por si se le necesita"
+  ],
+  "correct": 3
+},
+{
+  "question": "33. LAS BIOPSIAS INTRAOPERATORIAS Y DEMÁS MUESTRAS ORGÁNICAS QUE PRECISEN ESTUDIO, DEBEN SER TRASLADADAS POR:",
+  "options": [
+    "a) El celador, al servicio de anatomía patológica",
+    "b) El auxiliar de enfermería, al servicio de anatomía patológica",
+    "c) El celador, al banco de sangre",
+    "d) El celador, al servicio de medicina nuclear"
+  ],
+  "correct": 0
+},
+{
+  "question": "34. ¿CÓMO SE LLAMA LA FASE DEL PERIOPERATORIO QUE COMIENZA CON EL TRASLADO DEL PACIENTE A LA SALA DE REANIMACIÓN?",
+  "options": [
+    "a) Perioperatoria",
+    "b) Transoperatoria",
+    "c) Postoperatoria",
+    "d) Preoperatorio"
+  ],
+  "correct": 2
+},
+{
+  "question": "35. ATENDIENDO AL OBJETIVO QUE SE PERSIGUE EN LAS INTERVENCIONES QUIRÚRGICAS, AQUELLA QUE MEJORA EL ASPECTO DEL PACIENTE SE DENOMINA CIRUGÍA:",
+  "options": [
+    "a) Diagnóstica",
+    "b) Curativa",
+    "c) Paliativa",
+    "d) Estética"
+  ],
+  "correct": 3
+},
+{
+  "question": "36. EN EL QUIRÓFANO, ¿QUIÉN TRASLADARÁ EL APARATO DE RX PORTÁTIL?",
+  "options": [
+    "a) El celador",
+    "b) El técnico especialista en radiodiagnóstico",
+    "c) La enfermera instrumentista",
+    "d) El auxiliar de enfermería"
+  ],
+  "correct": 0
+},
+{
+  "question": "37. LA FASE QUE ANTECEDE A LA INTERVENCIÓN QUIRÚRGICA Y QUE COMIENZA CON LA PREPARACIÓN DEL PACIENTE Y FINALIZA CUANDO ÉSTE ES COLOCADO SOBRE LA MESA DE OPERACIONES, SE DENOMINA:",
+  "options": [
+    "a) Preoperatorio",
+    "b) Transoperatorio",
+    "c) Perioperatorio",
+    "d) Postoperatorio"
+  ],
+  "correct": 0
+},
+{
+  "question": "38. SE DENOMINA CIRUGÍA LIMPIA-CONTAMINADA CUANDO:",
+  "options": [
+    "a) Hay apertura de mucosas con evidencias de infección",
+    "b) Hay apertura de mucosas",
+    "c) Se trata de una herida traumática con menos de 4 horas sin tratamiento",
+    "d) Se trata de una herida traumática con más de 4 horas sin tratamiento"
+  ],
+  "correct": 1
+},
+{
+  "question": "39. EN LA SECUENCIA DE LAS MEDIDAS DE AISLAMIENTO EN EL QUIRÓFANO, LA ÚLTIMA DE ELLAS DEBE SER:",
+  "options": [
+    "a) Colocación de la mascarilla",
+    "b) Colocación de los guantes",
+    "c) Colocación de la bata",
+    "d) Lavado de manos"
+  ],
+  "correct": 1
+},
+{
+  "question": "40. ATENDIENDO A LAS NORMAS DE ASEPSIA, EL ÁREA QUIRÚRGICA SE DIVIDE EN ZONAS CON DIFERENTES TIPOS DE RESTRICCIONES. SEGÚN ESTE CRITERIO, ¿CUAL DE LAS SIGUIENTES ÁREAS NO FORMA PARTE DEL ÁREA QUIRÚRGICA?",
+  "options": [
+    "a) Área limpia",
+    "b) Área semicontaminada",
+    "c) Área estéril",
+    "d) Área de intercambio"
+  ],
+  "correct": 1
+},
+{
+  "question": "41. SE DEFINE COMO \"UNA ORGANIZACIÓN DE PROFESIONALES SANITARIOS, QUE OFRECE ASISTENCIA MULTIDISCIPLINAR A PROCESOS ASISTENCIALES MEDIANTE CIRUGÍA, EN UN ESPACIO FUNCIONAL ESPECÍFICO DONDE SE AGRUPAN QUIRÓFANOS CON LOS APOYOS E INSTALACIONES NECESARIOS, Y QUE CUMPLE UNOS REQUISITOS FUNCIONALES, ESTRUCTURALES ORGANIZATIVOS, DE FORMA QUE GARANTIZA LAS CONDICIONES ADECUADAS DE CALIDAD Y SEGURIDAD, PARA REALIZAR ESTA ACTIVIDAD\".",
+  "options": [
+    "a) Quirófano",
+    "b) Cirugía mayor ambulatoria",
+    "c) Bloque quirúrgico",
+    "d) Equipo quirúrgico"
+  ],
+  "correct": 2
+},
+{
+  "question": "42. DE LAS SIGUIENTES AFIRMACIONES RELACIONADAS CON EL ÁREA QUIRÚRGICA UNA NO ES CORRECTA:",
+  "options": [
+    "a) Es importante que el celador conozca la delimitación del área quirúrgica",
+    "b) Los equipos estériles abiertos, deberán guardarse inmediatamente en cerrados armarios",
+    "c) La propia higiene del personal es sumamente importante",
+    "d) Los celadores auxiliarán en todas las labores, así como las que les sean ordenadas por los médicos, supervisores y enfermeras"
+  ],
+  "correct": 1
+},
+{
+  "question": "43. LA ZONA DEL QUIRÓFANO DONDE SE PUEDE DEAMBULAR CON CUALQUIER INDUMENTARIA SE DENOMINA:",
+  "options": [
+    "a) Limpia",
+    "b) Negra",
+    "c) Estéril",
+    "d) Gris"
+  ],
+  "correct": 1
+},
+{
+  "question": "44. EN EL ÁREA QUIRÚRGICA EL ORDEN A SEGUIR POR EL PERSONAL ESTÉRIL A LA HORA DE COLOCARSE LAS PRENDAS SERÁ:",
+  "options": [
+    "a) Calzas, gorro, mascarilla, lavado, bata y guantes estériles",
+    "b) Calzas, gorro, bata, guantes estériles, mascarilla y lavado",
+    "c) Calzas, bata, mascarilla, gorro, lavado y guantes estériles",
+    "d) Calzas, gorro, mascarilla, lavado, guantes estériles y bata"
+  ],
+  "correct": 0
+},
+{
+  "question": "45. EL BLOQUE QUIRÚRGICO DEBERÁ:",
+  "options": [
+    "a) Ser fácilmente accesible desde el servicio urgencias",
+    "b) Situarse en la proximidad física de la UCI",
+    "c) Funcionar como una unidad intermedia",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "46. AL CONJUNTO DE DEPENDENCIAS DONDE ESTÁN UBICADOS LOS QUIRÓFANOS, VESTUARIOS, PASILLOS, ZONA DE LAVADO Y ESTERILIZACIÓN, SE LE DENOMINA:",
+  "options": [
+    "a) Zona quirúrgica",
+    "b) Espacio quirúrgico",
+    "c) Área quirúrgica",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "47. RESPECTO A LA BATA RUSA:",
+  "options": [
+    "a) Es usada en el quirófano por cirujanos",
+    "b) Es usada en el quirófano por el anestesista",
+    "c) Es usada en el quirófano por todo el personal que entre en el quirófano",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "48. ¿QUÉ MÉTODO DE BARRERA SE REQUIERE EN EL ÁREA ESTÉRIL DEL BLOQUE QUIRÚRGICO SIN QUE HAYA PREVISTO REALIZAR INTERVENCIÓN EN ESE MOMENTO? EL USO DE:",
+  "options": [
+    "a) Calzas exclusivamente",
+    "b) Gorro y calzas",
+    "c) Mascarilla y calzas",
+    "d) Mascarilla, gorro y calzas"
+  ],
+  "correct": 3
+},
+{
+  "question": "49. ¿CUÁL ES LA RELACIÓN CORRECTA ENTRE LA COLOCACIÓN DE LA MASCARILLA Y EL LAVADO QUIRÚRGICO DE MANOS?",
+  "options": [
+    "a) La mascarilla hay que colocarla antes de realizar el lavado quirúrgico de manos",
+    "b) La mascarilla hay que colocarla después de realizar el lavado quirúrgico de las manos y antes de ponerse los guantes",
+    "c) La mascarilla es la última protección que se pone",
+    "d) La mascarilla hay que ponerla antes de entrar en la zona quirúrgica"
+  ],
+  "correct": 0
+},
+{
+  "question": "50. ¿EN QUÉ MOMENTO NO DEBE ENTRAR EL CELADOR DE QUIRÓFANO AL MISMO?",
+  "options": [
+    "a) Durante una intervención",
+    "b) Para introducir al paciente que será intervenido",
+    "c) Para ayudar al personal de quirófano que lo requiere",
+    "d) Para sacar al paciente que ha sido intervenido"
+  ],
+  "correct": 0
+}
+
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
