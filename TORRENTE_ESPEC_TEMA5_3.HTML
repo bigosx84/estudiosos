@@ -1,0 +1,622 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "01. ¿Quién realizará la limpieza del instrumental utilizado en un quirófano tras una intervención?",
+  "options": [
+    "a) La Enfermera instrumentista",
+    "b) La Enfermera circulante",
+    "c) La TCAE",
+    "d) El Celador"
+  ],
+  "correct": 2
+},
+{
+  "question": "02. Durante una intervención, la mesa de cigüeña se suele colocar:",
+  "options": [
+    "a) También se llama mesa de Mayo, y se suele colocar sobre el paciente y frente a la enfermera instrumentista",
+    "b) También se llama mesa de riñón, y se suele colocar al lado izquierdo de la enfermera instrumentista",
+    "c) También se llama mesa de riñón, y se suele colocar al lado derecho de la enfermera instrumentista",
+    "d) También se llama mesa de Mayo, y se suele colocar detrás de la enfermera instrumentista y al lado del cirujano"
+  ],
+  "correct": 0
+},
+{
+  "question": "03. ¿Qué orden se debe seguir en la retirada de prendas que se necesitan para la asepsia quirúrgica?",
+  "options": [
+    "a) Calzas, gorro, bata, guantes, mascarilla",
+    "b) Calzas, gorro, mascarilla, bata, guantes",
+    "c) Guantes, bata, mascarilla, gorro y calzas",
+    "d) Gorro, calzas mascarilla, bata, guantes"
+  ],
+  "correct": 2
+},
+{
+  "question": "04. La clasificación de Altemeier nos permite:",
+  "options": [
+    "a) Clasificar las intervenciones quirúrgicas según el grado de limpieza y contaminación",
+    "b) Clasificar las intervenciones quirúrgicas según el grado de complejidad de las mismas",
+    "c) Clasificar las intervenciones quirúrgicas según su finalidad",
+    "d) Clasificar las intervenciones quirúrgicas según la necesidad de ingreso o no"
+  ],
+  "correct": 0
+},
+{
+  "question": "05. El material que entra en contacto con mucosas y piel no intacta según la clasificación de Spaulding es:",
+  "options": [
+    "a) semicrítico",
+    "b) limpio - contaminado",
+    "c) no crítico",
+    "d) restringido infectivo"
+  ],
+  "correct": 0
+},
+{
+  "question": "06. La cirugía según su finalidad puede ser:",
+  "options": [
+    "a) Cirugía de alto riesgo",
+    "b) Cirugía mayor",
+    "c) Cirugía paliativa",
+    "d) Cirugía urgente"
+  ],
+  "correct": 2
+},
+{
+  "question": "07. ¿Qué es la clasificación de Spaulding?",
+  "options": [
+    "a) Un sistema de clasificación de quirófanos según climatización",
+    "b) Un sistema de clasificación del material sanitario",
+    "c) Un sistema de clasificación de riesgos quirúrgicos",
+    "d) Un sistema de clasificación de las zonas del hospital"
+  ],
+  "correct": 1
+},
+{
+  "question": "08. El instrumental utilizado en una intervención quirúrgica según la clasificación de Spaulding será:",
+  "options": [
+    "a) Semicrítico",
+    "b) Critico tipo III",
+    "c) Critico",
+    "d) Critico tipo II"
+  ],
+  "correct": 2
+},
+{
+  "question": "09. Los residuos y material utilizados en el quirófano, se eliminarán por la:",
+  "options": [
+    "a) Zona gris",
+    "b) Zona restringida",
+    "c) Zona sucia",
+    "d) Zona semirrestringida"
+  ],
+  "correct": 2
+},
+{
+  "question": "10. Con respecto a la colocación de la mascarilla indique la respuesta incorrecta:",
+  "options": [
+    "a) Deberá adaptarse perfectamente a la fisonomía de la cara y nariz, evitando la presencia de huecos que permitan que el aire exhalado se escape",
+    "b) La mascarilla deberá cubrir completamente la barba en el caso que el personal la leve",
+    "c) La mascarilla hay que colocarla tras el lavado quirúrgico de las manos",
+    "d) Una mascarilla sólo se utilizará para una intervención"
+  ],
+  "correct": 2
+},
+{
+  "question": "11. Se considera que una herida es limpia - contaminada cuando:",
+  "options": [
+    "a) Es una herida traumática con menos de 4 horas desde que se produjo",
+    "b) Los tejidos están inflamados con presencia de pus",
+    "c) Es una herida quirúrgica y existen drenajes por la herida",
+    "d) Se trata de una herida traumática con más de 4 horas sin tratamiento"
+  ],
+  "correct": 2
+},
+{
+  "question": "12. Según la clasificación de Spaulding. ¿a qué grupo correspondería un implante óseo?",
+  "options": [
+    "a) Crítico: requiere total asepsia",
+    "b) Semicrítico: No es necesario su esterilización",
+    "c) No crítico",
+    "d) Semicrítico, requiere desinfección de alto nivel"
+  ],
+  "correct": 0
+},
+{
+  "question": "13. La última acción que realizaremos en cuanto a las medidas de asepsia en el quirófano será:",
+  "options": [
+    "a) Colocación de mascarilla",
+    "b) Colocación de guantes",
+    "c) Lavado de manos",
+    "d) Colocación de la bata"
+  ],
+  "correct": 1
+},
+{
+  "question": "14. La mascarilla deberá cubrir:",
+  "options": [
+    "a) Boca, mentón",
+    "b) Nariz, boca",
+    "c) Nariz, boca y mentón",
+    "d) Nariz, boca, pómulos y mentón"
+  ],
+  "correct": 2
+},
+{
+  "question": "15. Señale el modo de actuación incorrecto en la zona estéril:",
+  "options": [
+    "a) El personal no estéril, no deberá invadir el campo quirúrgico",
+    "b) Las puertas de los quirófanos deberán permanecer cerradas salvo para la circulación del personal, los pacientes o instrumental",
+    "c) El calzado utilizado será de uso exclusivo en el área quirúrgica o en su defecto deberán utilizarse papis desechables",
+    "d) El personal estéril deberá realizar el lavado higiénico de manos con posterioridad a la colocación de la mascarilla."
+  ],
+  "correct": 3
+},
+{
+  "question": "16. Una pantalla provista de un sistema de iluminación intensa, instalada normalmente en la pared, próxima a la mesa de operaciones para visualizar radiografías, topografías o resonancias magnéticas del paciente, es:",
+  "options": [
+    "a) Una lámpara quirúrgica o cialítica",
+    "b) Un negatoscopio",
+    "c) Un cistoscopio",
+    "d) Un RX portátil"
+  ],
+  "correct": 1
+},
+{
+  "question": "17. El instrumento quirúrgico que corta el tejido y/o lo cauteriza se conoce como:",
+  "options": [
+    "a) Sistema de aspiración",
+    "b) Bisturí de mango largo",
+    "c) Bisturí eléctrico",
+    "d) Ninguna de las opciones es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "18. ¿Es función del celador de quirófano, auxiliar en aquellas tareas que le sean encomendadas por las enfermeras?",
+  "options": [
+    "a) Sí, si así se lo ordena la supervisora según viene recogido en sus funciones en la Orden del ministerio de Trabajo de 5 de julio de 1971",
+    "b) Sí, es una función específica de los celadores según viene recogido en sus funciones en la Orden del ministerio de Trabajo de 5 de julio de 1971",
+    "c) Sí, si así se lo ordena el personal facultativo o la supervisora según viene recogido en sus funciones en la Orden del ministerio de Trabajo de 5 de julio de 1971",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "19. Antes de entrar en el área semi-restringida del bloque quirúrgico deberemos colocarnos en primer lugar",
+  "options": [
+    "a) La mascarilla",
+    "b) Las calzas",
+    "c) Los guantes",
+    "d) El gorro"
+  ],
+  "correct": 1
+},
+{
+  "question": "20. La qué temperatura de un quirófano que no sea de altas prestaciones debería estar:",
+  "options": [
+    "a) Entre 15 y 21°C",
+    "b) Entre 17 y 21°C",
+    "c) Entre 2 y 26°C",
+    "d) Entre 14 y 17°C"
+  ],
+  "correct": 2
+ },
+ {
+  "question": "21. Durante una intervención quirúrgica el celador de quirófano deberá:",
+  "options": [
+    "a) Permanecer en el quirófano mientras dure la intervención",
+    "b) Permanecer en la intermedia para lo que se preste durante la intervención",
+    "c) Informar a los familiares sobre como se va desarrollando la misma",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 3
+},
+{
+  "question": "22. El celador de quirófano:",
+  "options": [
+    "a) Limpiarán la mesa de quirófano y la propia sala",
+    "b) En los quirófanos auxiliarán en todas aquellas labores propias del celador destinado en estos servicios",
+    "c) Ninguna de las respuestas anteriores es correcta",
+    "d) Las respuestas A y B son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "23. Según Spaulding, los materiales hospitalarios se clasifican en:",
+  "options": [
+    "a) Flexibles, rígidos y semirrígidos",
+    "b) Críticos, semicríticos y no críticos",
+    "c) Esterilizados, desinfectados y limpios",
+    "d) Tipo A, Tipo B y Tipo C"
+  ],
+  "correct": 1
+},
+{
+  "question": "24. La denominada zona limpia del bloque quirúrgico se corresponde con la zona:",
+  "options": [
+    "a) Blanca",
+    "b) Gris",
+    "c) Negra"
+  ],
+  "correct": 1
+},
+{
+  "question": "25. Se considera quirófano de alto riesgo en cuanto al riesgo de infección:",
+  "options": [
+    "a) Trasplantes",
+    "b) Cirugía plástica",
+    "c) Neurocirugía",
+    "d) Las respuestas A y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "26. El orden correcto en la colocación de prendas para una asepsia quirúrgica sería:",
+  "options": [
+    "a) Calzas, gorro, bata, guantes, mascarilla",
+    "b) Calzas, gorro, bata, mascarilla, guantes",
+    "c) Calzas, gorro, mascarilla, bata, guantes",
+    "d) Calzas, gorro, mascarilla, guantes, bata"
+  ],
+  "correct": 2
+},
+{
+  "question": "27. Las biopsias intraoperatorias que precisen estudio microscópico deben de ser trasladadas por el celador al:",
+  "options": [
+    "a) Servicio de Anatomía Patológica, pero el traslado deberá hacerlo la enfermera instrumentista",
+    "b) Servicio de Anatomía Patológica previo etiquetado de las muestras por la enfermera circulante",
+    "c) Servicio de Anatomía Patológica previo etiquetado de las muestras por la enfermera instrumentista",
+    "d) Servicio de Anatomía Patológica, pero el traslado deberá hacerlo la enfermera circulante"
+  ],
+  "correct": 1
+},
+{
+  "question": "28. ¿En qué espacios del bloque quirúrgico es obligatorio el uso de mascarilla quirúrgica?",
+  "options": [
+    "a) Antequirófanos y quirófanos",
+    "b) Quirófanos y cuartos de lavado prequirúrgico de manos y brazos",
+    "c) Antequirófanos y cuartos de lavado prequirúrgico de manos y brazos",
+    "d) Antequirófanos, quirófanos y cuartos de lavado prequirúrgico de manos y brazos"
+  ],
+  "correct": 3
+},
+{
+  "question": "29. Durante la intervención quirúrgica:",
+  "options": [
+    "a) Los pacientes los movilizará sólo el celador, con supervisión directa del médico anestesista",
+    "b) Los pacientes serán movilizados a la posición requerida por el cirujano, bajo la autorización del anestesista",
+    "c) Nunca se requiere la movilización del paciente",
+    "d) Los pacientes los moviliza el celador cuando el cirujano de su autorización"
+  ],
+  "correct": 1
+},
+{
+  "question": "30. Al entrar a movilizar a un paciente en quirófano, la última prenda de la vestimenta de protección que se pondrá será:",
+  "options": [
+    "a) Mascarilla",
+    "b) Guantes",
+    "c) Calzas",
+    "d) Guantes estériles"
+  ],
+  "correct": 1
+},
+{
+  "question": "31. La humedad relativa en el quirófano deberá oscilar:",
+  "options": [
+    "a) 50%-60%",
+    "b) 45%-55%",
+    "c) 30%-60%",
+    "d) 70%-80%"
+  ],
+  "correct": 1
+},
+{
+  "question": "32. El celador de quirófano tras una intervención quirúrgica deberá:",
+  "options": [
+    "a) Limpiar y devolver a su lugar los aparatos utilizados en una intervención",
+    "b) Limpiar los aparatos utilizados en una intervención",
+    "c) Devolver a su lugar los aparatos utilizados en una intervención y limpiar el quirófano tras la intervención",
+    "d) Devolver a su lugar los aparatos utilizados en una intervención"
+  ],
+  "correct": 3
+},
+{
+  "question": "33. El celador de quirófano colaborará en la colocación del paciente en una posición adecuada cuando:",
+  "options": [
+    "a) Llega a la sala de operaciones con la ayuda del resto de personal que hay en la sala",
+    "b) Cuando lo indique el cirujano y/o ayudante de cirujano",
+    "c) Cuando lo indique el anestesista",
+    "d) Cuando lo indique el enfermero circulante, el cirujano, o el enfermero instrumentista"
+  ],
+  "correct": 2
+},
+{
+  "question": "34. El sistema de climatización debe proporcionar al quirófano respecto a las dependencias adyacentes una:",
+  "options": [
+    "a) Presión positiva",
+    "b) Presión negativa",
+    "c) Presión neutra",
+    "d) Presión atmosférica cero"
+  ],
+  "correct": 0
+},
+{
+  "question": "35. El periodo intraoperatorio:",
+  "options": [
+    "a) Se inicia con colocación del paciente en la mesa de operaciones y termina con la salida del mismo a la sala de recuperación postanestésica",
+    "b) Es el periodo que dura la intervención quirúrgica menos el tiempo que tarda el anestesista en sedar al paciente",
+    "c) Se inicia con la preparación del paciente para la operación y finaliza con la salida del mismo a la sala de recuperación postanestésica",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "36. Cuando la cirugía sea programada el encargado de trasladar al paciente desde su habitación hasta el quirófano será:",
+  "options": [
+    "a) El celador de la planta en la que se encuentra ingresado el paciente",
+    "b) El celador externo de quirófano",
+    "c) El celador interno de quirófano",
+    "d) El celador de servicios generales"
+  ],
+  "correct": 1
+},
+{
+  "question": "37. Terminada una intervención quirúrgica con anestesia general, el paciente se traslada a:",
+  "options": [
+    "a) Sala de rehabilitación tras recibir la orden del anestesista",
+    "b) A su habitación en la planta correspondiente",
+    "c) A la sala de Observación de Urgencias",
+    "d) A la sala de Recuperación o Despertar"
+  ],
+  "correct": 3
+},
+{
+  "question": "38. En cuanto a la mesa de operaciones (señala la respuesta incorrecta):",
+  "options": [
+    "a) Debe estar colocada sobre el centro de la sala dejando espacio para poder actuar al personal de quirófano",
+    "b) Se considera un espacio aconsejable conseguir aquel determinado de trazar un círculo con centro en la mesa de operaciones con un diámetro mínimo de 6 m hasta las paredes",
+    "c) La colocación de los accesorios en la mesa quirúrgica está considerada función del celador.",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 3
+},
+{
+  "question": "39. Una enfermera de quirófano le pide al celador que ase a un paciente que va a ser intervenido de urgencia:",
+  "options": [
+    "a) No lo hará porque es función exclusiva de la enfermera",
+    "b) No lo hará porque es función exclusiva del TCAE",
+    "c) Colaborará con el personal sanitario en dicha tarea",
+    "d) Lo hace solo si la persona a operar es una mujer"
+  ],
+  "correct": 2
+},
+{
+  "question": "40. Un paciente recién intervenido necesita oxigenoterapia para su traslado a la URPA, el celador deberá trasladar y colocar la bala en la cama del paciente, y además:",
+  "options": [
+    "a) Llamar al mecánico para que compruebe la bala de oxígeno",
+    "b) Girar la rueda de apertura para comprobar si el oxígeno sale con la fuerza adecuada",
+    "c) Mirará que el manómetro indique la presión adecuada",
+    "d) Girar la rueda de apertura según le indique el personal sanitario"
+  ],
+  "correct": 2
+},
+{
+  "question": "41. Durante la intervención las personas lavadas, deberán:",
+  "options": [
+    "a) Mantenerse cerca del campo estéril",
+    "b) Girar cara a cara",
+    "c) Girar espalda contra espalda",
+    "d) Todas las respuestas son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "42. En una intervención, el campo estéril deberá crearse:",
+  "options": [
+    "a) Antes de la colocación del paciente en la mesa quirúrgica",
+    "b) Lo más cerca posible del momento en que va a ser utilizado",
+    "c) Por el anestesista",
+    "d) Por la enfermera circulante"
+  ],
+  "correct": 1
+},
+{
+  "question": "43. En el quirófano, el celador deberá rasurar a un paciente masculino (señala la respuesta incorrecta):",
+  "options": [
+    "a) Si la intervención es programada y no hay peluquero.",
+    "b) Si la intervención es urgente",
+    "c) En cualquier caso",
+    "d) Las respuestas A y B son correctas"
+  ],
+  "correct": 2
+},
+{
+  "question": "44. El traslado del paciente a su habitación desde el despertar se realizará cuando así lo indique:",
+  "options": [
+    "a) El cirujano",
+    "b) El anestesista",
+    "c) La enfermera circulante",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "45. La mesa donde se coloca la instrumentación que va a ser utilizada durante la intervención se denomina:",
+  "options": [
+    "a) Mesa de riñón",
+    "b) Mesa de mayo",
+    "c) Mesa de cigüeña",
+    "d) Mesa de cirugía"
+  ],
+  "correct": 0
+},
+{
+  "question": "46. El sistema de aspiración utilizado durante una intervención se conectará a:",
+  "options": [
+    "a) Las tomas de vacío",
+    "b) Las tomas de oxígeno",
+    "c) Las tomas de nitrógeno",
+    "d) Las tomas de protóxido"
+  ],
+  "correct": 0
+},
+{
+  "question": "47. La salida del paciente de quirófano se producirá por:",
+  "options": [
+    "a) La intermedia",
+    "b) Sucio",
+    "c) Limpio",
+    "d) El antequirófano"
+  ],
+  "correct": 1
+},
+{
+  "question": "48. Las batas del personal lavado se consideran estériles:",
+  "options": [
+    "a) Por delante, del hombro a la cintura, y las mangas hasta cinco centímetros por encima del codo",
+    "b) Por detrás, del hombro a la cintura, y las mangas hasta cinco centímetros por encima del codo",
+    "c) Por delante, del hombro a la rodilla, y las mangas hasta cinco centímetros por encima del codo",
+    "d) Por delante, del hombro a la cintura, y las mangas hasta diez centímetros por encima del codo"
+  ],
+  "correct": 0
+},
+{
+  "question": "49. Las mesas cubiertas con paños se consideran estériles:",
+  "options": [
+    "a) Sólo en la superficie",
+    "b) En superficie y profundidad",
+    "c) En superficie y hasta 5 centímetros por encima y por debajo",
+    "d) En superficie y hasta 5 centímetros por encima"
+  ],
+  "correct": 0
+},
+{
+  "question": "50. El rasurado del paciente debe efectuarse:",
+  "options": [
+    "a) En el sentido de crecimiento del vello",
+    "b) En el sentido contrario de crecimiento del vello",
+    "c) Respetando la intimidad del paciente siendo lo más indiscreto posible.",
+    "d) Siempre con guantes estériles"
+  ],
+  "correct": 0
+}
+       ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
