@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. ¿Cuánto tiempo es necesario esperar una vez certificado el fallecimiento de un paciente para introducirlo en la cámara frigorífica?",
+  "options": [
+    "a) 4 horas al menos",
+    "b) 24 horas",
+    "c) el tiempo necesario para que aparezca el rigor mortis",
+    "d) ninguna es correcta"
+  ],
+  "correct": 3
+},
+{
+  "question": "2. ¿Qué instrumento se utiliza entre otros para la apertura de la bóveda craneal?",
+  "options": [
+    "a) enterótomo",
+    "b) costótomo",
+    "c) pinza de Magill",
+    "d) escoplo"
+  ],
+  "correct": 3
+},
+{
+  "question": "3. ¿Cuál es la superficie mínima que debe tener la sala de autopsias?",
+  "options": [
+    "a) 20 m",
+    "b) 25 m",
+    "c) 30 m",
+    "d) 35 m"
+  ],
+  "correct": 0
+},
+{
+  "question": "4. La Técnica de Rokitansky en las autopsias:",
+  "options": [
+    "a) Consiste en la disección de los órganos por separado, comenzando por la cavidad craneal, y siguiendo por el cuello, cavidad torácica y abdomen",
+    "b) Apertura desde la apófisis mastoides hasta la clavícula unidas por corte supraesternal. Por otro lado, se realiza la apertura desde la cavidad torácica hasta la fosa ilíaca anterosuperior",
+    "c) Se realizan dos incisiones una horizontal y otra vertical, que al unirse describen la forma de T si se trata de un varón y la forma de Y si se trata de una mujer. Se extraen los órganos individualmente después de haber sido abiertos y examinados in situ dentro del cuerpo",
+    "d) Apertura oval del tórax permitiendo observar claramente las vísceras. Se trata de la extracción en un solo bloque de todas las vísceras. La disección se realiza fuera del cadáver. Técnica sencilla y rápida es preciso dos personas para la extracción en bloque."
+  ],
+  "correct": 2
+},
+{
+  "question": "5. El informe provisional en el que tienen que constar los hallazgos macroscópicos y un juicio inicial acerca de la enfermedad fundamental y si es posible de la causa de la muerte es aconsejable que se emita por el servicio de Anatomía Patológica y en concreto el médico anatomopatólogo que realiza la autopsia en un plazo de tiempo aproximado de:",
+  "options": [
+    "a) 48 horas",
+    "b) 72 horas",
+    "c) 30 días",
+    "d) 10 días"
+  ],
+  "correct": 0
+},
+{
+  "question": "6. La gestión de los restos humanos y residuos anatómicos procedentes de abortos, mutilaciones y operaciones quirúrgicas queda regulada por:",
+  "options": [
+    "a) el reglamento sanitario mortuorio",
+    "b) el reglamento de policía sanitaria mortuoria",
+    "c) el reglamento de policía mortuoria",
+    "d) el reglamento de policía sanitaria"
+  ],
+  "correct": 1
+},
+{
+  "question": "7. ¿Cuál de las siguientes disposiciones reglamenta sobre las autopsias clínicas?",
+  "options": [
+    "a) ley 29/1980 de 21 de junio",
+    "b) decreto 67/1996 de 21 de mayo",
+    "c) Real Decreto 2230/1982 de 18 de junio",
+    "d) A y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "8. La palabra tanatopsia es sinónimo de:",
+  "options": [
+    "a) tanatopraxia",
+    "b) incineración",
+    "c) autopsia",
+    "d) amortajamiento"
+  ],
+  "correct": 2
+},
+{
+  "question": "9. Al paciente fallecido en la habitación 312 se le practicó una autopsia para determinar los motivos de la muerte. Durante la autopsia, el auxiliar de autopsias que acompaña al patólogo se ha puesto enfermo y ha tenido que abandonar la sala, de tal manera que al finalizar la autopsia el médico ordena al celador de autopsias que proceda a suturar al cadáver:",
+  "options": [
+    "a) excepcionalmente, y ante una circunstancia tan especial el celador debe proceder a la sutura del cadáver siempre bajo las indicaciones del médico que practicó la autopsia",
+    "b) no es función del celador hacer uso de instrumental alguno sobre el cadáver",
+    "c) ayudar en todas las prácticas de las autopsias, es una función específica del celador del servicio de autopsias",
+    "d) obedecerá las órdenes del patólogo procediendo a suturar el cadáver, y dando cuenta inmediata de esta circunstancia a sus superiores"
+  ],
+  "correct": 1
+},
+{
+  "question": "10. La disminución gradual de la temperatura del cuerpo después de la muerte se denomina:",
+  "options": [
+    "a) algor mortis",
+    "b) rigor mortis",
+    "c) Holter mortis",
+    "d) rictus mortis"
+  ],
+  "correct": 0
+},
+{
+  "question": "11. ¿Cuándo es obligatorio el embalsamamiento de un cadáver?",
+  "options": [
+    "a) en los traslados al extranjero y en los traslados por vía aérea o marítima",
+    "b) en los enterramientos en criptas, entendiendo como tales los locales de carácter religioso o civil debidamente autorizados",
+    "c) las respuestas a y b son correctas",
+    "d) todas son correctas, no pudiendo realizarse antes de que transcurran 96 horas desde el momento del fallecimiento"
+  ],
+  "correct": 2
+},
+{
+  "question": "12. ¿Cuál de los siguientes no es considerado dentro del grupo 1 de cadáveres en el Decreto por el que se aprueba el reglamento de policía sanitaria mortuoria?",
+  "options": [
+    "a) cólera",
+    "b) rabia",
+    "c) SIDA",
+    "d) Creutzfeldt-Jakob"
+  ],
+  "correct": 2
+},
+{
+  "question": "13. Las tomas de muestras y las exploraciones realizadas dentro de las 24 horas siguientes al fallecimiento con la finalidad exclusiva de comprobar la causa de la muerte por los servicios médicos de la institución hospitalaria en que haya ocurrido la defunción, es un tipo de autopsia:",
+  "options": [
+    "a) clínica",
+    "b) médico legal",
+    "c) clínico forense",
+    "d) ninguna es correcta"
+  ],
+  "correct": 3
+},
+{
+  "question": "14. Las medidas mínimas de la mesa de autopsias deben ser:",
+  "options": [
+    "a) 2,10 m de longitud por 0,60 m de anchura",
+    "b) 2,10 m de longitud por 0,65 m de anchura",
+    "c) 2,05 m de longitud por 0,65 m de anchura",
+    "d) 2 m de longitud por 0,75 m de anchura"
+  ],
+  "correct": 3
+},
+{
+  "question": "15. En las autopsias, la apertura del raquis se hace mediante:",
+  "options": [
+    "a) una incisión cutánea que va desde el esternón al pubis",
+    "b) una incisión que va desde el cuello hasta el pubis",
+    "c) mediante dos incisiones longitudinales a lo largo de la columna vertebral",
+    "d) mediante dos incisiones transversales a lo largo de la cavidad abdominal"
+  ],
+  "correct": 2
+},
+{
+  "question": "16. Según el Decreto que desarrolla la Ley de Autopsias Clínicas, se establece que los locales destinados a la realización de estudios autópsicos clínicos deben disponer de refrigeradores con una capacidad:",
+  "options": [
+    "a) para dos cadáveres cada 200 camas de hospitalización o fracción",
+    "b) para dos cadáveres cada 100 camas de hospitalización o fracción",
+    "c) para un cadáver cada 100 camas de hospitalización o fracción",
+    "d) para un cadáver cada 200 camas de hospitalización o fracción"
+  ],
+  "correct": 0
+},
+{
+  "question": "17. Siguiendo el criterio biológico, para realizar una autopsia fetal, el feto ha debido fallecer:",
+  "options": [
+    "a) a partir de la décima semana de gestación",
+    "b) antes de la semana 2 de gestación",
+    "c) antes de las 14 semanas de gestación",
+    "d) ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "18. Durante los cuidados postmortem para cerrar los ojos del paciente fallecido:",
+  "options": [
+    "a) Se usará aerosol de película plástica",
+    "b) Cerrarle los ojos con delicadeza tirando de las pestañas, ejerciendo una ligera presión con las yemas de los dedos. Si no permanecen cerrados se colocará un algodón impregnado en alcohol y se mantendrá unos minutos",
+    "c) Las respuestas A y B son correctas",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "19. La legislación Española establece que los estudios autópsicos clínicos, solamente pueden realizarse en los centros que reúnan las condiciones adecuadas de locales, medios físicos y personal. Se consideran que reúnen estas condiciones:",
+  "options": [
+    "a) Los hospitales con servicios de anatomía patológica plenamente dotados",
+    "b) Los hospitales que cuenten con una sala de autopsias adecuadamente dotada y con un personal médico y auxiliar propio o compartido con otras instituciones plenamente capacitados para el desarrollo de estos procedimientos",
+    "c) Los centros regionales de patología adscritos a un hospital en los que se centralicen las funciones en esta materia de una cierta área geográfica.",
+    "d) Todas las respuestas son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "20. ¿Cuál es el destino final de todo cadáver?",
+  "options": [
+    "a) El destino final de todo cadáver debe ser el enterramiento en lugar autorizado o su incineración.",
+    "b) Será el enterramiento o su incineración siempre y cuando no se utilice para fines científicos o docentes en cuyo caso podrá utilizarse para la formación continuada de personal sanitario.",
+    "c) El destino final de todo cadáver será su embalsamamiento o su incineración",
+    "d) Se podrá embalsamar, enterrar o incinerar siempre y cuando se cumplan con las debidas garantías sanitarias"
+  ],
+  "correct": 0
+},
+{
+  "question": "21. El embalsamamiento es:",
+  "options": [
+    "a) Toda práctica mortuoria que permite la conservación y exposición del cadáver con las debidas garantías sanitarias",
+    "b) Método tanatopráxico para impedir la aparición de los fenómenos de la putrefacción",
+    "c) Los métodos que mientras dura su actuación, retrasan el proceso de putrefacción del cadáver, por medio del descenso artificial de la temperatura",
+    "d) Práctica mortuoria que tiene por finalidad mejorar el aspecto externo de los cadáveres."
+  ],
+  "correct": 1
+},
+{
+  "question": "22. Dentro de los signos tardíos de muerte es considerado como un signo de \"muerte cierta\":",
+  "options": [
+    "a) Algor mortis",
+    "b) Rigor mortis",
+    "c) Livor Mortis",
+    "d) Mancha verde"
+  ],
+  "correct": 3
+},
+{
+  "question": "23. En una autopsia completa, ¿cuántas cavidades se abren?",
+  "options": [
+    "a) 3 cavidades",
+    "b) 6 cavidades",
+    "c) 4 cavidades",
+    "d) 10 cavidades"
+  ],
+  "correct": 2
+},
+{
+  "question": "24. El informe definitivo de la autopsia clínica, es aconsejable que se emita en un plazo máximo de:",
+  "options": [
+    "a) 30 días",
+    "b) 48 horas",
+    "c) 1 hora",
+    "d) 6 meses"
+  ],
+  "correct": 0
+},
+{
+  "question": "25. Si hay que rellenar cavidades del cadáver tras la autopsia antes de proceder al cierre del mismo por parte del anatomopatólogo, se realizará con:",
+  "options": [
+    "a) Algodón y vendas",
+    "b) El material usado no importa siempre que sea un material duro",
+    "c) Papel",
+    "d) Material de tela"
+  ],
+  "correct": 2
+},
+{
+  "question": "26. Según la SECPAL (Sociedad Española de Cuidados Paliativos) la «enfermedad terminal» queda definida entre otros elementos por un pronóstico de vida:",
+  "options": [
+    "a) Inferior a 1 año",
+    "b) Inferior a 6 meses",
+    "c) Superior a 2 meses",
+    "d) Inferior a 5 años"
+  ],
+  "correct": 1
+},
+{
+  "question": "27. El enfermo terminal tiene derecho a recibir información detallada sobre:",
+  "options": [
+    "a) Su estado de salud, incluyendo los resultados de cualquier exploración médica, los exámenes e intervenciones previsibles",
+    "b) Los riesgos y los beneficios potenciales de efectuar o no esos exámenes e intervenciones así como la posibilidad de decidir someterse a ellos o no.",
+    "c) El desarrollo del tratamiento y los resultados esperables.",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "28. La doctora Kübler-Ross identifica y describe cinco etapas por las cuales pasan la mayoría de los pacientes en la aceptación de la muerte. ¿Cuál de las siguientes se corresponde con la última etapa?",
+  "options": [
+    "a) Negación",
+    "b) Aceptación y paz",
+    "c) Rebeldía e ira",
+    "d) Negociación"
+  ],
+  "correct": 1
+},
+{
+  "question": "29. Aquel que se expresa con anterioridad al hecho de la pérdida y termina con la pérdida misma es un tipo de duelo:",
+  "options": [
+    "a) Duelo corto",
+    "b) Duelo crónico",
+    "c) Duelo anticipado",
+    "d) Duelo patológico"
+  ],
+  "correct": 2
+},
+{
+  "question": "30. El responsable de la autopsia clínica es:",
+  "options": [
+    "a) La autoridad judicial",
+    "b) Médico forense",
+    "c) Médico anatomopatólogo",
+    "d) Todo el personal que participa en los estudios autópsicos"
+  ],
+  "correct": 2
+},
+{
+  "question": "31. Respecto a la sala de autopsias, señala la respuesta INCORRECTA",
+  "options": [
+    "a) Su superficie mínima debe ser de 20 metros cuadrados",
+    "b) Debe tener paredes de material poroso para facilitar su limpieza",
+    "c) La mesa de autopsias debe ser de diseño sencillo, de acero inoxidable o de piedra",
+    "d) Debe contar con un sistema de drenaje, manguera con rociador y estar provista de un reservorio para el agua y un lugar destinado al instrumental"
+  ],
+  "correct": 1
+},
+{
+  "question": "32. Un enterótomo es:",
+  "options": [
+    "a) Tijera especial que se utiliza para apertura de intestinos, estómago o tráquea",
+    "b) Una regla graduada",
+    "c) Es la aguja que se utiliza para el cierre de cavidades",
+    "d) Es un tipo de bacteria que se encuentra con asiduidad en las salas de autopsias, de difícil erradicación"
+  ],
+  "correct": 0
+},
+{
+  "question": "33. ¿Para qué sirve un costótomo?",
+  "options": [
+    "a) Para la apertura de la bóveda craneal",
+    "b) Para poder extirpar el encéfalo",
+    "c) Para la apertura de las vías biliares y de pequeñas arterias.",
+    "d) Para cortar las costillas"
+  ],
+  "correct": 3
+},
+{
+  "question": "34. NO es una técnica de autopsias",
+  "options": [
+    "a) Técnica de Rokitansky o en 'T'",
+    "b) Técnica de Virchow",
+    "c) Técnica de Letulle",
+    "d) Todas las anteriores son técnicas de autopsias"
+  ],
+  "correct": 3
+},
+{
+  "question": "35. La legislación española establece que para iniciar estudios autópsicos clínicos se ha de extender un certificado médico especial en el que únicamente se consigna:",
+  "options": [
+    "a) Que será el médico responsable del paciente quien realizará la autopsia",
+    "b) La orden del juez para realizar la autopsia",
+    "c) El hecho de muerte cierta y será emitido por el médico que solicita la autopsia y en él se hace constar el día y la hora del fallecimiento.",
+    "d) Si los familiares de hasta 2° grado de consanguineidad autorizan los estudios autópsicos"
+  ],
+  "correct": 2
+},
+{
+  "question": "36. NO es función del celador auxiliar de autopsias:",
+  "options": [
+    "a) Conservar un ambiente de respeto, pidiendo entrar durante el proceso a individuos ociosos o morbosos",
+    "b) Auxiliar al médico durante la autopsia en aquellas prácticas que no impliquen hacer uso de instrumental alguno sobre el cadáver",
+    "c) Pesaje de órganos, anotaciones, introducir en cubos herméticos restos humanos para su traslado e incineración por la empresa autorizada",
+    "d) Recomponer y asear el cadáver una vez efectuada la autopsia y asegurando que la familia reciba un cuerpo en las condiciones más dignas posibles"
+  ],
+  "correct": 0
+},
+{
+  "question": "37. La legislación española Real Decreto 2230/1982 de 18 de junio, establece que los locales destinados a la realización de estudios autópsicos clínicos, deben reunir las condiciones y disponer del equipamiento siguiente (señala la respuesta INCORRECTA)",
+  "options": [
+    "a) Una mesa de autopsias",
+    "b) Iluminación eléctrica adecuada",
+    "c) Refrigeradores con una capacidad para 2 cadáveres cada 400 camas de hospitalización o fracción",
+    "d) Tanto el suelo como las paredes deberán estar revestidos por materiales que faciliten la limpieza"
+  ],
+  "correct": 2
+},
+{
+  "question": "38. Señala la respuesta INCORRECTA respecto a la autopsia clínica",
+  "options": [
+    "a) Su interés es científico",
+    "b) La realiza un médico forense",
+    "c) La ordena el médico para obtener información sobre la causa de la muerte y sobre la propia enfermedad",
+    "d) Debe autorizarla la familia"
+  ],
+  "correct": 1
+},
+{
+  "question": "39. Ante la demanda de realizar la autopsia de un cadáver el celador:",
+  "options": [
+    "a) Comprueba que el suelo de la sala esté limpio y seco",
+    "b) Comprueba si se ha avisado al servicio de seguridad para que enciendan las cámaras frigoríficas y se hagan cargo del cadáver",
+    "c) Pedir autorización al jefe de personal subalterno para realizar la autopsia",
+    "d) Extraer el cadáver de la cámara frigorífica y colocarlo en la mesa de autopsias"
+  ],
+  "correct": 3
+},
+{
+  "question": "40. Las autopsias clínicas se encuentran reguladas por",
+  "options": [
+    "a) Real Decreto 2230/1982 de 18 de junio",
+    "b) Ley 55/2003 de 16 de Diciembre",
+    "c) Ley 29/1980 de 21 de junio",
+    "d) Las respuestas A y C son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "41. ¿Quién emitirá el informe definitivo de una autopsia clínica realizada en un hospital autorizado para realizarlas?",
+  "options": [
+    "a) La dirección médica del hospital",
+    "b) El médico que fue responsable del paciente",
+    "c) El anatomopatólogo que la haya realizado",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "42. Son funciones del celador en los cuidados post mortem:",
+  "options": [
+    "a) Movilizar al cadáver",
+    "b) Asear al cadáver",
+    "c) Retirar sondas y catéteres",
+    "d) Todas las anteriores son funciones del celador en los cuidados post mortem"
+  ],
+  "correct": 0
+},
+{
+  "question": "43. ¿A quién corresponde la función de amortajamiento de un cadáver?",
+  "options": [
+    "a) A los técnicos en cuidados auxiliares de enfermería",
+    "b) Al médico",
+    "c) A los enfermeros que podrán delegar en un técnico auxiliar de enfermería",
+    "d) Al celador con ayuda de los técnicos en cuidados auxiliares de enfermería"
+  ],
+  "correct": 2
+},
+{
+  "question": "44. (SEÑALA LA RESPUESTA INCORRECTA) Uno de los requisitos indispensables en el traslado de un cadáver al mortuorio por parte del celador será:",
+  "options": [
+    "a) El traslado se hará por zonas poco frecuentadas y de forma discreta",
+    "b) El celador irá siempre acompañado por un familiar",
+    "c) El traslado se realizará una vez recibido el parte de traslado y por lugares poco frecuentados",
+    "d) El traslado se realizará preferentemente en la propia cama del fallecido"
+  ],
+  "correct": 1
+},
+{
+  "question": "45. ¿Puede el celador hacer uso de instrumental durante una autopsia?",
+  "options": [
+    "a) No, salvo que así se lo indique el médico anatomopatólogo.",
+    "b) Sí, siempre y cuando se garantice la no desfiguración manifiesta del cadáver",
+    "c) No, en ningún caso hará uso de instrumental sobre el cadáver",
+    "d) Todas las respuestas anteriores son incorrectas"
+  ],
+  "correct": 2
+},
+{
+  "question": "46. ¿Quién limpiará la mesa de autopsias y la sala de autopsias?",
+  "options": [
+    "a) La mesa el celador, y la sala el servicio de limpieza",
+    "b) Ambas labores las realiza el servicio de limpieza",
+    "c) Ambas labores las realizan los TCAE",
+    "d) Ambas labores las realiza el celador"
+  ],
+  "correct": 3
+},
+{
+  "question": "47. ¿Qué artículo del estatuto de personal no sanitario dice que los celadores ayudarán a las enfermeras o personas encargadas a amortajar a los enfermos fallecidos, corriendo a su cargo el traslado de los cadáveres al mortuorio?",
+  "options": [
+    "a) 14.2.19",
+    "b) 14.2.05",
+    "c) 14.2.17",
+    "d) 14.2.12"
+  ],
+  "correct": 0
+},
+{
+  "question": "48. En relación con los pacientes fallecidos, el 'rigor mortis' es:",
+  "options": [
+    "a) El descenso gradual de la temperatura del cuerpo que se produce horas después de la muerte",
+    "b) La descomposición de la materia orgánica muerta por la acción de las bacterias",
+    "c) La práctica mortuoria con rigor que permite la conservación y exposición del cadáver con las debidas garantías sanitarias",
+    "d) El endurecimiento del cuerpo que se produce horas después de la muerte."
+  ],
+  "correct": 3
+},
+{
+  "question": "49. Informará del fallecimiento de un paciente a sus familiares:",
+  "options": [
+    "a) El Jefe de Personal Subalterno",
+    "b) El personal facultativo",
+    "c) El celador de planta o el celador de urgencias en su caso",
+    "d) La dirección del hospital o del centro sanitario en el que se produzca el fallecimiento."
+  ],
+  "correct": 1
+},
+{
+  "question": "50. El amortajamiento de un cadáver debe realizarse:",
+  "options": [
+    "a) En el plazo de 24 horas desde el fallecimiento, en la mayor intimidad",
+    "b) En el menor plazo y en la mayor intimidad posible",
+    "c) Transcurridas 24 horas desde el fallecimiento, en la mayor intimidad",
+    "d) En el menor plazo posible, en presencia de dos de sus familiares."
+  ],
+  "correct": 1
+}
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
