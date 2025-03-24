@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. De los siguientes, la enfermedad terminal no queda definida por:",
+  "options": [
+    "a) Pronóstico de vida inferior a seis meses",
+    "b) Presencia de una enfermedad avanzada, progresiva y curable",
+    "c) Gran impacto emocional en paciente, familia y equipo terapéutico",
+    "d) Las respuestas a y c son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "2. En los servicios de cuidados paliativos, el Síndrome de Burnout lo puede llegar a sufrir:",
+  "options": [
+    "a) El paciente ante la cercanía de la muerte",
+    "b) Los familiares ante la perdida cercana de un ser querido",
+    "c) El personal terapéutico sino es capaz de controlar su implicación emocional",
+    "d) Todos los anteriores"
+  ],
+  "correct": 3
+},
+{
+  "question": "3. ¿Cuántas etapas identifica y describe Kübler-Ross por las que pasan la mayoría de los pacientes en la aceptación de la muerte?",
+  "options": [
+    "a) 4 etapas",
+    "b) 6 etapas",
+    "c) 5 etapas",
+    "d) 3 etapas"
+  ],
+  "correct": 2
+},
+{
+  "question": "4. El duelo puede definirse como:",
+  "options": [
+    "a) conductas, reacciones, sentimientos y pensamientos que siguen a la pérdida",
+    "b) conductas, reacciones, sentimientos y pensamientos que preceden y siguen a la pérdida",
+    "c) conductas, reacciones, sentimientos y pensamientos que preceden a la pérdida",
+    "d) ninguna respuesta es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "5. El duelo en el que el individuo es incapaz de adecuar la respuesta a la pérdida y a sus mecanismos de defensa, debiendo acudir incluso a ayuda profesional y terapéutica es:",
+  "options": [
+    "a) Duelo anticipado",
+    "b) Duelo negado",
+    "c) Duelo patológico",
+    "d) Duelo corto"
+  ],
+  "correct": 2
+},
+{
+  "question": "6. Respecto a la zona mortuoria hospitalaria, señala la respuesta incorrecta:",
+  "options": [
+    "a) Las superficies de la zona de disección deberán ser no porosas, de limpieza fácil y con drenaje rápido.",
+    "b) Las mesas deberán ser de acero inoxidable",
+    "c) En el área de disección, médicos clínicos, postgrado, estudiantes de medicina, enfermería, técnicos, pueden observar las autopsias que se les autorice.",
+    "d) Cámaras frigoríficas adecuadas con puertas a ambos extremos (disección-tanatorio), con bandejas metálicas con ruedas."
+  ],
+  "correct": 3
+},
+{
+  "question": "7. De los siguientes, el método tanatopráxico que impide la aparición de los fenómenos de putrefacción es:",
+  "options": [
+    "a) Conservación temporal",
+    "b) Autopsia",
+    "c) Embalsamamiento",
+    "d) Esterilización cadavérica"
+  ],
+  "correct": 2
+},
+{
+  "question": "8. El enterótomo, ¿para qué se utiliza?",
+  "options": [
+    "a) Para la apertura de intestinos, estómago o tráquea",
+    "b) Para cortar los cartílagos costales",
+    "c) Para coser el cadáver una vez terminada la autopsia",
+    "d) Para apertura de la bóveda craneal."
+  ],
+  "correct": 0
+},
+{
+  "question": "9. Con respecto a los guantes que usa el celador en las autopsias, ¿cuál de estas afirmaciones es correcta?",
+  "options": [
+    "a) Deben de utilizarse siempre que tenga heridas o cortes en la mano",
+    "b) Se recomienda que los guantes sean de látex",
+    "c) Los guantes son la protección de barrera más importante",
+    "d) Una vez utilizados, pueden lavarse con jabón para un nuevo uso"
+  ],
+  "correct": 2
+},
+{
+  "question": "10. ¿Quién es el encargado de sacar de la cámara frigorífica un cadáver que va a ser objeto de autopsia y depositarlo en la mesa de la sala de autopsias?",
+  "options": [
+    "a) El técnico auxiliar de anatomía patológica",
+    "b) El médico anatomopatólogo",
+    "c) El personal de la funeraria",
+    "d) El celador"
+  ],
+  "correct": 3
+},
+{
+  "question": "11. Durante los cuidados postmortem, ¿quién retirará sondas y drenajes que tenga el paciente fallecido?",
+  "options": [
+    "a) El celador",
+    "b) El personal sanitario",
+    "c) El forense",
+    "d) El anatomopatólogo"
+  ],
+  "correct": 1
+},
+{
+  "question": "12. La legislación española establece que los locales destinados para la realización de estudios autópsicos clínicos, debe constar de:",
+  "options": [
+    "a) Una superficie máxima de 20 metros cuadrados",
+    "b) Refrigeradores con capacidad para dos cadáveres por cada doscientas camas de hospital",
+    "c) Una superficie mínima de 25 metros cuadrados",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "13. Siguiendo criterios biológicos, se considerará autopsia fetal:",
+  "options": [
+    "a) Las realizadas a fetos a partir de la 10ª semana de gestación",
+    "b) Las realizadas a fetos a partir de la 14ª semana de gestación",
+    "c) Las realizadas a fetos a partir de la 17ª semana de gestación",
+    "d) Las realizadas a fetos a partir de la 22ª semana de gestación"
+  ],
+  "correct": 0
+},
+{
+  "question": "14. ¿Quién debe autorizar una autopsia medicolegal?",
+  "options": [
+    "a) El forense",
+    "b) La familia",
+    "c) Las autoridades sanitarias",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "15. Al finalizar la autopsia, el celador deberá rellenar los huecos viscerales con:",
+  "options": [
+    "a) Aerosol de película plástica",
+    "b) Papel",
+    "c) Algodón esteril",
+    "d) Paños impregnados en base alcohólica"
+  ],
+  "correct": 1
+},
+{
+  "question": "16. Las autopsias clínicas están reguladas por:",
+  "options": [
+    "a) La Ley de Enjuiciamiento Criminal aprobada Real Decreto de 14 de Septiembre de 1882",
+    "b) Decreto 161/2002 de 19 de noviembre, por el que se aprueba el Reglamento de Policía Sanitaria Mortuoria de la Comunidad Autónoma de Extremadura",
+    "c) La Ley 29/1980 de 21 de junio, y por el Real Decreto 2230/1982 de 18 de junio, que la desarrolla.",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "17. El lavado de manos tras la autopsia será:",
+  "options": [
+    "a) Antiséptico",
+    "b) Aséptico",
+    "c) Desinfectante",
+    "d) Higiénico"
+  ],
+  "correct": 0
+},
+{
+  "question": "18. Señala la respuesta correcta respecto al fenómeno denominado algor mortis:",
+  "options": [
+    "a) Se considera un signo tardío de muerte",
+    "b) No es un signo precoz de muerte",
+    "c) Es un fenómeno reversible tras 12-36 horas",
+    "d) Consiste en enfriamiento del cadáver"
+  ],
+  "correct": 4
+},
+{
+  "question": "19. Siguiendo criterios de viabilidad, los fetos con menos de 22 semanas de gestación deben considerarse",
+  "options": [
+    "a) Autopsias fetales",
+    "b) Biopsias",
+    "c) Autopsias neonatales",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "20. ¿Deberá el celador limpiar la mesa de autopsias?",
+  "options": [
+    "a) Sí, cuando no haya servicio de limpieza",
+    "b) No, esa función es del servicio de limpieza",
+    "c) Sí, en cada turno de trabajo",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 3
+},
+{
+  "question": "21. El anatomopatólogo, en un momento de la autopsia pide al celador que pese los riñones del cadáver. Ante esa petición, el celador:",
+  "options": [
+    "a) Los pesará",
+    "b) No los pesará ya que no puede hacer uso de instrumental sobre el cadáver.",
+    "c) Sólo los pesará si se lo da por escrito.",
+    "d) Los pesará si así lo autoriza el jefe de personal subalterno"
+  ],
+  "correct": 1
+},
+{
+  "question": "22. Realizando una autopsia, el personal que la realice portará:",
+  "options": [
+    "a) Gorro que cubra completamente el pelo.",
+    "b) Mascarilla quirúrgica o de alta resolución si es de alto riesgo",
+    "c) Gafas protectoras",
+    "d) Todas las respuestas son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "23. Si se aplica un criterio temporal, se consideran autopsias fetales las realizadas a fetos partir de:",
+  "options": [
+    "a) Las realizadas a fetos a partir de la 10ª semana de gestación",
+    "b) Las realizadas a fetos a partir de la 14ª semana de gestación",
+    "c) Las realizadas a fetos a partir de la 17ª semana de gestación",
+    "d) Las realizadas a fetos a partir de la 22ª semana de gestación"
+  ],
+  "correct": 0
+},
+{
+  "question": "24. ¿Qué norma de entre las siguientes recoge una clasificación de cadáveres según el riesgo biológico de los mismos?",
+  "options": [
+    "a) La Ley de Enjuiciamiento Criminal aprobada Real Decreto de 14 de Septiembre de 1882",
+    "b) La Ley 29/1980 de 21 de junio de Autopsias Clínicas",
+    "c) El Decreto 161/2002, de 19 de noviembre que aprueba el Reglamento de Policía Sanitaria Mortuoria de Extremadura",
+    "d) El Real Decreto 2230/1982 de 18 de junio que desarrolla la ley de la opción b)"
+  ],
+  "correct": 2
+},
+{
+  "question": "25. ¿En qué caso de los siguientes, será obligatorio el embalsamamiento?",
+  "options": [
+    "a) En los traslados al extranjero o traslados por vía aérea o marítima.",
+    "b) Si la inhumación no puede realizarse antes de las 48 horas",
+    "c) Las respuestas a y b son correctas",
+    "d) Ninguna respuesta es correcta"
+  ],
+  "correct": 2
+}
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

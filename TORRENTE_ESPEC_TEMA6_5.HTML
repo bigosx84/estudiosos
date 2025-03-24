@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. ¿Cómo se debe realizar el traslado de un cadáver al mortuorio?",
+  "options": [
+    "a) Totalmente tapado.",
+    "b) De manera discreta.",
+    "c) Que no haya personas en los pasillos.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "2. ¿Cómo se realiza el cerramiento del cadáver después de la autopsia?",
+  "options": [
+    "a) Mediante el cosido de la piel",
+    "b) Mediante pegado de la piel",
+    "c) Mediante el uso de silicona orgánica",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 0
+},
+{
+  "question": "3. ¿Cómo se realiza la abertura del tórax y el abdomen en las autopsias?",
+  "options": [
+    "a) Con una incisión desde el cuello hasta el ano, completada, para el tórax, con una resección de la parte ósea que comprende el esternón y la parte anterior de las costillas",
+    "b) Con una incisión desde el cuello hasta el pubis, completada, para el tórax, con una resección de la parte ósea que comprende el esternón y la parte anterior de las costillas",
+    "c) Con una incisión desde el cuello hasta el pubis, completada, para el tórax, con una resección de la parte ósea que comprende el omoplato y la parte posterior de las costillas",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 1
+},
+{
+  "question": "4. ¿Con qué material deben los celadores rellenar los huecos del cadáver después de la autopsia?",
+  "options": [
+    "a) Algodón",
+    "b) Papel de celulosa",
+    "c) Cartón blando",
+    "d) Líquido embalsamador"
+  ],
+  "correct": 1
+},
+{
+  "question": "5. ¿Cuál de las siguientes funciones no pertenece al celador destinado en mortuorio?",
+  "options": [
+    "a) Llevar el control del libro de registro.",
+    "b) Informar a los familiares acerca de las dependencias del hospital.",
+    "c) Revisar periódicamente el cadáver para sacarlo o subirlo a la cámara.",
+    "d) Informar a los familiares acerca del proceso de enterramiento."
+  ],
+  "correct": 1
+},
+{
+  "question": "6. ¿Cuál de los siguientes datos del fallecido deben figurar en el libro de registro de la sala de mortuorio?",
+  "options": [
+    "a) Número de orden del registro.",
+    "b) Servicio de procedencia; planta y cama.",
+    "c) Fecha y hora de entrada en el mortuorio.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "7. ¿Cuál de los siguientes datos no debe figurar en la ficha identificativa, que se debe rellenar antes de bajar al cadáver al mortuorio?",
+  "options": [
+    "a) Fecha de nacimiento.",
+    "b) Nombre y apellidos del fallecido.",
+    "c) Día de ingreso en el hospital.",
+    "d) Día de fallecimiento."
+  ],
+  "correct": 2
+},
+{
+  "question": "8. ¿Cuál de los siguientes no es un destino final de todo cadáver?",
+  "options": [
+    "a) Para la exposición.",
+    "b) Enterramiento en lugar autorizado.",
+    "c) Incineración o cremación.",
+    "d) Utilización para fines científicos o de enseñanza."
+  ],
+  "correct": 0
+},
+{
+  "question": "9. ¿Cuál de los siguientes pasos no se debe dar cuando un enfermo fallece en una habitación?",
+  "options": [
+    "a) Dejarlo sin tapar.",
+    "b) Cerrar los ojos al cadáver.",
+    "c) Cerrar la boca del fallecido.",
+    "d) Estirar los brazos y piernas del fallecido."
+  ],
+  "correct": 0
+},
+{
+  "question": "10. ¿Cuál es el artículo de Estatuto de Personal No Sanitario donde se recogen las funciones de los celadores con los enfermos fallecidos?",
+  "options": [
+    "a) El 14.2.18.",
+    "b) El 14.2.20.",
+    "c) El 14.2.17.",
+    "d) El 14.2.19."
+  ],
+  "correct": 2
+},
+{
+  "question": "11. ¿Cuándo un cadáver tiene que ser embalsamado de forma obligatoria?",
+  "options": [
+    "a) A petición de la familia.",
+    "b) Cuando se traslada a otra Comunidad Autónoma.",
+    "c) En los enterramientos en criptas.",
+    "d) Todas son correctas."
+  ],
+  "correct": 2
+},
+{
+  "question": "12. ¿Cuántas son las cavidades del cuerpo?",
+  "options": [
+    "a) Tres",
+    "b) Cinco",
+    "c) Cuatro",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 2
+},
+{
+  "question": "13. ¿De quién es función el traslado del cadáver desde la habitación a la sala de mortuorio?",
+  "options": [
+    "a) Del celador de mortuorio.",
+    "b) Del celador de la planta.",
+    "c) Del celador de retén.",
+    "d) Del encargado de turno."
+  ],
+  "correct": 1
+},
+{
+  "question": "14. ¿Desde cuándo se computará el tiempo para la definición de cadáver?",
+  "options": [
+    "a) Desde el momento del fallecimiento.",
+    "b) Desde el momento en que se completa el enterramiento.",
+    "c) Cuando ha salido del mortuorio.",
+    "d) Desde la fecha y hora que figure en la inscripción de defunción en el Registro Civil."
+  ],
+  "correct": 0
+},
+{
+  "question": "15. ¿En cuál de las siguientes circunstancias se puede introducir el cadáver en la cámara frigorífica antes de las 24 horas?",
+  "options": [
+    "a) Cuando lo solicite la familia.",
+    "b) Cuando lo decida la funeraria.",
+    "c) Cuando haya una intervención judicial.",
+    "d) Nunca se puede introducir antes de las 24 horas."
+  ],
+  "correct": 2
+},
+{
+  "question": "16. ¿En cuál de los siguientes tipos de muerte debe practicarse una autopsia?",
+  "options": [
+    "a) Muerte por causa desconocida",
+    "b) Muerte por suicidio",
+    "c) Muerte por homicidio",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "17. ¿Quién debe informar a los familiares del fallecimiento de una paciente?",
+  "options": [
+    "a) Los facultativos.",
+    "b) Las enfermeras.",
+    "c) El celador.",
+    "d) El director del hospital."
+  ],
+  "correct": 0
+},
+{
+  "question": "18. ¿Quién es el encargado de amortajar al enfermo?",
+  "options": [
+    "a) Los enfermeros.",
+    "b) Los celadores.",
+    "c) Los auxiliares de enfermería.",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 2
+},
+{
+  "question": "19. ¿Quién es el encargado de poder inspeccionar la actuación de los facultativos acreditados, para la realización del embalsamamiento y conservación?",
+  "options": [
+    "a) El gerente del hospital.",
+    "b) El director del Servicio Extremeño de Salud.",
+    "c) El Ministerio de Sanidad y Consumo.",
+    "d) La Consejería de Sanidad y Dependencia."
+  ],
+  "correct": 3
+},
+{
+  "question": "20. ¿Quién posee la competencia para regular en materia de sanidad mortuoria?",
+  "options": [
+    "a) Las Comunidades Autónomas.",
+    "b) El INSALUD.",
+    "c) El Ministerio de Sanidad y Consumo.",
+    "d) El área de salud."
+  ],
+  "correct": 0
+},
+{
+  "question": "21. ¿Quién realiza los embalsamamientos y las conservaciones temporales?",
+  "options": [
+    "a) El anatomopatólogo.",
+    "b) El encargado de la funeraria.",
+    "c) El celador de mortuorio.",
+    "d) Un facultativo debidamente acreditado."
+  ],
+  "correct": 3
+},
+{
+  "question": "22. A la hora de realizar el amortajamiento, ¿qué se hará si no pueden cerrarse los ojos del cadáver?",
+  "options": [
+    "a) Se colocará sobre cada uno una torunda húmeda de algodón",
+    "b) Se colocará alrededor de los mismos una cinta de algodón atada a la nuca",
+    "c) Se colocará sobre los mismos una torunda de poliéster",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "23. Ante un cadáver, siempre se debe proceder:",
+  "options": [
+    "a) Lavado del cuerpo.",
+    "b) Aseo del cuerpo.",
+    "c) Afeitado.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "24. Cuando a un cadáver se le va a realizar una autopsia, los brazos se colocan:",
+  "options": [
+    "a) Extendidos.",
+    "b) Extendidos pegados a los lados del cuerpo.",
+    "c) Cruzados.",
+    "d) Sobre la nuca."
+  ],
+  "correct": 1
+},
+{
+  "question": "25. Cuando un facultativo tenga la sospecha de contaminación radioactiva de un cadáver, se lo comunicará:",
+  "options": [
+    "a) Al gerente de Área.",
+    "b) A la Consejería de Sanidad y Dependencia.",
+    "c) Al Ministerio de Sanidad y Consumo.",
+    "d) Todas son correctas."
+  ],
+  "correct": 1
+},
+{
+  "question": "26. El cuerpo del paciente, después de la muerte, se colocará normalmente:",
+  "options": [
+    "a) En posición de decúbito prono, con los brazos a los lados, las palmas hacia abajo o cruzando las manos sobre el abdomen",
+    "b) En posición de supino, con los brazos a los lados, las palmas hacia abajo o cruzando las manos sobre el abdomen",
+    "c) En posición de supino, con los brazos extendidos y las palmas hacia arriba",
+    "d) En posición de decúbito prono, con los brazos extendidos y las palmas hacia arriba"
+  ],
+  "correct": 1
+},
+{
+  "question": "27. El mortuorio es aquella dependencia donde el fallecido:",
+  "options": [
+    "a) Permanece al menos 24 horas.",
+    "b) Donde se produce el enterramiento.",
+    "c) Donde se realiza la misa fúnebre.",
+    "d) Aquella dependencia del hospital donde el fallecido permanece temporalmente."
+  ],
+  "correct": 3
+},
+{
+  "question": "28. En la abertura del cráneo, ¿qué instrumento utilizaremos para abrir la caja ósea?",
+  "options": [
+    "a) Bisturí",
+    "b) Segueta",
+    "c) Sierra.",
+    "d) Tenazas"
+  ],
+  "correct": 2
+},
+{
+  "question": "29. En una autopsia, ¿cómo se hace la abertura del raquis?",
+  "options": [
+    "a) Mediante dos incisiones longitudinales a lo largo de la columna vertebral, y de una sección de las vértebras con raquítomo",
+    "b) Mediante tres incisiones longitudinales a lo largo de la columna vertebral, y de una sección de las vértebras con raquítomo",
+    "c) Mediante dos incisiones longitudinales a lo largo de la columna vertebral, y de dos secciones de las vértebras con raquítomo",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 0
+},
+{
+  "question": "30. En la ficha identificativa que se debe realizar antes del traslado del cadáver al mortuorio, debe figurar el siguiente dato:",
+  "options": [
+    "a) La localidad donde reside.",
+    "b) Fecha de nacimiento.",
+    "c) El número de historia clínica.",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "31. En una autopsia, ¿dónde se buscan en particular las señales de violencia?",
+  "options": [
+    "a) En los órganos genitales",
+    "b) En el cuello",
+    "c) En las piernas",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "32. En una habitación, donde ha fallecido un enfermo, ¿cuál de las siguientes funciones es competencia del celador?",
+  "options": [
+    "a) Identificar al fallecido.",
+    "b) Amortajar al fallecido.",
+    "c) Informar a los familiares.",
+    "d) El traslado del cadáver al mortuorio."
+  ],
+  "correct": 4
+},
+{
+  "question": "33. Es una función del celador de autopsia:",
+  "options": [
+    "a) Extraer el cadáver de la cámara frigorífica (o del lugar donde se encuentre, si no está en las cámaras) y conducirlo a la sala de Anatomía Patológica",
+    "b) Preparar el instrumental y los elementos auxiliares",
+    "c) Desamortajar el cadáver, si procede, y prepararlo sobre la mesa de autopsias en posición adecuada para la realización de la autopsia",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 3
+},
+{
+  "question": "34. La autopsia también puede denominarse:",
+  "options": [
+    "a) Exhumación",
+    "b) Necropsia",
+    "c) Disección",
+    "d) Todas las respuestas anteriores son correctas"
+  ],
+  "correct": 1
+},
+{
+  "question": "35. La colocación de los brazos de un cadáver depende de:",
+  "options": [
+    "a) No depende de nada, siempre se colocan igual.",
+    "b) Depende si se le va a realizar autopsia o no.",
+    "c) Son correctas a) y b)",
+    "d) Ninguna es correcta."
+  ],
+  "correct": 1
+},
+{
+  "question": "36. La disminución gradual de la temperatura del cuerpo después de la muerte, se denomina:",
+  "options": [
+    "a) Algor mortis",
+    "b) Rigor mortis",
+    "c) Rictus mortis",
+    "d) Alter mortis"
+  ],
+  "correct": 0
+},
+{
+  "question": "37. Las vendas que se usan en el amortajamiento serán de:",
+  "options": [
+    "a) 2,5 cm",
+    "b) 2,1 cm",
+    "c) 3 cm",
+    "d) Ninguna de las respuestas anteriores es correcta"
+  ],
+  "correct": 3
+},
+{
+  "question": "38. No es una cavidad del cuerpo:",
+  "options": [
+    "a) El tórax",
+    "b) El abdomen",
+    "c) El fémur",
+    "d) El cráneo"
+  ],
+  "correct": 2
+},
+{
+  "question": "39. No forma parte del material necesario para realizar el amortajamiento:",
+  "options": [
+    "a) Solución salina",
+    "b) Bolígrafo",
+    "c) Alcohol etílico",
+    "d) Bata"
+  ],
+  "correct": 1
+},
+{
+  "question": "40. Para poder estudiar las funciones del celador que trabaja en la sala de autopsia tendrá que tener en cuenta:",
+  "options": [
+    "a) El artículo 14.2.20 del Estatuto del Personal No Sanitario.",
+    "b) Una resolución de 22 de mayo de 1981.",
+    "c) La sentencia de 3 de enero de la Sala de lo Social del Tribunal Superior de Justicia de Madrid.",
+    "d) Todas son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "41. Pertenecen al Grupo 1 los cadáveres cuya causa de defunción es causada por:",
+  "options": [
+    "a) Cólera.",
+    "b) Peste.",
+    "c) Rabia.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "42. Señale la respuesta incorrecta respecto a la preparación del cuerpo del difunto:",
+  "options": [
+    "a) Las zonas sucias del cuerpo se lavan",
+    "b) Las sábanas limpias se ajustan para cubrir al paciente hasta los hombros",
+    "c) Los párpados se mantendrán abiertos",
+    "d) Se coloca una almohada bajo la cabeza y los hombros para impedir que la sangre decolore la cara acumulándose en ella"
+  ],
+  "correct": 2
+},
+{
+  "question": "43. Tanatopraxia es toda práctica mortuoria que permite:",
+  "options": [
+    "a) El estudio del cadáver.",
+    "b) La conservación de cadáveres.",
+    "c) La exposición de los cadáveres.",
+    "d) Son correctas b) y c)."
+  ],
+  "correct": 3
+},
+{
+  "question": "44. ¿Quién debe informar a los familiares de un fallecido acerca de los trámites para el enterramiento?",
+  "options": [
+    "a) Los celadores.",
+    "b) Los facultativos.",
+    "c) El personal de enfermería.",
+    "d) El Jefe de Personal Subalterno."
+  ],
+  "correct": 3
+},
+{
+  "question": "45. Un cadáver es:",
+  "options": [
+    "a) Todo cuerpo humano desde el momento de la muerte hasta su total destrucción orgánica.",
+    "b) Proceso que conduce a la descomposición de la materia orgánica.",
+    "c) Todo cuerpo humano durante los cinco años siguientes a la muerte real.",
+    "d) Todas son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "46. Un crematorio es el lugar donde:",
+  "options": [
+    "a) Incineran los cadáveres.",
+    "b) Incineran los restos humanos.",
+    "c) Incineran restos cadavéricos.",
+    "d) Todas son correctas."
+  ],
+  "correct": 3
+},
+{
+  "question": "47. ¿Cuál es el método más habitual para la preparación del cadáver en las autopsias medicolegales?",
+  "options": [
+    "a) El de Mata",
+    "b) El de Virchow",
+    "c) El de Ghon",
+    "d) El de Rokitansky"
+  ],
+  "correct": 1
+},
+{
+  "question": "48. En el caso de que en el transcurso de una autopsia el celador se pinche con material punzante utilizado en la misma debe:",
+  "options": [
+    "a) Dejar salir sangre por el lugar de punción y lavar con agua y jabón.",
+    "b) Acudir al servicio de urgencias del hospital sin necesidad de pasar por el servicio de admisión para comenzar el protocolo ARBIO.",
+    "c) Taponar el lugar de punción y vigilar en las siguientes 24 horas la aparición de sudoración, fiebre o malestar general.",
+    "d) Todas son correctas."
+  ],
+  "correct": 0
+},
+{
+  "question": "49. El informe provisional de una autopsia clínica es realizado por el médico anatomopatólogo responsable y debe estar disponible en un tiempo aproximado de:",
+  "options": [
+    "a) 24 horas",
+    "b) 48 horas",
+    "c) 72 horas",
+    "d) 96 horas"
+  ],
+  "correct": 1
+},
+{
+  "question": "50. ¿Cuál es el método más habitual para la preparación del cadáver en las autopsias medicolegales?",
+  "options": [
+    "a) El de Mata",
+    "b) El de Virchow",
+    "c) Lanister",
+    "d) El de Port"
+  ],
+  "correct": 1
+}
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
