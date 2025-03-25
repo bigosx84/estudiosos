@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+   {
+    "question": "1. Las precauciones estándar son aquellas que se aplican:",
+    "options": [
+      "a) Para cuidado de pacientes aislados.",
+      "b) Para el cuidado de pacientes con infección hemorrágica.",
+      "c) Para el cuidado de todos los pacientes.",
+      "d) Para el cuidado de pacientes infectocontagiosos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "2. Cuando apliquemos las normas de precauciones de aislamiento aplicaremos:",
+    "options": [
+      "a) Sólo las precauciones específicas en función del mecanismo de transmisión del agente infeccioso: respiratorias, por gotas y por contacto.",
+      "b) Sólo las precauciones estándar.",
+      "c) Precauciones estándar y precauciones específicas.",
+      "d) Los aislamientos para enfermedades infecciosas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "3. Independientemente de su diagnóstico o presunto grado de infección aquellas precauciones que deben aplicarse a todos los pacientes se denominan:",
+    "options": [
+      "a) Precauciones básicas.",
+      "b) Precauciones estándar.",
+      "c) Precauciones preventivas.",
+      "d) Precauciones basadas en la transmisión."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "4. Según el Decreto 109/2015, de 19 de mayo, por el que se regula la producción y gestión de los residuos sanitarios en la Comunidad Autónoma de Extremadura, los residuos sanitarios sin riesgo de infección están encuadrados:",
+    "options": [
+      "a) Grupo III.",
+      "b) Grupo V.",
+      "c) Grupo I.",
+      "d) Grupo II."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "5. En los aislamientos para prevenir la transmisión por gotas, ¿cuál de medidas no se considera correcta?",
+    "options": [
+      "a) El paciente debe portar mascarilla quirúrgica.",
+      "b) No es necesaria de forma rutinaria la protección para los ojos.",
+      "c) Se debe limitar el traslado del paciente fuera de la habitación a fines clínicamente necesarios.",
+      "d) Las habitaciones serán individuales siempre y en todas las circunstancias."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "6. El Decreto 109/2015, de 19 de mayo, por el que se regula la producción y gestión de los residuos sanitarios en la Comunidad Autónoma de Extremadura define residuo sanitario como: 'cualquier sustancia u objeto generado en la realización de actividades sanitarias o en la aplicación de tratamientos o técnicas de cuidado y mejora estética, que su poseedor deseche o tenga la intención o la obligación de desechar y se encuentre incluido en alguno de los grupos:",
+    "options": [
+      "a) I, II, III y IV.",
+      "b) III, IV, V y VI.",
+      "c) II, III, IV y V.",
+      "d) I, II, III, IV, V, VI y VII."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "7. Los residuos peligrosos con riesgo de infección son los producidos como resultado de la actividad sanitaria o de cuidado y mejora estética cuya recogida y eliminación es objeto de requisitos especiales para la prevención de infecciones y están incluidos en:",
+    "options": [
+      "a) Grupo III.",
+      "b) Grupo V.",
+      "c) Grupo I.",
+      "d) Grupo II."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "8. El grupo V recoge los residuos sanitarios:",
+    "options": [
+      "a) Citotóxicos y citostáticos.",
+      "b) Residuos de naturaleza química, tanto peligrosos como no peligrosos.",
+      "c) Residuos peligrosos con riesgo de infección.",
+      "d) Residuos asimilables a los domésticos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "9. Las precauciones estándar deben aplicarse:",
+    "options": [
+      "a) En los lugares más vulnerables de contraer una infección.",
+      "b) Solamente en los quirófanos.",
+      "c) En todos los puntos de atención.",
+      "d) Únicamente en la zona de urgencias, ya sea en atención primaria como en atención especializada, ya que es lugar de más tránsito de pacientes y usuarios."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "10. La higiene de manos, ¿forma parte de las precauciones universales o estándar?",
+    "options": [
+      "a) No, no es una medida incluida en las precauciones estándar.",
+      "b) Sí, la higiene de manos forma parte de las precauciones estándar.",
+      "c) Las precauciones estándar solo recomiendan la utilización del EPI.",
+      "d) No, solo es necesario el uso de guantes que sustituye la higiene de manos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "11. Para la recogida de los residuos citostáticos/citotóxicos se utilizarán contenedores:",
+    "options": [
+      "a) De color verde.",
+      "b) Bolsas estancas de color amarillo.",
+      "c) Contenedores de color rojo.",
+      "d) No necesitan ninguna segregación especial."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "12. La medida más eficaz para prevenir las infecciones nosocomiales es:",
+    "options": [
+      "a) Las precauciones estándar.",
+      "b) Las precauciones basadas en la vía de transmisión o precauciones específicas.",
+      "c) La higiene de manos.",
+      "d) Los aislamientos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "13. Las precauciones basadas en la vía de transmisión se aplicarán a:",
+    "options": [
+      "a) A todo paciente que requiera atención sanitaria por todos los trabajadores sanitarios en todos los puntos de atención.",
+      "b) A los pacientes específicos, en los que existe sospecha o confirmación de una determinada infección.",
+      "c) A todos los pacientes atendidos en las urgencias de un hospital.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "14. No será necesario el uso de mascarilla por parte del paciente en aislamiento, cuando se realice un traslado fuera de la habitación en los casos en que la vía de transmisión del agente infeccioso sea:",
+    "options": [
+      "a) Por contacto.",
+      "b) Por transmisión aérea.",
+      "c) Por gotas.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "15. En los aislamientos de pacientes con enfermedad infecciosa cuya vía de transmisión sea por gotas:",
+    "options": [
+      "a) Al paciente siempre se le ubicará en una habitación individual.",
+      "b) El personal sanitario que entre en la habitación usará mascarilla de alta resolución.",
+      "c) Cuando la atención al paciente se realice a una distancia igual o menor a 1 metro será preciso el uso de mascarilla y gafas protectoras.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "16. ¿Quiénes deberán aplicar las precauciones estándar?",
+    "options": [
+      "a) Sólo el personal sanitario.",
+      "b) Sólo el facultativo responsable de la atención al paciente.",
+      "c) Sólo facultativos, enfermeras y supervisora.",
+      "d) Todo el personal encargado de la atención al paciente."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "17. Forma parte de las precauciones estándar:",
+    "options": [
+      "a) Uso de guantes.",
+      "b) Esterilización y desinfección del material clínico.",
+      "c) Higiene de manos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "18. Cuando se realice un traslado fuera de la habitación de un paciente en aislamiento, el uso de mascarilla por parte del paciente es necesario como medida de precaución específica basada en la vía de transmisión, si dicha vía es por:",
+    "options": [
+      "a) Contacto.",
+      "b) Gotas.",
+      "c) Aéreo.",
+      "d) Las respuestas b y c son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "19. Para prevenir la transmisión por vía aérea de enfermedades infecciosas, es una precaución incorrecta:",
+    "options": [
+      "a) La puerta de la habitación permanecerá cerrada.",
+      "b) Se podrá compartir habitación si los pacientes tienen igual diagnóstico y agente patógeno.",
+      "c) Habitación individual con presión positiva.",
+      "d) El personal sanitario entrará en la habitación con la mascarilla de alta resolución."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "20. Las mascarillas más adecuadas para prevenir la transmisión por vía aérea de enfermedades infecciosas:",
+    "options": [
+      "a) FFP2.",
+      "b) FFP3.",
+      "c) N95.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "21. Los tres eslabones de la cadena epidemiológica son:",
+    "options": [
+      "a) Fuente de infección, mecanismo de transmisión y huésped.",
+      "b) Fuente de infección, mecanismo de transmisión y puerta de entrada.",
+      "c) Fuente de infección, fómites y vías de entrada.",
+      "d) Fuente de infección, fuente de salida y huésped susceptible."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "22. En el aislamiento de contacto, indica la respuesta incorrecta:",
+    "options": [
+      "a) Habitación individual.",
+      "b) Higiene de manos.",
+      "c) Guantes.",
+      "d) Transporte con mascarilla quirúrgica."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. Los pacientes grandes quemados, requieren aislamiento:",
+    "options": [
+      "a) De contacto.",
+      "b) Estricto.",
+      "c) Respiratorio.",
+      "d) Aislamiento inverso."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "24. Las precauciones estándar para prevenir la infección nosocomial, supone:",
+    "options": [
+      "a) Necesariamente el uso de guantes estériles.",
+      "b) Necesariamente el uso de la bata estéril.",
+      "c) Cambiarse de guantes en caso de rotura.",
+      "d) Todas las respuestas son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "25. El lugar donde los microorganismos viven, se desarrollan y se multiplican se denomina:",
+    "options": [
+      "a) Huésped susceptible.",
+      "b) Vector.",
+      "c) Reservorio.",
+      "d) Puerta de entrada."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "26. Ante un paciente sujeto a un aislamiento por gotas de Pflugge es correcto:",
+    "options": [
+      "a) Sería suficiente con la aplicación de las precauciones estándar.",
+      "b) El uso de la mascarilla cuando se esté trabajando a menos de 1 metro del paciente.",
+      "c) En los traslados del paciente no será necesario el uso de mascarilla por su parte.",
+      "d) El uso de guantes puede sustituir a la higiene de manos si son estériles."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "27. ¿Cuál de las siguientes sería la manera más adecuada de actuar en aplicación de las precauciones estándar?",
+    "options": [
+      "a) Bastará con lavarse las manos antes de empezar a trabajar.",
+      "b) Usar bata estéril y guantes.",
+      "c) Usar guantes limpios, no estériles, cuando se toque sangre, fluidos corporales, secreciones, excreciones y artículos contaminados.",
+      "d) Usar gorro y calzas estériles que se desecharán tras su uso."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "28. Ante un paciente con aislamiento de contacto, el celador:",
+    "options": [
+      "a) Deberá llevar puestos los guantes cuando entre en la habitación del paciente aislado.",
+      "b) Llevará puesta la mascarilla siempre que vaya a entrar en la habitación del paciente aislado.",
+      "c) No es preciso lavarse las manos después de quitarse los guantes usados.",
+      "d) El celador no puede entrar en la habitación de un paciente con aislamiento."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "29. Una infección nosocomial es:",
+    "options": [
+      "a) Aquella que se desarrolla en el hospital previa incubación fuera del mismo.",
+      "b) Son infecciones que necesitan algún tipo de aislamiento.",
+      "c) Son infecciones que siempre necesitan precauciones específicas además de las precauciones estándar.",
+      "d) Que es relativa al hospital o se origina en él."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "30. En un paciente con tuberculosis, es imprescindible:",
+    "options": [
+      "a) Utilizar ropa aséptica.",
+      "b) Uso de gorro, mascarillas y guantes.",
+      "c) Uso de calzas, mascarilla, guantes y extremar higiene.",
+      "d) Uso de mascarilla de alta resolución."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "31. No es un fómite:",
+    "options": [
+      "a) Vajillas y cubiertos.",
+      "b) Agua y alimentos.",
+      "c) Material quirúrgico.",
+      "d) Juguetes y ropa."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "32. Ante un aislamiento de contacto deberemos:",
+    "options": [
+      "a) Adoptar precauciones estándar.",
+      "b) Usar bata cuando vayamos a tener contacto con el paciente.",
+      "c) Lavado de manos antes del contacto con el paciente y después de quitarse los guantes.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "33. En un aislamiento entérico, no es necesario:",
+    "options": [
+      "a) Lavado de manos.",
+      "b) Control de objetos contaminados.",
+      "c) Uso de mascarilla.",
+      "d) Uso de bata, cuando haya contacto directo con el paciente o fómites."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "34. La infección por salmonella debe estar sujeta a un aislamiento:",
+    "options": [
+      "a) Respiratorio.",
+      "b) Por gotas.",
+      "c) De contacto.",
+      "d) Aéreo."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "35. El aislamiento aéreo requiere entre sus medidas:",
+    "options": [
+      "a) Presión positiva en la habitación del paciente infeccioso.",
+      "b) Cambiar frecuentemente al paciente de habitación.",
+      "c) Reducir al mínimo el número de visitas.",
+      "d) Uso por parte del personal sanitario de mascarilla quirúrgica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "36. Llamamos fómites:",
+    "options": [
+      "a) A los agentes infecciosos.",
+      "b) Al huésped susceptible de enfermedades infecciosas.",
+      "c) A las personas infectadas susceptibles de transmitir la enfermedad.",
+      "d) A los objetos contaminados por microorganismos que transmiten enfermedades."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "37. En las instituciones sanitarias, en prevención de las enfermedades nosocomiales, es correcto:",
+    "options": [
+      "a) Aislamiento de los pacientes infectocontagiosos.",
+      "b) Declaración de las enfermedades transmisibles.",
+      "c) Desinfección en caso de epidemias o brotes.",
+      "d) Todas las respuestas anteriores son medidas correctas."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "38. ¿Qué tipo de aislamiento hospitalario se debe aplicar a un paciente con tratamiento inmunosupresor o inmunodeprimido?",
+    "options": [
+      "a) Estricto.",
+      "b) Protector.",
+      "c) Inverso.",
+      "d) Las respuestas b y c son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "39. Son medidas de prevención de la infección hospitalaria:",
+    "options": [
+      "a) El lavado de manos.",
+      "b) La esterilización.",
+      "c) Utilización de forma rutinaria de elementos barrera.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "40. En un aislamiento respiratorio, señale la opción correcta:",
+    "options": [
+      "a) La habitación será individual.",
+      "b) La puerta puede permanecer abierta.",
+      "c) El paciente cuando abandone la habitación para la realización de una prueba, debe llevar puesta mascarilla.",
+      "d) Las respuestas A y C son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "41. ¿Cuál de las siguientes es la medida más eficaz para evitar infecciones entre pacientes y el personal que lo atiende?",
+    "options": [
+      "a) Uso de guantes estériles.",
+      "b) Uso de calzas, bata y mascarilla.",
+      "c) Aislamiento del paciente en habitación individual o agrupamiento de cohortes.",
+      "d) Lavado de manos."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "42. El mecanismo de transmisión por núcleos de Wells, se realiza a través del:",
+    "options": [
+      "a) Aparato digestivo.",
+      "b) Vías urinarias.",
+      "c) Aparato respiratorio.",
+      "d) Vía hemática."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "43. El aislamiento inverso se emplea en:",
+    "options": [
+      "a) Pacientes contagiosos por vía respiratoria.",
+      "b) Pacientes contagiosos por vía gotas.",
+      "c) Pacientes que permanecen aislados en UCI.",
+      "d) Pacientes que tienen disminuido su sistema inmunológico."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "44. De los siguientes residuos sanitarios, ¿cuál de ellos pertenece al grupo III según la clasificación que hace el decreto 109/2015 sobre su eliminación?",
+    "options": [
+      "a) Objetos cortantes o punzantes.",
+      "b) Vacunas vivas.",
+      "c) Vacunas atenuadas.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "45. La eliminación de residuos sanitarios cortantes o punzantes pertenecientes al grupo III deberá realizarse:",
+    "options": [
+      "a) En cubos herméticos de color verde.",
+      "b) En cubos herméticos de color amarillo.",
+      "c) En cubos de color azul.",
+      "d) En cubos de color rojo."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "46. Los objetos cortantes y punzantes se introducirán en jeringuilleros con sistema de separación de agujas, y cierre provisional y definitivo. Se identificarán mediante el pictograma de:",
+    "options": [
+      "a) Biorriesgo.",
+      "b) Biosanitario.",
+      "c) Residuo sólido peligroso.",
+      "d) Todas las respuestas anteriores son incorrectas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "47. Entre las características de los contenedores pertenecientes a los grupos III y IV se encuentran:",
+    "options": [
+      "a) Rigidez.",
+      "b) Opacidad.",
+      "c) Asepsia total en su exterior.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "48. Según la clasificación de grupos en cuanto a la segregación de residuos sanitarios que hace el decreto 109/2015, el grupo III estaría formado por aquellos:",
+    "options": [
+      "a) Objetos cortantes o punzantes únicamente.",
+      "b) Residuos sanitarios con riesgo de infección y objetos cortantes o punzantes en contacto con citostáticos.",
+      "c) Residuos sanitarios sin riesgo de infección y objetos cortantes o punzantes.",
+      "d) Residuos sanitarios con riesgo de infección y objetos cortantes o punzantes."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "49. Según la clasificación de grupos en cuanto a la segregación de residuos sanitarios que hace el decreto 109/2015, no pertenecen al grupo III:",
+    "options": [
+      "a) Pañales con restos de sangre y secreciones.",
+      "b) Lancetas.",
+      "c) Portaobjetos.",
+      "d) Cultivos de agentes infecciosos y material de desecho en contacto con ellos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "50. ¿Quién será el encargado de decidir el tipo de aislamiento de un determinado paciente?",
+    "options": [
+      "a) Dirección médica del hospital.",
+      "b) La supervisora de la planta en la que se encuentre ingresado el paciente.",
+      "c) Dirección de enfermería del hospital.",
+      "d) El facultativo encargado de la asistencia al paciente."
+    ],
+    "correct": 3
+  }
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
