@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+   {
+    "question": "1. [A6] [modificada] ¿Quién forma el campo quirúrgico?",
+    "options": [
+      "a) El paciente, la mesa de operaciones, paños estériles.",
+      "b) El anestesista.",
+      "c) Personal de lavado quirúrgico, instrumental quirúrgico.",
+      "d) Son correctas a) y c)."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "2. [A6] ¿Ante quién es responsable de su gestión la supervisora de quirófano?",
+    "options": [
+      "a) Ante el director de enfermería.",
+      "b) Ante el director médico.",
+      "c) Ante el jefe de cirugía.",
+      "d) Son correctas a) y c)."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "3. [A6] ¿Cuál de las siguientes zonas pertenece al área quirúrgica?",
+    "options": [
+      "a) Zona de intercambios.",
+      "b) Zona sin limitaciones.",
+      "c) Zona limitada.",
+      "d) Todas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "4. [A6] ¿Cuál de las siguientes no es una característica física de los quirófanos?",
+    "options": [
+      "a) Aparato de anestesia.",
+      "b) Las puertas de accesos.",
+      "c) La luz de la lámpara.",
+      "d) Equipo autónomo de energía."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "5. [A6] ¿Cuál de las siguientes zonas no pertenece a la zona limitada?",
+    "options": [
+      "a) La sala de descanso.",
+      "b) Sala de reanimación.",
+      "c) Anexo radiológico.",
+      "d) Quirófanos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "6. [A6] ¿Cuál de los siguientes elementos pertenece a un quirófano?",
+    "options": [
+      "a) Mesa de operaciones.",
+      "b) Monitor cardiaco.",
+      "c) Sistema de aspiración de líquidos.",
+      "d) Todas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "7. [A6] ¿Cuáles de las siguientes características debe poseer la luz de la lámpara de un quirófano?",
+    "options": [
+      "a) No debe producir sombra ni reflejos.",
+      "b) Ha de poder regularse la intensidad.",
+      "c) Poder situarla en cualquier posición.",
+      "d) Todas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "8. [A6] ¿En cuál de las zonas que pertenecen al área quirúrgica es obligatorio el uso de mascarillas?",
+    "options": [
+      "a) Zona de intercambio.",
+      "b) Acceso semilimitado.",
+      "c) Acceso limitado.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. [A6] ¿Qué personal tiene acceso a la zona de esterilidad máxima?",
+    "options": [
+      "a) El cirujano y el celador.",
+      "b) El anestesista.",
+      "c) La enfermera instrumentista.",
+      "d) Todas son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "10. [A6] ¿Quién comprobará el funcionamiento satisfactorio de las lámparas cialíticas?",
+    "options": [
+      "a) El enfermero instrumentista.",
+      "b) El celador.",
+      "c) El enfermero circulante.",
+      "d) La auxiliar de enfermería."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "11. [A6] ¿Quién es el responsable de comprobar el instrumental a utilizar en una intervención quirúrgica?",
+    "options": [
+      "a) El cirujano.",
+      "b) La enfermera circulante.",
+      "c) El celador.",
+      "d) La enfermera instrumentista."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "12. [A6] ¿Quién fijará el horario de las intervenciones quirúrgicas del servicio de quirófano?",
+    "options": [
+      "a) Los cirujanos.",
+      "b) El director de enfermería.",
+      "c) El director médico.",
+      "d) La supervisora de quirófano."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "13. [A6] ¿Quién realizará el recuento del material utilizado en una intervención quirúrgica?",
+    "options": [
+      "a) El enfermero instrumentista.",
+      "b) El auxiliar de enfermería.",
+      "c) El cirujano.",
+      "d) El enfermero circulante."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "14. [A6] ¿Quién será el responsable de mantener limpio el quirófano antes y durante la intervención?",
+    "options": [
+      "a) La auxiliar de enfermería.",
+      "b) La enfermera circulante.",
+      "c) La enfermera instrumentista.",
+      "d) El celador."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "15. [A6] ¿Quién será responsable de reponer batas, mascarillas en el bloque quirúrgico?",
+    "options": [
+      "a) La supervisora de quirófanos.",
+      "b) La auxiliar de enfermería.",
+      "c) El celador.",
+      "d) La limpiadora."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "16. [A6] A la hora de ayudar a pasar a un enfermo a la cama de quirófano, el enfermero circulante tendrá que tener en cuenta, como punto muy importante:",
+    "options": [
+      "a) La anatomía del paciente.",
+      "b) Su comodidad.",
+      "c) La seguridad.",
+      "d) Todas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "17. [A6] De los siguientes componentes, ¿quién forma parte del equipo quirúrgico no estéril?",
+    "options": [
+      "a) El médico anestesista.",
+      "b) El enfermo.",
+      "c) El cirujano principal.",
+      "d) Todas son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "18. [A6] El equipo de cirugía dentro de un quirófano se divide en:",
+    "options": [
+      "a) Equipo de lavados estériles.",
+      "b) Equipo de lavado ayudante.",
+      "c) Equipo de enfermera ayudante.",
+      "d) Todas son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "19. [A6] En acto quirúrgico:",
+    "options": [
+      "a) Se observa al enfermo.",
+      "b) Se manipula al enfermo.",
+      "c) Se miden ciertos valores.",
+      "d) Todas son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "20. [A6] En una intervención quirúrgica de traumatología, ¿quién traslada el equipo de rayos X desde el almacén de quirófanos al quirófano donde se va a realizar la intervención?",
+    "options": [
+      "a) El celador de rayos.",
+      "b) El enfermero circulante.",
+      "c) El celador de quirófanos.",
+      "d) La auxiliar de enfermería."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "21. [A6] En una intervención quirúrgica, la auxiliar de enfermería se situará:",
+    "options": [
+      "a) En el quirófano para ayudar a las enfermeras.",
+      "b) En el antequirófano.",
+      "c) En la intermedia.",
+      "d) En la sala de estar de enfermería."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "22. [A6] Generalmente en los quirófanos existen conducciones de:",
+    "options": [
+      "a) Oxígeno.",
+      "b) Óxido nitroso.",
+      "c) Aire comprimido.",
+      "d) Todas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. [A6] La iluminación general y la del acto quirúrgico debe variar entre:",
+    "options": [
+      "a) Dos y cinco.",
+      "b) Tres y seis.",
+      "c) Uno y cinco.",
+      "d) Son correctas a) y b)."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "24. [A6] La temperatura de un quirófano variará en función del tipo de intervención y oscilará entre:",
+    "options": [
+      "a) 22ºC y 26ºC.",
+      "b) 20ºC y 26ºC.",
+      "c) 21ºC y 26ºC.",
+      "d) 23ºC y 26ºC."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "25. [A6] Las dimensiones de un quirófano son variables, pero se recomienda que tengan una superficie entre:",
+    "options": [
+      "a) 30 y 40 m².",
+      "b) 36 y 42 m².",
+      "c) 40 y 50 m².",
+      "d) 20 y 30 m²."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "26. [A6] Se entiende por proceso quirúrgico todas las acciones materiales y manuales con el fin de:",
+    "options": [
+      "a) Paliar.",
+      "b) Explorar.",
+      "c) Curar.",
+      "d) Todas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "27. [A6] Según el riesgo que tenga una cirugía, ésta se puede clasificar en:",
+    "options": [
+      "a) Cirugía de Urgencias.",
+      "b) Cirugía de riesgo medio.",
+      "c) Cirugía urgente.",
+      "d) Cirugía de bajo riesgo."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "28. [A6] Según la complejidad, la cirugía se clasifica en:",
+    "options": [
+      "a) Cirugía mayor y menor.",
+      "b) Cirugía de alto y bajo riesgo.",
+      "c) Cirugía paliativa, exploradora y curativa.",
+      "d) Cirugía de urgencia, necesaria, electiva y opcional."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "29. [A6] Un paciente que va a ser intervenido quirúrgicamente de un quiste sinovial, decimos que, por su duración, es un tipo de cirugía:",
+    "options": [
+      "a) Urgente.",
+      "b) Opcional.",
+      "c) Necesaria.",
+      "d) Electiva."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "30. [A6] Una mesa de Mayo es:",
+    "options": [
+      "a) La mesa donde trabaja el anestesista.",
+      "b) Mesa auxiliar de instrumentación.",
+      "c) Mesa de apoyo del cirujano ayudante.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "31. De las siguientes posiciones, ¿cuál no es quirúrgica?",
+    "options": [
+      "a) Decúbito prono.",
+      "b) Ginecológica.",
+      "c) Trendelemburg.",
+      "d) Genupectoral."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "32. ¿Cuál debe ser la temperatura en el área quirúrgica?",
+    "options": [
+      "a) Siempre la misma.",
+      "b) Mínima de 19° y máxima de 24°.",
+      "c) Deberá oscilar entre los 15° y los 25°.",
+      "d) Se recomienda que sea fría."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "33. ¿Cuándo comienza el período postoperatorio?",
+    "options": [
+      "a) Cuando el anestesista termina su intervención.",
+      "b) Cuando el cirujano responsable termina su intervención.",
+      "c) Cuando el paciente abandona el quirófano.",
+      "d) Ninguna de las anteriores."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "34. ¿Cuándo puede entrar un celador en el quirófano?",
+    "options": [
+      "a) Solamente durante la intervención.",
+      "b) Solamente para ayudar al personal de quirófano que lo requiera.",
+      "c) El celador nunca puede entrar en el quirófano mientras dure la intervención.",
+      "d) Ninguna de las respuestas anteriores es cierta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "35. ¿Es necesario utilizar un gorro dentro del quirófano?",
+    "options": [
+      "a) No, sólo deben utilizarla los médicos.",
+      "b) Es una prenda obligatoria para todos los celadores y personas que acceden al área quirúrgica.",
+      "c) Sólo está indicado para el personal sanitario.",
+      "d) Ninguna es cierta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "36. ¿Puede el celador colaborar para rasurar la zona de incisión al paciente que sea de su mismo sexo?",
+    "options": [
+      "a) No, es una tarea del auxiliar de enfermería.",
+      "b) Sí, en situación de urgencia exclusivamente.",
+      "c) Sí, sólo si está de guardia el servicio de peluquería.",
+      "d) Sí, en situaciones de urgencia o cuando no esté de guardia el servicio de peluquería."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "37. ¿Qué tamaño tienen las salas de cirugía cardiovascular o trasplantes?",
+    "options": [
+      "a) Entre 30 - 60 m².",
+      "b) Entre 40 - 60 m².",
+      "c) Entre 20 - 70 m².",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "38. De las preguntas que a continuación se señalan y referente a los quirófanos, ¿cuál es la correcta?",
+    "options": [
+      "a) El quirófano es el local convenientemente acondicionado para hacer única y exclusivamente operaciones de cirugía mayor ambulatoria.",
+      "b) Quirófano es cualquier sala donde se efectúan operaciones quirúrgicas.",
+      "c) Quirófano es el local que tiene esterilizadas todas sus dependencias.",
+      "d) Quirófano es el local donde se efectúan sólo operaciones con anestesia general."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "39. Durante una intervención quirúrgica se le puede pedir al celador:",
+    "options": [
+      "a) El uso de utensilios quirúrgicos.",
+      "b) El transporte de muestras.",
+      "c) El uso de medicamentos.",
+      "d) El uso de la anestesia."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "40. El aire acondicionado:",
+    "options": [
+      "a) No debe estar funcionando mientras haya actividad quirúrgica.",
+      "b) Debe estar funcionando mientras haya actividad quirúrgica y debe poseer unos filtros especiales antimicrobianos, excepto en intervenciones de cirugía cardíaca.",
+      "c) Debe estar funcionando mientras haya actividad quirúrgica y debe poseer unos filtros especiales antimicrobianos, especialmente en intervenciones de cirugía cardíaca.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "41. El quirófano estará localizado en una zona accesible dentro del hospital y próximo a:",
+    "options": [
+      "a) El área de hospitalización.",
+      "b) El área de urgencia.",
+      "c) La unidad de cuidados intensivos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "42. En los quirófanos los enchufes para evitar chispas eléctricas que produzcan otras explosiones y que el personal tropiece con los cables: se suelen poner a una altura de:",
+    "options": [
+      "a) Más de 1,5 m.",
+      "b) 1 m.",
+      "c) 0,50 m.",
+      "d) De entre 1 m y 1,5 m."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "43. Es una fase del acto quirúrgico:",
+    "options": [
+      "a) La colocación de drenajes, apósitos o tracciones.",
+      "b) La incisión cutánea.",
+      "c) La hemostasia de los vasos sanguíneos encontrados en el lugar.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "44. Es una función propia del celador en los quirófanos:",
+    "options": [
+      "a) Vigilar el acceso.",
+      "b) Mantener el orden entre el personal de guardia.",
+      "c) Mantener el orden en las tareas internas.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "45. La cirugía diagnóstica sirve para:",
+    "options": [
+      "a) Determinar la extensión de la enfermedad y conocer su causa.",
+      "b) Curar la enfermedad.",
+      "c) Acabar con el proceso en el acto quirúrgico.",
+      "d) El alivio de los síntomas, aunque no supone una mejoría global."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "46. Las paredes y techos de los quirófanos serán:",
+    "options": [
+      "a) De materiales duros.",
+      "b) De materiales porosos.",
+      "c) Permeables.",
+      "d) Brillantes."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "47. Según la complejidad de la cirugía se clasificará en:",
+    "options": [
+      "a) Cirugía mayor y menor.",
+      "b) Cirugía de alto y bajo riesgo.",
+      "c) Cirugía paliativa, exploradora y curativa.",
+      "d) Cirugía de urgencia, urgente, necesaria, electiva y opcional."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "48. Señale la afirmación correcta respecto de las puertas de los quirófanos:",
+    "options": [
+      "a) Las puertas ideales son las correderas.",
+      "b) Las puertas nunca deberán permanecer abiertas durante la intervención.",
+      "c) Las respuestas a) y b) son correctas.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "49. Señale la respuesta incorrecta sobre la función de la ventilación en el quirófano:",
+    "options": [
+      "a) Evita la acumulación de gases anestésicos desperdiciados dentro de la sala.",
+      "b) Controla la humedad.",
+      "c) Sirve para calentar el ambiente.",
+      "d) Disminuye el riesgo de los gases dentro del quirófano."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "50. Si los padres de una paciente que ha sido intervenida quirúrgicamente ven pasar al celador en el momento de su traslado, le preguntan cómo ha sido la operación, ¿qué debe hacer el celador?",
+    "options": [
+      "a) Les tranquilizará, diciéndoles que todo va a salir bien.",
+      "b) Les informará del diagnóstico efectuado al paciente.",
+      "c) Les orientará hacia la consulta del médico encargado de la asistencia a la enferma.",
+      "d) Ninguna de las anteriores respuestas es correcta."
+    ],
+    "correct": 2
+  }
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
