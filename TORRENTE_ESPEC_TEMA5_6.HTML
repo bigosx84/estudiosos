@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+   {
+    "question": "1. [OSAKl-09] ¿Quién define la infección nosocomial como cualquier enfermedad microbiana, reconocible clínicamente, que afecta a los/as pacientes como consecuencia de ser admitidos/as en el hospital, o atendidos/as para tratamiento, y al personal sanitario como consecuencia de su trabajo?",
+    "options": [
+      "a) La Organización Mundial de la Salud.",
+      "b) La Ley General de Sanidad.",
+      "c) La Ley de Prevención de Riesgos Laborales.",
+      "d) Las distintas notas técnicas elaboradas por el Instituto Nacional de Seguridad e Higiene en el Trabajo."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "2. [OSAKl-09] Atendiendo al objetivo que se persigue en las intervenciones quirúrgicas, aquella que determina la causa de los síntomas se denomina cirugía:",
+    "options": [
+      "a) Diagnóstica.",
+      "b) Curativa.",
+      "c) Paliativa.",
+      "d) Estética."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "3. [OSAKl-09] Con respecto al óxido de etileno, señale la afirmación errónea:",
+    "options": [
+      "a) Su olor es parecido al cloroformo.",
+      "b) Es un gas incoloro.",
+      "c) No es tóxico.",
+      "d) Es altamente inflamable en presencia de aire."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "4. [OSAKl-09] El producto gaseoso que se emplea entre otros para esterilizar plásticos, material de goma y caucho se llama:",
+    "options": [
+      "a) Citostático.",
+      "b) Protóxido de nitrógeno.",
+      "c) Óxido de etileno.",
+      "d) Formol."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "5. [OSAKl-09] En la clasificación de los tipos de cirugía según el grado de contaminación, se encuentran las heridas abiertas recientes (menos de 4 horas). ¿Cómo se llama este tipo de cirugía?",
+    "options": [
+      "a) Limpia-contaminada.",
+      "b) Sucia o infectada.",
+      "c) Contaminada.",
+      "d) Limpia."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "6. [OSAKl-09] La fase que antecede a la intervención quirúrgica y que comienza con la preparación del/de la paciente y finaliza cuando éste/a es colocado/a sobre la mesa de operaciones, se denomina:",
+    "options": [
+      "a) Preoperatoria.",
+      "b) Transoperatoria.",
+      "c) Perioperatoria.",
+      "d) Postoperatoria."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "7. [OSAKl-09] La humedad del ambiente es un factor muy importante a la hora de planificar el diseño de un quirófano; por lo general se recomienda que esté comprendida entre:",
+    "options": [
+      "a) 40%-50%.",
+      "b) 20%-30%.",
+      "c) 50%-60%.",
+      "d) 70%-80%."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "8. [OSAKl-09] Los elementos (eslabones) necesarios para que se propague una enfermedad transmisible se llama:",
+    "options": [
+      "a) Cadena infecciosa.",
+      "b) Cadena nosocomial.",
+      "c) Cadena epidemiológica.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. [OSAKl-09] Mientras se está realizando una operación, el/la celador/a permanece dentro del quirófano por si se le necesita. ¿Es correcta su actuación?",
+    "options": [
+      "a) Sí.",
+      "b) No, deberá permanecer en el antequirófano.",
+      "c) Sí, si no habla ni distrae al/a la médico/a.",
+      "d) Sí, si va correctamente vestido/a."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "10. [OSAKl-09] Para realizar intervenciones quirúrgicas como hernias, laparotomía exploradora y colecistectomía, el/la paciente debe estar en posición:",
+    "options": [
+      "a) Fowler.",
+      "b) Sims.",
+      "c) Prono.",
+      "d) Supino."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "11. [OSAKl-09] Respecto a las precauciones para el control de infecciones en centros sanitarios, es correcto que:",
+    "options": [
+      "a) Todos los trabajadores sanitarios deben usar de forma rutinaria elementos barrera cuando es posible anticipar el contacto de la piel y las membranas mucosas (boca, nariz y ojos) con sangre o fluidos biológicos de cualquier paciente.",
+      "b) Los guantes se deben llevar únicamente durante las extracciones de sangre o cualquier otra práctica de acceso vascular.",
+      "c) Se deben vestir batas o delantales durante cualquier procedimiento, incluso si no es posible que se produzcan salpicaduras de sangre o de otros fluidos biológicos.",
+      "d) Solo deben usarse los guantes en la manipulación de fluidos biológicos envasados."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "12. [OSAKl-09] Según el estatuto del personal no sanitario de instituciones sanitarias de la seguridad social, el/la celador/a de quirófanos:",
+    "options": [
+      "a) Irá uniformado de blanco.",
+      "b) Auxiliará en todas aquellas labores propias del/la médico/a, supervisor/a o enfermero/a a indicación de estos.",
+      "c) Auxiliará en todas aquellas labores propias del/la celador/a destinado en estos servicios, así como las que le sean ordenadas por el/la médico/a.",
+      "d) Los/las celadores no tienen asignada en el citado Estatuto ninguna función en el quirófano."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "13. [SACYL-09] Dentro de la actuación o funciones de los celadores en el quirófano, ¿cuál de las siguientes no está contemplada en la normativa?",
+    "options": [
+      "a) Trasladar a los pacientes desde sus respectivas habitaciones a las zonas de quirófano.",
+      "b) Transportar del almacén los aparatajes y utensilios necesarios en los quirófanos.",
+      "c) Ayudar al personal de enfermería en la colocación y retirada del paciente en la mesa de operaciones.",
+      "d) El cuidado, conservación y reposición de batas, sabanillas, toallas, etc."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "14. [SACYL-09] Dentro del área quirúrgica, el antequirófano es una zona:",
+    "options": [
+      "a) Sin limitaciones: se puede deambular con ropa de calle.",
+      "b) Semilimitada: es obligatorio el uso de atuendo quirúrgico.",
+      "c) Semilimitada: es obligatorio el uso de mascarilla.",
+      "d) Limitada: es necesario el uso de mascarilla y atuendo quirúrgico."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "15. [SACYL-09] El lavado quirúrgico debe hacerse:",
+    "options": [
+      "a) Con agua tibia y antiséptico.",
+      "b) Con agua caliente y antiséptico.",
+      "c) Con agua fría y antiséptico.",
+      "d) Es igual, simplemente hay que lavarse con agua y un buen antiséptico."
+    ],
+    "correct": 0
+  },
+    {
+    "question": "16. [SACYL-09] En la posición de Antitrendelemburg:",
+    "options": [
+      "a) La cabeza permanece más elevada que los pies.",
+      "b) Los pies de la cama están elevados sobre la cabecera.",
+      "c) El paciente está semisentado.",
+      "d) El paciente está en la posición intermedia entre decúbito prono y decúbito lateral."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "17. [SACYL-10] ¿Qué método es el más radical para la destrucción de gérmenes, ya sean patógenos o no patógenos?",
+    "options": [
+      "a) Desinfección.",
+      "b) Desinsectación.",
+      "c) Esterilización.",
+      "d) Antisepsia."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "18. [SACYL-10] Durante una intervención quirúrgica, no se puede pedir al celador:",
+    "options": [
+      "a) El traslado al quirófano de aparatos de diagnóstico.",
+      "b) La sujeción de un miembro que va a ser amputado.",
+      "c) El transporte de bolsas de plaquetas desde el Banco de Sangre al quirófano.",
+      "d) El uso del artroscopio para ayudar al traumatólogo mientras éste interviene una rodilla."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "19. [SACYL-10] Una estufa 'Poupinel' es un método de esterilización por:",
+    "options": [
+      "a) Óxido de etileno.",
+      "b) Calor seco.",
+      "c) Calor húmedo.",
+      "d) Radiaciones ionizantes."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "20. [SACYL-10] Una vez limpias las manos, ¿cuál de los siguientes agentes tiene mayor eficacia antiséptica?",
+    "options": [
+      "a) Agua y jabón.",
+      "b) Clorhexidina.",
+      "c) Povidona yodada.",
+      "d) Solución hidroalcohólica."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "21. [SACYL-10] Una zona séptica es una zona:",
+    "options": [
+      "a) Contaminada.",
+      "b) Limpia.",
+      "c) Escéptica.",
+      "d) Estéril."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "22. [SESGAMOS] El lavado de manos constituye una de las medidas de eficacia probada para evitar la infección o:",
+    "options": [
+      "a) Contaminación.",
+      "b) Asepsia.",
+      "c) Esterilización.",
+      "d) Profilaxis."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "23. [SESGAMOS] Los celadores destinados en quirófanos sólo recibirán órdenes de: (pregunta anulada por el tribunal)",
+    "options": [
+      "a) El Director Médico del Centro.",
+      "b) El Jefe de Personal Subalterno.",
+      "c) Médicos, supervisores/as, enfermeras.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "24. [SESGAMOS] Si estando de servicio en los quirófanos del hospital le indican que coloque al paciente en 'decúbito prono', ¿cómo lo colocaría?",
+    "options": [
+      "a) Tumbado boca arriba.",
+      "b) Tumbado de costado.",
+      "c) Tumbado boca abajo.",
+      "d) De rodillas encima de la mesa quirúrgica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "25. [SM06] ¿Qué es una zona séptica?",
+    "options": [
+      "a) Una zona sucia.",
+      "b) Una zona infectada.",
+      "c) Una zona desinfectada.",
+      "d) Una zona con riesgo de contaminación."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "26. [SM06] El consentimiento informado se prestará por escrito en el siguiente caso:",
+    "options": [
+      "a) Rehabilitación básica.",
+      "b) Hospitalización en régimen de internamiento.",
+      "c) Intervención quirúrgica.",
+      "d) Asistencia Especializada en Hospital de día."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "27. [SM06] El término nosocomial se refiere a:",
+    "options": [
+      "a) Infección.",
+      "b) Clasificación de enfermos.",
+      "c) Clasificación de las enfermedades.",
+      "d) Ninguna de las anteriores es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "28. [SM06] En el traslado de un paciente desde la habitación de la planta hasta el quirófano, el celador comprobará:",
+    "options": [
+      "a) Que el paciente va rasurado.",
+      "b) Que se ha preparado correctamente al paciente para la intervención.",
+      "c) Que la identidad del paciente se corresponde con la historia clínica que le acompaña.",
+      "d) Las respuestas B y C son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "29. [SM06] En los quirófanos, ¿cómo se denomina la zona donde se deja la cama del paciente, una vez introducido en el área de espera preoperatoria?",
+    "options": [
+      "a) La exclusa.",
+      "b) Zona de intercambio.",
+      "c) Zona de transferencia.",
+      "d) Zona de espera."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "30. [SM06] Los celadores destinados en el servicio de esterilización tienen obligación de colaborar con el personal sanitario en la preparación del material para su esterilización siempre que así se les indique:",
+    "options": [
+      "a) Sí, forma parte del deber general de colaboración de todo el personal del hospital.",
+      "b) Sí, siempre que la Supervisora o Responsable de Enfermería así se lo indique.",
+      "c) No, sólo deben colaborar en la confección de apósitos de gasa, pero no deben manipular el instrumental.",
+      "d) No, esta función corresponde a otra categoría laboral."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "31. [SM07] Como medida de higiene, el celador de quirófano deberá utilizar:",
+    "options": [
+      "a) Bata estéril.",
+      "b) Zuecos nuevos.",
+      "c) Guantes y mascarilla estériles.",
+      "d) Gorro que cubra totalmente el pelo y mascarilla que cubra completamente la boca y la nariz."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "32. [SM07] Cuando un paciente se encuentra en la cama tumbado sobre el abdomen, con las piernas extendidas y la cabeza girada a un lado, decimos que se encuentra en:",
+    "options": [
+      "a) Decúbito supino.",
+      "b) Decúbito prono.",
+      "c) Posición Fowler.",
+      "d) Posición Trendelemburg."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "33. [SM07] El conjunto de técnicas utilizadas para la destrucción de todos los gérmenes patógenos que existen sobre objetos y superficies lo llamamos:",
+    "options": [
+      "a) Antisepsia.",
+      "b) Limpieza.",
+      "c) Desinsectación.",
+      "d) Desinfección."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "34. [SM07] En el traslado a quirófano el celador debe conocer que la eliminación de cualquier maquillaje y laca de uñas en el preoperatorio inmediato tiene como fin:",
+    "options": [
+      "a) Apreciar posibles cambios en la coloración de piel y uñas.",
+      "b) Valorar los hábitos higiénicos del paciente.",
+      "c) Adecuar la profilaxis tromboembólica.",
+      "d) Mejorar el estado de ansiedad del paciente."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "35. [SM07] En un paciente con aislamiento respiratorio:",
+    "options": [
+      "a) Es obligatorio siempre el uso de mascarilla, bata, guantes y calzas.",
+      "b) Desechar cualquier material que haya permanecido en la habitación del paciente.",
+      "c) Utilizar ropa de cama estéril.",
+      "d) Se recomienda habitación individual con presión negativa."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "36. [SM07] Los residuos patológicos infecciosos, punzantes o cortantes después de su uso, ¿dónde se depositarán?",
+    "options": [
+      "a) En contenedores rígidos.",
+      "b) En bolsas de color verde.",
+      "c) En bolsas de color negro.",
+      "d) En el vertedero."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "37. [SM07] Señala la respuesta correcta sobre la circulación en áreas críticas:",
+    "options": [
+      "a) En los pasillos del bloque quirúrgico no es necesario el uso de gorro.",
+      "b) Con el calzado exclusivo de quirófano, se puede circular libremente por todo el centro.",
+      "c) Las áreas críticas deben recibir un tratamiento de limpieza especial.",
+      "d) Se puede usar la misma mascarilla para todas las intervenciones."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "38. [V03] Los aspectos sobre los que el celador puede efectuar comentarios con los familiares y visitantes de los enfermos son:",
+    "options": [
+      "a) Sobre ninguno de los aspectos de las respuestas b), c) y d).",
+      "b) Sobre el diagnóstico de la enfermedad.",
+      "c) Sobre las exploraciones y tratamientos.",
+      "d) Sobre el pronóstico de la enfermedad."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "39. [V03] En los quirófanos, los celadores:",
+    "options": [
+      "a) Informarán a los familiares de los pacientes intervenidos sobre el diagnóstico y tratamiento que se les aplica.",
+      "b) Auxiliarán en aquellas labores propias de los celadores destinados en estos servicios, así como en las que les sean ordenadas por los médicos.",
+      "c) No existen celadores destinados en los quirófanos.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "40. [P] Es función del celador asignado a quirófano: (dudosa OPE 99)",
+    "options": [
+      "a) La preparación del material para su esterilización.",
+      "b) La recogida del instrumental utilizado.",
+      "c) La reposición de batas y sabanillas.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "41. [S] ¿Cuál de los siguientes controles integrados en los aparatos esterilizadores (autoclaves, cámaras de vaporización...) es falso?",
+    "options": [
+      "a) Biológicos.",
+      "b) Químicos.",
+      "c) Físicos.",
+      "d) A y B son verdaderas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "42. [S] ¿Qué problema surgiría en el quirófano si durante la intervención del paciente del que hablamos se apagase la ventilación?",
+    "options": [
+      "a) Aumentaría el calor en el quirófano.",
+      "b) Aumentaría el riesgo de explosión.",
+      "c) Aumentaría el riesgo de infección.",
+      "d) Todas las respuestas anteriores son ciertas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "43. [S] Al celador de quirófano del hospital, le indican que coloque al paciente en 'decúbito prono', ¿cómo le colocaría?",
+    "options": [
+      "a) Tumbado de costado.",
+      "b) Tumbado boca abajo.",
+      "c) Tumbado boca arriba.",
+      "d) De rodillas encima de la mesa quirúrgica."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "44. [S] ¿De cuántas fases suele constar el acto quirúrgico?",
+    "options": [
+      "a) De 2 fases.",
+      "b) De 4 fases.",
+      "c) De 6 fases.",
+      "d) De 5 fases."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "45. [S] Durante el traslado de la habitación al quirófano, el celador va conversando con un familiar directo del paciente 'A'. El familiar le pregunta acerca de los beneficios del tratamiento que están aplicando al paciente, y por la idoneidad de la intervención. El celador:",
+    "options": [
+      "a) Puede dar esta información aunque de manera muy superficial, pues sí que tiene conocimiento sobre el tema por otros casos similares en los que se ha llevado a cabo el mismo tratamiento.",
+      "b) En ningún caso puede dar esta información, pues le está expresamente prohibido.",
+      "c) Puede dar esta información siempre que el enfermo no haya sido calificado como terminal.",
+      "d) No puede dar esta información ya que es función de la enfermera que le practica el tratamiento."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "46. [S] En el caso de utilizar la estufa de Poupinel para la esterilización de vidrio, indicar cuántos minutos debe funcionar la estufa si el termostato marca 140ºC:",
+    "options": [
+      "a) 80 min.",
+      "b) Entre 100 y 120 min.",
+      "c) Entre 120 y 150 min.",
+      "d) 180 min."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "47. [S] La esterilización del material puede conseguirse con varios métodos. Indicar el no verdadero:",
+    "options": [
+      "a) Calor seco.",
+      "b) Calor húmedo.",
+      "c) Procedimientos químicos.",
+      "d) Radiación en caliente."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "48. [S] La esterilización del material puede conseguirse con varios métodos. Indicar en cuál se utiliza autoclave:",
+    "options": [
+      "a) Calor seco.",
+      "b) Calor húmedo.",
+      "c) Procedimientos químicos.",
+      "d) Radiación en caliente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "49. [S] Los productos químicos que se usan para la desinfección de la piel, heridas y cavidades del organismo se denominan:",
+    "options": [
+      "a) Desinfectantes.",
+      "b) Antisépticos.",
+      "c) Esterilización.",
+      "d) Todas son incorrectas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "50. [S] Por lo general, la temperatura que se recomienda en el interior del quirófano oscila entre:",
+    "options": [
+      "a) 16° mínimo 24° máximo.",
+      "b) 18° mínimo 26° máximo.",
+      "c) 20° mínimo 25° máximo.",
+      "d) 14° mínimo 22° máximo."
+    ],
+    "correct": 0
+  }
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
