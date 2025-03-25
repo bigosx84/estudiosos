@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+   {
+    "question": "1. Para proceder, con carácter general, a la suspensión de determinados derechos fundamentales, es preciso que previamente se declare por las autoridades competentes cualquiera de estos estados:",
+    "options": [
+      "a) Alarma y excepción.",
+      "b) Sitio y excepción.",
+      "c) Alarma y sitio.",
+      "d) Excepción, alarma y sitio."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "2. ¿A qué edad se alcanza la mayoría de edad a tenor del contenido del artículo 10 de la Constitución?",
+    "options": [
+      "a) A los dieciocho años, pero se establece en el artículo 15.",
+      "b) A los dieciocho años.",
+      "c) A los dieciocho años, pero se regula en el artículo 18.",
+      "d) A los dieciocho años, pero no se regula en el artículo 10."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "3. ¿Cómo se llaman las personas que carecen de nacionalidad?",
+    "options": [
+      "a) Apátridas.",
+      "b) Prófugos.",
+      "c) Extranjeros.",
+      "d) Estradictarios."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "4. ¿En qué ámbito están prohibidos los Tribunales de Honor?",
+    "options": [
+      "a) En el ámbito de la Administración civil.",
+      "b) En el ámbito de la Administración civil y militar.",
+      "c) En el ámbito de la Administración civil y en el de las organizaciones profesionales.",
+      "d) En el ámbito de la Administración civil y militar y en el de las organizaciones profesionales."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "5. ¿En qué artículo de la Constitución se regula el derecho a la cláusula de conciencia y al secreto profesional?",
+    "options": [
+      "a) En el artículo 20.",
+      "b) En el artículo 24.",
+      "c) En el artículo 27.",
+      "d) En el artículo 19."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "6. ¿En qué casos se puede proceder a la entrada en un domicilio particular?",
+    "options": [
+      "a) En caso de resolución judicial exclusivamente.",
+      "b) En caso de delito flagrante o resolución judicial exclusivamente.",
+      "c) En caso de autorización del titular o resolución judicial exclusivamente.",
+      "d) En caso de autorización del titular, resolución judicial o flagrante delito."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "7. ¿Puede limitarse el derecho a la entrada y salida de territorio español por motivos ideológicos a los ciudadanos españoles?",
+    "options": [
+      "a) No, a tenor del contenido del artículo 19 de la Constitución.",
+      "b) Sí, a tenor del contenido del artículo 20 de la Constitución.",
+      "c) No, a tenor del artículo 21 de la Constitución.",
+      "d) Sí, a tenor del artículo 23 de la Constitución."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "8. ¿Puede la Administración civil imponer sanciones que impliquen privación de libertad?",
+    "options": [
+      "a) No, ni de forma directa ni de forma indirecta o subsidiaria.",
+      "b) No de forma directa, pero sí de forma subsidiaria.",
+      "c) Sólo de forma directa.",
+      "d) Sí, tanto de forma indirecta como directa."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "9. ¿Pueden interceptarse las comunicaciones postales?",
+    "options": [
+      "a) Sí, por medio de resolución administrativa.",
+      "b) Sí, por medio de resolución judicial o administrativa.",
+      "c) No, en ningún caso.",
+      "d) Sólo mediante resolución judicial."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "10. ¿Qué artículo de la Constitución recoge el secreto de las comunicaciones?",
+    "options": [
+      "a) En el artículo 20.",
+      "b) En el artículo 22.",
+      "c) En el artículo 24.",
+      "d) En el artículo 18."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "11. ¿Qué asociaciones están prohibidas?",
+    "options": [
+      "a) Las asociaciones secretas y las ilegales.",
+      "b) Las asociaciones ilegales y las paramilitares.",
+      "c) Las asociaciones paramilitares y las secretas.",
+      "d) Las asociaciones paramilitares, ilegales y secretas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "12. ¿Qué asociaciones son ilegales?",
+    "options": [
+      "a) Las que no estén inscritas en el registro correspondiente del Ministerio del Interior.",
+      "b) Las que persigan fines o utilicen medios tipificados como delito.",
+      "c) Las que se reúnan sin autorización previa.",
+      "d) Las asociaciones prohibidas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "13. ¿Qué órgano elige al Defensor del Pueblo?",
+    "options": [
+      "a) El Gobierno.",
+      "b) Las Cortes Generales.",
+      "c) El Tribunal Constitucional.",
+      "d) El fiscal general del Estado."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "14. ¿Se puede suspender el derecho a la huelga?",
+    "options": [
+      "a) Sí, en varios casos.",
+      "b) No, nunca.",
+      "c) Solamente si se hace ilegalmente.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "15. ¿Según la CE de quién es competencia fomentar la educación física?",
+    "options": [
+      "a) De los poderes públicos.",
+      "b) De las cortes generales.",
+      "c) Del gobierno.",
+      "d) De la Autonomía."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "16. Del derecho de asilo en España:",
+    "options": [
+      "a) Sólo podrán gozar los ciudadanos de otros países.",
+      "b) Sólo podrán gozar los apátridas.",
+      "c) Podrán gozar del mismo los ciudadanos españoles perseguidos en otros países.",
+      "d) Se disfrutará por sus beneficiarios en los términos establecidos en la Ley."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "17. El artículo 43 establece que:",
+    "options": [
+      "a) La organización de la salud será a través de la reinserción.",
+      "b) La organización de la salud será a través de la reinserción, pero se indica en el art. 41.",
+      "c) La organización de la salud será a través de medidas sociales, pero se indica en el art. 49.",
+      "d) Todas son falsas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "18. El Defensor del Pueblo se configura constitucionalmente como alto comisionado:",
+    "options": [
+      "a) Del pueblo.",
+      "b) De las Cortes Generales.",
+      "c) Del Poder Judicial.",
+      "d) Del Gobierno."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "19. El derecho a adoptar medidas de conflicto colectivo:",
+    "options": [
+      "a) Su ejercicio no está sujeto a medida limitadora alguna.",
+      "b) Se reconoce únicamente a los empresarios.",
+      "c) Se reconoce únicamente a los trabajadores.",
+      "d) Su ejercicio deberá estar sometido a las garantías precisas para asegurar el funcionamiento de los servicios esenciales de la comunidad."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "20. El derecho a la protección a la salud en nuestra CE:",
+    "options": [
+      "a) Se tutela.",
+      "b) Se reconoce.",
+      "c) Se garantiza.",
+      "d) Todas son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "21. El derecho a la protección a la salud se aborda en:",
+    "options": [
+      "a) El Título Preliminar.",
+      "b) El Preámbulo.",
+      "c) El Capítulo 3° del Título Primero.",
+      "d) El Capítulo 1° del Título Primero."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "22. El derecho de fundación reconocido constitucionalmente:",
+    "options": [
+      "a) Respecto a las fundaciones no regirán ninguno de los preceptos constitucionales relativos al derecho de asociación.",
+      "b) Todas las otras respuestas son verdaderas.",
+      "c) Sólo se admite su ejercicio para fines de interés general.",
+      "d) Se encuentra regulado en el art. 35 de la Constitución."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "23. El recurso de amparo por violación de los derechos y libertades reconocidos en los artículos del 14 al 29 de la CE debe presentarse ante:",
+    "options": [
+      "a) El Tribunal Supremo.",
+      "b) El Tribunal Constitucional.",
+      "c) El Defensor del Pueblo.",
+      "d) Las Cortes Generales."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "24. El recurso de amparo puede ser planteado:",
+    "options": [
+      "a) Por cualquier persona, a título individual.",
+      "b) Sólo por el Defensor del Pueblo.",
+      "c) Sólo por el presidente del Gobierno.",
+      "d) Sólo por cincuenta Diputados o cincuenta Senadores."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "25. El recurso de amparo se planteará ante:",
+    "options": [
+      "a) El Tribunal Constitucional.",
+      "b) Los Tribunales ordinarios.",
+      "c) El Defensor del Pueblo.",
+      "d) Las tres respuestas anteriores son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "26. En caso de violación del derecho reconocido a la igualdad de todos los españoles ante la ley, los perjudicados podrán presentar ante el Tribunal Constitucional:",
+    "options": [
+      "a) Recurso de inconstitucionalidad.",
+      "b) Recurso de amparo.",
+      "c) Deberán recurrir con carácter previo a los Tribunales ordinarios.",
+      "d) Recurso de súplica."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "27. ¿En qué artículo de la CE se reconoce el derecho a la protección a la salud?",
+    "options": [
+      "a) 41.",
+      "b) 49.",
+      "c) 43.",
+      "d) A, B y C son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "28. ¿En qué artículo de nuestra constitución se establece la competencia de organizar la salud pública?",
+    "options": [
+      "a) Art. 41.",
+      "b) Art. 49.",
+      "c) Art. 43.",
+      "d) a, b y c no son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "29. ¿En qué artículo de nuestra constitución se establece que la salud se organizará a través de la educación sanitaria?",
+    "options": [
+      "a) 41.",
+      "b) 49.",
+      "c) 43.",
+      "d) Todas son falsas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "30. En torno a los Colegios Profesionales:",
+    "options": [
+      "a) La Constitución afirma que los mismos serán regulados por Ley Orgánica.",
+      "b) Su estructura interna y su funcionamiento deberán ser democráticos.",
+      "c) Todas las otras respuestas son falsas.",
+      "d) Están detalladamente regulados en la Constitución."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "31. Indique cómo se asegura el reconocimiento, el respeto y la protección de los principios rectores de la política social y económica:",
+    "options": [
+      "a) Están protegidos mediante acceso al recurso de amparo.",
+      "b) No cabe la interposición del recurso de amparo, pero es posible la vía judicial sumaria y preferente.",
+      "c) Informarán la legislación positiva, la práctica judicial y la actuación de los poderes públicos.",
+      "d) Están sujetos a reserva de Ley Orgánica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "32. La CE aborda el derecho a la protección a la salud en:",
+    "options": [
+      "a) El Título Preliminar.",
+      "b) El Preámbulo.",
+      "c) El Título Primero.",
+      "d) El Título Noveno."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "33. La CE aborda el derecho a la protección a la salud en la parte que se denomina:",
+    "options": [
+      "a) Derechos y Deberes fundamentales.",
+      "b) Derechos y Deberes de los Ciudadanos.",
+      "c) Derechos fundamentales y Libertades Públicas.",
+      "d) Todas son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "34. La extradición se concederá:",
+    "options": [
+      "a) Nunca atendiendo al mero principio de reciprocidad.",
+      "b) En cumplimiento del principio de legalidad.",
+      "c) En cumplimiento de un tratado o de la ley.",
+      "d) En cumplimiento del espíritu constitucional."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "35. La nacionalidad española se adquiere, se conserva o se pierde:",
+    "options": [
+      "a) De acuerdo con lo establecido por los Tratados Internacionales de los que España forma parte.",
+      "b) De acuerdo con lo establecido por las normas comunitarias.",
+      "c) De acuerdo con lo establecido por la Ley.",
+      "d) De acuerdo con lo establecido por la propia constitución."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "36. La parte de la CE en la que se aborda el derecho a la salud se denomina:",
+    "options": [
+      "a) Principios rectores de la política social y económica.",
+      "b) Derechos y deberes de los ciudadanos.",
+      "c) Derechos fundamentales y libertades públicas.",
+      "d) Todas son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "37. La propiedad privada se reconoce en el artículo:",
+    "options": [
+      "a) 23 de la Constitución.",
+      "b) 22 de la Constitución.",
+      "c) 33 de la Constitución.",
+      "d) 32 de la Constitución."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "38. La suspensión individual de los derechos fundamentales podrá determinarse:",
+    "options": [
+      "a) Por Ley.",
+      "b) Por decreto validado por el Tribunal Supremo.",
+      "c) Por el pleno de ambas cámaras por mayoría de tres quintos.",
+      "d) Ley orgánica."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "39. Las penas privativas de libertad, ¿pueden consistir en trabajos forzados?",
+    "options": [
+      "a) Sólo en caso de suspensión del derecho contemplado en el artículo 26 de la Constitución española de 1978.",
+      "b) En ningún caso.",
+      "c) Sí, mediante resolución judicial.",
+      "d) Sólo en casos excepcionalmente recogidos en la legislación vigente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "40. Las penas privativas de libertad:",
+    "options": [
+      "a) Podrán estar orientadas hacia la reeducación.",
+      "b) Estarán orientadas hacia la reeducación y la reinserción social, al contrario de lo que sucede con las medidas de seguridad.",
+      "c) No podrán consistir en trabajos forzados.",
+      "d) En algunos casos deberán dirigirse a la obtención de la reinserción social."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "41. Los españoles son mayores de edad a los:",
+    "options": [
+      "a) 18 años.",
+      "b) 21 años.",
+      "c) 16 años.",
+      "d) 14 años."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "42. Los españoles tienen:",
+    "options": [
+      "a) El derecho y el deber de defender a España.",
+      "b) El deber de defender a España.",
+      "c) El derecho de defender a España.",
+      "d) La obligación de defender a España."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "43. Los principios rectores de la política económico-social pueden ser alegados ante la jurisdicción ordinaria:",
+    "options": [
+      "a) En todo caso.",
+      "b) De conformidad con la CE.",
+      "c) De acuerdo con lo dispuesto por sus leyes de desarrollo.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "44. Según la CE, en torno al sostenimiento de los gastos públicos:",
+    "options": [
+      "a) El sistema tributario estará inspirado en el principio de recaudación intensiva.",
+      "b) Todos contribuirán de acuerdo con el volumen de sus ingresos.",
+      "c) El sistema recaudatorio tendrá en determinados casos alcance confiscatorio.",
+      "d) Se realizará mediante un sistema tributario justo."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "45. Según la Constitución, todo ciudadano deberá contribuir al sostenimiento de los gastos públicos:",
+    "options": [
+      "a) De forma equitativa.",
+      "b) De acuerdo con su respectiva capacidad económica.",
+      "c) De forma progresiva.",
+      "d) De acuerdo con su respectiva renta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "46. Sólo uno de los siguientes derechos podrá ser suspendido de forma individual en los casos previstos:",
+    "options": [
+      "a) Todas las otras respuestas son falsas.",
+      "b) Derecho a no permanecer preventivamente detenido por un plazo superior a las setenta y dos horas.",
+      "c) Derecho a ser asistido por Abogado en las diligencias policiales y judiciales.",
+      "d) Derecho a la seguridad."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "47. Sólo uno de los siguientes derechos podrá ser suspendido en caso de se acuerde la declaración de estado de excepción o de sitio:",
+    "options": [
+      "a) Derecho de huelga.",
+      "b) Derecho de petición colectiva.",
+      "c) Derecho a obtener la tutela efectiva de Jueces y Tribunales.",
+      "d) Derecho de creación de centros docentes."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "48. Todos debemos contribuir al sostenimiento de los gastos públicos, de acuerdo con nuestra:",
+    "options": [
+      "a) Capacidad económica.",
+      "b) Obligación política.",
+      "c) Conciencia social.",
+      "d) Capacidad intelectual."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "49. Una de las siguientes afirmaciones es falsa:",
+    "options": [
+      "a) La Constitución establece que el hombre y la mujer tienen derecho a contraer matrimonio con plena igualdad jurídica.",
+      "b) La Constitución admite que el matrimonio podrá ser disuelto.",
+      "c) La Constitución dispone que la edad y la capacidad del hombre y la mujer para contraer matrimonio se alcanza con la mayoría de edad.",
+      "d) La Constitución delega en la Ley la concreción de los derechos y deberes de los cónyuges."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "50. Una de las siguientes afirmaciones no es correcta, según la CE:",
+    "options": [
+      "a) Podrán regularse los deberes de los ciudadanos en los casos de grave riesgo.",
+      "b) Podrán regularse los deberes de los ciudadanos en los casos de calamidad pública.",
+      "c) Podrán regularse los deberes de los ciudadanos en los supuestos de catástrofe.",
+      "d) Podrá establecerse un servicio militar para el cumplimiento de fines de interés general."
+    ],
+    "correct": 3
+  }
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

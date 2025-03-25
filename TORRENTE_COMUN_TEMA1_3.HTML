@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+   {
+    "question": "1. ¿En qué artículo de la Constitución se contempla el derecho al matrimonio?",
+    "options": [
+      "a) En el artículo 31.",
+      "b) En el artículo 33.",
+      "c) En el artículo 32.",
+      "d) En el artículo 34."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "2. ¿Se delimita, en la Constitución española de 1978, el derecho a la propiedad privada?",
+    "options": [
+      "a) Sí, de acuerdo con las leyes y en virtud de su función social.",
+      "b) Sí, de acuerdo con las normas extraordinarias dictadas por el Tribunal Constitucional.",
+      "c) No. La propiedad privada no tiene delimitación constitucional.",
+      "d) Sí, en el artículo 22 de la Constitución."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "3. ¿A qué edad se alcanza la mayoría de edad a tenor del contenido del artículo 10 de la Constitución?",
+    "options": [
+      "a) A los dieciocho años.",
+      "b) A los dieciocho años, pero se establece en el artículo 15.",
+      "c) A los dieciocho años, pero no se regula en el artículo 10.",
+      "d) A los dieciocho años, pero se regula en el artículo 18."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "4. ¿Ante quién debe rendir cuenta el Defensor del Pueblo?",
+    "options": [
+      "a) Ante el Gobierno y la Administración.",
+      "b) Ante las Cortes Generales.",
+      "c) Ante el Congreso de los Diputados.",
+      "d) Ante los Tribunales y el Congreso de los Diputados."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "5. ¿Ante quién se presenta el recurso de amparo?",
+    "options": [
+      "a) Ante el Tribunal Supremo.",
+      "b) Ante el Tribunal Constitucional.",
+      "c) Ante el Consejo General del Poder Judicial.",
+      "d) Ante cualquier juzgado o tribunal."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "6. ¿Cómo se adquiere, se conserva y se pierde la nacionalidad española?",
+    "options": [
+      "a) De acuerdo con la Constitución.",
+      "b) De acuerdo con la ley.",
+      "c) De acuerdo con las normas internacionales.",
+      "d) De acuerdo con los Tratados internacionales."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "7. ¿Cómo se denomina el procedimiento judicial por el que se debe poner a un detenido a disposición inmediata de la autoridad judicial?",
+    "options": [
+      "a) Proceso sumario.",
+      "b) Habeas Corpus.",
+      "c) Recurso de amparo.",
+      "d) Proceso de amparo."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "8. ¿Cuándo un español de origen puede ser privado de su nacionalidad?",
+    "options": [
+      "a) En ningún caso.",
+      "b) Cuando cometa un delito de traición al citado.",
+      "c) Cuando entre en guerra contra España.",
+      "d) Cuando cometa un delito de traición o contra la seguridad del Estado."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "9. ¿De quién recibe órdenes el Defensor del Pueblo?",
+    "options": [
+      "a) De las Cortes Generales.",
+      "b) Del Gobierno.",
+      "c) De los Tribunales.",
+      "d) No está sometido a mandato imperativo."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "10. ¿En qué artículo constitucional se define el Defensor del Pueblo?",
+    "options": [
+      "a) En el art. 30.",
+      "b) En el art. 45.",
+      "c) En el art. 54.",
+      "d) En el art. 60."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "11. ¿En qué artículo de la Constitución española de 1978 se contiene el derecho a la libertad y seguridad individual?",
+    "options": [
+      "a) En el artículo 18.",
+      "b) En el artículo 20.",
+      "c) En el artículo 21.",
+      "d) En el artículo 17."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "12. ¿En qué artículo de la Constitución se regula el derecho a la cláusula de conciencia y al secreto profesional?",
+    "options": [
+      "a) En el artículo 19.",
+      "b) En el artículo 24.",
+      "c) En el artículo 20.",
+      "d) En el artículo 27."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "13. ¿En qué artículo se reconoce el derecho a la propiedad privada?",
+    "options": [
+      "a) En el Art. 28.",
+      "b) En el Art. 33.",
+      "c) En el Art. 25.",
+      "d) En el Art. 32."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "14. ¿En qué caso podrá un español de origen ser privado de su nacionalidad?",
+    "options": [
+      "a) Nunca.",
+      "b) Por condena penal.",
+      "c) Por condena civil.",
+      "d) Por espionaje al Estado."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "15. ¿En qué casos se puede obligar a un ciudadano a declarar sobre su ideología?",
+    "options": [
+      "a) En ningún caso.",
+      "b) En caso de ciudadanos extranjeros.",
+      "c) En casos de riesgo grave de la seguridad ciudadana.",
+      "d) En cualquier caso."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "16. ¿Los españoles son mayores de edad a los 16 años según el art?",
+    "options": [
+      "a) 15.",
+      "b) 18.",
+      "c) 12.",
+      "d) Ninguno de ellos."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "17. ¿Qué artículo de la Constitución recoge el derecho y el deber de trabajar?",
+    "options": [
+      "a) El artículo 35.",
+      "b) El artículo 33.",
+      "c) El artículo 37.",
+      "d) El artículo 39."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "18. ¿Qué artículo de la Constitución reconoce expresamente el derecho a la protección de la salud?",
+    "options": [
+      "a) 1.",
+      "b) 201.",
+      "c) 43.",
+      "d) 46."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "19. ¿Qué artículo del Título I recoge la regulación de la suspensión de los derechos y libertades?",
+    "options": [
+      "a) El artículo 55.",
+      "b) El artículo 53.",
+      "c) El artículo 51.",
+      "d) El artículo 57."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "20. ¿Qué contenido tiene el artículo 44 de la Constitución?",
+    "options": [
+      "a) El derecho a la salud.",
+      "b) El derecho de acceso a la cultura.",
+      "c) El derecho a una vivienda adecuada.",
+      "d) El derecho a vacaciones retribuidas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "21. ¿Qué debe hacerse con un detenido en el momento en que se agote el tiempo máximo de detención preventiva?",
+    "options": [
+      "a) Ponerlo en libertad.",
+      "b) Ponerlo a disposición judicial para que declare la puesta en libertad.",
+      "c) Ponerlo en libertad o a disposición judicial.",
+      "d) Declarar el ingreso en prisión."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "22. ¿Qué derecho se garantiza en el artículo 21?",
+    "options": [
+      "a) El de Reunión pacífica y sin armas.",
+      "b) El derecho de asociación.",
+      "c) El derecho a participar en los asuntos públicos.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. ¿Qué derechos pueden suspenderse de manera individual?",
+    "options": [
+      "a) Todas las respuestas son ciertas.",
+      "b) La inviolabilidad del domicilio.",
+      "c) El secreto de las comunicaciones.",
+      "d) El tiempo máximo de detención preventiva."
+    ],
+    "correct": 0
+  },
+    {
+    "question": "24. ¿Qué no se garantiza por la Constitución Española de entre lo siguiente en el artículo 18?",
+    "options": [
+      "a) derecho al honor.",
+      "b) derecho a la intimidad personal y familiar y a la propia imagen.",
+      "c) Secreto de las comunicaciones.",
+      "d) El uso de la informática."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "25. ¿Qué tipo de delitos están excluidos de la extradición?",
+    "options": [
+      "a) Los delitos de terrorismo.",
+      "b) Los delitos políticos.",
+      "c) Los delitos sociales y políticos.",
+      "d) Los delitos sociales, pero no los políticos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "26. ¿Quién nombra al Defensor del Pueblo?",
+    "options": [
+      "a) El Rey.",
+      "b) Las Cortes Generales.",
+      "c) El Presidente del Gobierno.",
+      "d) La Comisión Mixta Congreso-Senado para las relaciones con el Defensor del Pueblo."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "27. ¿Quiénes tienen derecho a adoptar medidas de conflicto colectivo?",
+    "options": [
+      "a) Todos los ciudadanos.",
+      "b) Los trabajadores y empresarios.",
+      "c) Los trabajadores.",
+      "d) Todos los españoles."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "28. Al regular el derecho al trabajo, la Constitución prohíbe expresamente la discriminación por razón de:",
+    "options": [
+      "a) Edad.",
+      "b) Sexo.",
+      "c) Estado civil.",
+      "d) Opinión o cualquier otra condición o circunstancia personal o social."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "29. De las siguientes afirmaciones, ¿cuál de ellas está recogida textualmente en la Constitución Española?",
+    "options": [
+      "a) La administración fomentarán la educación sanitaria, la educación física y el deporte.",
+      "b) Los poderes públicos prestarán especial atención a la sanidad ambiental, que deberá tener la correspondiente consideración en los programas de salud.",
+      "c) Las administraciones públicas a través de sus servicios de salud velarán por la salud de los ciudadanos.",
+      "d) Los poderes públicos fomentarán la educación sanitaria, la educación física y el deporte. Asimismo, facilitarán la adecuada utilización del ocio."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "30. Dentro de los principios rectores de la política social y económica no se contempla:",
+    "options": [
+      "a) La redistribución de la renta.",
+      "b) El fomento del deporte.",
+      "c) La política orientada a combatir la inflación.",
+      "d) La atención a los disminuidos físicos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "31. El artículo 43 de la Constitución Española de 27 de diciembre de 1978 establece que:",
+    "options": [
+      "a) Los poderes públicos mantendrán un régimen público de Seguridad Social para todos los ciudadanos.",
+      "b) Los poderes públicos organizarán y tutelarán la salud pública a través de las medidas preventivas y de las prestaciones y servicios necesarios.",
+      "c) Los poderes públicos realizarán una política de prevención, tratamiento, rehabilitación e integración de los disminuidos físicos, sensoriales y psíquicos.",
+      "d) Los poderes públicos garantizarán, mediante pensiones adecuadas y periódicamente actualizadas, la suficiencia económica a los ciudadanos durante la tercera edad."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "32. ¿El Defensor del Pueblo podrá supervisar la actividad de la Administración?",
+    "options": [
+      "a) No.",
+      "b) Sí, con el objeto de defender los derechos comprendidos en el Título I.",
+      "c) Sí, con el objeto de defender el cumplimiento de la Constitución.",
+      "d) No, salvo autorización de las Cortes Generales."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "33. El derecho a la protección de la salud está reconocido en:",
+    "options": [
+      "a) El artículo 41 de la Constitución.",
+      "b) El artículo 95 de la Ley General de Sanidad.",
+      "c) El artículo 43 de la Constitución.",
+      "d) El artículo 1° del Real Decreto 521/87, por el que se aprueba el Reglamento sobre Estructura, Organización y Funcionamiento de Hospitales."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "34. El derecho de todos los ciudadanos a la protección a la salud se reconoce en nuestra CE en:",
+    "options": [
+      "a) art 43.",
+      "b) art 43 y 49.",
+      "c) art 40, 43 y 49.",
+      "d) art 40, 41, 43 y 49."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "35. El secreto de las comunicaciones puede suspenderse:",
+    "options": [
+      "a) De forma colectiva.",
+      "b) De forma individual.",
+      "c) Tanto individual como colectivamente.",
+      "d) No puede suspenderse."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "36. En el caso de la detención preventiva, ¿en qué trámites está garantizada por la Constitución la asistencia de abogado?",
+    "options": [
+      "a) En las diligencias policiales.",
+      "b) En las diligencias policiales y en judiciales.",
+      "c) Sólo en las diligencias judiciales.",
+      "d) Sólo en las diligencias policiales en las que lo solicite el interesado."
+    ],
+    "correct": 1
+  },
+    {
+    "question": "37. ¿En qué artículo de la CE se establece la competencia de tutelar la salud pública?",
+    "options": [
+      "a) 41.",
+      "b) 49.",
+      "c) 43.",
+      "d) a, b y c no son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "38. En relación con el derecho a la libertad religiosa, ¿qué declara la Constitución española?",
+    "options": [
+      "a) La reconoce.",
+      "b) La garantiza.",
+      "c) La reconoce y la garantiza.",
+      "d) La reconoce, la garantiza y la protege."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "39. La Constitución Española reconoce el derecho a la libertad de expresión, de pensamiento, de ideas en el artículo:",
+    "options": [
+      "a) 20.",
+      "b) 21.",
+      "c) 22.",
+      "d) 23."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "40. La extradición (señala la proposición incorrecta):",
+    "options": [
+      "a) Se concederá en cumplimiento de tratado.",
+      "b) Es aplicable para los delitos políticos.",
+      "c) Procederá según el principio de reciprocidad.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "41. La extradición sólo se concederá en cumplimiento de un tratado o de la ley, atendiendo:",
+    "options": [
+      "a) Al principio de reciprocidad.",
+      "b) Al principio de igualdad.",
+      "c) Al principio de cooperación internacional.",
+      "d) Al principio de cooperación."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "42. La utilización injustificada de la suspensión de derechos fundamentales, ¿puede producir responsabilidad penal?",
+    "options": [
+      "a) No.",
+      "b) Sí, como violación de los derechos y libertades reconocidos por las leyes.",
+      "c) No, pero sí civil.",
+      "d) Sí, como delito de injurias."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "43. Los derechos de propiedad y herencia se reconocen en la Constitución:",
+    "options": [
+      "a) En el art. 33.",
+      "b) En la Sección Primera del Capítulo Segundo del Título I.",
+      "c) En el art. 36.",
+      "d) En el Capítulo Tercero del Título I."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "44. Los poderes públicos deberán mantener un régimen público de seguridad social para todos los ciudadanos:",
+    "options": [
+      "a) Sí, tal y como viene recogido en el art. 41 de la Constitución.",
+      "b) No, la Seguridad Social tiene que ser privada.",
+      "c) En unas provincias sí, en otras no.",
+      "d) No existen los poderes públicos en España."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "45. Los poderes públicos mantendrán un régimen público de Seguridad Social:",
+    "options": [
+      "a) Para todos los ciudadanos.",
+      "b) Para los ciudadanos españoles.",
+      "c) Para los ciudadanos mayores de edad.",
+      "d) Para todos los ciudadanos españoles."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "46. No tienen derecho los ciudadanos:",
+    "options": [
+      "a) A utilizar cualquier medio de prueba para su defensa.",
+      "b) A un proceso público con todas las garantías.",
+      "c) A no declarar contra sí mismos.",
+      "d) A la presunción de inocencia."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "47. Respecto de los convenios colectivos, la Constitución garantiza:",
+    "options": [
+      "a) El mantenimiento del poder adquisitivo de los salarios.",
+      "b) Su revisión anual.",
+      "c) Su fuerza vinculante.",
+      "d) Son correctas las respuestas a) y c)."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "48. Se reconoce el derecho de fundación:",
+    "options": [
+      "a) Para fines de interés general.",
+      "b) Para fines particulares.",
+      "c) Para fines privados.",
+      "d) Para distintos fines."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "49. Un español de origen:",
+    "options": [
+      "a) No podrá naturalizarse en otro país sin perder su nacionalidad.",
+      "b) Conserva y pierde su nacionalidad según lo dispuesto en el Código Civil.",
+      "c) No podrá ser privado de su nacionalidad.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "50. Una de las siguientes afirmaciones es falsa:",
+    "options": [
+      "a) La Constitución establece que el hombre y la mujer tienen derecho a contraer matrimonio con plena igualdad jurídica.",
+      "b) La Constitución admite que el matrimonio podrá ser disuelto.",
+      "c) La Constitución dispone que la edad y la capacidad del hombre y la mujer para contraer matrimonio se alcanza con la mayoría de edad.",
+      "d) La Constitución delega en la Ley la concreción de los derechos y deberes de los cónyuges."
+    ],
+    "correct": 2
+  }
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

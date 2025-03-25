@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+ {
+    "question": "1.11 ¿Qué día entró en vigor la Constitución?",
+    "options": [
+      "a) El 27 de diciembre de 1978.",
+      "b) El 6 de diciembre de 1978.",
+      "c) El 28 de diciembre de 1978.",
+      "d) El 29 de diciembre de 1978."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "2.11 ¿En qué artículo de la Constitución se establece que el castellano es la lengua oficial del Estado?",
+    "options": [
+      "a) Artículo 1",
+      "b) Artículo 2",
+      "c) Artículo 3",
+      "d) Artículo 4"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "3.11 Las dos partes en las que normalmente se estructura toda Constitución son:",
+    "options": [
+      "a) Parte estructural y parte principal.",
+      "b) Parte dogmática y parte orgánica.",
+      "c) Parte organizativa y parte principal.",
+      "d) Parte esencial y parte secundaria."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "4.11 Que el Estado sea social implica que:",
+    "options": [
+      "a) El Parlamento sea el principal poder político del Estado.",
+      "b) Que la riqueza ha de repartirse a todos por igual.",
+      "c) Que todos hemos de obedecer los mandatos de la Ley.",
+      "d) Que el Estado ha de ofrecer prestaciones a los ciudadanos que mejoren su calidad de vida."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "5. ¿Cómo se llama el título I?",
+    "options": [
+      "a) De los derechos y deberes fundamentales.",
+      "b) Título Preliminar.",
+      "c) De los Derechos y Deberes Fundamentales y comprende los artículos del 10 al 54.",
+      "d) De los Derechos y Deberes Fundamentales y comprende un total de 23 artículos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "6. ¿Cómo se denomina el Título VII de la Constitución Española?",
+    "options": [
+      "a) Del Poder Judicial.",
+      "b) De Economía y Hacienda.",
+      "c) De los Derechos y Libertades Públicas.",
+      "d) De las relaciones entre el Gobierno y Las Cortes Generales."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "7. ¿Cómo se llama el capítulo 4 del Título I?",
+    "options": [
+      "a) De la Suspensión de los Derechos y Libertades y comprende los artículos 53 a 55.",
+      "b) De la Suspensión de los Derechos y Libertades y comprende los artículos 54 a 55.",
+      "c) De las Garantías de las Libertades y Derechos Fundamentales y comprende los artículos 53 a 55.",
+      "d) De las Garantías de las Libertades y Derechos Fundamentales y comprende los artículos 53 a 54."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "8. ¿Cómo se llama el capítulo III del Título I?",
+    "options": [
+      "a) De los Principios Rectores del Régimen de Seguridad Social.",
+      "b) De los Principios Rectores de la Protección de la Salud.",
+      "c) De los Principios Rectores de la Política Social y Económica.",
+      "d) De los Principios Rectores del Progreso Social y Económico."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. ¿Cómo se llama el capítulo Quinto del título I?",
+    "options": [
+      "a) De la Suspensión de los Derechos y Libertades (art 54).",
+      "b) De la Suspensión de los Derechos y Libertades (arts. 53 a 55).",
+      "c) Condiciones y Límites de la suspensión de derechos y libertades (art 55).",
+      "d) De la Suspensión de los Derechos y Libertades (art 55)."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "10. ¿Cómo se llama la parte de la CE que regula los derechos y deberes de los ciudadanos?",
+    "options": [
+      "a) Parte Dogmática.",
+      "b) Parte Axiológica.",
+      "c) Parte Legal.",
+      "d) Parte Contractual."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "11. ¿Cuál de las siguientes afirmaciones es falsa?",
+    "options": [
+      "a) La CE es flexible.",
+      "b) La CE es consensuada.",
+      "c) La CE es democrática.",
+      "d) La CE es rígida."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "12. ¿Cuál de las siguientes es característica de la CE?",
+    "options": [
+      "a) Consensuada.",
+      "b) Corta.",
+      "c) Conservadora.",
+      "d) No influenciada por otras Constituciones y por tanto original."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "13. ¿Cuál de las siguientes te parece más verdadera con respecto al nombre de la Constitución?",
+    "options": [
+      "a) Constitución Española de 27 de diciembre de 1978, publicada en el BOE 311 de 29 de diciembre de 1978.",
+      "b) Constitución Española de 31 de octubre de 1978, publicada en el BOE 311 de 29 de noviembre de 1978.",
+      "c) Constitución Española de 6 de diciembre de 1978, publicada en el BOE 311 de 27 de noviembre de 1978.",
+      "d) Constitución Española de 29 de diciembre de 1978, publicada en el BOE 311 del mismo día."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "14. ¿Cuál es la fecha de entrada en vigor de la constitución?",
+    "options": [
+      "a) 27 de diciembre de 1978.",
+      "b) 28 de diciembre de 1978.",
+      "c) 29 de diciembre de 1978.",
+      "d) 1 de enero de 1979."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "15. ¿Cuál es la norma jurídica suprema del Estado español?",
+    "options": [
+      "a) La Constitución.",
+      "b) Las Leyes Orgánicas.",
+      "c) Los Decretos-leyes.",
+      "d) Los Decretos-legislativos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "16. ¿Cuál fue la fecha de referéndum en que se votó la aprobación de la Constitución Española?",
+    "options": [
+      "a) 7 de Julio de 1978.",
+      "b) 6 de diciembre de 1978.",
+      "c) 1 de febrero de 1978.",
+      "d) 15 de agosto de 1978."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "17. ¿Cuándo fue aprobada por las cortes la constitución?",
+    "options": [
+      "a) 30-10-1978.",
+      "b) 31-10-1978.",
+      "c) 29-10-1978.",
+      "d) 1-11-1978."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "18. ¿Cuándo fue publicada y entró en vigor?",
+    "options": [
+      "a) Al día siguiente de su publicación en el BOE, el 27 de diciembre de 1978.",
+      "b) El mismo día de su sanción por el Rey tras su publicación en el BOE.",
+      "c) Al día siguiente de su publicación en el BOE el día 29 de diciembre de 1978.",
+      "d) El mismo día de su publicación en el BOE el día 29 de diciembre de 1978."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "19. ¿Cuándo fue ratificada en referéndum la CE?",
+    "options": [
+      "a) El 31-10-1978.",
+      "b) El 6-10-1978.",
+      "c) El 6-12-1978.",
+      "d) El 27-12-1978."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "20. ¿Cuándo fue sancionada por el Rey?",
+    "options": [
+      "a) El 6 de diciembre de 1978.",
+      "b) El 30 de noviembre de 1978.",
+      "c) El 27 de diciembre de 1978.",
+      "d) El 28 de diciembre de 1978."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "21. ¿Cuándo ha sido modificada la CE?",
+    "options": [
+      "a) Actualmente no ha sido modificado ningún artículo hasta la fecha.",
+      "b) El Rey sancionó una modificación del artículo 13 en su apartado 3.",
+      "c) El Rey sancionó una modificación del artículo 13 en su apartado 2.",
+      "d) El 27 de agosto de 1992 se modificó el artículo 12 en su apartado 2 sancionándolo el Rey."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "22. ¿Cuántas disposiciones transitorias contiene la CE?",
+    "options": [
+      "a) 9.",
+      "b) 4.",
+      "c) 1.",
+      "d) 5."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "23. ¿Cuántos artículos tiene el título preliminar?",
+    "options": [
+      "a) 8 artículos.",
+      "b) Los artículos del 1 al 10.",
+      "c) Nueve artículos del 1 al 9.",
+      "d) 8 artículos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "24. ¿Cuántos capítulos tiene el título I?",
+    "options": [
+      "a) El Titulo I se compone de 4 capítulos.",
+      "b) El Título I se compone de 5 capítulos.",
+      "c) El Título I se compone de 5 capítulos, el 2° se divide en dos secciones al igual que el tercero y el quinto.",
+      "d) El Título I se compone de 5 capítulos, estando el 2° dividido en dos secciones."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "25. ¿Cuántos artículos contiene la Sección II del Capítulo II del Título I?",
+    "options": [
+      "a) 9 artículos, del 30 al 38.",
+      "b) 8 artículos, del 30 al 38.",
+      "c) 10 artículos, del 15 al 29.",
+      "d) Ninguna es Correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "26. ¿Cuántos artículos tiene el capítulo segundo del título primero?",
+    "options": [
+      "a) 25.",
+      "b) 30.",
+      "c) 1.",
+      "d) 8."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "27. ¿Cuántos artículos tiene la CE?",
+    "options": [
+      "a) 169 + 4 + 9 + 1 + 1 = 184.",
+      "b) 169.",
+      "c) 55.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "28. ¿Cuántos títulos componen la Constitución Española?",
+    "options": [
+      "a) Diez.",
+      "b) Nueve más Título Preliminar.",
+      "c) Doce.",
+      "d) Diez más Título Preliminar."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "29. ¿Cuántos títulos tiene la Constitución?",
+    "options": [
+      "a) Nueve.",
+      "b) Diez.",
+      "c) Once.",
+      "d) Doce."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "30. ¿Cuántos títulos tiene la Constitución?",
+    "options": [
+      "a) 11.",
+      "b) 10 + Título preliminar.",
+      "c) 11 + Título preliminar.",
+      "d) Ninguna de las anteriores."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "31. ¿De cuántas secciones consta el Capítulo II del Título I?",
+    "options": [
+      "a) De dos.",
+      "b) De tres.",
+      "c) De ninguno.",
+      "d) De cuatro."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "32. ¿De cuántos artículos consta el Título preliminar?",
+    "options": [
+      "a) De 9 que son los artículos 3 al 11 inclusive.",
+      "b) De 14 que son los 14 primeros artículos.",
+      "c) De 9 que son los 9 primeros artículos.",
+      "d) De 54 que son los 54 primeros artículos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "33. ¿De lo siguiente qué es lo que más caracteriza a la CE?",
+    "options": [
+      "a) Flexible.",
+      "b) Rígida.",
+      "c) Semi rígida.",
+      "d) Cambiable."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "34. ¿De qué fecha es la actual constitución española?",
+    "options": [
+      "a) 6 de diciembre de 1978.",
+      "b) 27 de diciembre de 1978.",
+      "c) 31 de octubre de 1978.",
+      "d) 29 de diciembre de 1978."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "35. ¿El Título I de la Constitución en cuántos capítulos está dividido?",
+    "options": [
+      "a) 4.",
+      "b) 3.",
+      "c) 6.",
+      "d) 5."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "36. ¿En cuántos Capítulos se encuentra dividido el Titulo I de la Constitución?",
+    "options": [
+      "a) En dos.",
+      "b) En tres.",
+      "c) En cuatro.",
+      "d) En cinco."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "37. ¿En cuántos títulos se desarrolla la constitución?",
+    "options": [
+      "a) 10.",
+      "b) 8.",
+      "c) 11.",
+      "d) 4."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "38. ¿En qué fecha es aprobada la constitución por las Cortes Generales?",
+    "options": [
+      "a) 6 de diciembre de 1978.",
+      "b) 29 de diciembre de 1978.",
+      "c) 27 de diciembre de 1978.",
+      "d) 31 de octubre de 1978."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "39. ¿Por qué artículo comienza el Título Primero?",
+    "options": [
+      "a) Por el 10.",
+      "b) Por el 1.",
+      "c) Por el 11.",
+      "d) Por el 56."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "40. ¿Por qué se dice que la CE es rígida?",
+    "options": [
+      "a) Por ser de fácil reforma.",
+      "b) Por ser elaborada y aprobada por un parlamento.",
+      "c) Por regir la vida del estado.",
+      "d) Por ser de difícil reforma."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "41. ¿Por qué se dice que la Constitución Española es rígida?",
+    "options": [
+      "a) Por ser de fácil reforma.",
+      "b) Por ser de difícil reforma.",
+      "c) Por regir la vida del Estado.",
+      "d) Por ser elaborada y aprobada por un Parlamento."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "42. ¿Qué artículo cierra el Título I?",
+    "options": [
+      "a) El artículo 53.",
+      "b) El artículo 54.",
+      "c) El artículo 55.",
+      "d) El artículo 56."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "43. ¿Qué artículos comprende el Título I de la Constitución española de 1978?",
+    "options": [
+      "a) Del 10 al 55.",
+      "b) Del 9 al 55.",
+      "c) Del 14 al 55.",
+      "d) Del 14 al 29."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "44. ¿Qué artículos forman la sección denominada 'Derechos fundamentales y libertades públicas'?",
+    "options": [
+      "a) Los artículos del 14 al 29 ambos inclusive.",
+      "b) Los artículos del 15 al 29 ambos inclusive.",
+      "c) Los artículos del 14 al 30 ambos inclusive.",
+      "d) Los artículos del 15 al 30 ambos inclusive."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "45. ¿Qué día fue aprobada por las Cortes Generales la vigente Constitución española?",
+    "options": [
+      "a) El 30 de octubre de 1978.",
+      "b) El 31 de octubre de 1978.",
+      "c) El 6 de noviembre de 1978.",
+      "d) El 27 de diciembre de 1978."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "46. ¿Qué día ratificó en referéndum la Constitución el pueblo español?",
+    "options": [
+      "a) El 30 de octubre de 1978.",
+      "b) El 31 de octubre de 1978.",
+      "c) El 6 de diciembre de 1978.",
+      "d) El 29 de diciembre de 1978."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "47. ¿Qué nombre recibe el Título Preliminar de la CE?",
+    "options": [
+      "a) De los derechos y deberes fundamentales.",
+      "b) De la Reforma Constitucional.",
+      "c) De las Garantías Constitucionales.",
+      "d) Todas son falsas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "48. ¿Quién sancionó la Constitución Española?",
+    "options": [
+      "a) El Gobierno.",
+      "b) El Senado.",
+      "c) Las Cortes Generales.",
+      "d) S.M. el Rey."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "49. Al hacer referencia a la Constitución Española, debemos decir que es de fecha:",
+    "options": [
+      "a) 27 de diciembre de 1978.",
+      "b) 31 de octubre de 1978.",
+      "c) 6 de diciembre de 1978.",
+      "d) 29 de diciembre de 1978."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "50. Al respecto de las modificaciones de la Constitución Española, señale la correcta:",
+    "options": [
+      "a) La CE como norma suprema no se puede modificar, de ahí su característica de 'Rígida'.",
+      "b) No ha sufrido ninguna modificación, pero podría modificarse.",
+      "c) Se modificó en el artículo 23.2 por la firma del Tratado de Adhesión a la OTAN.",
+      "d) Se modificó como consecuencia de la ratificación del Tratado de la Unión Europea en 1992."
+    ],
+    "correct": 3
+  }
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
