@@ -1,0 +1,623 @@
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+    {
+    "question": "1. ¿Cuál de los siguientes es un método físico de desinfección?",
+    "options": [
+      "a) Inmersión.",
+      "b) Hervido.",
+      "c) Pulverización.",
+      "d) Fumigación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "2. ¿Cuándo debe hacerse la limpieza del instrumental?",
+    "options": [
+      "a) Transcurridas 24 horas.",
+      "b) Inmediatamente después de usarlo.",
+      "c) Después de que se seque.",
+      "d) Solamente si hay restos de sangre."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "3. La esterilización de un material se consigue:",
+    "options": [
+      "a) Cuando se destruyen los microorganismos patógenos.",
+      "b) Cuando se elimina la suciedad y se eliminan los virus.",
+      "c) Cuando se destruyen todos los microorganismos incluidos las esporas bacterianas.",
+      "d) Cuando se destruyen todos los microorganismos excluidas las esporas bacterianas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "4. No es un método de esterilización del material:",
+    "options": [
+      "a) Calor seco.",
+      "b) Calor húmedo.",
+      "c) Procedimientos químicos.",
+      "d) Ebullición."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "5. El método de esterilización más utilizado para material no termosensible es:",
+    "options": [
+      "a) Óxido de etileno.",
+      "b) Calor húmedo o vapor.",
+      "c) Gas Plasma.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "6. Cuando se usa plasma de peróxido de hidrógeno como método de esterilización hay que saber que es un proceso:",
+    "options": [
+      "a) Tóxico.",
+      "b) Lento.",
+      "c) Idóneo para materiales sensibles al calor.",
+      "d) Son correctas las respuestas A y C."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "7. Uno de los inconvenientes de la esterilización con autoclave es:",
+    "options": [
+      "a) Alta contaminación del medio ambiente.",
+      "b) Coste elevado.",
+      "c) Uso dificultoso.",
+      "d) Deteriora los materiales plásticos."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "8. El óxido de etileno es:",
+    "options": [
+      "a) Inocuo.",
+      "b) Abrasivo con los metales.",
+      "c) Un excelente agente esterilizante.",
+      "d) Las respuestas B y C son correctas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. Uno de los siguientes métodos no se utiliza para la esterilización:",
+    "options": [
+      "a) Óxido de etileno.",
+      "b) Autoclave.",
+      "c) Plasma de peróxido de hidrógeno.",
+      "d) Biguanida."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "10. Es un agente utilizado en esterilización química:",
+    "options": [
+      "a) El autoclave.",
+      "b) El glutaraldehído.",
+      "c) La tindalización.",
+      "d) La incineración."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "11. La esterilización por medio de aire caliente se aplica para:",
+    "options": [
+      "a) Vendas, textiles.",
+      "b) Caucho.",
+      "c) Productos sanitarios ópticos sensibles.",
+      "d) Aceites libres de agua y grasas, ceras, parafinas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "12. El método de esterilización preferente para esterilizar material de goma como guantes, sondas, etc. es:",
+    "options": [
+      "a) Glutaraldehído.",
+      "b) Autoclave.",
+      "c) Óxido de Etileno.",
+      "d) Formol."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "13. Tras esterilizar materiales con óxido de etileno, la última etapa consiste en:",
+    "options": [
+      "a) Empaquetarlos y guardarlos.",
+      "b) Lavarlos con agua y jabón.",
+      "c) Airearlos.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "14. El Autoclave es un método de esterilización:",
+    "options": [
+      "a) Químico por gases.",
+      "b) Químico por inmersión.",
+      "c) Físico por calor seco.",
+      "d) Físico por calor húmedo."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "15. No es una forma de esterilización por agentes físicos:",
+    "options": [
+      "a) Ultrasonidos.",
+      "b) Óxido de etileno.",
+      "c) Calor húmedo.",
+      "d) Radiaciones ionizantes."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "16. La estufa de Poupinel:",
+    "options": [
+      "a) Esteriliza mediante calor húmedo.",
+      "b) Esteriliza mediante calor seco.",
+      "c) Esteriliza mediante ultrasonidos.",
+      "d) Esteriliza mediante radiaciones."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "17. El óxido de etileno:",
+    "options": [
+      "a) El empaquetado debe ser de aluminio, nylon o poliéster.",
+      "b) Mucha dificultad en la certificación del método.",
+      "c) Permite la esterilización de material termosensible.",
+      "d) No presenta toxicidad para el personal ni para el medio ambiente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "18. Es un sistema de esterilización químico:",
+    "options": [
+      "a) El calor seco.",
+      "b) Las radiaciones.",
+      "c) El vapor.",
+      "d) El plasma de peróxido de hidrógeno."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "19. ¿Cuál de las siguientes no es una sustancia utilizada en los métodos químicos de esterilización?",
+    "options": [
+      "a) Formaldehído.",
+      "b) Óxido de etileno.",
+      "c) Clorhexidina.",
+      "d) Plasma gas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "20. ¿Cómo se denomina el procedimiento a la que se somete la habitación de un paciente tras el alta hospitalaria del mismo?",
+    "options": [
+      "a) Desinfección concomitante.",
+      "b) Esterilización final.",
+      "c) Desinfección final.",
+      "d) Limpieza concomitante."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "21. Un desinfectante que elimine la mayoría de las bacterias y virus y hongos, pero que no destruye las esporas, es:",
+    "options": [
+      "a) Desinfectante de nivel semicrítico.",
+      "b) Desinfectante de alto nivel.",
+      "c) Desinfectante de alto espectro.",
+      "d) Desinfectante de nivel intermedio."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "22. Uno de los inconvenientes que presenta la utilización de óxido de etileno es que:",
+    "options": [
+      "a) Es un gas inflamable.",
+      "b) Puede producir intoxicaciones.",
+      "c) Existen sospechas que puede ser cancerígeno, teratógeno y provocar abortos.",
+      "d) Todas las opciones anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. Según Spaulding, los materiales hospitalarios de atención pacientes se clasifican en:",
+    "options": [
+      "a) Flexibles, rígidos, medios.",
+      "b) Metales, cauchos, vidrios.",
+      "c) Críticos, semicríticos, no críticos.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "24. Según la clasificación de Spaulding, el instrumental quirúrgico que penetre en tejido estéril, se considera un artículo hospitalario:",
+    "options": [
+      "a) Semicrítico.",
+      "b) Crítico.",
+      "c) No crítico.",
+      "d) Ninguna de las preguntas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "25. Según la clasificación de Spaulding, el material que entra en contacto con mucosas y piel no intacta es:",
+    "options": [
+      "a) Material crítico.",
+      "b) Material semicrítico.",
+      "c) Material no crítico.",
+      "d) Material biológico."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "26. La tintura de yodo es utilizado como:",
+    "options": [
+      "a) Agente esterilizante combinado con alcohol.",
+      "b) Detergente.",
+      "c) Antiséptico.",
+      "d) Desinfectante de nivel intermedio."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "27. Para realizar controles químicos en la esterilización del material se emplean:",
+    "options": [
+      "a) Indicadores calorimétricos.",
+      "b) Termómetros.",
+      "c) Indicadores calorimétricos.",
+      "d) Esporas atenuadas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "28. No es una forma de esterilización por agentes físicos:",
+    "options": [
+      "a) Calor seco.",
+      "b) Óxido de etileno.",
+      "c) Calor húmedo.",
+      "d) Radiaciones ionizantes."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "29. ¿Cómo constataremos que no ha quedado aire en el interior del autoclave?",
+    "options": [
+      "a) Con indicadores físicos.",
+      "b) Con papel crepado.",
+      "c) Mediante el Test de Bowie-Dick.",
+      "d) Con indicadores mecánicos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "30. ¿Qué es un antiséptico?",
+    "options": [
+      "a) Sustancia química con capacidad para eliminar la suciedad adherida a la superficie de objetos inanimados o a los tejidos vivos.",
+      "b) Sustancia química antimicrobiana de aplicación tópica sobre los tejidos vivos.",
+      "c) Sustancia química que destruye los microorganismos y que se utiliza sobre material inerte.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "31. El periodo de caducidad del material esterilizado por vapor y envasado en doble bolsa de papel mixto es de:",
+    "options": [
+      "a) 3 meses.",
+      "b) 6 meses.",
+      "c) 12 meses.",
+      "d) 10 meses."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "32. Un producto bactericida:",
+    "options": [
+      "a) Inhibe el crecimiento de microorganismos.",
+      "b) Mata los microorganismos.",
+      "c) Mata los microorganismos y sus formas esporuladas.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "33. El control de la esterilización biológico utiliza:",
+    "options": [
+      "a) Hongos atenuados.",
+      "b) Virus atenuados.",
+      "c) Bacterias atenuadas.",
+      "d) Esporas atenuadas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "34. Entre las técnicas de desinfección se encuentran:",
+    "options": [
+      "a) La inmersión.",
+      "b) La loción.",
+      "c) La vaporización.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "35. Utilizando la estufa de Poupinel, la relación de la temperatura y el tiempo que se requiere es:",
+    "options": [
+      "a) 160° C y 30 minutos.",
+      "b) 180º C y 30 minutos.",
+      "c) 190° C y 30 minutos.",
+      "d) 170º C y 30 minutos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "36. La técnica que tiene por objeto hacer pasar el material por la llama de un mechero tipo Bunsen de gas o un mechero de alcohol hasta lograr su incandescencia se denomina:",
+    "options": [
+      "a) Llameado.",
+      "b) Flameado.",
+      "c) Incineración.",
+      "d) Pasteurización."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "37. En la esterilización de material con la estufa Poupinel a una temperatura de 160ºC, ¿qué tiempo se necesitará?",
+    "options": [
+      "a) 120 minutos.",
+      "b) 140 minutos.",
+      "c) 1 hora.",
+      "d) 100 minutos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "38. El empaquetado en una central de esterilización debe ser:",
+    "options": [
+      "a) Impermeable al agente esterilizante.",
+      "b) Permeable a agentes externos.",
+      "c) Impermeable a la contaminación externa y permeable al agente esterilizante.",
+      "d) Permeable a los agentes externos e impermeable al vapor."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "39. Señala respecto al proceso de esterilización con peróxido de hidrógeno la opción incorrecta:",
+    "options": [
+      "a) No deja residuos tóxicos.",
+      "b) El ciclo es corto de 54 a 72 minutos.",
+      "c) El material necesita aireación.",
+      "d) Es una opción válida para materiales termosensibles."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "40. ¿Qué tipo de controles se utilizan para verificar los procesos de esterilización?",
+    "options": [
+      "a) Controles físicos.",
+      "b) Controles químicos.",
+      "c) Controles biológicos.",
+      "d) Todas las respuestas anteriores son correctas."
+    ],
+    "correct": 3
+  },
+    {
+    "question": "41. El control biológico de esterilización para el óxido de etileno es:",
+    "options": [
+      "a) Bacilo Helicobacter.",
+      "b) Bacilo de Koch.",
+      "c) Bacillus subtilis.",
+      "d) Bacillus stearothermophilus."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "42. ¿De qué control de esterilización forma parte el resultado de la medición del termómetro en un autoclave?",
+    "options": [
+      "a) Biológico.",
+      "b) Químico.",
+      "c) Físico.",
+      "d) Colorimétrico."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "43. Un material séptico se considera que se encuentra:",
+    "options": [
+      "a) Desinfectado.",
+      "b) Limpio.",
+      "c) Contaminado.",
+      "d) Estéril."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "44. Una zona aséptica es una zona:",
+    "options": [
+      "a) Contaminada.",
+      "b) Limpia.",
+      "c) Sucia.",
+      "d) Estéril."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "45. Los 5 momentos para el lavado de manos son:",
+    "options": [
+      "a) Antes de realizar una técnica aséptica, después de exponerse a fluidos corporales, después de entrar en contacto con el paciente, al comenzar el turno de trabajo y después de entrar en contacto con el entorno que rodea al paciente.",
+      "b) Antes de entrar en la habitación del paciente, antes de realizar una técnica aséptica, antes de exponerse a fluidos corporales, antes de entrar en contacto con el paciente y antes de entrar en contacto con el entorno que rodea al paciente.",
+      "c) Antes de entrar en contacto con el paciente, antes de realizar una técnica aséptica, después de exponerse a fluidos corporales, después de entrar en contacto con el paciente y después de entrar en contacto con el entorno que rodea al paciente.",
+      "d) Antes de realizar una técnica aséptica, después de entrar en contacto con el entorno que rodea al paciente, antes de exponerse a fluidos corporales, después de entrar en contacto con el paciente, y después de realizar el registro de los cuidados realizados al paciente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "46. El uso de guantes sustituye al lavado de manos:",
+    "options": [
+      "a) Cuando se usan guantes estériles.",
+      "b) Sólo en el caso de que los usemos y desechemos con un solo paciente.",
+      "c) Nunca.",
+      "d) En el aseo de los pacientes."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "47. El lavado de manos quirúrgico debe durar aproximadamente:",
+    "options": [
+      "a) 2 minutos.",
+      "b) 5 minutos.",
+      "c) 1 minuto.",
+      "d) 10 minutos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "48. La pasteurización es:",
+    "options": [
+      "a) Un método físico de esterilización por calor.",
+      "b) Consiste en aplicar la sustancia desinfectante en pulverizaciones.",
+      "c) Un medio físico de desinfección por calor.",
+      "d) Un método de desinfección químico."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "49. En la esterilización por calor húmedo en autoclave los parámetros son:",
+    "options": [
+      "a) 160ºC - 200ºC y 10 minutos.",
+      "b) 164ºC - 180ºC y 25-30 minutos.",
+      "c) 121ºC - 134ºC y 15-20 minutos.",
+      "d) 80ºC - 100ºC y 2 horas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "50. Los materiales que se esterilizan en autoclave pueden ir envueltos en papel:",
+    "options": [
+      "a) Crepé.",
+      "b) Celofán.",
+      "c) Son correctas tanto papel crepé como celofán.",
+      "d) No poroso."
+    ],
+    "correct": 2
+  }
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
