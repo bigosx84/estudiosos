@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+ {
+    "question": "1. ¿Cuál es el objetivo final de los almacenes hospitalarios?",
+    "options": [
+      "a) Proporcionar puestos de trabajo a los celadores",
+      "b) La distribución de pedidos",
+      "c) Facilitar los suministros externos del hospital",
+      "d) Todas las respuestas anteriores son correctas"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "2. Se entiende por 'suministros externos':",
+    "options": [
+      "a) Los que abastecen desde los distintos servicios del hospital al almacén general.",
+      "b) Los que abastecen a los distintos servicios del hospital desde el almacén general.",
+      "c) Los que abastecen al almacén general 'desde fuera', a través de las entregas de los proveedores.",
+      "d) Son correctas a) y b)."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "3. La realización de los pedidos a los almacenes, se realiza a través de un documento que recibe el nombre de:",
+    "options": [
+      "a) Vale de pedido.",
+      "b) Vale de consumo.",
+      "c) Albarán.",
+      "d) Vale de almacén."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "4. ¿Qué clase de productos constituyen aquellos que tienen un elevado índice de salidas, un elevado número de pedidos, que precisan de máxima accesibilidad y una ubicación muy cercana a la zona de expedición de los pedidos?",
+    "options": [
+      "a) Productos A.",
+      "b) Productos B.",
+      "c) Productos C.",
+      "d) Productos D."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "5. La información que nos permite conocer en todo momento las entradas, las salidas y las existencias de un artículo concreto, se denomina:",
+    "options": [
+      "a) Stock.",
+      "b) Inventario.",
+      "c) Almacenaje.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "6. La estancia provisional de las mercancías en el almacén, lo que implica colocación, conservación y control de las existencias se denomina:",
+    "options": [
+      "a) Almacenaje.",
+      "b) Stock.",
+      "c) Inventario.",
+      "d) Todas son correctas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "7. ¿Qué material de los enumerados a continuación se considera fungible?",
+    "options": [
+      "a) Guantes de látex.",
+      "b) Jeringuillas.",
+      "c) Agujas.",
+      "d) Todas son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "8. El término LIFO significa:",
+    "options": [
+      "a) El primero en entrar es el primero en salir",
+      "b) El último en entrar es el primero en salir",
+      "c) El primer consumo es la primera compra",
+      "d) El último en entrar es el último en salir"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "9. Entendemos por material fungible:",
+    "options": [
+      "a) El material que permanece",
+      "b) El material de larga duración",
+      "c) Material que se consume con el uso",
+      "d) Las respuestas A y B son correctas"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "10. El celador podrá contratar verbalmente la adquisición de un suministro hospitalario:",
+    "options": [
+      "a) Cuando se lo pida el médico de guardia de urgencias",
+      "b) Cuando se lo pida el jefe de la unidad al que va dirigido el suministro",
+      "c) Cuando al hacer el inventario detecte el stock agotado de un producto",
+      "d) No podrá contratar en ningún caso"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "11. ¿Cuál de los siguientes productos no se considera material fungible?",
+    "options": [
+      "a) Guantes estériles",
+      "b) Hojas de bisturí",
+      "c) Almohadas",
+      "d) Gasas estériles"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "12. Dentro del almacén no es función de los celadores:",
+    "options": [
+      "a) Comprobación de los vales de suministros o pedidos internos",
+      "b) Notificación de la disminución o agotamiento de productos, a fin de tomar medidas para su reposición",
+      "c) Colocación de los productos almacenables en sus ubicaciones respectivas",
+      "d) Control del gasto del almacén de los diferentes servicios peticionarios"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "13. ¿Qué factor se tendrá en cuenta a la hora de realizar el diseño de un almacén?",
+    "options": [
+      "a) No importa el coste del almacenamiento",
+      "b) La maximización del riesgo",
+      "c) Optimización del espacio disponible",
+      "d) La inflexibilidad para futuras adaptaciones"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "14. Aquel material que tiene un coste superior a un mínimo establecido, demuestra una duración prolongada en el tiempo y es de fácil y concreta descripción se denomina:",
+    "options": [
+      "a) Material fungible",
+      "b) Material reutilizable",
+      "c) Material no desechable",
+      "d) Material inventariable"
+    ],
+    "correct": 3
+  },
+   {
+    "question": "15. En un hospital existen siempre dos almacenes básicos. ¿sabrías decir cuáles son?",
+    "options": [
+      "a) Almacén general y almacén de farmacia",
+      "b) Almacén de vestuario y almacén de lencería",
+      "c) Almacén de impresos y almacén de equipos de oficina",
+      "d) Almacén de impresos y almacén de menaje"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "16. La operación técnica de evaluación crítica de las mercancías del almacén que tiene por objeto la eliminación del almacén de los productos obsoletos o caducados se denomina:",
+    "options": [
+      "a) Obsolescencia técnica",
+      "b) Obsolescencia física",
+      "c) Caducidad",
+      "d) Expurgo"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "17. Si clasificamos los inventarios según una concepción logística, cuál de los siguientes no pertenecería a dicha clasificación:",
+    "options": [
+      "a) Inventarios cíclicos o de lotes",
+      "b) Inventarios de productos ya elaborados",
+      "c) Inventarios estacionales o periódicos",
+      "d) Inventarios de seguridad"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "18. La función de aprovisionamiento consta de dos etapas. Indique cuáles son:",
+    "options": [
+      "a) Precompra y almacenaje",
+      "b) Precompra y compra",
+      "c) Compra y postcompra",
+      "d) Recepción y almacenaje"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "19. En un almacén, ¿qué entendemos por stock?",
+    "options": [
+      "a) Función de contar las existencias en un momento determinado",
+      "b) Información que permite conocer en todo momento las entradas, las salidas y las existencias",
+      "c) Distribución y consumo de materiales por los servicios",
+      "d) Estancia provisional de mercancía en el almacén"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "20. De entre los siguientes, ¿cómo se denomina el medio que sirve para transportar pequeños objetos en los hospitales?",
+    "options": [
+      "a) Tubo transportador",
+      "b) Turbo de teletransporte",
+      "c) Teletransportín",
+      "d) Tubo neumático"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "21. ¿Qué es un código de barras?",
+    "options": [
+      "a) Conjunto de signos formado por una serie de líneas y números asociados a ellas, que se pone sobre los productos de consumo y se utiliza para la gestión informática de las existencias",
+      "b) Conjunto de estanterías limitadas por una serie de barras sucesivas para impedir el deterioro de las existencias",
+      "c) Conjunto de líneas que sirven para identificar el precio máximo de los artículos",
+      "d) Número de líneas continuas que identifican el volumen de producto de un almacén"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "22. Dentro del servicio de almacén, ¿quién debe realizar la entrega de los pedidos programados a las personas que acuden a retirarlos?",
+    "options": [
+      "a) El celador del servicio al que corresponde el pedido",
+      "b) El encargado de suministro",
+      "c) El auxiliar administrativo del almacén",
+      "d) El celador de almacén"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. ¿Qué es un inventario cíclico?",
+    "options": [
+      "a) Aquel en el que se acumula material hasta una cierta cantidad para poder servirlo de una vez",
+      "b) Aquel donde se encuentran los productos que son demandados en función del periodo del año en el que nos encontremos",
+      "c) Aquel en el que los productos son suministrados progresivamente",
+      "d) El que se crea para cubrir el riesgo de las fluctuaciones de los pedidos"
+    ],
+    "correct": 0
+  },
+    {
+    "question": "24. A la hora de ubicar un muelle de carga para un almacén hospitalario debemos tener en cuenta que:",
+    "options": [
+      "a) Se puede ubicar en cualquier sitio que creamos conveniente",
+      "b) Habrá que tener en cuenta las comodidades de los que van a trabajar en ese lugar",
+      "c) Esté cerca de la sede de las ambulancias para aprovechar el mismo espacio",
+      "d) No esté próximo a las zonas asistenciales, para que no influya en el tránsito de las ambulancias y evitar ruidos que perjudiquen a los enfermos"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "25. La función de contar las existencias de un almacén en un momento determinado se denomina:",
+    "options": [
+      "a) Entradas",
+      "b) Almacenaje",
+      "c) Salidas",
+      "d) Inventario"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "26. El concepto importante en la gestión de almacenes que mide el tiempo transcurrido desde que un artículo entra en el almacén hasta que se produce su salida, recibe el nombre de:",
+    "options": [
+      "a) Índice Cronológico",
+      "b) Índice aleatorio",
+      "c) Índice operativo",
+      "d) Índice de rotación"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "27. ¿En qué zona del almacén se efectúa la clasificación de los productos?",
+    "options": [
+      "a) Muelle de descarga",
+      "b) Zona de stock o almacenamiento",
+      "c) Zona administrativa",
+      "d) Recepción y control de mercancías"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "28. La clasificación de Pareto ordena los artículos en CLASE A, B, C. Los artículos del TIPO A son aquellos que:",
+    "options": [
+      "a) Tendrían un consumo intermedio",
+      "b) Se utilizan más y, por lo tanto, se necesita más acceso",
+      "c) Se consumen menos",
+      "d) Son frágiles"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "29. Entre las tareas propias del celador en almacén no figura:",
+    "options": [
+      "a) Notificación de la disminución o agotamiento de productos, a fin de tomar medidas para su reposición",
+      "b) Entrega de productos no programados, en su caso, o urgentes",
+      "c) Colocación de los productos almacenables en sus ubicaciones respectivas",
+      "d) Realizar informes mensuales con la valoración económica de los movimientos del almacén"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "30. El término FIFO significa:",
+    "options": [
+      "a) El primero en entrar es el primero en salir",
+      "b) El último en entrar es el primero en salir",
+      "c) El primer consumo es la primera compra",
+      "d) El último en entrar es el último en salir"
+    ],
+    "correct": 0
+  }
+  	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	
