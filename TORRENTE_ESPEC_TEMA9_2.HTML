@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+ 
+  {
+    "question": "1. Es función del personal que trabaja en los almacenes hospitalarios:",
+    "options": [
+      "a) Comprobar que el producto recibido es el adecuado",
+      "b) Controlar las existencias de material",
+      "c) Verificar que el personal y los enfermos hacen buen uso del material entregado",
+      "d) Son correctas las respuestas a y b"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "2. Dentro de la unidad de farmacia el celador deberá preparar el stock de sueros",
+    "options": [
+      "a) No",
+      "b) Sí",
+      "c) No, salvo que así se lo autorice el responsable de farmacia",
+      "d) No, ya que es una función específica de la auxiliar de enfermería"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "3. El material de larga vida y carácter definitivo se denomina:",
+    "options": [
+      "a) Fungible",
+      "b) No crítico",
+      "c) Catalogable",
+      "d) Inventariable"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "4. La función de comprobar que los bultos recibidos son los que constan en el albarán de entrega una vez realizada esta, corresponde a:",
+    "options": [
+      "a) El jefe de la unidad",
+      "b) El supervisor de planta",
+      "c) El coordinador del servicio",
+      "d) El celador"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "5. La operación de contar uno por uno todos los artículos almacenados se denomina:",
+    "options": [
+      "a) Control de stock",
+      "b) Inventario",
+      "c) Control de suministro"
+	  "d) Gestión del material"
+    ],
+    "correct": 1
+  },
+   {
+    "question": "6. La petición de productos al almacén en el formulario oficial irá firmado por:",
+    "options": [
+      "a) El celador del servicio peticionario",
+      "b) La persona que haya realizado la solicitud",
+      "c) El encargado del almacén",
+      "d) El responsable del servicio peticionario"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "7. Las necesidades de artículos por parte de los servicios y unidades de la institución se presentan en un formulario conocido como:",
+    "options": [
+      "a) Minuta de pedido",
+      "b) Albarán de pedido",
+      "c) Ficha de pedido",
+      "d) Vale de pedido"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "8. ¿Cuál de los siguientes inventarios no se realiza teniendo en cuenta las características de los productos?",
+    "options": [
+      "a) Inventarios estacionales o periódicos",
+      "b) Inventarios de productos que dan soporte a la actividad del centro",
+      "c) Inventarios de productos originarios",
+      "d) Inventarios de productos ya elaborados"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "9. ¿Cuál de las siguientes características pertenece a las formas de almacenaje tipo mixto?",
+    "options": [
+      "a) Todos los productos un lugar de colocación",
+      "b) La ubicación de cada producto está predeterminada",
+      "c) Son correctas las respuestas a y b",
+      "d) Ninguna es correcta"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "10. ¿Cuál de las siguientes actividades es esencial en la gestión de un inventario?",
+    "options": [
+      "a) Determinar las existencias",
+      "b) Analizar el resultado de la operación del inventario",
+      "c) Son correctas a y b",
+      "d) Ninguna es correcta"
+    ],
+    "correct": 2
+  },
+  
+  {
+    "question": "11. ¿Cuál de las siguientes características pertenece al sistema de clasificación de productos?",
+    "options": [
+      "a) Los prodcutos deben ser identificados rápidamente y sin confusión alguna.",
+      "b) El código debe facilitar la agrupación de los productos en virtud de su naturaleza y su búsqueda.",
+      "c) Los códigos deben ir siempre acompañados de una descripción de longitud limitada y de formato preestablecido así como una indicación clara de la unidad de medida que se emplea.",
+      "d) Todas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "12. ¿Cuál de las siguientes funciones no es una función del almacén?",
+    "options": [
+      "a) La de custodiar los bienes del centro",
+      "b) La de aprovisionamiento",
+      "c) La de distribución",
+      "d) Son todas funciones de un almacén"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "13. De los siguientes inventarios, ¿cuál pertenece a una concepción logística?",
+    "options": [
+      "a) Inventario cíclico o de lotes",
+      "b) Inventario de productos originarios",
+      "c) Inventario de productos en transformación",
+      "d) Inventario de productos ya elaborados"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "14. ¿En qué zona del almacén de las siguientes se efectúa la clasificación de los productos?",
+    "options": [
+      "a) En los muelles de descarga",
+      "b) En la zona de stock o almacenamiento",
+      "c) En la zona administrativa",
+      "d) Ninguna respuesta es correcta"
+    ],
+    "correct": 3
+  },
+   {
+    "question": "15. A la hora de ubicar un muelle de carga para un almacén hospitalario debemos tener en cuenta:",
+    "options": [
+      "a) Nada pues se puede ubicar en cualquier sitio que creamos conveniente",
+      "b) Habrá que tener en cuenta las comodidades de los que van a trabajar en ese lugar",
+      "c) Que esté cerca de la sede de las ambulancias para aprovechar el mismo espacio",
+      "d) Que no esté próximo de la zona asistenciales para que no influyan en el tránsito de las ambulancias y evitar ruidos que perjudiquen a los enfermos"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "16. Dentro de un almacén el stock es:",
+    "options": [
+      "a) Distribución y consumo de materiales por los servicios",
+      "b) Función de contar las existencias de un almacén en un momento determinado",
+      "c) La información que permite conocer en todo momento las entradas, las salidas y las existencias",
+      "d) Son correctas las respuestas a y c"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "17. La localización de los productos en un almacén puede ser:",
+    "options": [
+      "a) Localización preasignada",
+      "b) Localización aleatoria",
+      "c) Localización inmediata",
+      "d) Son correctas a y b"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "18. Al menos cuántos almacenes debe haber en un hospital",
+    "options": [
+      "a) Al menos 3 tipos de almacenes",
+      "b) Como mínimo un almacén",
+      "c) Siempre hay más de 3",
+      "d) Ninguna es correcta"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "19. Entre los factores a tener en cuenta a la hora de realizar el diseño y la organización de un almacén se encuentran:",
+    "options": [
+      "a) Optimización del espacio disponible",
+      "b) Minimización del riesgo",
+      "c) Máxima flexibilidad para futuras adaptaciones",
+      "d) Todas las respuestas anteriores son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "20. La clasificación de los productos mediante la técnica de A,B,C significa:",
+    "options": [
+      "a) Los productos tipo A son productos intermedios",
+      "b) Los productos tipo A son una gran cantidad de productos que representan un pequeño porcentaje del total del valor del uso",
+      "c) Son correctas a y b",
+      "d) Ninguna es correcta"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "21. ¿Cuál de las siguientes zonas son zonas en las que puede dividirse un almacén?",
+    "options": [
+      "a) Muelles de descarga",
+      "b) Zona de recepción y control de mercancías",
+      "c) Zona de preparación para el reparto",
+      "d) Todas las respuestas anteriores son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "22. Señalar lo correcto sobre las condiciones de almacenamiento y conservación de los medicamentos:",
+    "options": [
+      "a) Los medicamentos termolábiles se deterioran a temperatura ambiente y deben ser conservados en frigorífico o congelador.",
+      "b) Los estupefacientes se identifican por llevar un círculo negro en el envase",
+      "c) Las especialidades fotosensibles se deben proteger de la luz natural pero no es necesaria su protección de la luz artificial.",
+      "d) Todas las respuestas anteriores son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. ¿Cómo se denomina toda sustancia activa o inactiva, empleada en la fabricación de un medicamento, ya permanezca inalterada, se modifique o desaparezca en el transcurso del proceso?",
+    "options": [
+      "a) Fórmula magistral",
+      "b) Preparado oficinal",
+      "c) Forma galénica",
+      "d) Materia prima"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "24. Cuando un medicamento viene etiquetado con el símbolo de termolábil, ¿qué indica?",
+    "options": [
+      "a) Que es sensible a la luz",
+      "b) Que es un medicamento para bajar la temperatura",
+      "c) Que hay que guardar en frigorífico y mantener la cadena",
+      "d) Que es dispensado con receta médica"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "25. Corresponde al celador de farmacia:",
+    "options": [
+      "a) Rellenar el carro de unidosis con la medicación correspondiente",
+      "b) Coordinar las tareas de inventariado del almacén de farmacia",
+      "c) Trasladar a las plantas de hospitalización los carros de unidosis",
+      "d) Colocar por orden alfabético los productos almacenados en el servicio de farmacia"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "26. Señala la respuesta correcta respecto al celador y sus funciones:",
+    "options": [
+      "a) El celador podrá administrar medicación cuando se lo ordene el médico responsable del paciente aunque sólo si es bajo su supervisión.",
+      "b) Excepcionalmente el celador podrá administrar la medicación al paciente siempre bajo la supervisión de la enfermera de planta si es una situación de urgencia.",
+      "c) Podrá administrar medicamentos, ya que es una función que corresponda al celador y al resto de personal sanitario.",
+      "d) No podrá administrar ningún medicamento, ya que no es una función que corresponda al celador"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "27. Entre las funciones del celador destinado en farmacia no se incluye:",
+    "options": [
+      "a) Dispensación de determinado material",
+      "b) Control y dispensación de estupefacientes",
+      "c) Recepción de material",
+      "d) Acondicionamiento de material"
+    ],
+    "correct": 1
+  },
+   {
+    "question": "28. El responsable del almacén de farmacia le pide al celador que coloque los sueros en un lugar distinto del que se encuentran. En este caso, el celador:",
+    "options": [
+      "a) No realiza la tarea que se le ha encargado porque el celador de farmacia solo traslada productos desde la farmacia hasta las plantas de hospitalización.",
+      "b) No se realiza la tarea que se le ha encargado porque esta función le corresponde al personal auxiliar de enfermería.",
+      "c) Realizará la tarea que le han encargado pues está dentro de sus funciones dentro de este servicio.",
+      "d) Realizará la tarea que le han encargado ya que es función del celador colocar y trasladar tanto la farmacia pesada como la ligera."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "29. De las siguientes opciones, ¿cuál tiene acción terapéutica?",
+    "options": [
+      "a) Receptor",
+      "b) Principio activo",
+      "c) Excipiente",
+      "d) Placebo"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "30. ¿Qué área de entre las siguientes no forma parte del servicio de farmacia de hospital?",
+    "options": [
+      "a) Área de dispensación",
+      "b) Área de nutrición artificial",
+      "c) Área de citostáticos",
+      "d) Todas son áreas del servicio de farmacia del hospital."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "31. Son funciones de los servicios de farmacia de hospital:",
+    "options": [
+      "a) Promover una prescripción correcta de los medicamentos",
+      "b) Monitorizar el tratamiento farmacológico",
+      "c) Colaborar con las estructuras de Atención Primaria de la zona",
+      "d) Todas las respuestas anteriores son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "32. Es un sistema de distribución de medicamentos:",
+    "options": [
+      "a) Por stocks",
+      "b) Unidosis",
+      "c) Dosis unitaria semanal",
+      "d) Las respuestas A y B son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "33. Será obligatorio el establecimiento de un servicio de farmacia en:",
+    "options": [
+      "a) Todos los hospitales que dispongan de cien o más camas",
+      "b) Todos los centros sociosanitarios que dispongan de cien o más plazas",
+      "c) Los hospitales de menos de cien camas en función de la tipología y volumen de actividad asistencial",
+      "d) Las respuestas a y b son correctas"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "34. Un excipiente es:",
+    "options": [
+      "a) El producto obtenido mediante un conjunto de procesos de fabricación destinados a transferir, in vivo o ex vivo, un gen profiláctico, de diagnóstico o terapéutico, tal como un fragmento de ácido nucleico, a células humanas/animales y su posterior expresión in vivo",
+      "b) Aquella materia que, incluida en las formas galénicas, se añade a los principios activos o a sus asociaciones para servirles de vehículo, posibilitar su preparación y estabilidad, modificar sus propiedades organolépticas o determinar las propiedades fisicoquímicas del medicamento y su biodisponibilidad",
+      "c) Toda sustancia (activa o inactiva) empleada en la fabricación de un medicamento, ya permanezca inalterada, se modifique o desaparezca en el transcurso del proceso.",
+      "d) Es la sustancia responsable de la acción terapéutica"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "35. ¿Cómo deben conservarse los fármacos termolábiles?",
+    "options": [
+      "a) En frigorífico",
+      "b) A temperatura ambiente",
+      "c) Bajo una fuente de calor",
+      "d) En el botiquín"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "36. La custodia, conservación y dispensación de medicamentos de uso humano corresponderá exclusivamente:",
+    "options": [
+      "a) A los servicios de farmacia de los hospitales",
+      "b) A los servicios de farmacia de los centros de salud",
+      "c) A las oficinas de farmacia abiertas al público, legalmente autorizadas",
+      "d) Las respuestas A, B y C son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "37. Respecto al servicio de farmacia hospitalaria, es correcto que:",
+    "options": [
+      "a) Es un servicio asistencial central",
+      "b) Solamente atiende a los pacientes hospitalizados",
+      "c) Todos los hospitales tienen servicio de farmacia",
+      "d) La función del servicio de farmacia hospitalaria es solamente la dispensación de medicamentos"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "38. Son funciones de las farmacias hospitalarias:",
+    "options": [
+      "a) Promover la prescripción correcta de medicamentos",
+      "b) Participar en ensayos clínicos",
+      "c) Monitorizar el tratamiento farmacológico",
+      "d) Todas las respuestas anteriores son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "39. Los servicios de farmacia hospitalaria están bajo la titularidad y responsabilidad:",
+    "options": [
+      "a) De personal técnico en farmacia",
+      "b) De personal facultativo especialista en laboratorio de bioquímica",
+      "c) De personal farmacéutico especialista en farmacia hospitalaria",
+      "d) De la dirección técnica del hospital"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "40. ¿Quién se encarga del movimiento de los bultos y cajas de gran volumen o peso dentro de la farmacia?",
+    "options": [
+      "a) El personal de mantenimiento",
+      "b) El celador",
+      "c) El auxiliar de farmacia",
+      "d) El técnico de farmacia"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "41. En un servicio de farmacia se denomina unidosis:",
+    "options": [
+      "a) A la conservación de una dosis de cada medicamento para su posterior análisis",
+      "b) A la distribución de medicamentos según las necesidades de cada servicio",
+      "c) A la dispensación de un mismo medicamento para todos los pacientes",
+      "d) A la dispensación individualizada de medicamentos"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "42. Los pedidos de las unidades a la farmacia los realiza:",
+    "options": [
+      "a) El farmacéutico",
+      "b) El celador de farmacia",
+      "c) La supervisora",
+      "d) El auxiliar de enfermería"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "43. No es función del celador de farmacia:",
+    "options": [
+      "a) El traslado de carros unidosis a las Unidades asistenciales",
+      "b) Preparar los pedidos de sueros y su traslado a las Unidades peticionarias",
+      "c) La distribución individual de la medicación en los carros de unidosis",
+      "d) La custodia de la farmacia"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "44. Un celador del almacén de farmacia es requerido por un médico para que le suministre un analgésico. ¿Cómo debe actuar?",
+    "options": [
+      "a) Se lo dará y a continuación se lo comunicará al responsable de farmacia",
+      "b) Solicitará del peticionario una previsión del gasto para mantener el stock",
+      "c) Se lo dará comunicándolo a la Supervisora de Guardia",
+      "d) Pasará la petición al farmacéutico responsable"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "45. Un celador destinado en el servicio de farmacia de un hospital deberá:",
+    "options": [
+      "a) Trasladar los pedidos a los servicios que lo soliciten",
+      "b) Atender con carácter de urgencia la expedición de medicamentos por orden del farmacéutico, ante la ausencia del personal autorizado",
+      "c) Trasladar los medicamentos desde las plantas de hospitalización hasta la farmacia del hospital",
+      "d) Las respuestas A y C son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "46. No es función del celador de farmacia hospitalaria:",
+    "options": [
+      "a) Farmacovigilancia",
+      "b) Dispensación de determinado material",
+      "c) Recepción de material",
+      "d) Acondicionamiento de determinado material"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "47. Un celador en el servicio de farmacia:",
+    "options": [
+      "a) Lleva los pedidos a las unidades destinatarias",
+      "b) Embolsa las unidosis",
+      "c) Ayuda en la realización de los preparados",
+      "d) Ninguna de las respuestas anteriores es correcta"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "48. Es función de la farmacia en el hospital:",
+    "options": [
+      "a) Establecer un sistema eficaz y seguro de distribución de medicamentos",
+      "b) Establecer un servicio de información de medicamentos para todo el personal del hospital",
+      "c) Establecer un sistema de farmacovigilancia intrahospitalaria",
+      "d) Todas las respuestas son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "49. Dentro del servicio de farmacia hospitalaria, el área de farmacotecnia tendrá como finalidad:",
+    "options": [
+      "a) La preparación de nutriciones parenterales",
+      "b) La dispensación ambulatoria de medicamentos",
+      "c) La elaboración de aquellas formulaciones de medicamentos que la industria farmacéutica no realiza.",
+      "d) La preparación de sustancias citostáticas para tratamientos oncológicos"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "50. Las garantías y uso racional de los medicamentos y productos sanitarios, está regulado en:",
+    "options": [
+      "a) Real Decreto Legislativo 1/2015 de 24 de julio",
+      "b) El Decreto Legislativo 1/2015 de 24 de julio",
+      "c) La Ley 1/2015 de 24 de julio",
+      "d) La Orden Ministerial 1/2015 de 24 de julio"
+    ],
+    "correct": 0
+  }
+  	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	
