@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+    "question": "1. El dispositivo a distancia del hospital en el que se presta asistencia especializada en régimen de consultas externas es:",
+    "options": [
+      "a) El Centro de Salud.",
+      "b) El Centro de Especialidades.",
+      "c) El Consultorio.",
+      "d) El Centro de Diagnóstico y Tratamiento."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "2. En los hospitales del INSALUD (RD 521/87, do 15 de abril) el área da actividad de Admisión está adscrita a:",
+    "options": [
+      "a) La División Médica.",
+      "b) La División Gerencia en todo caso.",
+      "c) La División Médica en los casos en que no exista Gerencia.",
+      "d) La División de Recepción, Información y Atención al Paciente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "3. Los responsables de la Unidades de Enfermería de los Hospitales organizados según la estructura del RD 521/87, de 15 de abril, son:",
+    "options": [
+      "a) Los Directores de Enfermería.",
+      "b) Los Coordinadores de Enfermería.",
+      "c) Los Adjuntos de Enfermería.",
+      "d) Los Supervisores de Enfermería."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "4. Los Servicios jerarquizados de Especialidades que por sus características deban prestar asistencia sanitaria a más de un Área de Salud se denominan:",
+    "options": [
+      "a) Servicios generales.",
+      "b) Servicios de área.",
+      "c) Servicios de referencia.",
+      "d) Servicios regionales."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "5. Los suministros y almacenes del Hospital (RD 521/87, de 15 de abril) son competencia de la:",
+    "options": [
+      "a) Dirección Gerencia.",
+      "b) Dirección Administrativa.",
+      "c) Dirección de Gestión y Servicios Generales.",
+      "d) Dirección Económica y de Gestión."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "6. Necesariamente es Vocal de la Junta Técnico Asistencial del Hospital (RD 521/87, de 15 de abril):",
+    "options": [
+      "a) El Subdirector de Enfermería.",
+      "b) El Director de Enfermería",
+      "c) El Director Gerente.",
+      "d) Un Auxiliar de Enfermería elegido por votación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "7. Respecto del Hospital al que está adscrito, el Centro de Diagnóstico y Tratamiento constituye:",
+    "options": [
+      "a) Un Servicio clínico.",
+      "b) Una Unidad Técnica.",
+      "c) Una Unidad médico-administrativa.",
+      "d) Una Unidad de enfermería."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "8. Señale la opción incorrecta. En los Hospitales que se rigen por el RD 521/87, de 15 de abril, deben constituirse, como mínimo, las siguientes Comisiones Clínicas dependientes de la Comisión Central de Garantía de la Calidad:",
+    "options": [
+      "a) Infección hospitalaria, profilaxis y política antibiótica.",
+      "b) Historias clínicas, tejidos y mortalidad.",
+      "c) Ensayos clínicos.",
+      "d) Tecnología y adecuación de medios diagnósticos y terapéuticos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. ¿A quién le corresponde en un área de salud la dirección y coordinación de los diferentes niveles asistenciales y de los dispositivos adscritos a los mismos, así como la coordinación con la Dirección de Salud en la ejecución de los programas de promoción de la salud y prevención de la enfermedad?",
+    "options": [
+      "a) Director de Enfermería",
+      "b) Director Médico",
+      "c) Dirección de Atención Sanitaria",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "10. ¿A quién le corresponde velar por el cumplimiento de la normativa vigente en materia de Prevención de Riesgos Laborales y Salud Laboral?",
+    "options": [
+      "a) A la Dirección de Recursos Humanos",
+      "b) A la Dirección de Régimen Económico y Presupuestario",
+      "c) A la Dirección de Gerencia",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "11. ¿Cuál/cuales de los siguientes depende/n directamente de la Gerencia de Área?",
+    "options": [
+      "a) Director de Atención Sanitaria",
+      "b) Dirección de Régimen Económico y Presupuestario",
+      "c) Director de Recursos Humanos",
+      "d) Todas son correctas y además el Director de Salud."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "12. ¿Cuáles de los siguientes consideras que son órganos de gobierno y participación en el área de Salud?",
+    "options": [
+      "a) El Consejo de Dirección de Área",
+      "b) La Gerencia de Área",
+      "c) El Consejo de Salud de Área",
+      "d) Todas son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "13. ¿De quién dependen las Gerencias de Área?",
+    "options": [
+      "a) De la Consejería de Sanidad y Dependencia",
+      "b) De la Consejería de Sanidad y Consumo",
+      "c) De la Dirección Gerencia del SES",
+      "d) Del Secretario General de la Consejería de Sanidad y Dependencia"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "14. ¿De quién es misión la gestión de los instrumentos de selección del personal no permanente y su nombramiento?",
+    "options": [
+      "a) Del Director General de Planificación",
+      "b) De la Dirección Gerencia",
+      "c) Del Gerente de Área",
+      "d) Del Director Técnico adjunto a recursos humanos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "15. ¿Mediante qué norma se regula la composición, atribuciones y funcionamiento de los Consejos de Salud de Área?",
+    "options": [
+      "a) Decreto 189/2004, de 14 de diciembre",
+      "b) Decreto 221/2008, de 24 de octubre",
+      "c) Ley 10/2001 de 28 de junio, de Salud de Extremadura",
+      "d) Ley 14/1986 de 25 de abril, General de Sanidad"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "16. ¿Quién dirige, gestiona, coordina y controla, en las áreas económica, presupuestaria y administrativa, de los centros, establecimientos y servicios asistenciales y generales, dentro de un área de salud?",
+    "options": [
+      "a) El Director de Régimen Económico y Presupuestario.",
+      "b) El Director de Salud",
+      "c) El Director de Atención Sanitaria",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "17. ¿Quién ejecuta las directrices en materia de vacaciones, permisos, licencias, jornadas y horarios en el Área de Salud?",
+    "options": [
+      "a) El Director Gerente",
+      "b) El Director de Personal",
+      "c) El Director de Recursos Humanos",
+      "d) El Secretario General"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "18. ¿Quién realiza el control y seguimiento de las contrataciones administrativas de toda clase que afecten al normal funcionamiento del Área de Salud?",
+    "options": [
+      "a) El Director de administración",
+      "b) El Gerente de Personal",
+      "c) El Gerente de Área",
+      "d) El Director Gerente"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "19. ¿Quién realiza las funciones de la Dirección de Atención Sanitaria si en el área esta dirección no existe?",
+    "options": [
+      "a) El Director de Salud",
+      "b) El Director Gerente del SES",
+      "c) El Secretario General",
+      "d) Ninguna es correcta"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "20. ¿Quién tiene como función el gestionar la calidad del Área de Salud?",
+    "options": [
+      "a) El Director de Salud",
+      "b) El Director de Asistencia Sanitaria",
+      "c) El Director Gerente",
+      "d) La Gerencia de Área"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "21. ¿Quién tiene en un área de salud como funciones la ejecución de los programas de salud y prevención de enfermedad, el control sanitario del Medio Ambiente, el control sanitario de establecimientos Públicos y la Policía Sanitaria Mortuoria?",
+    "options": [
+      "a) El Director de Atención Sanitaria",
+      "b) El Director de Salud",
+      "c) El Director General de Salud Pública del SES",
+      "d) El Secretario General del Área de Salud"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "22. ¿Quiénes son los órganos encargados de la ejecución de las directrices emanadas de los Consejos de Dirección de las distintas Áreas de Salud, actuando de conformidad con los planes estratégicos del Servicio Extremeño de Salud?",
+    "options": [
+      "a) Los Directores de Salud",
+      "b) El Consejo de Salud de Área",
+      "c) El Consejo General",
+      "d) Las Gerencias de Área"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. ¿Quiénes son los órganos territoriales del SES en las Áreas de Salud?",
+    "options": [
+      "a) Las Gerencias de Área",
+      "b) El Director Gerente",
+      "c) El Director de Salud",
+      "d) La Dirección General"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "24. En un Área de Salud, ¿De quién dependen los Directores de Enfermería de Primaria y Especializada?",
+    "options": [
+      "a) Del Director Gerente",
+      "b) Del Director Médico",
+      "c) De los Subdirectores de Enfermería de Primaria y Especializada",
+      "d) Del Director de Atención Sanitaria"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "25. La gestión y tramitación de los procedimientos en materia de prestación social del personal le corresponde a:",
+    "options": [
+      "a) La Dirección de Salud",
+      "b) La Dirección de Atención Sanitaria",
+      "c) La Dirección de Recursos Humanos",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  }
+  	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	

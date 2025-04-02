@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+ {
+    "question": "1. ¿A quién le corresponde la siguiente función en su respectivo nivel asistencial? \"La promoción y evaluación de la calidad asistencial, docente e investigadora\"",
+    "options": [
+      "a) A los Directores de Enfermería de Atención Primaria y Especializada",
+      "b) A los Directores Médicos de Atención Primaria y Especializada",
+      "c) A y B son correctas.",
+      "d) A y B son incorrectas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "2. ¿Cuáles de los siguientes son órganos de participación según el Decreto 189/2004?",
+    "options": [
+      "a) Consejo de Dirección de Área",
+      "b) Consejo de Salud de Área",
+      "c) Gerencia de Área",
+      "d) Consejo General"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "3. ¿Cuándo se aprueba el acta levantada de una sesión de un Consejo de Salud de Área?",
+    "options": [
+      "a) Al final de la sesión",
+      "b) No es necesario que sea aprobada, tan sólo requiere la firma del Secretario y el visto bueno del Presidente.",
+      "c) En la sesión inmediatamente posterior.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "4. ¿Cuántas veces debe reunirse el Consejo de Salud de Área?",
+    "options": [
+      "a) 2 veces al año",
+      "b) 1 vez cada 6 meses",
+      "c) Semanalmente",
+      "d) 1 vez por trimestre"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "5. ¿Cuántas veces se reúne al menos el Consejo de Salud de Área?",
+    "options": [
+      "a) 1 cada año",
+      "b) 2 cada año",
+      "c) 1 cada 6 meses",
+      "d) 2 cada 6 meses"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "6. ¿Cuántos representantes de la Diputación de Badajoz existen en el Consejo de Área del Área de Badajoz?",
+    "options": [
+      "a) 1",
+      "b) 2",
+      "c) 3",
+      "d) Ninguno"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "7. ¿Cuántos representantes de las asociaciones empresariales forman parte del Consejo de Salud de Área?",
+    "options": [
+      "a) Ninguno, tan sólo de consumidores y usuarios y sindicatos.",
+      "b) Uno por cada una de las dos organizaciones empresariales más representativas en el ámbito de la Comunidad Autónoma de Extremadura, designado por las mismas.",
+      "c) Tres",
+      "d) Tres por la FEMPEx y dos por las asociaciones y organizaciones de consumidores y usuarios."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "8. ¿Cuántos representantes de las organizaciones de consumidores y usuarios más representativas en el ámbito de la Comunidad Autónoma de Extremadura existen en los Consejos de Salud de Área?",
+    "options": [
+      "a) Uno por cada una",
+      "b) Dos por cada una.",
+      "c) Tres por cada una.",
+      "d) 3 en total."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "9. ¿Cuántos representantes tienen las asociaciones de consumidores y usuarios en el Consejo de Salud de Área?",
+    "options": [
+      "a) 1",
+      "b) 2",
+      "c) 3",
+      "d) 4"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "10. ¿Cuántos representantes tienen las asociaciones empresariales en el Consejo de Salud de Área?",
+    "options": [
+      "a) 1",
+      "b) 2",
+      "c) 3",
+      "d) 4"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "11. ¿Cuántos representantes tienen los Sindicatos en el consejo de Salud de Área?",
+    "options": [
+      "a) 1",
+      "b) 2",
+      "c) 3",
+      "d) 3 por cada una de las organizaciones sindicales más representativas en el ámbito de la Comunidad Autónoma"
+    ],
+    "correct": 2
+  },
+   {
+    "question": "12. ¿Cuántos representantes de las organizaciones sindicales existen en el Consejo de Salud de Área?",
+    "options": [
+      "a) 1",
+      "b) 2",
+      "c) 3",
+      "d) 4"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "13. ¿Cuántos representantes de los ayuntamientos del Área existen en el Consejo de Salud de Área?",
+    "options": [
+      "a) 1",
+      "b) 2",
+      "c) 3",
+      "d) 4"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "14. ¿Quién asume las funciones de los Directores Médicos y de Enfermería, de Atención Primaria y Especializada en su ausencia?",
+    "options": [
+      "a) Los Secretarios Técnicos",
+      "b) Los supervisores y Jefes de Servicio y Sección",
+      "c) Los Adjuntos a cada División.",
+      "d) Los subdirectores, si existen."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "15. ¿Quién debe coordinar las actividades asistenciales junto con la Dirección de Enfermería de Atención Especializada?",
+    "options": [
+      "a) El Director Médico de Atención Primaria",
+      "b) El Director de Enfermería de Atención Primaria",
+      "c) El Director de Recursos Humanos",
+      "d) Ninguna es correcta"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "16. ¿Quién dirime los empates en las votaciones por mayoría simple realizadas en el Consejo de Salud?",
+    "options": [
+      "a) El Presidente del Consejo",
+      "b) El azar",
+      "c) El Consejero de Sanidad y Dependencia.",
+      "d) El Secretario del Consejo."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "17. ¿Quién nombra a los representantes de los Ayuntamientos del área como miembros del Consejo de Salud de Área?",
+    "options": [
+      "a) La Federación de Municipios y Provincias de Extremadura",
+      "b) La Consejería de Sanidad y Dependencia",
+      "c) El Director Gerente del SES",
+      "d) El Gerente del Área de Salud"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "18. ¿Quién nombra al Director de Atención Sanitaria?",
+    "options": [
+      "a) El Director Gerente",
+      "b) La Consejera de Sanidad y Dependencia",
+      "c) El Gerente del Área",
+      "d) La b) a propuesta del Director Gerente."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "19. ¿Quién nombra al Director de Salud de Área?",
+    "options": [
+      "a) El Director Gerente del SES",
+      "b) La Consejería de Sanidad y Políticas Sociales.",
+      "c) La b), a propuesta de la Dirección Gerencia",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "20. ¿Quién nombra al Gerente del Área?",
+    "options": [
+      "a) El Director Gerente",
+      "b) La Consejería de Sanidad y Políticas Sociales.",
+      "c) La Dirección Gerencia del SES",
+      "d) El Consejo Extremeño de Salud"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "21. ¿Quién nombra y cesa a los miembros del Consejo de Salud de Área según el Decreto 189/2004?",
+    "options": [
+      "a) La FEMPEx, las organizaciones de consumidores y usuarios, las asociaciones empresariales y las organizaciones sindicales.",
+      "b) El Consejero de Sanidad y Consumo.",
+      "c) El Director General de Atención Sanitaria",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "22. ¿Quién preside el Consejo de Salud de Área?",
+    "options": [
+      "a) El Director Gerente",
+      "b) El Consejero de Sanidad y Dependencia",
+      "c) La Consejería competente en Materia Sanitaria",
+      "d) El Gerente del Área."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. ¿Quién vicepreside el Consejo de Salud de Área?",
+    "options": [
+      "a) El Director de Salud",
+      "b) El Gerente del Área",
+      "c) El Secretario del Consejo",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 0
+  },
+  
+  {
+    "question": "24. Con respecto a los representantes de los ayuntamientos en el Consejo de Salud de Área, usted afirma que:",
+    "options": [
+      "a) Se designan de entre los alcaldes de los ayuntamientos del Área de Salud.",
+      "b) La designación la debe realizar la Federación de Municipios y Provincias de Extremadura (FEMPEx)",
+      "c) La representación puede ser delegada en un concejal, siendo el responsable de salud del Ayuntamiento preferiblemente.",
+      "d) Todas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "25. De los siguientes señale cuáles son el presidente y el vicepresidente del Consejo de Salud de Área.",
+    "options": [
+      "a) P: Director de Salud V: Director de Atención Sanitaria",
+      "b) P: Director de Salud V: Director Gerente",
+      "c) P: Director Gerente V: Director de Salud",
+      "d) P: Gerente de Área V: Director de Salud de Área"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "26. Decreto 189/2004 dispone que hasta tanto se regulen, mediante Orden de la Consejería de Sanidad y Consumo, la estructura y funcionamiento del resto de los órganos, y de los centros, servicios y establecimientos sanitarios, tanto de atención primaria como de atención especializada, existentes en las Áreas de Salud, continuarán vigentes, en aquello que no contradiga a lo dispuesto en el presente Decreto:",
+    "options": [
+      "a) Real Decreto 521/1987, de 15 de abril, Reglamento sobre Estructura, Organización y Funcionamiento de los Hospitales Gestionados por el INSALUD",
+      "b) Decreto 67/1996, de 21 de mayo por el que se aprueba el Reglamento General de Organización y Funcionamiento de los Equipos de Atención Primaria",
+      "c) A y B son correctas.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "27. El Director Médico de un Hospital, depende de:",
+    "options": [
+      "a) En unas Áreas del Director de Atención Sanitaria y en otras del Gerente del Área",
+      "b) Del Director Gerente del SES",
+      "c) De la Dirección General",
+      "d) Del Director de Salud"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "28. El nombramiento de los miembros del Consejo de Salud de Área se hace por un período de:",
+    "options": [
+      "a) 2 años",
+      "b) 4 años",
+      "c) 5 años",
+      "d) 8 años."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "29. Según el Decreto 189/2004, ¿Cuántos directores dependen directamente de la Gerencia de Área?",
+    "options": [
+      "a) 2, Directores de Salud y de Atención Sanitaria.",
+      "b) 2, Director de Régimen Económico y Servicios Generales y Director de Recursos Humanos.",
+      "c) 4",
+      "d) Ninguno"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "30. Si no existe Dirección de Atención Sanitaria en un Área de Salud, ¿De quién dependerán los Directores Médicos y de Enfermería de Atención Primaria y Especializada?",
+    "options": [
+      "a) Del Director Gerente",
+      "b) Del Gerente del Área",
+      "c) Del Director de Salud del Área",
+      "d) Del Director de Asistencia Sanitaria"
+    ],
+    "correct": 1
+  }
+  	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	

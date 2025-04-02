@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+    "question": "1. Según el Decreto 47/2023 de 1 O de mayo, no es función común a todo el personal de la Atención Primaria de Salud:",
+    "options": [
+      "A) Atender a los usuarios y usuarias que lo soliciten, y resolver sus demandas.",
+      "B) Aplicar la metodología de trabajo en equipo en todas las actividades a desarrollar.",
+      "C) Participar en las actividades de salud laboral pertinentes en situaciones de epidemias, pandemias y/o brotes epidémicos.",
+      "D) Cumplir y velar por el cumplimiento de la normativa vigente en materia de protección de datos y autonomía del/la paciente, y en materia de prevención de riesgos laborales."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "2. Según el Decreto 47/2023 de 1 O de mayo, \"formar parte de los equipos de alerta y prevención de situaciones de riesgo de emergencia, cuando se les requiera\" es una función:",
+    "options": [
+      "A) Común a todo el personal sanitario de la APS.",
+      "B) Común a todo el personal de la APS",
+      "C) Del personal médico.",
+      "D) De las Unidades Básicas Asistenciales (Médico y enfermera)."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "3. Según el Decreto 47/2023 de 1 O de mayo, las funciones de la APS comprenden:",
+    "options": [
+      "A) Funciones asistenciales, de cuidados y de atención a la persona usuaria",
+      "B) Funciones de salud pública y salud comunitaria.",
+      "C) Funciones de formación, docencia e investigación.",
+      "D) Todas son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "4. Identifique cuál no es una función de la APS según el artículo 8 del Decreto 47/2023 de 10 de mayo:",
+    "options": [
+      "A) Funciones de mejora de la calidad y de seguridad del/la paciente.",
+      "B) Funciones de registro y gestión.",
+      "C) Funciones jurídico-legales",
+      "D) Funciones de salud pública y salud comunitaria"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "5. Según el Decreto 47/2023 de 1 O de mayo, La indicación, prescripción y/o realización de procedimientos diagnósticos y terapéuticos necesarios para la atención del/la paciente corresponde, ¿a qué grupo de funciones de la APS?",
+    "options": [
+      "A) Funciones asistenciales, de cuidados y de atención a la persona usuaria.",
+      "B) Funciones de registro y gestión.",
+      "C) Funciones de salud pública y salud comunitaria.",
+      "D) Ninguna es correcta"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "6. Según el Decreto 47/2023 de 10 de mayo, el fomento del autocuidado es una función de ...",
+    "options": [
+      "A) Funciones asistenciales, de cuidados y de atención a la persona usuaria.",
+      "B) Funciones de salud pública y salud comunitaria.",
+      "C) Funciones de mejora de la calidad y de seguridad del/la paciente",
+      "D) Funciones de registro y gestión."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "7. Las actividades en materia de protección y promoción de la salud, educación para la salud (individual y grupal), y prevención de la enfermedad, con un enfoque que incluya determinantes sociales de la salud, equidad en salud y perspectiva salutogénica, se encuadra dentro de las funciones ...",
+    "options": [
+      "A) Asistenciales, de cuidados y de atención a la persona usuaria.",
+      "B) De salud pública y salud comunitaria.",
+      "C) De registro y gestión.",
+      "D) De mejora de la calidad y de seguridad del/la paciente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "8. Según el Decreto 47/2023 de 10 de mayo, ¿qué se fundamentará en la promoción de la cultura y clima de seguridad, identificación de riesgos e implantación de medidas preventivas, implementación de prácticas seguras, fomento del aprendizaje a través del análisis de incidentes relacionados con la seguridad de pacientes, y en el establecimiento de medidas para mitigar los daños en los/las pacientes y sus familiares, en los/las profesionales y en la propia organización?",
+    "options": [
+      "A) La Salud Comunitaria",
+      "B) El Trabajo en equipo",
+      "C) La calidad de la asistencia",
+      "D) La seguridad del/la paciente"
+    ],
+    "correct": 3
+  },
+   {
+    "question": "9. Según el Decreto 47/2023 de 1 O de mayo, la gestión integral de la demanda es una función de:",
+    "options": [
+      "A) Funciones de registro de la información y de gestión.",
+      "B) Funciones asistenciales, de cuidados y de atención a la persona usuaria.",
+      "C) Funciones de salud pública y salud comunitaria",
+      "D) Funciones de formación, docencia e investigación."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "10. Según el Decreto 47/2023 de 10 de mayo, se prestará especial atención al papel de cada profesional de atención primaria como agente activo en la humanización de la atención sanitaria y a la aportación de calidad en las formas y el trato durante la prestación de servicios. Esto se refiere a:",
+    "options": [
+      "A) A la garantía de la seguridad del paciente",
+      "B) Al fomento de la calidad relacional",
+      "C) Al estímulo de la calidad asistencial",
+      "D) Al fomento de los derechos del paciente"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "11. Según el Decreto 47/2023 de 1 O de mayo, los EAP coordinarán sus actividades con los servicios y establecimientos sanitarios y sociales de su ámbito geográfico de atención, específicamente con:",
+    "options": [
+      "A) Con los dispositivos de atención social municipales.",
+      "B) Con los dispositivos de atención social autonómicos",
+      "C) El nivel hospitalario de referencia de su área de salud",
+      "D) Todas son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "12. Según el Reglamento contenido en el Anexo I del Decreto 47/2023 de 10 de mayo, para coordinar las actividades del EAP con otros servicios y establecimientos sanitarios y sociales, ¿qué se garantizará en los órganos colegiados de coordinación y/o asesoramiento de cada área de salud, con objeto de que se establezca una coordinación efectiva entre los distintos ámbitos asistenciales (atención primaria, atención hospitalaria y atención sociosanitaria), que se traduzca en una asistencia coherente, eficiente y de calidad?",
+    "options": [
+      "A) Representación equilibrada entre hombres y mujeres",
+      "B) Representación paritaria de profesionales de atención primaria y hospitalaria",
+      "C) Representación equilibrada de profesionales de atención primaria y hospitalaria.",
+      "D) Representación preferente de miembros del equipo de atención primaria."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "13. Según el artículo 16 del Reglamento contenido en el Anexo I del Decreto 47/2023 de 1 O de mayo, ¿participar en las actividades preventivas y programas de promoción y de educación para la salud es una función común a todo el personal de la APS?",
+    "options": [
+      "A) Sí, y en todas aquellas actividades que permitan mejorar la autonomía en el cuidado de la salud y ayudar al/la paciente en la toma de decisiones.",
+      "B) Sí, así como dispensar los tratamientos específicos para la mejora de su proceso.",
+      "C) Las opciones a) y b) son correctas.",
+      "D) No, sólo del personal sanitario."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "14. Según el Reglamento de la Atención Primaria de Extremadura, identifique de entre las siguientes cuál no es una función común a todo el personal de la APS:",
+    "options": [
+      "A) Participar en las actividades de salud pública pertinentes en situaciones de epidemias, pandemias y/o brotes epidémicos.",
+      "B) Asumir la responsabilidad de la coordinación de aquellas áreas funcionales, procesos, programas o protocolos que le sean asignados por el Director de Zona.",
+      "C) Participar en el Sistema Nacional de Farmacovigilancia en los términos establecidos en la legislación vigente.",
+      "D) Formar parte de los equipos de alerta y prevención de situaciones de riesgo de emergencia, cuando se les requiera."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "15. Según el Reglamento de la Atención Primaria, en Extremadura, \"participar en las actividades de docencia de pregrado, postgrado y especializada que se le encomienden, así como en la elaboración, realización y evaluación de los programas de formación continuada, docencia, investigación y calidad\" es una función:",
+    "options": [
+      "A) Común a todo el personal sanitario de la APS",
+      "B) Común a todo el personal de la APS",
+      "C) Común a todo el personal sanitario médico y de enfermería.",
+      "D) Común a todo el personal médico, enfermero y farmacéutico del equipo (para MIR, EIR y FIR)."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "16. Según el Reglamento de la Atención Primaria, en Extremadura, ¿De quién es función \"participar en las funciones derivadas de la Vigilancia en Salud Pública, tal y como se establece en la Ley 7/2011, de 23 de marzo, de Salud Pública de Extremadura?",
+    "options": [
+      "A) A todo el personal de la APS",
+      "B) A todo el personal sanitario de la APS",
+      "C) A los veterinarios y farmacéuticos del equipo.",
+      "D) Al personal sanitario titulado del equipo."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "17. No es una función del celador según el reglamento de Atención Primaria de Extremadura:",
+    "options": [
+      "A) Participar activamente en la información y asesoramiento de los usuarios y usuarias",
+      "B) Realizar recepción y atención telefónica de las personas que acudan o llamen al CS.",
+      "C) Colaborar en las tareas de apoyo en el traslado y desplazamientos de las personas que lo necesiten.",
+      "D) Todas son funciones del celador del Equipo de Atención Primaria."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "18. Según el artículo 28 del reglamento de Atención Primaria de Extremadura ¿Es función del celador la apertura y cierre, cuando proceda, del centro sanitario?",
+    "options": [
+      "A) Sí",
+      "B) Sí, del Centro de Salud o el Consultorio Local, en su caso.",
+      "C) Sí, del Centro de Salud y Punto de Atención Continuada",
+      "D) No"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "19. No se prevén funciones para uno de los profesionales siguientes en las unidades de apoyo conocidas como \"Equipo de conductas adictivas\"",
+    "options": [
+      "A) Médico de familia de EAP-médico de conductas adictivas",
+      "B) Trabajador Social",
+      "C) Psicólogo Clínico",
+      "D) Técnico en Cuidados Auxiliares de Enfermería (TCAE)"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "20. No se prevén funciones para uno de los profesionales siguientes en las unidades de apoyo conocidas como \"Equipo de salud bucodental\"",
+    "options": [
+      "A) Médico de familia de EAP-médico de salud bucodental",
+      "B) Personal de Odontoestomatología de área de AP.",
+      "C) Higienista dental.",
+      "D) Todas las anteriores categorías disponen de funciones en dichas unidades."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "21. Según el artículo 39.3 del reglamento de Atención Primaria de Extremadura, para facilitar el trabajo en equipo y el desarrollo adecuado de las funciones, se realizarán todas las reuniones que se consideren necesarias, entre las que no se incluye:",
+    "options": [
+      "A) Sesiones clínicas o docentes",
+      "B) Reuniones de programación",
+      "C) Reuniones de evaluación de actividades",
+      "D) Reuniones de seguridad"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "22. Según el reglamento de Atención Primaria de Extremadura, ¿Qué unidad será siempre la referente para la gestión de cuidados del/la paciente?",
+    "options": [
+      "A) La unidad de atención directa.",
+      "B) El Comité de Dirección de la Zona.",
+      "C) La Unidad de Apoyo de Orientación y Planificación Familiar.",
+      "D) Ninguna es correcta."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. Según el Reglamento de la Atención Primaria de Extremadura, para procurar la mayor eficiencia y según el principio de subsidiaridad, cada tarea se asignará al/la profesional cualificado ...",
+    "options": [
+      "A) Más eficiente para resolverla.",
+      "B) Más eficaz para resolverla.",
+      "C) Más efectivo para resolverla.",
+      "D) Más preparado para resolverla."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "24. Según el Reglamento de la Atención Primaria de Extremadura, ¿Quién será Responsable de la coordinación de las diferentes agendas del EAP y de la supervisión y control de calidad de las mismas?",
+    "options": [
+      "A) La dirección de la ZSB",
+      "B) Quien ostente la responsabilidad del área asistencial, en su caso.",
+      "C) Las opciones a) y b) son correctas.",
+      "D) El responsable del área de registro y gestión."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "25. Según el reglamento de la Atención Primaria en Extremadura, ¿qué área funcional tiene la competencia de organizar, coordinar, dirigir y asignar las actividades que se realizan directamente a la población?",
+    "options": [
+      "A) Area de información, administración y atención a la población.",
+      "B) Area de Salud Comunitaria",
+      "C) Area asistencial",
+      "D) Ninguna es correcta"
+    ],
+    "correct": 2
+  }
+  	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	
