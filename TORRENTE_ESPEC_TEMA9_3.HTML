@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+ 
+   {
+    "question": "1. ¿De quién depende el servicio de Farmacia que existe en la mayoría de los hospitales?",
+    "options": [
+      "a) De la Gerencia.",
+      "b) De la Dirección Médica.",
+      "c) De la Dirección de Gestión y Servicios Generales.",
+      "d) De la División de Enfermería."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "2. ¿A quién han de solicitar los hospitales que no cuenten con servicios farmacéuticos autorización para, en su caso, mantener un depósito de medicamentos bajo la supervisión y control de un farmacéutico?",
+    "options": [
+      "a) A la Agencia Española de Medicamentos y Productos Sanitarios (AEMPS).",
+      "b) Al Consejo Interterritorial del Sistema Nacional de Salud.",
+      "c) Al Instituto Nacional de Gestión Sanitaria (INGESA).",
+      "d) A las Comunidades Autónomas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "3. ¿Cómo se denomina a toda materia, cualquiera que sea su origen, a la que se atribuye una actividad apropiada para constituir un medicamento?",
+    "options": [
+      "a) Excipiente.",
+      "b) Principio activo.",
+      "c) Fórmula magistral.",
+      "d) Premezcla."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "4. ¿Qué nombre recibe la disposición a que se adaptan los principios activos y excipientes para constituir un medicamento?",
+    "options": [
+      "a) Forma magistral.",
+      "b) Forma excepcional.",
+      "c) Forma copérnica.",
+      "d) Forma farmacéutica."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "5. Aquel medicamento elaborado y garantizado por un farmacéutico o bajo su dirección, dispensado en una oficina de farmacia o servicio farmacéutico, enumerado y descrito por el Formulario, se denomina preparado o fórmula:",
+    "options": [
+      "a) Oficinal.",
+      "b) Magistral.",
+      "c) Medicinal.",
+      "d) Oficial."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "6. Señala cuál de las siguientes no es una de las actividades que se realizan en un servicio de farmacia.",
+    "options": [
+      "a) Adquisición de determinados medicamentos, material de curas o productos.",
+      "b) Control y dispensación de medicamentos extranjeros.",
+      "c) Establecimiento de sistemas de información para control de consumos, gastos y costos.",
+      "d) Control y dispensación de estupefacientes y psicótropos."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "7. ¿Cómo se denomina el criterio de valoración de mercancías que contempla que la valoración de las salidas del almacén se hace teniendo en cuenta que la primera unidad que sale es la que entró la última?",
+    "options": [
+      "a) Método de Pareto.",
+      "b) Método FIFO.",
+      "c) Método LIFO.",
+      "d) Método ABC."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "8. Señala cuál de las siguientes no es una de las características mínimas que ha de reunir la zona estéril del Área de citostáticos:",
+    "options": [
+      "a) Ha de contar con una campana de flujo laminar vertical.",
+      "b) Debe disponer de una habitación separada con presión positiva.",
+      "c) No ha de tener recirculación de aire ni aire acondicionado ambiental.",
+      "d) Debe contar con un área o zona aislada físicamente del resto del servicio en la que no se realicen otras operaciones."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "9. ¿Durante cuánto tiempo habrá de lavarse con agua y jabón la zona de la piel afectada por contacto directo con un agente citostático?",
+    "options": [
+      "a) Durante cinco minutos, con agua, jabón y lejía rebajada con agua.",
+      "b) Durante cinco minutos, con agua y jabón.",
+      "c) Durante unos 10 minutos.",
+      "d) Durante unos 15 minutos."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "10. ¿Qué tipo de inventario requiere recuento sistemático de las existencias durante todo el ejercicio con el fin de determinar el número de veces que se consume y se repone la mercancía a lo largo del año?",
+    "options": [
+      "a) El inventario tradicional",
+      "b) El inventario cíclico.",
+      "c) El inventario rotativo.",
+      "d) El inventario periódico o estacional."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "11. Actualmente, en los Hospitales, el suministro de medicamentos desde el Servicio de Farmacia se realiza mediante la fórmula o método:",
+    "options": [
+      "a) Tradicional.",
+      "b) De unidosis o dosis única.",
+      "c) De dosis diarias.",
+      "d) De dosis semanales."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "12. ¿A quién corresponde en el método tradicional de distribución de medicamentos realizar los pedidos de los mismos?",
+    "options": [
+      "a) A los celadores.",
+      "b) Al personal de enfermería.",
+      "c) A la supervisora de planta.",
+      "d) A los FIR (Farmacéuticos Internos Residentes)."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "13. El alcohol que se utiliza en las unidades del Hospital está rebajado porque se mezcla con agua destilada, por ser más conveniente en el uso terapéutico, suministrándose a:",
+    "options": [
+      "a) 30 grados.",
+      "b) 50 grados.",
+      "c) 70 grados.",
+      "d) 75 grados."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "14. No es una de las funciones propias de un celador en el Almacén General del Hospital:",
+    "options": [
+      "a) Dispensar el material que le sea solicitado mediante un vale firmado debidamente por el solicitante.",
+      "b) Recepcionar el suministro mediante cotejo del albarán de entrega.",
+      "c) Informar al responsable del Almacén de las entradas diarias de material.",
+      "d) Vigilar las entradas y salidas del almacén."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "15. ¿Qué tipo de clasificación ordena los artículos en clases A, B y C?",
+    "options": [
+      "a) Ley 70-30.",
+      "b) La clasificación ADR.",
+      "c) El método LIFO.",
+      "d) La clasificación de Pareto."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "16. Normalmente el inventario tradicional, es decir, aquel que consiste en el recuento de los artículos del almacén, para lo cual este debe estar cerrado y todas las operaciones de entrada y salida de artículos debidamente interrumpidas, se realiza:",
+    "options": [
+      "a) Una vez al año, generalmente al principio del año natural.",
+      "b) Una vez al año, generalmente al final del año natural.",
+      "c) Dos veces al año, generalmente al principio y a mediados del año natural.",
+      "d) Una vez por trimestre."
+    ],
+    "correct": 1
+  },
+   {
+    "question": "17. Antes de acudir al oftalmólogo, si el agente citostático salpica los ojos se enjuagará el ojo afectado con agua o solución isotónica durante:",
+    "options": [
+      "a) Máximo cinco minutos.",
+      "b) Máximo diez minutos.",
+      "c) Al menos diez minutos.",
+      "d) Al menos 15 minutos."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "18. ¿Cómo se denomina el criterio de valoración de mercancías que considera que las unidades que salen del almacén son las más antiguas, según el criterio de renovación de artículos 'primero en entrar, primero en salir'?",
+    "options": [
+      "a) Pareto.",
+      "b) FIFO.",
+      "c) LIFO."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "19. ¿En qué Área del servicio de farmacia se preparan dosis especiales de ciertos medicamentos según las pautas establecidas por la comisión de farmacia?",
+    "options": [
+      "a) En el Área de almacenamiento y conservación de medicamentos.",
+      "b) En el Área de nutrición artificial.",
+      "c) En el Área de citostáticos.",
+      "d) En el Área de Farmacotecnia."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "20. ¿Cuál es el primer paso en el proceso de adquisición de los suministros?",
+    "options": [
+      "a) La planificación de adquisiciones.",
+      "b) La petición de material.",
+      "c) La previsión de aprovisionamientos.",
+      "d) El procedimiento administrativo de contratación."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "21. ¿Cuál es la tarea intermedia, entre la previsión de aprovisionamientos y el procedimiento administrativo de contratación?",
+    "options": [
+      "a) La planificación de adquisiciones.",
+      "b) La petición de material.",
+      "c) La recepción/revisión de mercancías.",
+      "d) La gestión de stock."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "22. Según la clasificación de Pareto, ¿qué artículos serán los que se consumen menos y, como es lógico, tendrán una sustitución o rotación más lenta y se almacenarán en los lugares menos accesibles del almacén?",
+    "options": [
+      "a) Los de clase A.",
+      "b) Los de clase B.",
+      "c) Los de clase C.",
+      "d) Tanto los de clase B como los de clase C."
+    ],
+    "correct": 2
+  },
+   {
+    "question": "23. ¿Cuál es la primera tarea que ha de llevar a cabo la unidad de suministros nada más recibir un pedido?",
+    "options": [
+      "a) Emitir un dictamen de lo recibido",
+      "b) Realizar un cuenteo digital",
+      "c) Notificar la recepción a la unidad administrativa correspondiente.",
+      "d) Registrarlo"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "24. ¿Cuál, seguramente, es la labor más importante de todo el sistema de suministro, ya que el buen o mal funcionamiento de la misma significará o no la disponibilidad de un stock físico fiable y de los controles que lo garanticen?",
+    "options": [
+      "a) La recepción y revisión de la mercancía",
+      "b) El reaprovisionamiento",
+      "c) La gestión del stock",
+      "d) El mapa del almacén"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "25. ¿Cómo se denomina el método terapéutico destinado a mantener o restaurar por vía endovenosa el volumen y la composición normal de los fluidos corporales?",
+    "options": [
+      "a) Hidroterapia",
+      "b) Anamnesis",
+      "c) Fluidoterapia",
+      "d) Hemoterapia"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "26. Cualquier producto que, cuando esté preparado para su uso con finalidad terapéutica o diagnóstica, contenga uno o más radionucleidos, se denomina:",
+    "options": [
+      "a) Radiofármaco",
+      "b) Isofármaco",
+      "c) Nucleofármaco",
+      "d) Nucleoidofármaco"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "27. ¿En cuál de las siguientes áreas se preparan fórmulas magistrales?",
+    "options": [
+      "a) En el área de nutrición artificial",
+      "b) En el Área de citostáticos.",
+      "c) En el Área de Farmacotecnia.",
+      "d) En el Área de dispensación farmacológica."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "28. Los preparados no normalizados que un médico solicita para una circunstancia especial que sufre el paciente se denominan:",
+    "options": [
+      "a) Medicamento en investigación.",
+      "b) Fórmulas magistrales.",
+      "c) Medicamento homeopático.",
+      "d) Excipientes."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "29. ¿Cómo se denomina la actividad de salud pública que tiene por objetivo la identificación, cuantificación, evaluación y prevención de los riesgos del uso de los medicamentos una vez comercializados, permitiendo así el seguimiento de los posibles efectos adversos de los medicamentos?",
+    "options": [
+      "a) Farmacovigilancia.",
+      "b) Fármaco-control.",
+      "c) Farmacoterapia.",
+      "d) Farmacosupervisión."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "30. ¿Mediante qué tipo de nutrición se administran sustancias nutritivas a través de una sonda nasogástrica alojada en el tubo digestivo?",
+    "options": [
+      "a) Mediante la nutrición por sueroterapia.",
+      "b) Mediante la nutrición parenteral.",
+      "c) Mediante la nutrición directa o simple.",
+      "d) Mediante la nutrición enteral."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "31. ¿Qué se puede definir como conjunto de mercancías acumuladas en espera de ser utilizadas en un tiempo relativamente corto?",
+    "options": [
+      "a) Almacén.",
+      "b) Suministro.",
+      "c) Stock.",
+      "d) Activos."
+    ],
+    "correct": 2
+  },
+   {
+    "question": "32. ¿Cómo se denomina la zona de un almacén donde se llevan a cabo las tareas de comprobación de los paquetes y albaranes?",
+    "options": [
+      "a) Zona de Entrada de mercancías.",
+      "b) Zona de Control de mercancías.",
+      "c) Zona de Recepción de mercancías.",
+      "d) Zona de almacén propiamente dicho."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "33. ¿Cómo se denomina la modalidad de stock que permite atender a las previsiones óptimas de suministro a los consumidores y que permite una mejor rentabilidad del almacén en relación con el capital invertido en él?",
+    "options": [
+      "a) Stock activo.",
+      "b) Stock pasivo.",
+      "c) Stock de seguridad.",
+      "d) Stock óptimo."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "34. Los controles de stock se refieren:",
+    "options": [
+      "a) Al material almacenable.",
+      "b) Al material no almacenable.",
+      "c) Al material almacenable y no almacenable.",
+      "d) Son iguales a los controles que se hacen diariamente de los albaranes."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "35. Según la clasificación de Pareto, los artículos almacenados que se consumen menos y por tanto su rotación es más lenta son los de clase:",
+    "options": [
+      "a) A",
+      "b) B",
+      "c) C",
+      "d) D"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "36. ¿Cómo se denomina al conjunto de operaciones que se llevan a cabo para conocer las cantidades existentes en el almacén de cada producto en un momento determinado?",
+    "options": [
+      "a) Ficha de almacén.",
+      "b) Inventario.",
+      "c) Suministro.",
+      "d) Ficha de control de almacén y servicios."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "37. ¿De qué NO dependerá la periodicidad del inventario rotatorio?",
+    "options": [
+      "a) Dependerá de la carga de trabajo de su personal.",
+      "b) Dependerá del número de artículos almacenados.",
+      "c) Dependerá de las condiciones del almacén.",
+      "d) Dependerá de la hora a la que se lleve a cabo."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "38. ¿Qué porcentaje de clientes absorben el 80% del gasto sanitario (Pareto)?",
+    "options": [
+      "a) 10%",
+      "b) 20%",
+      "c) 30%",
+      "d) 50%"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "39. Según Pareto, un 20% de los pedidos va a representar de las existencias un porcentaje del:",
+    "options": [
+      "a) 30%",
+      "b) 50%",
+      "c) 65%",
+      "d) 80%"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "40. ¿En qué artículos del almacenamiento (clasificación de Pareto), se debe reducir sus volúmenes de existencia aun a riesgo de una rotura de stock?",
+    "options": [
+      "a) En los del tipo A.",
+      "b) En los del tipo B.",
+      "c) En los del tipo C.",
+      "d) En los del tipo D."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "41. ¿Cuál de estos almacenes encaja como almacén de materiales para el funcionamiento del centro sanitario?",
+    "options": [
+      "a) Almacén de material clínico fungible.",
+      "b) Almacén de papelería.",
+      "c) Almacén de lencería.",
+      "d) Almacén de farmacia."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "42. El almacén de farmacia pertenece a los almacenes de:",
+    "options": [
+      "a) Materiales de uso relacionado directamente con los enfermos.",
+      "b) Materiales de terapias.",
+      "c) Materiales para el funcionamiento del centro sanitario.",
+      "d) Materiales de diagnóstico."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "43. ¿Qué almacén pertenece al de materiales de uso relacionado directamente con los enfermos?",
+    "options": [
+      "a) Almacén de Lencería.",
+      "b) Almacén de Mantenimiento.",
+      "c) Almacén de Material clínico fungible.",
+      "d) Almacén de talleres."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "44. La función de almacenaje de materiales en el almacén, comprende:",
+    "options": [
+      "a) Su conservación",
+      "b) Su colocación",
+      "c) Su custodia",
+      "d) Todas son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "45. Las barras del código de barra son de forma estándar de color:",
+    "options": [
+      "a) Naranja.",
+      "b) Amarillo",
+      "c) Azul.",
+      "d) Negro."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "46. Todo lo que se expone sobre los códigos de barras es cierto, excepto:",
+    "options": [
+      "a) Son sencillamente unas etiquetas con un número determinado de barras negras inscritas en ellas.",
+      "b) Cada barra tiene la posibilidad de representar un dígito particular de acuerdo con su posición en el código total.",
+      "c) Si el dígito está representado la barra es ancha; si el dígito no está presente, la barra es fina.",
+      "d) Representan datos en una forma legible a simple vista y nunca por las máquinas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "47. En el servicio de farmacia, el celador deberá colocar y dispensar:",
+    "options": [
+      "a) La denominada farmacia ligera",
+      "b) La farmacia pesada",
+      "c) Tanto la farmacia ligera como la farmacia pesada.",
+      "d) Colocará y dispensará la pesada y colocará la ligera pero no la dispensará"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "48. Desde un punto de vista de criticidad, ¿cuáles de los productos de un almacén serán considerados como críticos si tenemos en cuenta la clasificación de Pareto?",
+    "options": [
+      "a) Tipo A",
+      "b) Tipo B",
+      "c) Tipo C",
+      "d) Tipo D"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "49. ¿Cuál es el criterio o método que contempla que la valoración de las salidas del almacén se hace teniendo en cuenta que la primera unidad que sale es la que entró la última?",
+    "options": [
+      "a) FIFO.",
+      "b) HIFO.",
+      "c) MIFO.",
+      "d) LIFO."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "50. Un celador destinado en el almacén de farmacia es requerido por un médico para que le suministre un analgésico. ¿Cuál debe ser su actuación?",
+    "options": [
+      "a) Pasará la notificación al farmacéutico responsable.",
+      "b) Se lo dará, notificándolo posteriormente al farmacéutico responsable.",
+      "c) Se lo negará y avisará al jefe de personal subalterno.",
+      "d) Se lo dará, pero se lo comunicará a la Supervisora de guardia."
+    ],
+    "correct": 0
+  }
+  	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
+	
