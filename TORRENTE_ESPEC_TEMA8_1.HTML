@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+  "question": "1. Indica cuál de las siguientes afirmaciones es correcta:",
+  "options": [
+    "a) Una red informática es aquella que exclusivamente contiene una red LAN en su interior compuesta a su vez por una red PAN.",
+    "b) Una red informática es un conjunto de equipos conectados entre sí.",
+    "c) Un ejemplo de red PAN es la red que podemos tener en nuestra casa siempre que tenga más de dos dispositivos conectados.",
+    "d) Un ejemplo de dispositivo de red como elemento que interviene en una red informática es una videoconsola."
+  ],
+  "correct": 1
+},
+{
+  "question": "2. Indica cuál de las siguientes opciones de respuesta es un ejemplo de elemento software:",
+  "options": [
+    "a) Windows 10",
+    "b) Tarjeta de red.",
+    "c) LAN.",
+    "d) Televisión."
+  ],
+  "correct": 0
+},
+{
+  "question": "3. ¿Cuál de las siguientes opciones de respuesta no corresponde a un tipo de redes?",
+  "options": [
+    "a) Por su alcance.",
+    "b) Por usuario.",
+    "c) Por relación funcional.",
+    "d) Por servicio."
+  ],
+  "correct": 1
+},
+{
+  "question": "4. ¿A qué tipo de redes corresponde la red P2P?",
+  "options": [
+    "a) Redes por su alcance.",
+    "b) Redes según su grado de difusión.",
+    "c) Redes por servicio.",
+    "d) Redes según su relación funcional."
+  ],
+  "correct": 3
+},
+{
+  "question": "5. Una red MAN corresponde al tipo de red:",
+  "options": [
+    "a) Por alcance.",
+    "b) Por relación funcional.",
+    "c) Por ubicación.",
+    "d) Por autenticación."
+  ],
+  "correct": 0
+},
+{
+  "question": "6. Indica cuál de las siguientes afirmaciones es correcta:",
+  "options": [
+    "a) Las redes LAN abarcan un espacio máximo de 10 metros y siempre irán a través de medios no guiados.",
+    "b) Las redes PAN abarcan un espacio de cobertura mayor que una red LAN pero ambas usan medios no guiados.",
+    "c) Las redes WPAN son exclusivamente a través de Wifi y son redes virtuales.",
+    "d) Una red VLAN es una red virtual que nos ofrecerá más seguridad que una red LAN."
+  ],
+  "correct": 3
+},
+{
+  "question": "7. Las siglas WAN hacen referencia a:",
+  "options": [
+    "a) Wifi área network.",
+    "b) Red de área virtual.",
+    "c) Red de área amplia.",
+    "d) Wireless área network."
+  ],
+  "correct": 2
+},
+{
+  "question": "8. Indica cuál de las siguientes opciones de respuesta es un ejemplo de medio guiado:",
+  "options": [
+    "a) Wifi.",
+    "b) Coaxial.",
+    "c) Microondas.",
+    "d) Satélite."
+  ],
+  "correct": 1
+},
+{
+  "question": "9. ¿Qué tipo de red, según la relación funcional que se establezca, encontraremos los recursos centralizados en un equipo?",
+  "options": [
+    "a) Redes cliente-servidor.",
+    "b) LAN.",
+    "c) Internet.",
+    "d) Intranet."
+  ],
+  "correct": 0
+},
+{
+  "question": "10. Al clasificar las redes según su topología, ¿qué red estaremos usando cuando conectamos en cada nodo pasivo nuevos nodos convirtiéndose en nodo activo?",
+  "options": [
+    "a) Estrella.",
+    "b) Anillo.",
+    "c) Estrella extendida.",
+    "d) Bus."
+  ],
+  "correct": 2
+},
+{
+  "question": "11. No es una característica de Internet:",
+  "options": [
+    "a) Libre.",
+    "b) Instantánea.",
+    "c) Segura.",
+    "d) Descentralizada."
+  ],
+  "correct": 2
+},
+{
+  "question": "12. Indica cuál de las siguientes opciones de respuesta es un ejemplo de ISP:",
+  "options": [
+    "a) LAN.",
+    "b) Yoigo.",
+    "c) Yahoo.",
+    "d) Gmail."
+  ],
+  "correct": 1
+},
+{
+  "question": "13. Hemos comenzado a trabajar en la empresa Servicios Informáticos Steven. Esta empresa nos ofrece una plataforma a través de la que podremos descargar nuestras nóminas y realizar cursos de formación. Esto es un ejemplo de:",
+  "options": [
+    "a) Red pública.",
+    "b) Intranet.",
+    "c) Extranet.",
+    "d) Internet."
+  ],
+  "correct": 1
+},
+{
+  "question": "14. ¿A qué se corresponde la definición: dispositivos que conectaremos a la red para acceder a la información?",
+  "options": [
+    "a) LAN.",
+    "b) Intranet.",
+    "c) Dispositivos de usuario final.",
+    "d) Elementos eléctricos."
+  ],
+  "correct": 2
+},
+{
+  "question": "15. Hemos comprado una impresora y la hemos conectado a nuestro equipo a través de Wifi y hay una distancia inferior a 10 metros, por tanto, esto sería un ejemplo de:",
+  "options": [
+    "a) Red WPAN.",
+    "b) Red WLAN.",
+    "c) Red PAN.",
+    "d) Red LAN."
+  ],
+  "correct": 0
+},
+{
+  "question": "16. ¿Qué medio guiado se usa en un conducto de fibra de vidrio transfiriendo pulsos luminosos?",
+  "options": [
+    "a) Cable de par trenzado UTP.",
+    "b) TCP/IP.",
+    "c) Fibra óptica.",
+    "d) RTC."
+  ],
+  "correct": 2
+},
+{
+  "question": "18. Indica cuál de las siguientes direcciones IP es correcta:",
+  "options": [
+    "a) 192::1:44:90",
+    "b) 255:255:255:255",
+    "c) 0:0:0:0",
+    "d) 125.125.125.125"
+  ],
+  "correct": 3
+},
+{
+  "question": "19. ¿Por qué protocolos está compuesto el protocolo de internet TCP/IP?",
+  "options": [
+    "a) Protocolo de Control de Transmisión y Protocolo de Internet.",
+    "b) Protocolo de Transmisión de Internet y Protocolo de Control.",
+    "c) Protocolo de Aplicación y Protocolo de Transporte.",
+    "d) Protocolo de Internet y Protocolo de Aplicación."
+  ],
+  "correct": 0
+},
+{
+  "question": "20. Hablando de direcciones IP, en su versión 4, ¿está formada por?",
+  "options": [
+    "a) 3 conjuntos de 4 números cada uno y podrán ir de 0 a 255.",
+    "b) 4 conjuntos de 3 números cada uno y podrán ir de 0 a 255.",
+    "c) 4 conjuntos de 4 números cada uno y podrán ir de 0 a 255.",
+    "d) 2 conjuntos de 2 números cada uno y podrán ir de 0 a 255."
+  ],
+  "correct": 1
+},
+{
+  "question": "21. ¿Qué protocolo de internet (IP) está formado por 128 bits?",
+  "options": [
+    "a) TCP.",
+    "b) IPv4.",
+    "c) IPv6.",
+    "d) TCP/IP."
+  ],
+  "correct": 2
+},
+{
+  "question": "22. ¿A qué tipo de dirección IPv4 nos referimos cuando sabemos que no podrá cambiar ni aun reiniciando el router?",
+  "options": [
+    "a) IP pública.",
+    "b) IP privada.",
+    "c) IP fija.",
+    "d) IP dinámica."
+  ],
+  "correct": 2
+},
+{
+  "question": "23. Indica cuál de las siguientes opciones de respuesta es correcta:",
+  "options": [
+    "a) Una dirección IP fija es aquella que podrá cambiar cuando, por ejemplo, apaguemos y encendamos el router.",
+    "b) Una dirección IP dinámica es aquella que no cambiará nunca, aun apagando y encendiendo el router.",
+    "c) Una dirección IPv4 está formada por 128 bits.",
+    "d) Una dirección IPv4 está formada por 32 bits."
+  ],
+  "correct": 3
+},
+{
+  "question": "24. Cuando decimos: Dirección basada en 128 bits compuesta por 8 bloques de 16 bits cuyos bloques se componen por dígitos hexadecimales, estamos hablando de:",
+  "options": [
+    "a) Protocolo TCP/IP.",
+    "b) Protocolo IPv4.",
+    "c) Protocolo IPv6.",
+    "d) Protocolo TCP."
+  ],
+  "correct": 2
+},
+{
+  "question": "25. Indica cuál de las siguientes direcciones IPv6 es correcta:",
+  "options": [
+    "a) 0ABN::123H:98SH:2003:CVH3:34F8",
+    "b) 192.168.2.2",
+    "c) 12F5.3JF8.:4JI8.000.DHSK.FHS9.45NB.98SF",
+    "d) 192:1::9"
+  ],
+  "correct": 0
+},
+{
+  "question": "26. ¿Qué tipo de red nos solicitará una contraseña para acceder a ella?",
+  "options": [
+    "a) Red privada.",
+    "b) Red pública.",
+    "c) Redes comerciales.",
+    "d) Redes GAN."
+  ],
+  "correct": 0
+},
+{
+  "question": "27. Las redes según la dirección de los datos, en la que la comunicación solo ocurre en una sola dirección es:",
+  "options": [
+    "a) Simplex.",
+    "b) Semi-duplex.",
+    "c) Semi-duplex siempre que el destinatario tenga el dispositivo correcto.",
+    "d) Full-duplex."
+  ],
+  "correct": 0
+},
+{
+  "question": "28. ¿Qué dispositivo o medio guiado usaremos para llevar la conexión de un punto a otro de nuestra casa usando la red eléctrica de nuestra casa?",
+  "options": [
+    "a) Fibra óptica.",
+    "b) PLC.",
+    "c) LAN.",
+    "d) WAN."
+  ],
+  "correct": 1
+},
+{
+  "question": "29. ¿Qué tipo de par trenzado ofrece más seguridad contra el ruido o interferencias?",
+  "options": [
+    "a) SFTP.",
+    "b) UTP.",
+    "c) UFT.",
+    "d) FFTP."
+  ],
+  "correct": 0
+},
+{
+  "question": "30. El medio guiado con 3 canales en el que estos eran asimétricos es:",
+  "options": [
+    "a) Cable coaxial.",
+    "b) Fibra óptica.",
+    "c) RDSI.",
+    "d) ADSL."
+  ],
+  "correct": 3
+}
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
