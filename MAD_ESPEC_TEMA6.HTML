@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+    {
+        "question": "1. La vestimenta que envuelve al cadáver se denomina:",
+        "options": [
+            "a) Óbito.",
+            "b) Sudario.",
+            "c) Pijama.",
+            "d) Tanatología."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. Los restos cadavéricos es lo que queda del cuerpo humano una vez fallecido tras:",
+        "options": [
+            "a) 5 años.",
+            "b) 10 años.",
+            "c) 12 meses.",
+            "d) 2 años."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "3. El rigor mortis aparece en una persona fallecida a las:",
+        "options": [
+            "a) 12 horas de la muerte.",
+            "b) 7 horas de la muerte.",
+            "c) 3 horas de la muerte.",
+            "d) 24 horas de la muerte."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "4. La putrefacción de un cadáver aparece por la acción de:",
+        "options": [
+            "a) Los virus.",
+            "b) Las bacterias.",
+            "c) El oxígeno.",
+            "d) La muerte."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "5. Denominamos tanatoplastia a:",
+        "options": [
+            "a) Las técnicas de reconstrucción de los cadáveres.",
+            "b) Las técnicas de cosmética que permiten mejorar la apariencia externa del cadáver.",
+            "c) Las técnicas que consisten en el tratamiento de los muertos.",
+            "d) Las técnicas que nos permiten congelar a los muertos."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. El establecimiento funerario habilitado para la incineración de cadáveres y restos humanos se denomina:",
+        "options": [
+            "a) Cementerio.",
+            "b) Crematorio.",
+            "c) Nicho.",
+            "d) Panteón."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "7. El control sanitario de los cementerios y la sanidad mortuoria corresponde a:",
+        "options": [
+            "a) Corporaciones Locales.",
+            "b) Centros privados.",
+            "c) Unidades Estatales.",
+            "d) Ministerio responsable de sanidad."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "8. La certificación de la muerte es competencia de:",
+        "options": [
+            "a) Cualquier eslabón del equipo.",
+            "b) El facultativo responsable.",
+            "c) La enfermera de la unidad.",
+            "d) El jefe de la unidad clínica."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "9. No es un signo precoz de la muerte:",
+        "options": [
+            "a) Pérdida de sensibilidad cutánea.",
+            "b) Ausencia de latido cardíaco.",
+            "c) Ausencia de tono muscular.",
+            "d) Livideces."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "10. Según el profesor Gisbert Calabuig, ¿cuántas fases de la muerte podemos distinguir?",
+        "options": [
+            "a) 4 fases.",
+            "b) 3 fases.",
+            "c) 2 fases.",
+            "d) 1 fase."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "11. Es una función exclusiva del celador con los pacientes fallecidos:",
+        "options": [
+            "a) El traslado de los cadáveres al mortuorio.",
+            "b) El amortajamiento.",
+            "c) El aseo del paciente.",
+            "d) Todas son funciones exclusivas del celador."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "12. Los ojos y la boca del cadáver:",
+        "options": [
+            "a) Deben ser cerrados.",
+            "b) Deben dejarse como están.",
+            "c) Debe permanecer abiertos.",
+            "d) Deben sellarse con sutura."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "13. Si el paciente va a estar unos días en el depósito de cadáveres se aconseja una temperatura de:",
+        "options": [
+            "a) 4 °C.",
+            "b) 10 °C.",
+            "c) 0 °C.",
+            "d) 21 °C."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "14. La superficie de las áreas de disección en la actualidad es de:",
+        "options": [
+            "a) Cerámica.",
+            "b) Acero inoxidable.",
+            "c) Porcelana.",
+            "d) Cualquiera de los anteriores."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "15. La intervención que se realiza en un cadáver para examinar sus órganos se denomina:",
+        "options": [
+            "a) Necropsia.",
+            "b) Exitus.",
+            "c) Embalsamamiento.",
+            "d) Tanatopraxia."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "16. Un enterótomo es un instrumento que no se utiliza para la disección de:",
+        "options": [
+            "a) Estómago.",
+            "b) Tráquea.",
+            "c) Huesos.",
+            "d) Intestinos."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "17. La mesa de autopsias debe medir:",
+        "options": [
+            "a) 2,10 por 0,75 m.",
+            "b) 2,10 por 0,90 m.",
+            "c) 1,90 por 0,75 m.",
+            "d) 2,10 por 2,10 m."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "18. La autopsia clínica tiene como fin:",
+        "options": [
+            "a) Determinar las circunstancias de la muerte del fallecido.",
+            "b) Realizar un informe para la autoridad judicial.",
+            "c) Estudiar las alteraciones morfológicas de órganos y tejidos a causa de la enfermedad.",
+            "d) Analizar restos humanos encontrados en extrañas circunstancias."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "19. Indique en qué cadáver, según la causa de fallecimiento, podría prohibirse las técnicas de tanatopraxia, tanatoestética y/o tanatoplastia. Personas cuya defunción se deba a:",
+        "options": [
+            "a) Rabia.",
+            "b) Neumonía.",
+            "c) Cáncer.",
+            "d) Infarto."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "20. ¿Cuándo está indicada la autopsia clínica?",
+        "options": [
+            "a) Muertes ocurridas en las primeras 24 horas tras el ingreso en un hospital.",
+            "b) Cadáveres no identificados.",
+            "c) Muerte de pacientes por procedimientos clínicos-quirúrgicos.",
+            "d) Para elaborar un informe forense."
+        ],
+        "correct": 0
+    }
+	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

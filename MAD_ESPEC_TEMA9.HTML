@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+        {
+        "question": "1. ¿De quién depende el Servicio de Farmacia que existe en la mayoría de los Hospitales?",
+        "options": [
+            "a) De la Gerencia.",
+            "b) De la Dirección Médica.",
+            "c) De la Dirección de Gestión y Servicios Generales.",
+            "d) De la División de Enfermería."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "2. ¿Cómo se denomina a toda materia, cualquiera que sea su origen a la que se atribuye una actividad apropiada para constituir un medicamento?",
+        "options": [
+            "a) Excipiente.",
+            "b) Principio activo.",
+            "c) Fórmula magistral.",
+            "d) Premezcla."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "3. ¿Qué nombre recibe la disposición a que se adaptan los principios activos y excipientes para constituir un medicamento?",
+        "options": [
+            "a) Forma magistral.",
+            "b) Forma excepcional.",
+            "c) Forma copérnica.",
+            "d) Forma farmacéutica."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "4. Señala cuál de las siguientes no es una de las características mínimas que ha de reunir la zona estéril del Área de citostáticos:",
+        "options": [
+            "a) Ha de contar con una campana de flujo laminar vertical.",
+            "b) Debe disponer de una habitación separada con presión positiva.",
+            "c) No ha de tener recirculación de aire ni aire acondicionado ambiental.",
+            "d) Debe contar con un área o zona aislada físicamente del resto del servicio en la que no se realicen otras operaciones."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "5. ¿Qué tipo de inventario requiere un recuento sistemático de las existencias durante todo el ejercicio con el fin de determinar el número de veces que se consume y se repone la mercancía a lo largo del año?",
+        "options": [
+            "a) El inventario tradicional.",
+            "b) El inventario cíclico.",
+            "c) El inventario rotativo.",
+            "d) El inventario periódico o estacional."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "6. No es una de las funciones propias de un celador en el Almacén General del Hospital:",
+        "options": [
+            "a) Dispensar el material que le sea solicitado mediante un vale firmado debidamente por el solicitante.",
+            "b) Recepcionar el suministro mediante cotejo del albarán de entrega.",
+            "c) Informar al responsable del Almacén de las entradas diarias de material.",
+            "d) Vigilar las entradas y salidas del almacén."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "7. ¿Qué tipo de clasificación ordena los artículos en clases «A», «B» y «C»?",
+        "options": [
+            "a) Ley 70-30.",
+            "b) La clasificación ADR.",
+            "c) El método LIFO.",
+            "d) La clasificación de Pareto."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "8. ¿Cuál es el primer paso en el proceso de adquisición de los suministros?",
+        "options": [
+            "a) La planificación de adquisiciones.",
+            "b) La petición de material.",
+            "c) La previsión de aprovisionamientos.",
+            "d) El procedimiento administrativo de contratación."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "9. ¿Cuál, seguramente, es la labor más importante de todo el sistema de suministro, ya que el buen o mal funcionamiento de la misma significará o no la disponibilidad de un stock físico fiable y de los controles que lo garanticen?",
+        "options": [
+            "a) La recepción/revisión de mercancías",
+            "b) El reaprovisionamiento.",
+            "c) La gestión de stock.",
+            "d) El mapa de almacén."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "10. ¿Cómo se denomina la actividad de salud pública que tiene por objetivo la identificación, cuantificación, evaluación y prevención de los riesgos del uso de los medicamentos una vez comercializados, permitiendo así el seguimiento de los posibles efectos adversos de los medicamentos?",
+        "options": [
+            "a) Farmacovigilancia.",
+            "b) Farmacontrol.",
+            "c) Farmacoterapia.",
+            "d) Farmacosupervisión."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "11. ¿Cómo se denomina la zona de un almacén sanitario donde se llevan a cabo las tareas de comprobación de los paquetes y albaranes?",
+        "options": [
+            "a) Zona de Entrada de mercancías.",
+            "b) Zona de Control de mercancías.",
+            "c) Zona de Recepción de mercancías.",
+            "d) Zona de almacén propiamente dicho."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "12. Los controles de stock se refieren:",
+        "options": [
+            "a) Al material almacenable.",
+            "b) Al material no almacenable.",
+            "c) Al material almacenable y no almacenable.",
+            "d) Son iguales a los controles que se hacen diariamente de los albaranes."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "13. Según Pareto un 20 % de los pedidos va a representar de las existencias un porcentaje del:",
+        "options": [
+            "a) 30%.",
+            "b) 50%.",
+            "c) 65%.",
+            "d) 80%."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "14. ¿Cuál de estos almacenes encaja como almacén de materiales para el funcionamiento del Centro Sanitario?",
+        "options": [
+            "a) Almacén de material clínico fungible.",
+            "b) Almacén de papelería.",
+            "c) Almacén de lencería.",
+            "d) Almacén de farmacia."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "15. El almacén de farmacia pertenece a los almacenes de:",
+        "options": [
+            "a) Materiales de uso relacionado directamente con los enfermos.",
+            "b) Materiales de terapias.",
+            "c) Materiales para el funcionamiento del centro sanitario.",
+            "d) Materiales de diagnóstico."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "16. ¿Qué simbología del código de barras es de las más empleadas a nivel internacional como símbolo de número de artículo?",
+        "options": [
+            "a) ASCII.",
+            "b) EAN.",
+            "c) RIN.",
+            "d) RAN."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "17. Todo lo que se expone sobre los códigos de barras es cierto, excepto:",
+        "options": [
+            "a) Son sencillamente unas etiquetas con un número determinado de barras negras inscritas en ellas.",
+            "b) Cada barra tiene la posibilidad de representar un dígito particular de acuerdo con su posición en el código total.",
+            "c) Si el dígito está representado la barra es ancha; si el dígito no está presente la barra es fina.",
+            "d) Representan datos en una forma legible a simple vista y nunca por las máquinas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. Un celador destinado en el almacén de farmacia es requerido por un médico para que le suministre un analgésico. ¿Cuál debe ser su actuación?",
+        "options": [
+            "a) Pasará la notificación al farmacéutico responsable.",
+            "b) Se lo dará, notificándolo posteriormente al farmacéutico responsable.",
+            "c) Se lo negará y avisará al jefe de personal subalterno.",
+            "d) Se lo dará, pero se lo comunicará a la Supervisora de guardia."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "19. Señale la respuesta incorrecta en cuanto a la clasificación de Pareto:",
+        "options": [
+            "a) Los artículos del tipo A serían aquellos que más se utilizan.",
+            "b) Los de clase B tendrían un consumo intermedio.",
+            "c) Los artículos del tipo A serían aquellos que se consumen menos y, como es lógico, tendrían una sustitución o rotación más lenta y se almacenarían en los lugares menos accesibles del almacén.",
+            "d) Los artículos del tipo A se guardarán en los lugares más próximos y de fácil acceso."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "20. ¿Qué significa FIFO?",
+        "options": [
+            "a) Five in, five off.",
+            "b) Fine in, fine over.",
+            "c) First in, first out.",
+            "d) Flirt ink, flirt on."
+        ],
+        "correct": 2
+    }
+	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+      {
+        "question": "1. ¿Por qué se dice que Internet es libre?",
+        "options": [
+            "a) Porque es gratuito.",
+            "b) Es una tecnología gratuita.",
+            "c) Es una tecnología gratuita y de libre uso.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "2. ¿Qué es el Sitemap?",
+        "options": [
+            "a) Una página Web.",
+            "b) Indica la estructura de una página Web.",
+            "c) Es un siteweb.",
+            "d) Indica la estructura de un siteweb."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "3. ¿Qué problemas presenta la conexión a Internet por la RTC?",
+        "options": [
+            "a) Es más cara.",
+            "b) Velocidad como máximo 56 kbps.",
+            "c) No se puede hablar por teléfono.",
+            "d) Las dos respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "4. En una conexión ADSL, ¿qué elemento es necesario para poder hablar por teléfono y tener acceso a Internet?",
+        "options": [
+            "a) Filtro separador ya que se trabajan a altas frecuencias.",
+            "b) Un atenuador.",
+            "c) Un amplificador.",
+            "d) Una resistencia."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "5. ¿Qué servicio se utiliza para conectar a equipos remotos mediante la Red emulando un terminal del equipo al que se realiza la conexión?",
+        "options": [
+            "a) FTP.",
+            "b) SMTP.",
+            "c) Telnet.",
+            "d) HTTP."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "6. ¿Cuál de las siguientes redes sociales se engloba dentro de las profesionales?",
+        "options": [
+            "a) Linkedin.",
+            "b) Facebook.",
+            "c) Instagram.",
+            "d) X."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "7. ¿Cómo se denominó Facebook en sus inicios?",
+        "options": [
+            "a) Facetool.",
+            "b) Facemash.",
+            "c) Seekface.",
+            "d) Lookface."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "8. ¿De dónde proviene el término Wiki?",
+        "options": [
+            "a) Del autor Wilkinson.",
+            "b) De la abreviatura World Kount.",
+            "c) Del Hawaiano rápido.",
+            "d) Del inglés whisper."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "9. ¿Cuál de las siguientes opciones es una plataforma de educación online?",
+        "options": [
+            "a) Wiki.",
+            "b) Blog.",
+            "c) WordPress.",
+            "d) Moodle."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "10. ¿De dónde proviene el nombre de Moodle?",
+        "options": [
+            "a) Modular Oberver Dynamic Learning Environment.",
+            "b) Modular Object-Oriented Dynamic Learning Environment.",
+            "c) Main Object-Oriented Dynamic Learning Environment.",
+            "d) Modular Object-Oriented Dynamic Look Environment."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "11. El elemento Hardware que impide la entrada de intrusos en la red de datos interna o local se denomina:",
+        "options": [
+            "a) Antivirus.",
+            "b) Escáner.",
+            "c) Rúter.",
+            "d) Firewall."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "12. ¿Cuál es la abreviatura de la organización que vela por el desarrollo de estándares que aseguren el crecimiento de la Web a largo plazo?",
+        "options": [
+            "a) W3C",
+            "b) W2C",
+            "c) 3WC",
+            "d) 2WC"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "13. ¿Cuál de las siguientes direcciones IP es incorrecta?",
+        "options": [
+            "a) 192.168.1.5",
+            "b) 129.65.2.256",
+            "c) 27.35.2.1",
+            "d) 8.8.8.8"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "14. ¿Cómo se denomina al servidor de correo encargado de trasladar el email al destinatario?",
+        "options": [
+            "a) SMTP",
+            "b) FullP",
+            "c) POP3",
+            "d) HTML"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "15. ¿Cuál es la frase que mostrará el gestor del correo al usuario antes incluso de que lo lea y que ven los programas entre otras cosas para filtrar el SPAM?",
+        "options": [
+            "a) Titular.",
+            "b) Concepto.",
+            "c) Cuerpo del mensaje.",
+            "d) Asunto."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "16. Para crear un documento de Writer hay que dirigirse al menú:",
+        "options": [
+            "a) Archivo.",
+            "b) Editar.",
+            "c) Herramientas.",
+            "d) Ayuda."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "17. ¿Cuántas columnas tiene una hoja de cálculo?",
+        "options": [
+            "a) 3 por defecto.",
+            "b) Las que se ven en pantalla.",
+            "c) 65.635.",
+            "d) 1024."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. ¿Cuántas filas tiene una hoja de cálculo?",
+        "options": [
+            "a) 3 por defecto.",
+            "b) Las que se ven en pantalla.",
+            "c) 65.635.",
+            "d) 1.048.576."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "19. Los interfaces que facilitan al usuario la introducción y visualización de datos en la base de datos se denominan:",
+        "options": [
+            "a) Formularios.",
+            "b) Tablas.",
+            "c) Informes.",
+            "d) Consultas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "20. En la tabla Libro que tiene los siguientes atributos: Autor/a, ISBN, Título, Año, ¿cuál de los atributos pondrías como llave primaria?",
+        "options": [
+            "a) Autor/a.",
+            "b) ISBN.",
+            "c) Año.",
+            "d) Título."
+        ],
+        "correct": 1
+    }
+	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+    {
+        "question": "1. ¿Cuál es la vigente Ley de Prevención de Riesgos Laborales?",
+        "options": [
+            "a) Ley 32/1995, de 8 de noviembre.",
+            "b) Ley 30/1996, de 8 de noviembre.",
+            "c) Ley 31/1995, de 6 de noviembre.",
+            "d) Ley 31/1995, de 8 de noviembre."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "2. La Ley de Prevención de Riesgos laborales, tiene por objeto:",
+        "options": [
+            "a) Prevenir los accidentes en general.",
+            "b) Evitar riesgos en el recorrido al puesto de trabajo.",
+            "c) Promover la seguridad y la salud de los trabajadores.",
+            "d) Que cada vez haya menos accidentes de tráfico."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "3. Qué se entiende por 'riesgo laboral':",
+        "options": [
+            "a) La posibilidad de que un trabajador sufra un determinado daño derivado del trabajo.",
+            "b) La posibilidad de que un trabajador sufra una enfermedad en el trabajo.",
+            "c) La posibilidad de que un trabajador sufra acoso.",
+            "d) El riesgo que supone el ir a trabajar."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. Indica cuál es la definición de prevención:",
+        "options": [
+            "a) La probabilidad racional de que un riesgo se materialice de forma inminente.",
+            "b) El estudio de los procesos potencialmente peligrosos para el trabajo.",
+            "c) Conjunto de actividades o medidas adoptadas o previstas en todas las fases de actividad de la empresa con el fin de evitar o disminuir los riesgos derivados del trabajo.",
+            "d) Posibilidad de que un trabajador sufra un determinado daño derivado del trabajo."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "5. Según establece el art. 4 de la Ley 31/1995, de 8 de noviembre, de Prevención de Riesgos Laborales, se define como daños derivados del trabajo.",
+        "options": [
+            "a) La posibilidad de que un trabajador sufra un determinado daño derivado del trabajo.",
+            "b) El que resulte probable racionalmente que se materialice en un futuro inmediato y pueda suponer un daño grave para la salud de los trabajadores.",
+            "c) Las enfermedades, patologías o lesiones sufridas con motivo u ocasión del trabajo.",
+            "d) Cualquier máquina, aparato, instrumento o instalación utilizada en el trabajo."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "6. Cualquier característica del trabajo que pueda tener una influencia significativa en la generación de riesgos para la seguridad y la salud del trabajador, es:",
+        "options": [
+            "a) Una condición de trabajo.",
+            "b) Un factor de riesgo.",
+            "c) Un proceso potencialmente peligroso.",
+            "d) Una zona peligrosa."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "7. Señale la respuesta incorrecta:",
+        "options": [
+            "a) La Ley de Prevención de Riesgos Laborales se aplica a los operativos de Seguridad civil en casos de catástrofe.",
+            "b) La Ley de Prevención de Riesgos Laborales se aplica a las sociedades cooperativas.",
+            "c) En el ámbito de la relación laboral de carácter especial del servicio del hogar familiar, las personas trabajadoras tienen derecho a una protección eficaz en materia de seguridad y salud en el trabajo.",
+            "d) En los establecimientos penitenciarios, se adaptarán a la Ley de Prevención de Riesgos Laborales aquellas actividades cuyas características justifiquen una regulación especial."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "8. Para calificar un riesgo desde el punto de vista de su gravedad, se valorarán conjuntamente la severidad del daño y:",
+        "options": [
+            "a) La probabilidad de que se produzca.",
+            "b) La cantidad de trabajadores de la empresa.",
+            "c) La existencia o no de equipos individuales de protección.",
+            "d) Las condiciones de trabajo."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "9. Según recoge el artículo 4 de la Ley 31/1995, quedan específicamente incluidas en la definición de condición de trabajo:",
+        "options": [
+            "a) Las características particulares de los locales, instalaciones, equipos, productos y demás útiles existentes en el centro de trabajo.",
+            "b) La naturaleza de los agentes físicos, químicos y biológicos presentes en el ambiente de trabajo y sus correspondientes intensidades, concentraciones o niveles de presencia.",
+            "c) Los procedimientos para la utilización de los agentes citados anteriormente que no influyan en la generación de los riesgos mencionados.",
+            "d) Todas aquellas otras características del trabajo, excluidas las relativas a su organización y ordenación, que influyan en la magnitud de los riesgos a que esté expuesto el trabajador."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "10. ¿Quién debe garantizar a los trabajadores la vigilancia periódica de su estado de salud en función de los riesgos inherentes al trabajo?:",
+        "options": [
+            "a) La Inspección de Trabajo.",
+            "b) El propio trabajador.",
+            "c) El empresario.",
+            "d) Las secciones sindicales."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "11. El derecho básico reconocido a los trabajadores por la Ley 31/1995, de 8 de noviembre, es:",
+        "options": [
+            "a) La vigilancia de su estado de salud.",
+            "b) Una protección eficaz en materia de seguridad y salud en el trabajo.",
+            "c) La formación en materia preventiva.",
+            "d) La información, consulta y participación."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "12. ¿Cuál de los siguientes principios generales de la acción preventiva a aplicar en el trabajo, contenidos en la Ley de Prevención de Riesgos Laborales, es incorrecto?",
+        "options": [
+            "a) Evaluar los riesgos que no se pueden evitar.",
+            "b) Priorizar medidas individuales a las colectivas.",
+            "c) Combatir los riesgos en su origen.",
+            "d) Tener en cuenta la evolución de la técnica."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "13. La actividad preventiva deberá planificarse:",
+        "options": [
+            "a) Para un período determinado.",
+            "b) Para un período ilimitado.",
+            "c) Anualmente.",
+            "d) Para un período máximo de 3 años."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "14. Podrán realizar el plan de prevención de riesgos laborales, la evaluación de riesgos y la planificación de la actividad preventiva de forma simplificada, en atención a la naturaleza y peligrosidad de las actividades realizadas, empresas cuyo número de trabajadores no exceda de:",
+        "options": [
+            "a) 30.",
+            "b) 50.",
+            "c) 80.",
+            "d) 100."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "15. En relación a la vigilancia de la salud que ha de garantizar el empresario, el acceso a la información médica de carácter personal:",
+        "options": [
+            "a) Se limitará al empresario y a los Servicios de Prevención propios.",
+            "b) Se limitará al Jefe inmediato del trabajador.",
+            "c) Sólo será accesible al propio trabajador.",
+            "d) Se limitará al personal médico y a las autoridades sanitarias que lleven a cabo la vigilancia."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "16. En relación a la vigilancia de la salud, no es cierto que:",
+        "options": [
+            "a) El derecho a la vigilancia periódica del estado de salud puede prolongarse más allá de la finalización de la relación laboral.",
+            "b) Las medidas de vigilancia y control se llevarán a cabo por personal sanitario.",
+            "c) Los resultados de la vigilancia de la salud serán comunicados a los representantes de los trabajadores.",
+            "d) Se deberá optar por la realización de aquellos reconocimientos o pruebas que causen las menores molestias al trabajador."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "17. El empresario garantizará a los trabajadores a su servicio la vigilancia periódica de su estado de salud:",
+        "options": [
+            "a) Que deberá prolongarse más allá de la finalización de la relación laboral.",
+            "b) Solamente si la duración de la relación de trabajo temporal es superior a los tres meses.",
+            "c) Solamente si la duración de la relación de trabajo temporal es superior a los seis meses.",
+            "d) Excepto a los contratados por empresas de trabajo temporal."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "18. Según la Ley de Prevención de Riesgos Laborales, es obligación de los trabajadores en materia de prevención de riesgos:",
+        "options": [
+            "a) La protección eficaz en materia de seguridad y salud en el trabajo.",
+            "b) Utilizar correctamente los medios y equipos de protección facilitados por el empresario, de acuerdo con las instrucciones recibidas de éste.",
+            "c) Soportar el coste de las medidas relativas a la seguridad y la salud en el trabajo.",
+            "d) Desarrollar una acción permanente de seguimiento de la actividad preventiva."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "19. El art. 29 de la LPRL establece las obligaciones de los trabajadores en materia de prevención de riesgos. De las siguientes no se considera una obligación del trabajador:",
+        "options": [
+            "a) Utilizar correctamente los medios y equipos de protección facilitados por el empresario, de acuerdo con las instrucciones recibidas de éste.",
+            "b) Usar adecuadamente, de acuerdo con su naturaleza y los riesgos previsibles, las máquinas, aparatos, herramientas, sustancias peligrosas, equipos de transporte y, en general, cualesquiera otros medios con los que desarrollen su actividad.",
+            "c) Informar de inmediato a su superior jerárquico directo, y a los trabajadores designados para realizar las actualizaciones que consideren oportunas en el equipo de protección individual.",
+            "d) No poner fuera de funcionamiento y utilizar correctamente los dispositivos de seguridad existentes o que se instalen en los medios relacionados con su actividad o en los lugares de trabajo en los que ésta tenga lugar."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "20. Cuando los trabajadores estén expuestos a un riesgo grave e inminente con ocasión de su trabajo, y el empresario no adopte o no permita la adopción de las medidas necesarias para garantizar la seguridad y la salud de los trabajadores, la Ley 31/1995, de 8 de noviembre, de Prevención de Riesgos Laborales prevé que:",
+        "options": [
+            "a) Los trabajadores afectados podrán paralizar la actividad.",
+            "b) El órgano de representación del personal instará formalmente al empresario a la adopción de las medidas necesarias.",
+            "c) Los Delegados de Prevención lo comunicarán a la autoridad laboral, que adoptará las medidas necesarias.",
+            "d) El órgano de representación de personal podrá acordar la paralización de la actividad."
+        ],
+        "correct": 3
+    }
+	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+    {
+        "question": "1. Entendemos por psiquiatría:",
+        "options": [
+            "a) Una rama de la medicina.",
+            "b) La parte de la medicina que tiene por objeto el estudio y prevención de las enfermedades mentales.",
+            "c) Una parte de la medicina que tiene por objeto el diagnóstico y tratamiento de las enfermedades mentales.",
+            "d) Todas son ciertas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "2. En las unidades de hospitalización psiquiátrica no se dedican a:",
+        "options": [
+            "a) Desintoxicación.",
+            "b) Evaluación y progreso diagnóstico.",
+            "c) Reinserción social.",
+            "d) Fracaso de tratamientos ambulatorios."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "3. La finalidad de los centros día en salud mental es:",
+        "options": [
+            "a) La recuperación de habilidades para integrarse en la sociedad.",
+            "b) La desintoxicación de drogas de abuso.",
+            "c) La integración y terapia familiar.",
+            "d) Todas son ciertas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. El trastorno depresivo mayor en salud mental se caracteriza por:",
+        "options": [
+            "a) Preocupación, autocrítica y pensamientos de autodevaluación.",
+            "b) La falta de energía, sobre todo en hombres.",
+            "c) Está caracterizado por uno o más episodios depresivos mayores.",
+            "d) Episodios de delirios, alucinaciones y TCA."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "5. El lenguaje demasiado bajo se denomina:",
+        "options": [
+            "a) Musitación.",
+            "b) Coprolalia.",
+            "c) Dislalia.",
+            "d) Logorrea."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "6. Los dispositivos de urgencias sanitarias garantizan a los usuarios del Sistema Sanitario Público una atención continuada, y para ello:",
+        "options": [
+            "a) Tratan todo tipo de procesos.",
+            "b) Traslada a todos los pacientes al ambulatorio más cercano para su tratamiento.",
+            "c) Garantizan a los usuarios una atención sanitaria durante las 24 horas del día.",
+            "d) No tienen en cuenta la gravedad del paciente para su asistencia."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "7. De las siguientes afirmaciones, ¿cuál de ellas expresa alguna característica propia del término «emergencia»?",
+        "options": [
+            "a) Es un tipo agravado de urgencia en la que existe un peligro inmediato, real o potencial, para la vida del paciente.",
+            "b) Existe peligro de secuelas para el paciente.",
+            "c) Suceso que provoca en el organismo una lesión y es de forma fortuita.",
+            "d) Suceso que altera el orden normal de las cosas y provoca una gran necesidad de asistencia sanitaria."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "8. Se considera «emergencia» a aquella situación que:",
+        "options": [
+            "a) Supone una pérdida de calidad de vida para la persona y debe ser atendida de forma preferente.",
+            "b) Es percibida como tal por el usuario.",
+            "c) Supone una amenaza inmediata para la vida o salud de la persona.",
+            "d) Es definida como tal por Atención Primaria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "9. De los siguientes uno No es un Servicio de Urgencias y Emergencias Sanitarias; señálalo:",
+        "options": [
+            "a) SAMU.",
+            "b) 091.",
+            "c) 112.",
+            "d) SOS emergencias."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "10. Las Unidades de Urgencias de los Hospitales Generales y Especialidades prestan asistencia:",
+        "options": [
+            "a) Ambulatoria.",
+            "b) Domiciliaria.",
+            "c) Especializada.",
+            "d) Básica."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "11. El estilo Utstein en el soporte vital básico es:",
+        "options": [
+            "a) Un acuerdo a nivel mundial para consensuar definiciones relacionadas con la RCP.",
+            "b) La principal asociación de indicaciones en RCP a nivel europeo.",
+            "c) La secuencia de actuación correcta ante una emergencia clínica.",
+            "d) Todas son ciertas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "12. El primer eslabón de la cadena de supervivencia es:",
+        "options": [
+            "a) RCP básica.",
+            "b) Desfibrilación precoz.",
+            "c) Activación de los servicios de emergencia.",
+            "d) Soporte vital avanzado."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "13. La causa más frecuente de parada cardiorrespiratoria en adultos es:",
+        "options": [
+            "a) Torsades de pointes.",
+            "b) FV.",
+            "c) FA.",
+            "d) Enfermedad terminal."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "14. ¿Cuál de las siguientes afirmaciones sobre la valoración de la conciencia es falsa?",
+        "options": [
+            "a) Es la primera valoración que se realiza en una situación de emergencia.",
+            "b) Se realiza mediante una valoración sensitiva y auditiva.",
+            "c) Si la víctima responde consideraremos que está consciente.",
+            "d) Si la víctima responde de forma anormal o confusa consideraremos que está inconsciente."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "15. Para despejar la vía aérea usaremos la técnica de:",
+        "options": [
+            "a) Maniobra frente mentón o tracción mandibular.",
+            "b) VOS.",
+            "c) Insuflaciones.",
+            "d) Dedo en gancho."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "16. Todo cuadro pulmonar que da lugar a la disminución de la P02 en sangre arterial, con o sin aumento de P02 se denomina:",
+        "options": [
+            "a) Hipoventilación alveolar.",
+            "b) Disfemismo bronquial.",
+            "c) EPOC.",
+            "d) Insuficiencia respiratoria."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "17. El aumento de la presión parcial de dióxido de carbono en sangre arterial puede producir:",
+        "options": [
+            "a) Poliglobulina.",
+            "b) Hiperoxia.",
+            "c) Acidosis metabólica.",
+            "d) Hipercapnia."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. ¿En qué posición se trasladará a un paciente diagnosticado de insuficiencia respiratoria con oxigenoterapia?",
+        "options": [
+            "a) Fowler.",
+            "b) Sims.",
+            "c) Trendelenburg.",
+            "d) Roser."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "19. El ruido respiratorio crepitante fuerte que se origina por el paso del aire a través de líquido en bronquiolos, bronquios y tráquea al final de la inspiración y durante la espiración, se denomina:",
+        "options": [
+            "a) Roce pleural.",
+            "b) Sibilancia.",
+            "c) Soplo tubárico.",
+            "d) Roncus."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "20. La función del celador es importante en las urgencias respiratorias debido a que:",
+        "options": [
+            "a) Deberá valorar la situación inicial del paciente.",
+            "b) A menudo realiza traslados de pacientes sometidos a oxigenoterapia y deberá conocer todo el sistema.",
+            "c) Controlará el empeoramiento del cuadro.",
+            "d) Será quien informe sobre el sistema de administración de oxigenoterapia."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "21. La Ley 3/2005, de 8 de julio, de información sanitaria y autonomía del paciente, se estructura en:",
+        "options": [
+            "a) 40 artículos, distribuidos en una exposición de motivos, un Título Preliminar, siete Títulos, tres Disposiciones Adicionales, una Disposición Transitoria, una Disposición Derogatoria y tres Disposiciones Finales.",
+            "b) 42 artículos, distribuidos en una exposición de motivos, un Título Preliminar, seis Títulos, tres Disposiciones Adicionales, una Disposición Transitoria, una Disposición Derogatoria y dos Disposiciones Finales.",
+            "c) 44 artículos, distribuidos en una exposición de motivos, un Título Preliminar, siete Títulos, tres Disposiciones Adicionales, una Disposición Transitoria, una Disposición Derogatoria y dos Disposiciones Finales.",
+            "d) 44 artículos, distribuidos en una exposición de motivos, un Título Preliminar, seis Títulos, tres Disposiciones Adicionales, una Disposición Transitoria, una Disposición Derogatoria y tres Disposiciones Finales."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "22. El art. 1 de la Ley 3/2005, de 8 de julio, de información sanitaria y autonomía del paciente, dispone que constituye la finalidad de la dicha Ley garantizar el derecho a la protección de la salud con pleno respeto a los derechos fundamentales de:",
+        "options": [
+            "a) Legalidad, igualdad e información.",
+            "b) Intimidad, igualdad y no discriminación.",
+            "c) Honor, no discriminación y legalidad.",
+            "d) Información, honor e intimidad."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "23. El ámbito de aplicación de la Ley 3/2005, de 8 de julio, de información sanitaria y autonomía del paciente, se extiende a:",
+        "options": [
+            "a) A todos los extremeños y residentes en cualquiera de los municipios de Extremadura.",
+            "b) A los profesionales de los centros, establecimientos y servicios sanitarios, públicos y privados, ubicados en el ámbito territorial de la Comunidad Autónoma de Extremadura.",
+            "c) A los no residentes en la Comunidad Autónoma de Extremadura, en las condiciones previstas en la legislación estatal y en los Convenios Nacionales e Internacionales que sean de aplicación.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "24. Los pacientes de la Comunidad Autónoma de Extremadura tienen derecho, con motivo de cualquier actuación en el ámbito de su salud, a recibir toda la información disponible sobre la misma, salvo los supuestos exceptuados legalmente. Como regla general la información se proporcionará:",
+        "options": [
+            "a) Verbalmente, dejando constancia en la historia clínica.",
+            "b) De forma escrita y dejando constancia en la historia clínica.",
+            "c) De forma verbal o escrita sin necesidad de dejar constancia en la historia clínica.",
+            "d) Siempre por escrito, con firma del informado y dejando constancia en la historia clínica."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "25. Señale la respuesta incorrecta respecto a los titulares del derecho a la información asistencial:",
+        "options": [
+            "a) El titular del derecho a la información es el paciente.",
+            "b) Los menores de edad serán titulares del derecho a la información cuando estén emancipados o tengan quince años cumplidos.",
+            "c) Las personas vinculadas al paciente deberán ser informadas en la medida en que éste lo permita expresa o tácitamente.",
+            "d) El médico responsable de la asistencia al paciente deberá hacer constar en la historia clínica la circunstancia que concurre en cada caso, la información que se ha prestado y los destinatarios de la misma."
+        ],
+        "correct": 1
+    }
+	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
