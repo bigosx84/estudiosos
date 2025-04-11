@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+    {
+        "question": "1. Las movilizaciones realizadas por el fisioterapeuta sobre los distintos segmentos corporales del paciente se denominan:",
+        "options": [
+            "a) Inmovilizadas.",
+            "b) Activas contrarresistencia.",
+            "c) Pasivas.",
+            "d) Activas con resistencia."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "2. ¿Qué consecuencia sobre la función respiratoria es cierta por el inmovilismo?",
+        "options": [
+            "a) Aumento en los requerimientos de oxígeno.",
+            "b) Aumenta la capacidad respiratoria.",
+            "c) Se tiende instintivamente a respirar de forma más rápida y superficial.",
+            "d) Hay una estasis de secreciones, que puede acumularse y favorecer el medio para el crecimiento bacteriano."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "3. Las úlceras por presión se evitan:",
+        "options": [
+            "a) Con una sistemática de cambios posturales frecuentes.",
+            "b) La necesidad de una aplicación adecuada de buenas posiciones no es prioritaria.",
+            "c) Tomando todos los días la medicación recomendada.",
+            "d) Son ciertas las respuestas a) y c)."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. ¿Qué maniobra es la primera que hay que hacer si queremos transferir un enfermo de la cama a un sillón?",
+        "options": [
+            "a) Colocar el sillón paralelo a la cama y a la altura de los pies.",
+            "b) Colocar al paciente en la orilla de la cama.",
+            "c) Sentar al paciente en la cama con las piernas por fuera.",
+            "d) Colocar el sillón paralelo al familiar del paciente."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "5. ¿Cómo se denominan los pacientes que sufren parálisis de las extremidades inferiores y superiores?",
+        "options": [
+            "a) Hemipléjicos.",
+            "b) Hemiparésicos.",
+            "c) Tetrapléjicos.",
+            "d) Paraparésicos."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "6. La movilización del paciente de una zona a otra dentro del Hospital se denomina:",
+        "options": [
+            "a) Movilización del paciente/usuario.",
+            "b) Traslado intrahospitalario.",
+            "c) Transporte.",
+            "d) Ninguno de los anteriores es cierto."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "7. ¿Cuándo está indicado el uso de bastones en los enfermos?",
+        "options": [
+            "a) Cuando estos pacientes sufren hemiplejia derecha que permite la marcha.",
+            "b) Cuando estos pacientes sufren tetraplejia.",
+            "c) Cuando estos pacientes sufren fractura bilateral de caderas.",
+            "d) Cuando estos pacientes tienen luxaciones de ambas rótulas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "8. ¿Qué indicaciones son las más frecuentes de las muletas de aluminio?",
+        "options": [
+            "a) Esguinces.",
+            "b) Enfermos tetrapléjicos.",
+            "c) Enfermos parapléjicos.",
+            "d) Son ciertas las respuestas b) y c)."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "9. ¿Cuál de estas ayudas es autoestable?",
+        "options": [
+            "a) Pasamanos.",
+            "b) Barras paralelas.",
+            "c) Bastones multipodales.",
+            "d) Ninguna de las anteriores."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "10. ¿Cómo se denominan los dispositivos metálicos que por medio de una bomba hidráulica y de determinados complementos, permiten la elevación, transporte y acomodamiento de personas en diferentes lugares (cama, baño, etc.)?",
+        "options": [
+            "a) Rueda de hombros.",
+            "b) Grúas.",
+            "c) Bipedestadores.",
+            "d) Jaula de Bohler."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "11. El servicio hospitalario que tiene como misión la recepción, observación y tratamiento por personal altamente especializado y está dotado de material idóneo de pacientes en estado crítico es:",
+        "options": [
+            "a) El Servicio de urgencias.",
+            "b) UCI/UVI.",
+            "c) La Unidad de cuidados paliativos.",
+            "d) La Unidad de medicina intensiva."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "12. Dentro de la UCI, ¿cómo se llaman las unidades especializadas identificadas según las patologías que presentan los pacientes?",
+        "options": [
+            "a) Unidad de Cuidados Intensivos.",
+            "b) Unidades Especializadas de Vigilancia.",
+            "c) Boxes.",
+            "d) Cubes."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "13. En relación con la UCI/UVI, señala la respuesta correcta:",
+        "options": [
+            "a) Se encuentra cerca del área de ingresos.",
+            "b) Comparte el control de enfermería con el resto de unidades de la planta.",
+            "c) Las asistencias de higiene, alimentación, visitas de familiares, etc., se realizan en otra ubicación distinta.",
+            "d) Posee servicio propio y exclusivo de la mayoría de las especialidades médicas (laboratorio, almacén de farmacia, radiología, esterilización, etc.)."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "14. Los celadores destinados a la UCI/UVI deben estar muy bien preparados en:",
+        "options": [
+            "a) Vigilancia y seguridad.",
+            "b) Movilización y cambios posturales.",
+            "c) Áreas quirúrgicas.",
+            "d) Higiene y salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "15. Señala la respuesta incorrecta. Los celadores destinados en la UCI deben estar pendientes a colaborar en todo lo que les ordene/n, dentro de sus funciones:",
+        "options": [
+            "a) La supervisora de la UCI.",
+            "b) Los médicos.",
+            "c) Los enfermeros.",
+            "d) El técnico de laboratorio de análisis clínico."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "16. En algunas pruebas diagnósticas que deben realizarse fuera de la UCI, cuando le sea requerido, el celador podrá:",
+        "options": [
+            "a) Poner el chasis bajo el paciente.",
+            "b) Sujetar la sonda para realizar la endoscopia.",
+            "c) Sujetar al paciente para evitar daños con sus movimientos.",
+            "d) Realizar la toma de muestras."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "17. La responsabilidad del movimiento de los enfermos encamados corresponde a:",
+        "options": [
+            "a) Los facultativos.",
+            "b) Los médicos intensivistas.",
+            "c) El personal de enfermería ayudados por el celador/a cuando los enfermos encamados requieran un trato especial en razón de sus dolencias para hacerles las camas.",
+            "d) La supervisora de la UCI."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "18. Es importante que, cuando el/la celador/a abandone la UCI/UVI para algún traslado de personas u objetos:",
+        "options": [
+            "a) Se coloque un EPI nuevo completo.",
+            "b) Cambie el uniforme reglamentario.",
+            "c) Se ponga los guantes estériles.",
+            "d) Deje la bata dentro de la UCI."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "19. Una de las principales funciones de los celadores y celadoras es la vigilancia. Señala cuál de los siguientes elementos no será su responsabilidad:",
+        "options": [
+            "a) Manejo correcto de las camas articuladas.",
+            "b) La entrada y salida de las visitas.",
+            "c) El comportamiento de los visitantes dentro de la UCI.",
+            "d) La vestimenta de los visitantes dentro de la UCI."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "20. ¿Cuál de las siguientes no es función propia de un celador de UCI/UVI?",
+        "options": [
+            "a) Ayudar a enfermeras y auxiliares al movimiento y traslado de enfermos encamados.",
+            "b) Cambiar la cama de la UCI.",
+            "c) Controlar la autorización de los visitantes.",
+            "d) Vigilar que las visitas vistan correctamente calzas, gorro, bata, etc."
+        ],
+        "correct": 1
+    }
+	  ];
+
+     const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
