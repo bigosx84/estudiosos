@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulacro ¡Al toro!</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct-answer {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect-answer {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+        .summary {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm" aria-labelledby="quizFormLabel">
+            <h1 id="quizFormLabel">EXAMEN OFICIAL 2018 CELADOR SES TIPO 1</h1>
+            <button type="button" id="finishButton">Terminar Simulacro</button>
+            <div id="summary" class="summary"></div>
+        </form>
+    </div>
+
+    <script>
+        const questions = [
+{
+    "question": "1. Los celadores en el ejercicio de sus funciones:",
+    "options": [
+        "a) Ayudarán a los familiares o personas encargadas de amortajar a los enfermos fallecidos, corriendo a su cargo el traslado de los cadáveres al mortuorio.",
+        "b) Ayudarán al personal de Enfermería o personas encargadas de amortajar a los enfermos fallecidos, corriendo a su cargo el traslado de los cadáveres al mortuorio.",
+        "c) Ayudarán al personal de Enfermería al traslado de los cadáveres al mortuorio y posteriormente al velatorio.",
+        "d) Ayudarán al personal de Enfermería o personas encargadas de amortajar a los enfermos fallecidos, corriendo a su cargo el traslado de los cadáveres al mortuorio y la asistencia a los familiares en el velatorio."
+    ],
+    "correct": 1
+},
+{
+    "question": "2. Dentro de las labores de vigilancia, corresponde a los celadores:",
+    "options": [
+        "a) Vigilar personalmente la limpieza de la institución.",
+        "b) La vigilancia nocturna del interior y del exterior del edificio.",
+        "c) La vigilancia en la distribución de las comidas entre los pacientes.",
+        "d) La vigilancia y limpieza de tejados y bajantes de aguas pluviales."
+    ],
+    "correct": 1
+},
+{
+    "question": "3. En relación con la transmisión de información a enfermos y familiares, el celador deberá tener siempre en consideración:",
+    "options": [
+        "a) El estado anímico de preocupación en la que suelen encontrarse los vigilantes.",
+        "b) Ofrecer toda la información que precisen los familiares del paciente, sin perjuicio de derivarlos amablemente hacia el personal facultativo.",
+        "c) La obligación de guardar silencio profesional respecto de la información de las horas de visita y consulta médica.",
+        "d) El estado anímico de preocupación en la que suelen encontrarse pacientes y familiares."
+    ],
+    "correct": 3
+},
+{
+    "question": "4. ¿Qué tipo de cama, manteniendo sujeto al paciente, lo hace girar constantemente distribuyendo sus puntos de presión?",
+    "options": [
+        "a) Cama roto-rest.",
+        "b) Cama UCI 'Gatch'.",
+        "c) Cama basculante y giratoria Egerton Storke Mandeville.",
+        "d) Cama de somier rígido."
+    ],
+    "correct": 0
+},
+{
+    "question": "5. Según el artículo 3 de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura, el principio general de actuación por el que los poderes públicos de Extremadura adoptarán medidas específicas a favor de las mujeres para corregir situaciones patentes de desigualdad de hecho respecto de los hombres sería:",
+    "options": [
+        "a) El principio de reconocimiento de la maternidad como un valor social.",
+        "b) La ruptura de la brecha de género en la Sociedad de la Información, el Conocimiento y la Imaginación.",
+        "c) El principio de acción positiva.",
+        "d) El respeto a la diversidad y a la diferencia."
+    ],
+    "correct": 2
+},
+{
+    "question": "6. La Unidad del Paciente se define como:",
+    "options": [
+        "a) El conjunto formado por el área que ocupa el paciente dentro de la habitación y las zonas comunes de los visitantes.",
+        "b) Cualquier zona dentro del hospital por donde pueda deambular el paciente.",
+        "c) El conjunto formado por el área que ocupa el paciente dentro de la habitación, los muebles y el equipo que suministra el hospital a cada uno de los pacientes, durante el tiempo que están hospitalizados.",
+        "d) El conjunto formado por el área que ocupa el paciente dentro de la habitación, los muebles, el equipo que suministra el hospital y todas las salas de pruebas necesarias para la pronta recuperación del paciente."
+    ],
+    "correct": 2
+},
+{
+    "question": "7. Una cama articulada con dos articulaciones ¿cuántos segmentos tiene?",
+    "options": [
+        "a) 2 segmentos.",
+        "b) 3 segmentos.",
+        "c) 4 segmentos.",
+        "d) 5 segmentos."
+    ],
+    "correct": 1
+},
+{
+    "question": "8. Señale la función de vigilancia que corresponde al Jefe de Personal Subalterno:",
+    "options": [
+        "a) Ejercer la vigilancia y protección de bienes, establecimientos, lugares, eventos, tanto privados como públicos, así como la protección de las personas que puedan encontrarse en los mismos.",
+        "b) Proteger el almacenamiento, recuento, clasificación, transporte y dispensa de dinero, obras de arte y antigüedades, valores y otros objetos valiosos.",
+        "c) Ejercer el debido y discreto control de paquetes y bultos de que sean portadores las personas ajenas a la institución que tengan acceso a la misma.",
+        "d) Efectuar controles de identidad, objetos personales, paquetería y mercancías."
+    ],
+    "correct": 2
+},
+{
+    "question": "9. De conformidad con lo dispuesto en el artículo 28 del Estatuto Marco del personal estatutario de los servicios de salud, el interesado podrá recuperar la condición de personal estatutario fijo en el caso de pérdida de dicha condición como consecuencia de:",
+    "options": [
+        "a) Pérdida de la nacionalidad.",
+        "b) Sanción disciplinaria firme de separación del servicio.",
+        "c) Jubilación voluntaria.",
+        "d) Pena de inhabilitación absoluta, cuando adquiera firmeza."
+    ],
+    "correct": 0
+},
+{
+    "question": "10. En un lavado completo del paciente en la cama, el orden correcto sería:",
+    "options": [
+        "a) Cara, cuello y orejas, brazos y manos, tórax, espalda y nalgas, extremidades inferiores, y genitales.",
+        "b) Brazos y manos, cara, cuello y orejas, genitales externos, espalda y nalgas, pies y, por último, extremidades inferiores.",
+        "c) Cara, cuello y orejas, brazos y manos, tórax, extremidades inferiores, espalda y nalgas y genitales.",
+        "d) Brazos y manos, tórax, cara, cuello y orejas, espalda y nalgas, pies y, por último, genitales externos."
+    ],
+    "correct": 2
+},
+{
+    "question": "11. Con carácter general, en el aseo e higiene del paciente, la temperatura del agua debe oscilar aproximadamente entre los:",
+    "options": [
+        "a) 24 ºC y 27 ºC.",
+        "b) 37 ºC y 40 ºC.",
+        "c) 32 ºC y 35 ºC.",
+        "d) 20 ºC y 24 ºC."
+    ],
+    "correct": 1
+},
+{
+    "question": "12. ¿Qué posición utilizaremos para evitar la broncoaspiración en una persona inconsciente?",
+    "options": [
+        "a) Posición de Fowler.",
+        "b) Posición de Sims.",
+        "c) Posición de Morestin.",
+        "d) Posición genupectoral."
+    ],
+    "correct": 1
+},
+{
+    "question": "13. Las funciones de los celadores de las Instituciones Sanitarias vienen establecidas:",
+    "options": [
+        "a) En el artículo 14.2 del Estatuto de Personal no Sanitario al Servicio de las Instituciones Sanitarias de la Seguridad Social.",
+        "b) En el artículo 14.2 del Estatuto de Personal Sanitario no Facultativo al Servicio de las Instituciones Sanitarias de la Seguridad Social.",
+        "c) En el artículo 41.2 del Estatuto de Personal no Sanitario al Servicio de las Instituciones Sanitarias de la Seguridad Social aprobado por Orden de 5 de julio de 1971.",
+        "d) En el artículo 41.2 del Estatuto Jurídico del Personal Médico de la Seguridad Social."
+    ],
+    "correct": 0
+},
+{
+    "question": "14. ¿Cómo se puede llamar también a la Unidad de Cuidados Intensivos?",
+    "options": [
+        "a) Unidad de Medicina Especial.",
+        "b) Unidad de Vigilancia Operativa.",
+        "c) Unidad de Vigilancia Intensiva.",
+        "d) Unidad de Medicina Interna."
+    ],
+    "correct": 2
+},
+
+{
+    "question": "15. En el traslado del paciente desde la cama a la silla de ruedas:",
+    "options": [
+        "a) Cuando el enfermo colabora es suficiente con la ayuda de un celador, colocándose la silla de ruedas frenada en perpendicular a la cama.",
+        "b) Si el paciente no colabora por estar imposibilitado, serán necesarios dos celadores, que se situarán uno a cada lado de la cama.",
+        "c) Cuando el enfermo colabora es suficiente con la ayuda de dos celadores, colocándose la silla de ruedas frenada en paralelo a la cama.",
+        "d) Si el paciente no colabora por estar imposibilitado, serán necesarios dos celadores, que se situarán en el mismo lado de la cama, uno a cada lado del paciente, colocándose la silla de ruedas frenada en paralelo a la cama."
+    ],
+    "correct": 3
+},
+{
+    "question": "16. Qué parte o partes de la bata de quirófano se considera estéril:",
+    "options": [
+        "a) Toda la bata es estéril.",
+        "b) La parte delantera y todas las mangas.",
+        "c) La parte delantera desde los hombros hasta la cintura y las mangas hasta 5 centímetros del codo.",
+        "d) Toda la parte delantera y trasera y las mangas hasta 10 centímetros del codo."
+    ],
+    "correct": 2
+},
+{
+    "question": "17. Es un método físico de desinfección de material sanitario:",
+    "options": [
+        "a) La inmersión.",
+        "b) La fumigación.",
+        "c) Los rayos ultravioletas.",
+        "d) La pulverización."
+    ],
+    "correct": 2
+},
+{
+    "question": "18. En las técnicas para la movilización de los pacientes, cuál de los siguientes principios de mecánica corporal resulta aplicable:",
+    "options": [
+        "a) La estabilidad de un objeto es mayor cuando tiene una base de sustentación ancha y un centro de gravedad bajo.",
+        "b) Hacer el mínimo uso de su centro de gravedad sosteniendo los objetos cerca del cuerpo.",
+        "c) Iniciada la movilización del paciente, ajustar la altura de la cama o camilla para evitar flexiones innecesarias en la espalda.",
+        "d) Aumentar al máximo la fricción o el roce entre el objeto en movimiento y la superficie en que está siendo movida."
+    ],
+    "correct": 0
+},
+{
+    "question": "19. Posiciones anatómicas básicas. Cuando un paciente permanece en decúbito y sus hombros coinciden con el borde superior de la cama, con los brazos extendidos a lo largo del cuerpo y la cabeza sobresaliendo de la cabecera, la posición se denomina:",
+    "options": [
+        "a) Bipedestación.",
+        "b) Genupectoral.",
+        "c) Trendelenburg.",
+        "d) Roser."
+    ],
+    "correct": 3
+},
+{
+    "question": "20. De conformidad con su artículo 2, la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura será de aplicación en el ámbito territorial de la Comunidad Autónoma de Extremadura:",
+    "options": [
+        "a) A la Universidad de Extremadura.",
+        "b) A las entidades que integran la Administración Local, sus organismos autónomos, consorcios, fundaciones y demás entidades con o sin personalidad jurídica propia en los que sea mayoritaria la representación directa de dichas entidades.",
+        "c) A todas las entidades que realicen actividades educativas, de formación, económicas o de proyección exterior cualquiera que sea su tipo, nivel y complemento.",
+        "d) A la Administración de la Comunidad Autónoma de Extremadura y sus organismos autónomos, a las empresas de la Junta de Extremadura, a los consorcios, fundaciones y demás entidades con o sin personalidad jurídica propia en los que sea mayoritaria la representación directa de dichas entidades."
+    ],
+    "correct": 0
+},
+{
+    "question": "21. En relación con los pacientes fallecidos, el 'rigor mortis' es:",
+    "options": [
+        "a) El descenso gradual de la temperatura del cuerpo que se produce horas después de la muerte.",
+        "b) La descomposición de la materia orgánica muerta por la acción de las bacterias.",
+        "c) La práctica mortuoria con rigor que permite la conservación y exposición del cadáver con las debidas garantías sanitarias.",
+        "d) El endurecimiento del cuerpo que se produce horas después de la muerte."
+    ],
+    "correct": 3
+},
+{
+    "question": "22. Corresponde a los celadores en el desempeño de sus funciones:",
+    "options": [
+        "a) Realizar la limpieza de los carros de curas y de su material.",
+        "b) En determinadas circunstancias especiales cuando el enfermo no pueda ser movido solo por el personal de Enfermería o Ayudante de planta, ayudar en la colocación y retirada de las cuñas para la recogida de excretas de dichos enfermos.",
+        "c) Dar la comida a los enfermos que no puedan hacerlo por sí mismos, salvo en aquellos casos en que se requieran cuidados especiales.",
+        "d) La recepción de los carros de comida y la distribución de la misma."
+    ],
+    "correct": 1
+},
+{
+    "question": "23. Con carácter general, la superficie mínima que debe tener la sala de autopsias es:",
+    "options": [
+        "a) 20 m².",
+        "b) 10 m².",
+        "c) 60 m².",
+        "d) 30 m²."
+    ],
+    "correct": 0
+},
+{
+    "question": "24. Situándonos en la deambulación del paciente, nos encontramos con tres tipos fundamentales de muletas:",
+    "options": [
+        "a) Muletas para antebrazo, muletas de Lofstrand y muletas para extremidades inferiores.",
+        "b) Muletas de plataforma, muletas de Lofstrand y muletas de aluminio o madera.",
+        "c) Muletas de plataforma, muletas de Gofstrand y muletas de aluminio.",
+        "d) Muletas de plataforma, muletas de Gofstrand y muletas de antebrazo."
+    ],
+    "correct": 1
+},
+{
+    "question": "25. El trabajo de celador en la sala de autopsias requiere una serie de actuaciones preventivas. Se recomienda, al menos:",
+    "options": [
+        "a) El uso de gorro de látex y desechables. Se colocará bata, que suele ser desechable. Mascarillas y gafas, para prevenir salpicaduras de los fluidos corporales.",
+        "b) El uso de guantes de látex y desechables. Se colocará bata, que suele ser desechable. Mascarillas y gafas, para prevenir salpicaduras de los fluidos corporales. Lavado de manos ordinario.",
+        "c) El uso de guantes de látex y desechables. Se colocará bata, que suele ser desechable, para prevenir salpicaduras de los fluidos corporales. Lavado de manos ordinario.",
+        "d) El uso de guantes de látex y desechables. Se colocará bata, que suele ser desechable. Mascarillas y gafas, para prevenir salpicaduras de los fluidos corporales."
+    ],
+    "correct": 1
+},
+{
+    "question": "26. Material e instrumental quirúrgico. Instrumento que corta y cauteriza el tejido y es utilizado también para coagular pequeños vasos sanguíneos es:",
+    "options": [
+        "a) Un negatoscopio.",
+        "b) Un carro de parada.",
+        "c) Un escabel eléctrico.",
+        "d) Un bisturí eléctrico."
+    ],
+    "correct": 3
+},
+{
+    "question": "27. Informará del fallecimiento de un paciente a sus familiares:",
+    "options": [
+        "a) El Jefe de Personal Subalterno.",
+        "b) El personal facultativo.",
+        "c) El celador de planta o el celador de urgencias en su caso.",
+        "d) La dirección del hospital o del centro sanitario en el que se produzca el fallecimiento."
+    ],
+    "correct": 1
+},
+{
+    "question": "28. Evitar que los visitantes de los enfermos traigan alimentos o se sienten en las camas, es función específica:",
+    "options": [
+        "a) Del Jefe de Personal Subalterno.",
+        "b) Del celador.",
+        "c) De los Auxiliares de Enfermería.",
+        "d) De los Enfermeros."
+    ],
+    "correct": 1
+},
+{
+    "question": "29. El amortajamiento de un cadáver debe realizarse:",
+    "options": [
+        "a) En el plazo de 24 horas desde el fallecimiento, en la mayor intimidad.",
+        "b) En el menor plazo y en la mayor intimidad posible.",
+        "c) Transcurridas 24 horas desde el fallecimiento, en la mayor intimidad.",
+        "d) En el menor plazo posible, en presencia de dos de sus familiares."
+    ],
+    "correct": 1
+},
+
+{
+    "question": "30. Funciones del celador en las unidades de psiquiatría. Señale la respuesta correcta:",
+    "options": [
+        "a) Vigila a los pacientes y al resto del personal sanitario cuando salen a pasear por las zonas ajardinadas contiguas del Centro sanitario.",
+        "b) Cuida del entorno medioambiental de los pacientes. Vigila el orden y la armonía entre los pacientes y el personal sanitario.",
+        "c) Receta medicación y otros productos de la Farmacia.",
+        "d) Ayuda al personal sanitario en la administración de inyectables y tratamiento de pacientes incapaces que se niegan a colaborar."
+    ],
+    "correct": 3
+},
+{
+    "question": "31. En el campo de la contención o sujeción mecánica, rigen los siguientes principios:",
+    "options": [
+        "a) Se procurará que sea siempre en una habitación acompañado de otros enfermos, evitando incrementar la ansiedad de los otros pacientes.",
+        "b) Para garantizar la correcta aplicación de la técnica, será necesario un número de cuatro o cinco personas.",
+        "c) Se realizará bajo los principios de profesionalidad, respeto, publicidad e igualdad de oportunidades.",
+        "d) En la medida de lo posible, el equipo de contención se dirigirá a un extremo de la cama, evitando que el paciente se autolesione o lesione al personal."
+    ],
+    "correct": 1
+},
+{
+    "question": "32. A quién corresponde la instauración o retirada de la medida de la contención mecánica. Señale la respuesta correcta.",
+    "options": [
+        "a) Al juez de guardia.",
+        "b) Al celador.",
+        "c) Al auxiliar de enfermería.",
+        "d) Al facultativo."
+    ],
+    "correct": 3
+},
+{
+    "question": "33. De conformidad con el Estatuto de Autonomía de Extremadura, en materia de políticas de igualdad de género la competencia de la Comunidad Autónoma es:",
+    "options": [
+        "a) Competencia de desarrollo normativo y ejecución.",
+        "b) Competencia exclusiva.",
+        "c) Competencia de ejecución."
+    ],
+    "correct": 1
+},
+{
+    "question": "34. En qué año se produjo la integración de la salud mental en el sistema de la Seguridad Social:",
+    "options": [
+        "a) En el año 1978.",
+        "b) En el año 2000.",
+        "c) En el año 1986.",
+        "d) En el año 1992."
+    ],
+    "correct": 2
+},
+{
+    "question": "35. Mediante Resolución de 30 de enero de 2015, de la Dirección Gerencia, por la que se modifica puntualmente la estructura funcional de la plantilla del personal estatutario del Organismo Autónomo:",
+    "options": [
+        "a) Se modifica la estructura orgánica de la plantilla de plazas básicas de personal estatutario del Organismo Autónomo 'Servicio Extremeño de Salud', creándose una nueva función denominada 'Celador de Atención Continuada'.",
+        "b) Se crea una nueva función denominada 'Celador de Atención Continuada'.",
+        "c) Se crea una nueva categoría denominada 'Celador de Atención Continuada y Atención Primaria'.",
+        "d) Se crea una nueva especialidad denominada 'Celador de Atención Continuada'."
+    ],
+    "correct": 1
+},
+{
+    "question": "36. En relación con el acompañamiento de enfermos en ambulancia, es función del celador:",
+    "options": [
+        "a) Trasladar al paciente al mostrador de admisión de urgencias para la toma de datos personales y de derecho a la asistencia sanitaria. Si el estado de salud no le permite esperar a este trámite, lo pasará directamente al área de SVB (Soporte Vital Básico).",
+        "b) Entregar el informe y documentación clínica necesaria al hospital receptor del enfermo.",
+        "c) Trasladar al paciente al mostrador de admisión de urgencias para la toma de datos personales y de derecho a la asistencia sanitaria. Si el estado de salud no le permite esperar a este trámite, lo pasará directamente al área de boxes.",
+        "d) Elaborar el informe y documentación clínica necesaria para entregársela al hospital receptor del enfermo."
+    ],
+    "correct": 1
+},
+{
+    "question": "37. La temperatura de la unidad del paciente debe oscilar entre:",
+    "options": [
+        "a) 18 ºC. y 22 ºC.",
+        "b) 25 ºC. y 28 ºC.",
+        "c) 22 ºC. y 25 ºC.",
+        "d) 37 ºC. y 40 ºC."
+    ],
+    "correct": 0
+},
+{
+    "question": "38. Un paciente es trasladado en el medio más adecuado, con personal cualificado y manteniendo ininterrumpidamente los cuidados. La entrega del paciente y sus documentos al personal responsable del centro receptor se denomina:",
+    "options": [
+        "a) Fase de transporte.",
+        "b) Fase de reactivación del sistema.",
+        "c) Fase de reactivación del paciente.",
+        "d) Fase de transferencia."
+    ],
+    "correct": 3
+},
+{
+    "question": "39. ¿Cómo estará colocado un paciente si se encuentra en la posición de Fowler?",
+    "options": [
+        "a) El paciente estará semisentado en la cama con la cabecera elevada 45° y las rodillas flexionadas.",
+        "b) El paciente estará acostado en la cama sobre el lado derecho del cuerpo y la rodilla derecha flexionada.",
+        "c) El paciente estará tumbado en la cama boca arriba con una elevación de las piernas de 30°.",
+        "d) El paciente estará sentado en la cama con una elevación de las piernas de 15°."
+    ],
+    "correct": 0
+},
+{
+    "question": "40. Durante la práctica de una autopsia, el médico encargado de realizarla solicita al celador un instrumental adecuado para cortar las costillas del cadáver. ¿Qué instrumental le dará?",
+    "options": [
+        "a) Un bisturí eléctrico.",
+        "b) Un enterótomo.",
+        "c) Un condrótomo.",
+        "d) Un costótomo."
+    ],
+    "correct": 3
+},
+{
+    "question": "41. Las ambulancias clasificadas como de categoría A2 son los vehículos de transporte sanitario:",
+    "options": [
+        "a) Destinadas a proporcionar soporte vital básico.",
+        "b) Destinadas al transporte convencional de pacientes en camilla.",
+        "c) Destinadas a proporcionar soporte vital avanzado.",
+        "d) Destinadas al transporte colectivo de pacientes sin urgencia médica y que no estén aquejados de enfermedades infecto-contagiosas."
+    ],
+    "correct": 3
+},
+{
+    "question": "42. En sus actuaciones con los familiares del enfermo, el celador debe:",
+    "options": [
+        "a) Atenderlos con amabilidad, cortesía, discreción, consideración y profesionalidad.",
+        "b) Informar de manera clara, amable, sencilla e indiscreta.",
+        "c) Informar de manera completa y discreta a los familiares sin perjuicio de derivarlos amablemente hacia el personal facultativo no sanitario.",
+        "d) Atenderlos con profesionalidad, amabilidad, eficacia, cortesía e indiscreción."
+    ],
+    "correct": 0
+},
+{
+    "question": "43. Un recipiente de cierre hermético con un lugar de entrada que consta de una cámara de esterilización, un termómetro, un manómetro para medir presiones, una entrada de agua y una válvula de seguridad, es:",
+    "options": [
+        "a) Una estufa Poupinel.",
+        "b) Un horno de Pasteur.",
+        "c) Un Tyvek.",
+        "d) Un autoclave."
+    ],
+    "correct": 3
+},
+{
+    "question": "44. El artículo 16 de la Constitución Española vigente garantiza:",
+    "options": [
+        "a) El derecho a la vida y a la integridad física y moral.",
+        "b) La igualdad de los españoles ante la ley.",
+        "c) El derecho a participar en los asuntos públicos.",
+        "d) La libertad ideológica, religiosa y de culto."
+    ],
+    "correct": 3
+},
+{
+    "question": "45. Las ambulancias asistenciales de clase C deberán contar al menos con:",
+    "options": [
+        "a) El conductor y un acompañante.",
+        "b) El conductor y un enfermero cuando la asistencia a prestar lo requiera.",
+        "c) El conductor, un celador y un enfermero.",
+        "d) El conductor, un enfermero siempre y un médico cuando la asistencia a prestar lo requiera."
+    ],
+    "correct": 3
+},
+
+{
+    "question": "46. Si un celador que presta servicios en planta encontrara un enchufe en mal estado:",
+    "options": [
+        "a) Procederá a reparar el desperfecto o anomalía con la mayor brevedad.",
+        "b) Lo comunicará con la mayor brevedad al servicio de mantenimiento.",
+        "c) Lo comunicará con la mayor brevedad al servicio de admisión.",
+        "d) Dará cuenta a sus inmediatos superiores."
+    ],
+    "correct": 3
+},
+{
+    "question": "47. Con carácter general, en la mayoría de los hospitales, ¿cuántos niveles de gravedad se establecen en la selección y clasificación de los pacientes en urgencias?:",
+    "options": [
+        "a) 4 niveles.",
+        "b) 5 niveles.",
+        "c) 6 niveles.",
+        "d) 7 niveles."
+    ],
+    "correct": 1
+},
+{
+    "question": "48. En relación con la historia clínica del paciente, señale la respuesta correcta:",
+    "options": [
+        "a) El derecho al acceso puede ejercitarse en perjuicio del derecho de terceras personas a la confidencialidad de los datos que constan en ella recogidos en interés terapéutico del paciente.",
+        "b) El derecho al acceso puede ejercitarse en perjuicio del derecho de los profesionales participantes en su elaboración, los cuales no podrán oponer la reserva de sus anotaciones subjetivas.",
+        "c) Los centros sanitarios no podrán facilitar el acceso a la historia clínica de los pacientes fallecidos salvo consentimiento expreso de sus familiares y quede acreditado en el expediente.",
+        "d) La historia clínica debe ser única por paciente, integrada, acumulativa y ordenada."
+    ],
+    "correct": 3
+},
+{
+    "question": "49. Entre las funciones del celador en atención primaria, se encuentran:",
+    "options": [
+        "a) Funciones de control de accesos de profesionales sanitarios, pacientes y usuarios así como de la circulación de vehículos.",
+        "b) Funciones de organización en consenso con médicos, enfermeros y pacientes.",
+        "c) Función asistencial: transportará los aparatos del área quirúrgica que le requiera el personal no sanitario.",
+        "d) Funciones de vigilancia en relación con el buen uso del mobiliario del centro."
+    ],
+    "correct": 3
+},
+{
+    "question": "50. La gestión de la historia clínica de los pacientes hospitalizados se realizará a través:",
+    "options": [
+        "a) De la propia dirección del centro hospitalario, salvo los casos excepcionales previstos en la normativa vigente.",
+        "b) De la unidad especializada que presta la atención sanitaria, salvo los casos excepcionales previstos en la normativa vigente.",
+        "c) De la unidad de citaciones y servicios generales, salvo los casos excepcionales previstos en la normativa vigente.",
+        "d) De la unidad de admisión y documentación clínica."
+    ],
+    "correct": 3
+},
+{
+    "question": "51. Según nuestra legislación autonómica en materia de información sanitaria, los centros sanitarios tienen la obligación de conservar indefinidamente aquella información de la historia clínica siempre que:",
+    "options": [
+        "a) Se considere relevante a efectos terapéuticos, de evaluación y acreditación.",
+        "b) Se considere relevante a efectos preventivos, epidemiológicos de investigación o de organización.",
+        "c) Se considere relevante a efectos de evaluación, acreditación y docencia.",
+        "d) Se considere relevante a efectos de acreditación, docencia y estadística sanitaria."
+    ],
+    "correct": 1
+},
+{
+    "question": "52. El conjunto de tareas que tienen como fin aprovisionar de materiales al almacén y servicios sanitarios se denomina:",
+    "options": [
+        "a) Almacén.",
+        "b) Stock.",
+        "c) Mapa de almacén.",
+        "d) Suministro."
+    ],
+    "correct": 3
+},
+{
+    "question": "53. Según dispone el artículo 9 del Estatuto Marco del personal estatutario de los servicios de salud, para la prestación de servicios complementarios de una reducción de jornada ordinaria, se expedirá el nombramiento:",
+    "options": [
+        "a) De carácter eventual.",
+        "b) De carácter interino o estatutario.",
+        "c) De sustitución o estatutario.",
+        "d) De carácter corporativo ordinario."
+    ],
+    "correct": 0
+},
+{
+    "question": "54. Corresponde a los celadores en el ejercicio de sus funciones:",
+    "options": [
+        "a) Asumir por delegación del Administrador la jefatura del personal que preste servicio en los de costura, plancha y lavandería.",
+        "b) Conseguir el mayor orden silencio posible en todas las dependencias de la Institución.",
+        "c) Realizar trabajos de taller relacionados con las instalaciones a su cargo.",
+        "d) Colaborar en la obtención de las muestras, manipulación y control de calidad."
+    ],
+    "correct": 1
+},
+{
+    "question": "55. Los suministros que tienen como finalidad proveer desde el almacén, a los diversos Servicios o Unidades, del material necesario para poder llevar a cabo la actividad asistencial encomendada, reciben el nombre de:",
+    "options": [
+        "a) Suministros externos.",
+        "b) Suministros continuos.",
+        "c) Suministros internos.",
+        "d) Stock."
+    ],
+    "correct": 2
+},
+{
+    "question": "56. Funciones del celador en el almacén de farmacia. Señale la respuesta correcta:",
+    "options": [
+        "a) Preparación del alcohol. La tarea de mezclar el alcohol con agua destilada, por ser más conveniente para el uso terapéutico, se le suele encomendar al celador.",
+        "b) Custodia y conservación de la historia clínica.",
+        "c) Receta y medicación de productos.",
+        "d) Integración del servicio de farmacia en la estructura del hospital y su personal."
+    ],
+    "correct": 0
+},
+{
+    "question": "57. Un celador que presta sus servicios en la unidad de farmacia hospitalaria, en el acondicionamiento del material recepcionado, procederá de la siguiente forma:",
+    "options": [
+        "a) Entregará los paquetes, bultos y envases de medicamentos a los celadores de almacén de tarde y noche, impidiendo que nadie ajeno al servicio se introduzca en el mismo.",
+        "b) Comprobará mediante cotejo que el material servido coincide con el que figura en el albarán de entrega.",
+        "c) Recepcionado el material, lo entregará al personal sanitario junto con la copia del albarán para que los servicios administrativos contabilicen la entrada del mismo.",
+        "d) Realizará los recuentos periódicos del material del que sea responsable al objeto de comprobar las existencias reales de los productos almacenados en la farmacia."
+    ],
+    "correct": 2
+},
+{
+    "question": "58. La distribución de medicación y demás productos galénicos a las unidades del hospital corresponde:",
+    "options": [
+        "a) Al celador de farmacia exclusivamente.",
+        "b) Al celador de farmacia o al celador de las distintas unidades del hospital.",
+        "c) A los auxiliares de enfermería.",
+        "d) Al personal de enfermería y a los ayudantes de planta."
+    ],
+    "correct": 1
+},
+{
+    "question": "59. Los sistemas homologados de sujeción física de un paciente agresivo, estarán compuestos de:",
+    "options": [
+        "a) Llaves y tapones o botones magnéticos.",
+        "b) Cinturón estrecho abdominal.",
+        "c) Arnés para cintura y pelvis.",
+        "d) Sujeciones para codos y rodillas."
+    ],
+    "correct": 0
+},
+
+{
+    "question": "60. Según el artículo 4 de la Ley de Igualdad entre Mujeres y Hombres y contra la Violencia de Género en Extremadura, la situación en la que se encuentra una persona que, en atención a su sexo, sea, haya sido o pudiera ser tratada de manera menos favorable que otra en situación homóloga define a:",
+    "options": [
+        "a) La situación de discriminación directa.",
+        "b) La violencia de género.",
+        "c) El acoso sexual.",
+        "d) El acoso por razón de sexo."
+    ],
+    "correct": 0
+},
+{
+    "question": "61. Como criterio de ordenación y clasificación de los productos en un almacén, la organización de los mismos según la clasificación de Pareto, hace referencia a:",
+    "options": [
+        "a) La ordenación de productos según el stock disponible en el almacén.",
+        "b) La clasificación de los productos en categorías 'A', 'B' o 'C'.",
+        "c) La ordenación de los inventarios de los productos en stock.",
+        "d) La clasificación de los productos según el criterio de valoración de mercancías FIFO."
+    ],
+    "correct": 1
+},
+{
+    "question": "62. Según el artículo 38 de la Ley de Régimen Jurídico del Sector Público, la determinación de las condiciones e instrumentos de creación de las sedes electrónicas corresponderá:",
+    "options": [
+        "a) A la Administración General del Estado, en todo caso.",
+        "b) A cada Administración Pública.",
+        "c) A la normativa correspondiente.",
+        "d) A la Agencia Estatal de Certificación Electrónica."
+    ],
+    "correct": 1
+},
+{
+    "question": "63. Según el artículo 4 de la Ley de Prevención de Riesgos Laborales, la posibilidad de que el trabajador sufra un determinado daño derivado del trabajo se entenderá como:",
+    "options": [
+        "a) Acción preventiva.",
+        "b) Riesgo laboral.",
+        "c) Prevención de riesgos laborales.",
+        "d) Actividad potencialmente peligrosa."
+    ],
+    "correct": 1
+},
+{
+    "question": "64. Los celadores en el ejercicio de sus funciones:",
+    "options": [
+        "a) Tramitarán o conducirán sin tardanza las comunicaciones verbales, documentos, correspondencia u objetos que les sean confiados por sus superiores, así como habrán de trasladar, en su caso, de unos servicios a otros, los aparatos y el inmobiliario que se requiera por parte del paciente.",
+        "b) Resolverán sin tardanza las comunicaciones verbales, documentos y recursos que les sean confiados por sus superiores.",
+        "c) Almacenamiento, control y archivo de las muestras y preparaciones.",
+        "d) Harán los servicios de guardia que corresponda dentro de los turnos que se establezcan."
+    ],
+    "correct": 3
+},
+{
+    "question": "65. En relación con la vigilancia de la salud de los trabajadores, el artículo 22 de la Ley de Prevención de Riesgos Laborales establece que:",
+    "options": [
+        "a) Es obligatoria para el trabajador.",
+        "b) Se llevará a cabo intentando respetar el derecho a la intimidad y a la dignidad de la persona del trabajador.",
+        "c) El acceso a la información médica de carácter personal, en ningún caso, podrá facilitarse a otras personas.",
+        "d) Los resultados de la vigilancia serán comunicados a los trabajadores afectados."
+    ],
+    "correct": 3
+},
+{
+    "question": "66. ¿En qué Título de la Constitución Española de 1978 aparece regulado el Tribunal Constitucional?",
+    "options": [
+        "a) En el Título V.",
+        "b) En el Título X.",
+        "c) En el Título IX.",
+        "d) En el Título VI."
+    ],
+    "correct": 2
+},
+{
+    "question": "67. Según el artículo 24 del Estatuto de Autonomía de Extremadura, ¿quién ejerce la representación ordinaria del Estado en la Comunidad Autónoma?:",
+    "options": [
+        "a) El Presidente de la Comunidad Autónoma.",
+        "b) El Presidente de la Asamblea de Extremadura.",
+        "c) El Delegado del Gobierno en la Comunidad Autónoma.",
+        "d) El Consejero competente por razón de la materia."
+    ],
+    "correct": 0
+},
+{
+    "question": "68. De acuerdo con el artículo 23 de la Ley de Salud de Extremadura, la elaboración del Plan de Salud de Extremadura corresponde:",
+    "options": [
+        "a) Al Consejo de Gobierno de la Junta de Extremadura.",
+        "b) A la Consejería competente en materia de sanidad.",
+        "c) Al Servicio Extremeño de Salud.",
+        "d) Al Consejo Extremeño de Salud."
+    ],
+    "correct": 1
+},
+{
+    "question": "69. Finalizado el amortajamiento, el traslado del cadáver al mortuorio:",
+    "options": [
+        "a) Corre a cargo del técnico que ha auxiliado en el amortajamiento. Excepcionalmente, irá acompañado de un celador. Se hará en camilla cubierta o la camilla debe protegerse con una sábana y el cuerpo debe cubrirse con otra, que lo cubrirá por completo. Los familiares nunca podrán acompañar a la camilla.",
+        "b) Corre a cargo del celador que ha auxiliado en el amortajamiento, acompañado de otro celador. Se hará en camilla cubierta o la camilla debe protegerse con una sábana y el cuerpo debe cubrirse con otra, que lo cubrirá por completo. Los familiares podrán acompañar a la camilla.",
+        "c) Corre a cargo del celador que ha auxiliado en el amortajamiento, acompañado de otro celador. Se hará en camilla cubierta o la camilla debe protegerse con una sábana y el cuerpo debe cubrirse con otra, que lo cubrirá por completo. Los familiares nunca podrán acompañar a la camilla.",
+        "d) Corre a cargo del enfermero que ha practicado el amortajamiento acompañado de un celador. Se hará en camilla cubierta o la camilla debe protegerse con una sábana y el cuerpo debe cubrirse con otra, que lo cubrirá por completo. Los familiares podrán acompañar a la camilla."
+    ],
+    "correct": 2
+},
+{
+    "question": "70. La historia clínica es elemento central en el ámbito de la documentación sanitaria según:",
+    "options": [
+        "a) El título V de la Ley 3/2015, de 8 de julio, de información sanitaria y autonomía del paciente, aprobada por la Asamblea de Extremadura.",
+        "b) El título V de la Ley 3/2005, de 8 de julio, de información sanitaria y autonomía del paciente, aprobada por la Asamblea de Extremadura.",
+        "c) El título V de la Ley 41/2002, básica reguladora de la autonomía del paciente y de derechos y obligaciones en materia de información y documentación clínica.",
+        "d) El título I de la Constitución Española."
+    ],
+    "correct": 1
+},
+{
+    "question": "71. En un quirófano la temperatura y humedad adecuadas debe situarse, con carácter general, entre los siguientes valores:",
+    "options": [
+        "a) Temperatura: 15 ºC-18 ºC. Humedad: 35% - 45%.",
+        "b) Temperatura: 17 ºC-23 ºC. Humedad: 40% - 60%.",
+        "c) Temperatura: 14 ºC-17 ºC. Humedad: 20% - 35%.",
+        "d) Temperatura: 20 ºC- Humedad: 65% - 85%."
+    ],
+    "correct": 1
+},
+{
+    "question": "72. Para conseguir la posición de Fowler alta en el paciente:",
+    "options": [
+        "a) Debemos dejar la cama totalmente plana.",
+        "b) Debemos subir los pies de la cama hasta formar un ángulo de 45° por encima de la cabeza.",
+        "c) Debemos levantar el respaldo de la cama hasta formar un ángulo de 45° respecto de los pies.",
+        "d) Debemos levantar el respaldo de la cama hasta formar un ángulo de 90° respecto de los pies."
+    ],
+    "correct": 3
+},
+{
+    "question": "73. De las siguientes funciones, cual corresponde su desempeño a los celadores:",
+    "options": [
+        "a) Tendrán a su cargo a los animales utilizados en los quirófanos y en las plantas de hospitalización.",
+        "b) Realizar la limpieza de los locales de los servicios de lavaderos.",
+        "c) La recepción de los carros de comida y la distribución de la misma.",
+        "d) Limpiar la mesa de autopsias y la propia sala."
+    ],
+    "correct": 3
+},
+{
+    "question": "74. Dentro de la organización del bloque quirúrgico, el almacén de material estéril se encuentra:",
+    "options": [
+        "a) En el área sucia o séptica.",
+        "b) En el antequirófano.",
+        "c) En el área de intercambio.",
+        "d) En el área limpia."
+    ],
+    "correct": 3
+},
+
+{
+    "question": "75. ¿Quién será el encargado de la preparación del cadáver para la realización de la autopsia?",
+    "options": [
+        "a) El médico forense.",
+        "b) El auxiliar de enfermería.",
+        "c) El celador.",
+        "d) El anatomopatólogo."
+    ],
+    "correct": 2
+},
+{
+    "question": "76. Según el artículo 4 de los estatutos del organismo autónomo SES, la Secretaría General del Servicio Extremeño de Salud:",
+    "options": [
+        "a) Tiene rango de Dirección General.",
+        "b) Es el órgano superior del Servicio Extremeño de Salud.",
+        "c) Ostenta la representación legal del organismo autónomo.",
+        "d) El nombramiento de su titular corresponde al Consejero competente en materia de sanidad."
+    ],
+    "correct": 0
+}
+ ];
+
+        const form = document.getElementById('quizForm');
+        const finishButton = document.getElementById('finishButton');
+        const summaryDiv = document.getElementById('summary');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.insertBefore(questionDiv, finishButton);
+        });
+
+        finishButton.addEventListener('click', () => {
+            let correctCount = 0, incorrectCount = 0, unansweredCount = 0;
+
+            questions.forEach((q, index) => {
+                const options = form[`question${index}`];
+                let selectedOption = [...options].find(option => option.checked);
+
+                if (!selectedOption) {
+                    unansweredCount++;
+                } else if (parseInt(selectedOption.value) === q.correct) {
+                    correctCount++;
+                    selectedOption.parentElement.classList.add('correct-answer');
+                } else {
+                    incorrectCount++;
+                    selectedOption.parentElement.classList.add('incorrect-answer');
+                }
+
+                const correctAnswer = form.querySelector(`input[name='question${index}'][value='${q.correct}']`);
+                if (correctAnswer) {
+                    correctAnswer.parentElement.classList.add('correct-answer');
+                }
+            });
+
+            let finalCorrect = correctCount - Math.floor(incorrectCount / 3);
+            let finalScore = (finalCorrect / 7).toFixed(2);
+
+            summaryDiv.textContent = `Preguntas totales: 70, Contestadas: ${70 - unansweredCount}, Correctas: ${correctCount}, Incorrectas: ${incorrectCount}, En blanco: ${unansweredCount}, Nota final: ${finalScore}`;
+        });
+    </script>
+</body>
+</html>
+
