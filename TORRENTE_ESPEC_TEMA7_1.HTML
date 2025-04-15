@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+ 
+ 
+
+    {
+        "question": "1. El trastorno de la personalidad producido por conflictos internos que conducen a la ansiedad se denomina:",
+        "options": [
+            "a) Oligofrenia.",
+            "b) Paranoia.",
+            "c) Esquizofrenia.",
+            "d) Neurosis."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "2. Es un trastorno de la memoria:",
+        "options": [
+            "a) Paramnesia.",
+            "b) Pseudoalucinación.",
+            "c) Somnolencia.",
+            "d) Coma."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "3. Constituye un trastorno de la percepción:",
+        "options": [
+            "a) Delirio.",
+            "b) El coma.",
+            "c) La alucinación.",
+            "d) La amnesia."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "4. El trastorno mental caracterizado por la existencia de ideas delirantes de persecución grandeza de forma permanente en la mente del paciente se denomina:",
+        "options": [
+            "a) Esquizofrenia.",
+            "b) Paranoia.",
+            "c) Oligofrenia.",
+            "d) Delirio."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "5. Las reacciones de ansiedad producidas en el paciente por un shock emocional se denominan:",
+        "options": [
+            "a) Delirio.",
+            "b) Psiconeurosis emocional.",
+            "c) Psicosis confusoníricas.",
+            "d) Depresión."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "6. Para satisfacer las necesidades fisiológicas del enfermo mental el celador:",
+        "options": [
+            "a) Favorecerá el ejercicio físico obligándole a caminar.",
+            "b) Le obligará a participar en actividades sencillas.",
+            "c) Favorecerá únicamente el ejercicio pasivo para evitar que se pierda.",
+            "d) Favorecerá el ejercicio físico acompañándole a dar algún paseo."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "7. El síndrome de Korsakoff es el caso más destacado de:",
+        "options": [
+            "a) Delirio.",
+            "b) Psiconeurosis emocionales.",
+            "c) Psicosis confusoníricas.",
+            "d) Depresión."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "8. ¿Qué establece la Ley General de Sanidad como objetivo de las Administraciones Públicas con respecto a la salud mental?",
+        "options": [
+            "a) Potenciación de la atención hospitalaria de pacientes.",
+            "b) Creación de una red de hospitales psiquiátricos.",
+            "c) Desarrollo de servicios de rehabilitación y reinserción social.",
+            "d) La salud mental no se regula en la Ley General de Sanidad."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "9. ¿Tiene relación el trastorno respiratorio con la ansiedad?",
+        "options": [
+            "a) Sí.",
+            "b) No.",
+            "c) Solo cuando la ansiedad no es controlada con medicamentos.",
+            "d) Solo cuando la ansiedad está provocada por el tabaquismo."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "10. Dentro de la red psiquiátrica, de los siguientes dispositivos ¿cuál cree que se engloba en lo que se denominan estructuras intermedias?",
+        "options": [
+            "a) Los hospitales de día.",
+            "b) Las unidades de hospitalización psiquiátrica.",
+            "c) Los centros de salud mental.",
+            "d) Las áreas de salud mental."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "11. ¿Qué dispositivo de salud mental es la vía de acceso al resto de dispositivos sociosanitarios en este campo de la salud?",
+        "options": [
+            "a) El hospital de día.",
+            "b) Las unidades de hospitalización psiquiátrica.",
+            "c) Los equipos de salud mental.",
+            "d) Talleres ocupacionales."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "12. ¿A través de qué norma se produce en España la plena integración del enfermo mental en el sistema sanitario público?",
+        "options": [
+            "a) La Constitución.",
+            "b) La Ley General de Sanidad.",
+            "c) Ley de hospitales.",
+            "d) Derechos y deberes de los pacientes."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "13. ¿Cuál de los siguientes dispositivos en salud mental es una unidad de internamiento?",
+        "options": [
+            "a) URH.",
+            "b) UME.",
+            "c) UHB.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "14. De los siguientes dispositivos ¿cuál crees que tiene como objetivo la rehabilitación del paciente después de haber pasado un ingreso de 6 a 12 meses?",
+        "options": [
+            "a) Los hospitales de día.",
+            "b) Las unidades de hospitalización psiquiátrica.",
+            "c) Las unidades de salud mental.",
+            "d) Los centros de media estancia."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "15. La rama de la medicina que tiene por objeto el estudio diagnóstico tratamiento y prevención de las enfermedades mentales así como de ciertos trastornos de la personalidad y de la conducta se denomina:",
+        "options": [
+            "a) Psicología.",
+            "b) Psiquiatría.",
+            "c) Psicoterapia.",
+            "d) Neurosiquiatría."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "16. ¿Cuál de las siguientes no es un tipo de reducción del paciente psiquiátrico?",
+        "options": [
+            "a) Reducción farmacológica.",
+            "b) Reducción verbal.",
+            "c) Reducción psicológica.",
+            "d) Reducción física."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "17. ¿Cuál de las siguientes no es una característica de los trastornos psicóticos?",
+        "options": [
+            "a) Ideas delirantes.",
+            "b) Alucinaciones.",
+            "c) Grave deterioro de la evaluación de la realidad.",
+            "d) Depresión."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. ¿Cuál de las siguientes características pueden ser asociadas con la demencia?",
+        "options": [
+            "a) Trastorno del sueño.",
+            "b) Depresión.",
+            "c) Alucinaciones.",
+            "d) Todas se pueden asociar."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "19. Las alucinaciones se consideran uno de los síntomas más característicos de la esquizofrenia afectando a todos los sentidos ¿cuáles se consideran más frecuentes?",
+        "options": [
+            "a) Las alucinaciones auditivas y visuales.",
+            "b) Las alucinaciones táctiles.",
+            "c) Las alucinaciones olfativas.",
+            "d) Las alucinaciones gustativas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "20. ¿Es función del celador acompañar a un enfermo psiquiátrico a otra institución en ambulancia?",
+        "options": [
+            "a) No, fuera de la institución en la que trabaja no es su función.",
+            "b) No, debido a la patología que sufre el paciente.",
+            "c) Sí, siempre que vayan como mínimo dos celadores.",
+            "d) Sí, le corresponde esa función."
+        ],
+        "correct": 3
+    },
+
+
+    {
+        "question": "21. En una unidad psiquiátrica no es función del celador:",
+        "options": [
+            "a) Avisar a las familias de los pacientes que no quieren asearse para que los aseen.",
+            "b) Controlar el acceso y la circulación de las personas por la unidad.",
+            "c) Recoger medicación y otros productos de la farmacia.",
+            "d) Controlar el suministro de tabaco a los pacientes que lo tienen permitido en su tratamiento."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "22. ¿A partir de qué año se integra la salud mental en el Sistema Nacional de Salud?",
+        "options": [
+            "a) 1978.",
+            "b) 1962.",
+            "c) 1986.",
+            "d) 1973."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "23. Las funciones del celador que trabaje en una unidad de psiquiatría vienen recogidas en:",
+        "options": [
+            "a) El estatuto de personal no sanitario al servicio de las instituciones sanitarias de la seguridad social.",
+            "b) La orden del Ministerio de Trabajo de 5 de julio de 1971.",
+            "c) Las opciones a y b son correctas.",
+            "d) Ninguna opción es correcta."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "24. El hospital de día de salud mental es:",
+        "options": [
+            "a) Un dispositivo asistencial de salud mental, de hospitalización parcial.",
+            "b) Un dispositivo asistencial de salud mental, de hospitalización domiciliaria.",
+            "c) Un dispositivo asistencial de salud mental, de hospitalización, integrado en la unidad de salud mental comunitaria.",
+            "d) Un dispositivo asistencial de salud mental, de internamiento."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "25. ¿Cuál de estas funciones no corresponden a los celadores de las unidades de hospitalización breve?",
+        "options": [
+            "a) Controlar los accesos y circulación de las personas por la unidad.",
+            "b) Vigilar a los pacientes ante posibles agresiones o autolesiones.",
+            "c) Alimentar a los pacientes que se niegan a comer.",
+            "d) Colaborar con el equipo de profesionales de la unidad en la reducción de pacientes agitados utilizando los medios adecuados para ello."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "26. En las UHB, los celadores:",
+        "options": [
+            "a) Bañarán a los enfermos masculinos cuando no puedan hacerlo por sí mismos, siempre de acuerdo con las instrucciones que reciban de las supervisoras de planta o servicios o personas que las sustituyan.",
+            "b) Ayudarán en la colocación y retirada de las cuñas para la recogida de excretas del enfermo, cuando por circunstancias especiales concurrentes en el enfermo no pueda ser movido solo por la enfermera o ayudante de planta.",
+            "c) Se abstendrán de hacer comentarios con los familiares y visitas de los enfermos sobre diagnósticos, exploraciones y tratamientos que se estén realizando a los mismos, y mucho menos informar sobre los pronósticos de su enfermedad, debiendo siempre orientar las consultas hacia el médico encargado de la asistencia al enfermo.",
+            "d) Todas las respuestas anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "27. A las unidades de hospitalización breve se accede:",
+        "options": [
+            "a) A través de los CRPS.",
+            "b) A través de urgencias.",
+            "c) A través de los CRR.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "28. La decisión sobre la conveniencia de aplicar medidas de contención física en pacientes corresponde a:",
+        "options": [
+            "a) El celador.",
+            "b) El médico.",
+            "c) El personal de seguridad.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "29. La OMS define el término salud como:",
+        "options": [
+            "a) El completo estado de bienestar físico, mental y social así como la ausencia de enfermedad.",
+            "b) El perpetuo estado de bienestar físico, mental y social sin ninguna enfermedad.",
+            "c) El completo estado de bienestar físico, mental y social y no solamente la ausencia de enfermedad.",
+            "d) El completo y perpetuo estado de bienestar físico, mental y social y no solamente la ausencia de enfermedad."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "30. Ante un paciente agitado y si la situación así lo requiere, ¿quién tendría que realizar las maniobras de contención mecánica?",
+        "options": [
+            "a) El celador de la unidad.",
+            "b) El personal sanitario.",
+            "c) La implicación en la actuación de reducir al paciente debe ser de todo el personal, independientemente de la categoría profesional.",
+            "d) El personal de seguridad."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "31. Dentro de los dispositivos intermedios o rehabilitadores en la salud mental, se encuentran los centros de media estancia o unidades rehabilitadoras de media estancia, su objetivo es:",
+        "options": [
+            "a) Pacientes crónicos, en situación de dependencia.",
+            "b) Rehabilitación del paciente después de un ingreso de 6 a 12 meses.",
+            "c) Son para pacientes carentes de autonomía y recursos sociofamiliares.",
+            "d) Ninguna de las respuestas anteriores es correcta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "32. ¿Qué dispositivo de salud mental es la vía de acceso al resto de dispositivos en este campo de la salud?",
+        "options": [
+            "a) Los hospitales de día.",
+            "b) Las unidades de hospitalización psiquiátricas.",
+            "c) Los centros de salud mental.",
+            "d) Talleres ocupacionales."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "33. En la sujeción mecánica de un paciente agitado (no colaborador) el número de personas que debe intervenir es:",
+        "options": [
+            "a) 2-3.",
+            "b) 4-5.",
+            "c) Mínimo 3.",
+            "d) Mínimo 2."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "34. Dentro de la red psiquiátrica, de los siguientes dispositivos, ¿cuál cree que se engloba en lo que se denominan 'estructuras intermedias'?",
+        "options": [
+            "a) Talleres ocupacionales.",
+            "b) Las unidades de hospitalización psiquiátricas.",
+            "c) Los centros de salud mental.",
+            "d) Áreas de salud mental."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "35. Los recursos asistenciales, su organización y funcionamiento en Extremadura están desarrollados en:",
+        "options": [
+            "a) La ley de salud de Extremadura.",
+            "b) El decreto 92/2006 de 16 de mayo.",
+            "c) La ley general de sanidad.",
+            "d) Todas las respuestas son correctas."
+        ],
+        "correct": 1
+    }
+
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
