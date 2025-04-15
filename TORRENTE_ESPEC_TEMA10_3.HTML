@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+ 
+ {
+        "question": "1. ¿Qué factores debemos tener en cuenta a la hora de calificar un riesgo desde el punto de vista de su gravedad?",
+        "options": [
+            "a) El número de personas a las que puede afectar y la probabilidad de que ocurra.",
+            "b) La severidad del daño y el tiempo de exposición.",
+            "c) La probabilidad de que se produzca el daño y la gravedad del daño.",
+            "d) La probabilidad de que se produzca el daño y la severidad del mismo."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "2. La norma que regula en la actualidad la materia de prevención de riesgos laborales es:",
+        "options": [
+            "a) La Ley 28/1995, de 6 de octubre, de seguridad e higiene en el trabajo.",
+            "b) La Ley 28/1995, de 6 de octubre, de prevención de riesgos laborales.",
+            "c) La Ordenanza General de Seguridad e Higiene en el Trabajo de 9 de marzo de 1971.",
+            "d) La Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "3. La Ley de Prevención de Riesgos Laborales tiene por objeto:",
+        "options": [
+            "a) Promover la seguridad y la salud de los trabajadores mediante el desarrollo de las actividades necesarias para la prevención de riesgos derivados del trabajo.",
+            "b) Potenciar el trabajo y los trabajadores.",
+            "c) Desarrollar las prohibiciones de prevención de riesgos laborales.",
+            "d) Asegurar la correcta ejecución de las tareas preventivas en la empresa."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "4. La Ley de Prevención de Riesgos Laborales es de aplicación:",
+        "options": [
+            "a) A las sociedades económicas aunque no tengan trabajadores.",
+            "b) A las sociedades cooperativas en las que existan socios cuya actividad consista en la prestación de su trabajo personal.",
+            "c) A las sociedades mercantiles aunque no tengan trabajadores.",
+            "d) A todos los indicados en las opciones de respuesta."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "5. ¿Cuál es el objeto de la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales?",
+        "options": [
+            "a) Formar a los trabajadores en la manera de protegerse frente a los riesgos laborales.",
+            "b) Promover la seguridad y la salud de los trabajadores mediante la aplicación de medidas y el desarrollo de las actividades necesarias para la prevención de riesgos derivados del trabajo.",
+            "c) Garantizar la seguridad del trabajador individual.",
+            "d) Garantizar la seguridad colectiva de los trabajadores."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "6. Según la Ley de Prevención de Riesgos Laborales, aquel que resulte probable racionalmente que se materialice en un futuro inmediato y pueda suponer un daño grave para la salud de los trabajadores, se entenderá como:",
+        "options": [
+            "a) Protección de los trabajadores.",
+            "b) Daño derivados del trabajo.",
+            "c) Riesgo laboral grave e inminente.",
+            "d) Daño laboral grave e inminente."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "7. ¿Será de aplicación la Ley de prevención de Riesgos Laborales en los centros y establecimientos militares?",
+        "options": [
+            "a) No, se rigen por su normativa específica.",
+            "b) Sí, en todos los casos.",
+            "c) Depende de lo que decidan los órganos administrativos que los dirijan.",
+            "d) Sí, con las peculiaridades previstas en su normativa específica."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "8. La Ley de Prevención de Riesgos Laborales no será de aplicación a:",
+        "options": [
+            "a) La administración general del Estado.",
+            "b) La administración de la Seguridad Social.",
+            "c) La administración de la Comunidad Autónoma.",
+            "d) La relación laboral de carácter especial del servicio del hogar familiar."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. Según la Ley de Prevención de Riesgos Laborales, el conjunto de actividades o medidas adoptadas o previstas en todas las fases de actividad de la empresa con el fin de evitar o disminuir los riesgos derivados del trabajo, se entenderá como:",
+        "options": [
+            "a) Protección a los trabajadores.",
+            "b) Previsión de los trabajadores.",
+            "c) Prevención.",
+            "d) Condiciones de trabajo."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "10. La Ley de Prevención de Riesgos Laborales no será de aplicación en aquellas actividades cuyas particularidades lo impidan en el ámbito de las funciones públicas de:",
+        "options": [
+            "a) Trabajo y seguridad laboral.",
+            "b) Policía, seguridad y resguardo aduanero.",
+            "c) Espectáculos públicos.",
+            "d) Sanidad."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "11. Según la Ley de Prevención de Riesgos Laborales, las enfermedades, patologías o lesiones sufridas con motivo ocasión del trabajo, se considerarán como:",
+        "options": [
+            "a) Protección de los trabajadores.",
+            "b) Daños derivados del trabajo.",
+            "c) Riesgo laboral grave e inminente.",
+            "d) Responsabilidad del empresario."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "12. Según la Ley de Prevención de Riesgos Laborales la posibilidad de que un trabajador sufra un determinado daño derivado del trabajo, se entenderá como:",
+        "options": [
+            "a) Responsabilidad del empresario.",
+            "b) Protección de los trabajadores.",
+            "c) Riesgo laboral.",
+            "d) Prevención."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "13. Cuando en la Ley de prevención de Riesgos Laborales se haga referencia a trabajadores, se entenderán también comprendidos en estos términos a:",
+        "options": [
+            "a) El personal con relación de carácter administrativo o estatutario que presten servicios en una Administración Pública en aquellas actividades cuyas particularidades lo permitan.",
+            "b) Los socios de las cooperativas, siempre que su actividad consista en la prestación de un trabajo personal en dichas cooperativas.",
+            "c) Las personas que estén sindicadas y la patronal.",
+            "d) Las sociedades cooperativas para las que prestan sus servicios los socios."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "14. Las disposiciones de carácter laboral contenidas en la Ley de Prevención de Riesgos Laborales, tienen carácter de:",
+        "options": [
+            "a) Supletorias respecto a las establecidas en el Estatuto de los Trabajadores.",
+            "b) Normas prohibitivas.",
+            "c) Normas de actuación.",
+            "d) Derecho necesario mínimo indisponible."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "15. ¿En cuál de los siguientes colectivos de trabajadores no será de aplicación la Ley de Prevención de Riesgos Laborales si bien es verdad que dicha norma inspirará su normativa específica?",
+        "options": [
+            "a) Personal laboral de la Junta de Extremadura.",
+            "b) Bomberos.",
+            "c) Funcionarios.",
+            "d) En todos los colectivos de trabajadores que se indica es de aplicación la LPRL."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "16. La Ley de Prevención de Riesgos Laborales tiene por objeto promover la seguridad y salud de los trabajadores, para ello regula las actuaciones a desarrollar por:",
+        "options": [
+            "a) Las Administraciones Públicas.",
+            "b) Los empresarios.",
+            "c) Los trabajadores y sus respectivas organizaciones representativas.",
+            "d) Todas las opciones de respuesta son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "17. La Ley 31/1995 de Prevención de Riesgos Laborales, define las enfermedades, patologías o lesiones sufridas con ocasión del trabajo como:",
+        "options": [
+            "a) Riesgo laboral.",
+            "b) Enfermedad profesional.",
+            "c) Accidente de trabajo.",
+            "d) Daños derivados del trabajo."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. ¿Será de aplicación la Ley de prevención de Riesgos Laborales en los establecimientos penitenciarios?",
+        "options": [
+            "a) No en ningún caso, puesto que existe normativa específica exclusiva al respecto.",
+            "b) Sí, será de aplicación en todos los casos.",
+            "c) Sí, aunque se adaptarán a dicha ley ciertas actividades cuyas características justifiquen una regulación especial.",
+            "d) No, puesto que la relación especial de los internos no es de carácter laboral."
+        ],
+        "correct": 2
+    },
+
+
+    {
+        "question": "19. ¿Se deberán prever las distracciones e imprudencias no temerarias que pudiera cometer el trabajador?",
+        "options": [
+            "a) Las medidas preventivas se podrán adoptar sin preverlos cuando la magnitud de los riesgos adicionales por su adopción sea sustancialmente inferior a la de los que se pretende controlar y no existan alternativas más seguras.",
+            "b) No se pueden prever al escapar del control del empresario.",
+            "c) Sí, la efectividad de las medidas preventivas las deberá prever en todo caso.",
+            "d) La efectividad de las medidas preventivas las deberá prever, pero sólo podrán adoptarse cuando la magnitud de los riesgos adicionales que pudieran implicar su adopción sea sustancialmente inferior a la de los que se pretende controlar y no existan alternativas más seguras."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "20. La evaluación del riesgo se lleva a cabo:",
+        "options": [
+            "a) Una vez que el trabajo ha comenzado.",
+            "b) De forma continua.",
+            "c) Antes de comenzar el trabajo.",
+            "d) Una vez al año."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "21. Según la Ley de Prevención de Riesgos Laborales, es principio de la acción preventiva:",
+        "options": [
+            "a) Evaluar los riesgos que no se puedan evitar.",
+            "b) Evaluar los edificios en acústica.",
+            "c) Evaluar la protección de actividades externas.",
+            "d) Evaluar los riesgos en su origen."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "22. Según la Ley de Prevención de Riesgos Laborales, aquellos procesos, actividades, operaciones, equipos o productos que, en ausencia de medidas preventivas específicas, originen riesgos para la seguridad y la salud de los trabajadores se entenderán como:",
+        "options": [
+            "a) Daños derivados del trabajo.",
+            "b) Potencialmente peligrosos.",
+            "c) De protección específica preventiva.",
+            "d) Prevención laboral."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "23. El coste de las medidas relativas a la seguridad y salud en el trabajo, ¿podrá recaer sobre los trabajadores?",
+        "options": [
+            "a) Sí, si lo autoriza el Ministerio competente.",
+            "b) Sí, si lo autoriza la consejería competente.",
+            "c) Sí, siempre que exista acuerdo entre las partes.",
+            "d) De ningún modo podrá recaer sobre los trabajadores."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "24. Según la Ley de Prevención de Riesgos Laborales, cualquier máquina, aparato, instrumento o instalación utilizada en el trabajo, se entenderá como:",
+        "options": [
+            "a) Prevención de riesgos del trabajo.",
+            "b) Equipo de trabajo.",
+            "c) Peligro a estudiar.",
+            "d) Potencial riesgo laboral."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "25. Según la Ley de Prevención de Riesgos Laborales, es principio de la acción preventiva:",
+        "options": [
+            "a) Sustituir lo peligroso por lo que entrañe más peligro.",
+            "b) Eliminar los riesgos.",
+            "c) Sustituir siempre lo peligroso por lo que no entrañe ningún peligro.",
+            "d) Sustituir lo peligroso por lo que entrañe poco peligro."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "26. Se considera como 'condición de trabajo':",
+        "options": [
+            "a) Cualquier característica del trabajo que pueda tener una influencia significativa en la generación de riesgos para la seguridad y la salud del trabajador, quedando excluidas las características generales de los locales e instalaciones, existentes en el centro de trabajo.",
+            "b) La naturaleza de los agentes físicos, químicos y biológicos presentes en el ambiente de trabajo y sus correspondientes intensidades, concentraciones o niveles de presencia además de las instalaciones, incluidas las características organizativas del trabajo.",
+            "c) Todas aquellas características del trabajo, excluidas las relativas a su organización y ordenación, que influyan en la magnitud de los riesgos a que esté expuesto el trabajador.",
+            "d) Todas las opciones de respuesta son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "27. La Ley 31/1995, de Prevención de Riesgos Laborales, en su art. 15 establece los principios de la acción preventiva. Señale cuál de los siguientes es falso:",
+        "options": [
+            "a) Evitar los riesgos.",
+            "b) Adaptar el trabajo a la persona, así como la elección del equipo y los métodos de trabajo.",
+            "c) Evaluar los riesgos que no se puedan evitar.",
+            "d) Adoptar medidas que antepongan la protección individual a la colectiva."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "28. Según la Ley de Prevención de Riesgos Laborales, cualquier característica del puesto de trabajo que pueda tener una influencia significativa en la generación de riesgos para la seguridad y la salud del trabajador, se entenderá como:",
+        "options": [
+            "a) Condición de trabajo.",
+            "b) Estudio de Riesgos de Protección.",
+            "c) Peligro a estudiar.",
+            "d) Potencial riesgo laboral."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "29. Según la Ley de Prevención de Riesgos Laborales, las Administraciones públicas tienen el:",
+        "options": [
+            "a) Derecho de proteger al personal a su servicio, frente a los riesgos laborales.",
+            "b) Deber de protección del personal a su servicio, frente a los riesgos laborales.",
+            "c) Derecho de prevención al personal a su servicio, frente a los riesgos laborales.",
+            "d) Deber de prevención del personal a su servicio, frente a los riesgos laborales."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "30. Según la Ley de Prevención de Riesgos Laborales, es principio de la acción preventiva:",
+        "options": [
+            "a) Adoptar medidas que antepongan la prevención individual a la colectiva.",
+            "b) Adoptar medidas que antepongan la prevención colectiva a la individual.",
+            "c) Adoptar medidas que antepongan la protección colectiva a la individual.",
+            "d) Adoptar medidas que antepongan la protección individual a la colectiva."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "31. Según la Ley de Prevención de Riesgos Laborales, ¿qué tomará el empresario en consideración en el momento de encomendarles las tareas a los trabajadores?",
+        "options": [
+            "a) Las capacidades profesionales que requiere dicha tarea.",
+            "b) Las capacidades profesionales necesarias para ejecutar la tarea.",
+            "c) Las capacidades profesionales de los trabajadores en materia de seguridad y de salud.",
+            "d) Que hayan recibido información suficiente y adecuada."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "32. Según la Ley de Prevención de Riesgos Laborales, ¿qué medida adoptará el empresario para que puedan acceder los trabajadores a las zonas de riesgo grave y específico?",
+        "options": [
+            "a) Que accedan los trabajadores que hayan recibido información suficiente y adecuada y los que no, en pareja.",
+            "b) Que accedan solo los trabajadores que hayan recibido información suficiente y adecuada.",
+            "c) Que no debe acceder nadie, al ser riesgo grave e inminente.",
+            "d) Dotarlos de los equipos de protección individual adecuados."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "33. ¿Se podrán contratar operaciones de seguro con el fin de garantizar la cobertura necesaria para los riesgos derivados del trabajo?",
+        "options": [
+            "a) No, los riesgos derivados de trabajo ya se encuentran protegidos con las cotizaciones obligatorias a la Seguridad Social.",
+            "b) Sí, pero no los trabajadores autónomos.",
+            "c) Sí, la empresa, los trabajadores autónomos y las sociedades cooperativas respecto a sus socios cuya actividad consista en la prestación de su trabajo personal.",
+            "d) Sí, pero no las sociedades cooperativas respecto a sus socios cuya actividad consista en la prestación de su trabajo personal."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "34. Según la Ley de Prevención de Riesgos Laborales, cualquier equipo destinado a ser llevado o sujetado por el trabajador para que le proteja de uno o varios riesgos, se entenderá como:",
+        "options": [
+            "a) Ropa de trabajo.",
+            "b) Estudio de Protección de Riesgos.",
+            "c) Equipo de Protección Individual.",
+            "d) Equipo de trabajo."
+        ],
+        "correct": 2
+    },
+
+{
+        "question": "35. El artículo 14 de la Ley 31/1995, 'Derecho a la protección frente a los riesgos laborales', recoge que:",
+        "options": [
+            "a) Todas las opciones de respuesta planteadas son correctas.",
+            "b) Los trabajadores tienen derecho a una protección eficaz en materia de seguridad y salud en el trabajo.",
+            "c) Las obligaciones de los trabajadores establecidas en esta Ley complementarán las acciones del empresario, sin que por ello le eximan del cumplimiento de su deber en esta materia.",
+            "d) El derecho de los trabajadores a una protección eficaz en materia de seguridad y salud en el trabajo se convierte en un deber del empresario."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "36. ¿Cuál de las siguientes formulaciones no corresponde a ninguno de los principios de acción preventiva que establece la Ley de Prevención de Riesgos Laborales?",
+        "options": [
+            "a) Adaptar el trabajo a la persona.",
+            "b) Tener en cuenta la evolución de la técnica.",
+            "c) Sustituir lo peligroso por lo que entrañe poco o ningún peligro.",
+            "d) Adoptar medidas que antepongan la protección individual a la colectiva."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "37. ¿Cómo deberá el empresario analizar las posibles situaciones de emergencia y adoptar las medidas necesarias en su empresa?",
+        "options": [
+            "a) Teniendo en cuenta la posible presencia de personas ajenas a la misma.",
+            "b) Teniendo en cuenta los trabajadores de la misma y a sus representantes sindicales.",
+            "c) Teniendo en cuenta el número de trabajadores.",
+            "d) Teniendo en cuenta el tamaño y la actividad del servicio de prevención."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "38. Indique cuándo no podrán sufrir los trabajadores o sus representantes perjuicio alguno derivado de la adopción de las medidas necesarias para evitar las consecuencias del peligro, o interrumpir su actividad y abandonar el lugar de trabajo, ante un riesgo grave e inminente:",
+        "options": [
+            "a) Cuando actúe de mala fe o imprudencia leve.",
+            "b) Cuando actúe de buena fe o negligencia grave.",
+            "c) Cuando actúe de buena fe o negligencia leve.",
+            "d) Cuando actúe de mala fe o negligencia grave."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "39. Ley 31/1995 de prevención de riesgos laborales: vigilancia de la salud. Señale la respuesta incorrecta:",
+        "options": [
+            "a) El empresario garantizará a los trabajadores a su servicio la vigilancia periódica de su estado de salud, en función de los riesgos inherentes al trabajo.",
+            "b) Las medidas de vigilancia y control de la salud de los trabajadores se llevarán a cabo respetando siempre el derecho a la intimidad y a la dignidad de la persona del trabajador y la confidencialidad de toda la información relacionada con su estado de salud.",
+            "c) Los resultados de la vigilancia a que se refiere el apartado anterior serán comunicados a los trabajadores afectados.",
+            "d) Los datos relativos a la vigilancia de la salud de los trabajadores serán comunicados al médico señalado por el trabajador."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "40. Caso de que el trabajador cese en la empresa, ¿qué deberá remitir ésta a la autoridad laboral?",
+        "options": [
+            "a) La documentación del trabajador relacionada con los riesgos laborales.",
+            "b) La documentación que recoja las condiciones de trabajo y el puesto que desempeñó.",
+            "c) El finiquito del trabajador y el resultado de su último examen de salud.",
+            "d) Ninguna de las opciones de respuesta es correcta."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "41. Cuando en un mismo centro de trabajo desarrollen actividades trabajadores de dos o más empresas, ¿qué deberá hacer al respecto el empresario titular del centro de trabajo, en lo concerniente a la prevención de riesgos laborales?",
+        "options": [
+            "a) Adoptar las medidas necesarias para que aquellos otros empresarios que desarrollen actividades en su centro de trabajo reciban la información y las instrucciones adecuadas.",
+            "b) Crear un órgano de coordinación de carácter consultivo en el que estarán todos los empresarios que tengan trabajadores en el centro de trabajo.",
+            "c) Decidir los medios de coordinación que sean necesarios en cuanto a la protección y prevención de riesgos laborales y la información sobre los mismos a todos los trabajadores del centro de trabajo.",
+            "d) Adoptar las medidas necesarias para que los trabajadores de otros empresarios que desarrollen actividades en su centro de trabajo reciban la información y las instrucciones adecuadas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "42. Cuando una trabajadora esté embarazada, ¿qué deberá hacer el empresario al respecto?",
+        "options": [
+            "a) Como primera medida, disponer lo necesario para que la trabajadora desempeñe puesto de trabajo o función diferente y compatible con su estado.",
+            "b) La adaptación de las condiciones o del tiempo de trabajo de la trabajadora afectada si los resultados de la evaluación revelasen un riesgo para la seguridad y la salud o una posible repercusión sobre el embarazo o la lactancia de la citada trabajadora.",
+            "c) Adaptar, si los resultados de la evaluación revelasen un riesgo para la seguridad y la salud o una posible repercusión sobre el embarazo o la lactancia de la citada trabajadora y previa consulta con los representantes de los trabajadores, las condiciones del trabajo.",
+            "d) La adaptación, en todo caso, de las condiciones o del tiempo de trabajo de la trabajadora afectada."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "43. El ámbito de aplicación de la Ley 31/1995, no es de aplicación en aquellas actividades cuyas particularidades lo impidan en el ámbito de las funciones públicas de:",
+        "options": [
+            "a) Policía, seguridad y resguardo aduanero, servicios operativos de protección civil y peritaje forense, todos ellos en los casos de grave riesgo, catástrofe y calamidad pública.",
+            "b) Servicios operativos de protección civil y peritaje forense en los casos de grave riesgo, catástrofe y calamidad pública.",
+            "c) Policía, seguridad y resguardo aduanero en los casos de grave riesgo, catástrofe y calamidad pública.",
+            "d) Ninguna de las opciones de respuesta es correcta."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "44. ¿Pueden los trabajadores efectuar propuestas al empresario y a los órganos de participación para mejorar los niveles de protección de la seguridad y salud en la empresa?",
+        "options": [
+            "a) No.",
+            "b) Sí.",
+            "c) Según el tamaño de la empresa.",
+            "d) Según el número de trabajadores."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "45. ¿Cuál de las siguientes afirmaciones es falsa?",
+        "options": [
+            "a) Los trabajadores tendrán derecho a ser informados y formados en materia preventiva.",
+            "b) El empresario deberá garantizar la seguridad y la salud de los trabajadores a su servicio en todos los aspectos relacionados con el trabajo.",
+            "c) No es obligación de los trabajadores usar adecuadamente los medios con los que desarrollen su actividad.",
+            "d) El empresario garantizará a los trabajadores a su servicio la vigilancia periódica de su estado de la salud en función de los riesgos inherentes al trabajo."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "46. Son obligaciones del trabajador:",
+        "options": [
+            "a) Establecer medidas de emergencia.",
+            "b) Evaluar los riesgos existentes de la empresa.",
+            "c) Organizar y planificar la prevención.",
+            "d) Velar por su propia seguridad y salud en el trabajo y por la de aquellas otras personas a las que pueda afectar su actividad profesional."
+        ],
+        "correct": 3
+    },
+
+ {
+        "question": "47. Según el artículo 26 de la LPRL, sobre Protección a la Maternidad, cuando no se pueda evitar la exposición a los riesgos a través de una adaptación de las condiciones o del tiempo de trabajo...",
+        "options": [
+            "a) La trabajadora verá suspendido su contrato de trabajo, sin merma de sus retribuciones, hasta que desaparezca el riesgo para su situación de embarazo, o periodo de lactancia.",
+            "b) La trabajadora deberá desempeñar un puesto de trabajo o función diferente compatible con su estado hasta que el estado de salud permita su reincorporación al anterior puesto, percibiendo las retribuciones del puesto de trabajo que efectivamente ocupe.",
+            "c) La trabajadora tendrá derecho a ausentarse del trabajo, con la obtención proporcional de retribuciones, para la realización de exámenes prenatales y técnicas de preparación al parto, previo aviso al empresario y justificación de la necesidad de su realización dentro de la jornada de trabajo.",
+            "d) La trabajadora deberá desempeñar un puesto de trabajo o función diferente y compatible con su estado, incluso de otro grupo o categoría hasta que el estado de salud permita su reincorporación a su anterior puesto, conservando el derecho al conjunto de retribuciones de su puesto de origen."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "48. ¿Qué deberá hacer el empresario respecto a la documentación sobre riesgos laborales?",
+        "options": [
+            "a) Elaborarla, conservarla y remitirla periódicamente a la autoridad laboral.",
+            "b) Elaborarla, conservarla y actualizarla cada tres meses.",
+            "c) Elaborarla, conservarla y remitirla anualmente a la autoridad laboral.",
+            "d) Elaborarla y conservarla, estando siempre la misma a disposición de las autoridades laborales."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "49. En relación con el acuerdo de los representantes legales de los trabajadores de paralización de la actividad de los trabajadores afectados por un riesgo grave e inminente, éste será comunicado de inmediato a la empresa y a la autoridad laboral, ¿en qué plazo esta última anulará o ratificará la paralización acordada?",
+        "options": [
+            "a) Un plazo de 48 horas.",
+            "b) Un plazo de 72 horas.",
+            "c) Un plazo de 36 horas.",
+            "d) Un plazo de 24 horas."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "50. ¿Dónde estará centrada principalmente la formación de los trabajadores?",
+        "options": [
+            "a) En los riesgos específicos de cada actividad laboral.",
+            "b) En el puesto de trabajo o función de cada trabajador.",
+            "c) En el centro de trabajo.",
+            "d) Según las necesidades del trabajo."
+        ],
+        "correct": 1
+    }
+
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
