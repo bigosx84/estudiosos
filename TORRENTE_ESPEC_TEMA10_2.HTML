@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+ {
+        "question": "1. Según la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales, si los resultados de la evaluación de riesgos pusieran de manifiesto situaciones de riesgo, el empresario realizará aquellas actividades preventivas necesarias para:",
+        "options": [
+            "a) Eliminar los riesgos.",
+            "b) Reducir los riesgos.",
+            "c) Controlar los riesgos.",
+            "d) Todas las anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "2. Frente a los riesgos detectados como resultado de una evaluación previa, el empresario deberá realizar actividades preventivas, que serán objeto de:",
+        "options": [
+            "a) Planificación.",
+            "b) Estandarización.",
+            "c) Desconcentración.",
+            "d) Auditoría."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "3. Cuando el empresario planifique las actividades preventivas sobre los riesgos detectados, esta planificación deberá incluir:",
+        "options": [
+            "a) Plazo para llevarla a cabo.",
+            "b) Designación de responsables.",
+            "c) Recursos humanos y materiales necesarios.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "4. ¿Cómo debe el empresario asegurarse de la efectiva ejecución de las actividades preventivas incluidas en la planificación?",
+        "options": [
+            "a) Efectuando un seguimiento continuo.",
+            "b) Externalizando el servicio.",
+            "c) Realizando una previsión metodológica pragmática.",
+            "d) Designando responsables específicos y preferentes."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "5. Las actividades de prevención de riesgos. ¿Pueden ser modificadas?",
+        "options": [
+            "a) No.",
+            "b) Sí, cada año.",
+            "c) No salvo que el riesgo se haya materializado.",
+            "d) Sí, deberán ser modificadas cuando se aprecie por el empresario que como consecuencia de los controles periódicos, son inadecuadas a los fines de protección requeridos."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "6. ¿Qué puede realizar de manera simplificada una empresa de entre lo siguiente en atención al número de trabajadores y a la naturaleza y peligrosidad de las actividades realizadas?",
+        "options": [
+            "a) El plan de prevención de riesgos laborales.",
+            "b) La evaluación de riesgos.",
+            "c) La planificación de la actividad preventiva.",
+            "d) Todo lo anterior."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "7. Según la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales, ¿cuándo viene obligado el empresario a llevar a cabo una investigación a fin de detectar las causas de los hechos?",
+        "options": [
+            "a) Cuando se haya producido un daño para la salud de los trabajadores.",
+            "b) Cuando, con ocasión de la vigilancia de la salud aparezcan indicios de que las medidas de prevención resultan insuficientes.",
+            "c) a) y b) son correctas.",
+            "d) Siempre que detecte que un trabajador desconoce el funcionamiento del equipo, ambiente y/o material."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "8. El empresario adoptará las medidas necesarias con el fin de que los equipos de trabajo:",
+        "options": [
+            "a) Sean convenientemente adaptados a tal efecto.",
+            "b) Sean adecuados para el trabajo que deba realizarse.",
+            "c) a) y b) son correctas.",
+            "d) c) es correcta, de forma que garanticen la seguridad y la salud de los trabajadores al utilizarlos."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "9. Si la utilización de un equipo de trabajo pudiera presentar un riesgo específico para la seguridad y la salud de los trabajadores, el empresario adoptará las medidas necesarias con el fin de que (señale la incorrecta):",
+        "options": [
+            "a) La utilización del equipo de trabajo quede reservada a los encargados de dicha utilización.",
+            "b) Los trabajos de reparación, transformación, mantenimiento o conservación sean realizados por los trabajadores específicamente capacitados para ello.",
+            "c) a) y b) son correctas.",
+            "d) Todas las anteriores son falsas."
+        ],
+        "correct": 3
+    },
+
+{
+        "question": "10. Con respecto a los Equipos de Protección Individual (EPI), señale la incorrecta.",
+        "options": [
+            "a) El empresario deberá proporcionar a sus trabajadores equipos de protección individual adecuados para el desempeño de sus funciones.",
+            "b) El empresario deberá velar por el uso efectivo de los mismos cuando, por la naturaleza de los trabajos realizados, sean necesarios.",
+            "c) La responsabilidad del uso del EPI recae exclusivamente en el empresario.",
+            "d) Los equipos de protección individual deberán utilizarse cuando los riesgos no se puedan evitar."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "11. Los equipos de protección individual deberán utilizarse cuando los riesgos no se puedan evitar o cuando:",
+        "options": [
+            "a) Los riesgos no puedan limitarse suficientemente.",
+            "b) Los trabajadores no controlen correctamente los procedimientos.",
+            "c) Los trabajadores no deseen realizar los trabajos sin protección.",
+            "d) Cuando el empresario no haya catalogado todavía el riesgo."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "12. El empresario adoptará las medidas adecuadas para que los trabajadores reciban todas las informaciones necesarias en relación con:",
+        "options": [
+            "a) Los riesgos para la seguridad y la salud de los trabajadores en el trabajo, tanto aquellos que afecten a la empresa en su conjunto como a cada tipo de puesto de trabajo o función.",
+            "b) Las medidas y actividades de protección y prevención aplicables a los riesgos.",
+            "c) Las medidas adoptadas en caso de situaciones de emergencia.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "13. ¿Puede un empresario facilitar la información a los trabajadores sobre los riesgos, las medidas y actividades de protección y prevención aplicables y las medidas en caso de emergencia, a través de sus representantes?",
+        "options": [
+            "a) Sí, en todo caso.",
+            "b) No, en ningún caso, deberá hacerlo directamente o mediante servicio externalizado.",
+            "c) Sí, salvo los riesgos específicos que afecten a su puesto de trabajo o función y salvo las medidas de protección y prevención aplicables a dichos riesgos.",
+            "d) No, salvo los riesgos específicos que afecten a su puesto de trabajo o función y salvo las medidas de protección y prevención aplicables a dichos riesgos."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "14. El empresario ¿deberá consultar a los trabajadores, y permitir su participación, en el marco de todas las cuestiones que afecten a la seguridad y a la salud en el trabajo?",
+        "options": [
+            "a) Sí, pero no en todas las cuestiones.",
+            "b) Sí al respecto de permitir su participación, pero no tiene la obligación de consultar.",
+            "c) Sí.",
+            "d) No, la participación se restringe a los representantes de los trabajadores."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "15. ¿Tienen los trabajadores derecho a efectuar propuestas dirigidas a la mejora de los niveles de protección de la seguridad y la salud en la empresa?",
+        "options": [
+            "a) Sí, exclusivamente al empresario.",
+            "b) Sí, al empresario así como a los órganos de participación y representación previstos.",
+            "c) No, salvo que el empresario lo demande.",
+            "d) No, salvo en circunstancias en que su salud y seguridad se vea comprometida con severidad."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "16. ¿Quién debe garantizar que cada trabajador reciba una formación teórica y práctica, suficiente y adecuada en materia preventiva?",
+        "options": [
+            "a) El empresario.",
+            "b) El propio trabajador.",
+            "c) El empresario y el trabajador.",
+            "d) El empresario, el trabajador y sus representantes."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "17. ¿Cuándo debe quedar garantizado que el trabajador reciba una formación teórica y práctica, suficiente y adecuada, en materia preventiva?",
+        "options": [
+            "a) En el momento de su contratación.",
+            "b) Cuando se produzcan cambios en las funciones que desempeñe.",
+            "c) Cuando se introduzcan nuevas tecnologías o cambios en los equipos de trabajo.",
+            "d) Todas las anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "18. ¿Qué característica de entre las siguientes no es correcta sobre la formación que debe recibir el trabajador?",
+        "options": [
+            "a) Centrada específicamente en el puesto de trabajo o función de cada trabajador.",
+            "b) Certificada por organismos externos de acreditación.",
+            "c) Adaptarse a la evolución de los riesgos y a la aparición de otros nuevos.",
+            "d) Repetirse periódicamente."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "19. ¿Puede impartirse formación a los trabajadores en materia preventiva dentro de su jornada laboral?",
+        "options": [
+            "a) Sí, así debe hacerse siempre.",
+            "b) Sí, siempre que sea posible.",
+            "c) No, pero al hacerse en otras horas, debe descontarse de la jornada el tiempo invertido en la misma.",
+            "d) No, en ningún caso."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "20. La formación a los trabajadores en materia preventiva, ¿puede impartirla la empresa con medios propios?",
+        "options": [
+            "a) No, deberá ser concertado con servicios de prevención ajenos.",
+            "b) Sí, cuando los servicios de prevención externos así lo indiquen.",
+            "c) Sí.",
+            "d) No, salvo que se realice durante la jornada laboral."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "21. El coste de la formación a los trabajadores en materia preventiva, ¿puede recaer sobre los trabajadores?",
+        "options": [
+            "a) Sí.",
+            "b) Sí, en todo caso.",
+            "c) No, en ningún caso.",
+            "d) No, salvo que se trate de empresas ajenas, fuera de la jornada laboral y así se acredite."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "22. Según la Ley 31/1995, de 8 de noviembre, el empresario deberá analizar las posibles situaciones de emergencia y adoptar las medidas necesarias en materia de:",
+        "options": [
+            "a) Primeros auxilios.",
+            "b) Lucha contra incendios.",
+            "c) Evacuación de los trabajadores.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "23. ¿Quién deberá poner en práctica y comprobar el correcto funcionamiento de las medidas de emergencia que el empresario haya adoptado?",
+        "options": [
+            "a) El empresario.",
+            "b) Las medidas serán puestas en práctica por el personal encargado designado por el empresario, que deberá poseer la formación necesaria, ser suficiente en número y disponer del material adecuado.",
+            "c) El funcionamiento de las medidas de emergencia deberá ser comprobado periódicamente por el empresario.",
+            "d) b) y c) son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "24. Para la aplicación de las medidas de emergencia y de forma que quede garantizada la rapidez y eficacia de las mismas, el empresario deberá organizar las relaciones que sean necesarias con servicios externos a la empresa, en particular en materia de:",
+        "options": [
+            "a) Primeros auxilios.",
+            "b) Primeros auxilios y asistencia médica de urgencia.",
+            "c) Primeros auxilios, asistencia médica de urgencia y salvamento.",
+            "d) Primeros auxilios, asistencia médica de urgencia, salvamento y lucha contra incendios."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "25. ¿A qué de entre lo siguiente no está obligado el empresario cuando los trabajadores puedan estar expuestos a un riesgo grave e inminente?",
+        "options": [
+            "a) A informar lo antes posible de la existencia de dicho riesgo y de las medidas adoptadas o que deban adoptarse.",
+            "b) A adoptar medidas y dar instrucciones para que los trabajadores puedan interrumpir su actividad e incluso si fuera necesario abandonar de inmediato el lugar de trabajo.",
+            "c) A disponer lo necesario para que el trabajador, en caso necesario, esté en condiciones de adoptar las medidas necesarias para evitar las consecuencias de dicho peligro.",
+            "d) A garantizar en todo caso la seguridad de todos los trabajadores ante dicho riesgo."
+        ],
+        "correct": 3
+    },
+
+
+    {
+        "question": "26. ¿Puede un trabajador interrumpir su actividad o abandonar el lugar de trabajo en caso necesario, cuando considere que dicha actividad entraña un riesgo grave e inminente para su vida o su salud?",
+        "options": [
+            "a) Sólo interrumpir su actividad, pero no abandonar el lugar de trabajo.",
+            "b) Puede interrumpir su actividad y puede abandonar el lugar de trabajo, con la orden o permiso expreso del empresario.",
+            "c) Sí.",
+            "d) Podrá interrumpir su actividad laboral una vez que se haya asegurado que sus delegados de prevención conocen el incidente y reconocen la gravedad de los hechos, pudiendo abandonar el lugar de trabajo cuando dichos delegados o el propio empresario lo permitan expresamente."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "27. ¿Pueden los representantes legales de los trabajadores acordar la paralización de la actividad de los trabajadores afectados por riesgo grave e inminente?",
+        "options": [
+            "a) Sí, por mayoría de sus miembros.",
+            "b) La a), cuando el empresario no adopte o no permita la adopción de las medidas necesarias para garantizar la seguridad y salud de los trabajadores.",
+            "c) La b) y el acuerdo podrá ser adoptado por decisión mayoritaria de los Delegados de Prevención cuando no resulte posible reunir con la urgencia requerida al órgano de representación del personal.",
+            "d) La c) y tal acuerdo será comunicado de inmediato a la empresa y a la autoridad laboral, la cual, en el plazo de cuarenta y ocho horas, anulará o ratificará la paralización acordada."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "28. Ante un riesgo grave e inminente, ¿pueden sufrir los trabajadores perjuicio alguno derivado de la adopción de medidas de paralización de la actividad, interrupción de la actividad o abandono del puesto de trabajo?",
+        "options": [
+            "a) No, en ningún caso.",
+            "b) Sí, si hubieran obrado de mala fe.",
+            "c) Sí, si hubieran cometido negligencia grave.",
+            "d) Las opciones b) y c) son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "29. En función de los riesgos inherentes al trabajo y según la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales, el empresario garantizará a los trabajadores a su servicio:",
+        "options": [
+            "a) La vigilancia continua de su estado de salud.",
+            "b) La vigilancia periódica de su estado de salud.",
+            "c) La vigilancia intrusiva de su estado de salud.",
+            "d) La vigilancia parcial de su estado de salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "30. ¿Es necesario el consentimiento del trabajador para que el empresario realice vigilancia de su estado de salud?",
+        "options": [
+            "a) Sí.",
+            "b) No.",
+            "c) No, es de carácter voluntario.",
+            "d) Sí, pues es obligatorio."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "31. ¿Existe alguna excepción a la necesidad del consentimiento previo del trabajador para que el empresario pueda realizar una vigilancia de su estado de salud?",
+        "options": [
+            "a) Cuando sean imprescindibles para evaluar las condiciones del trabajo, sobre su salud.",
+            "b) Cuando sean imprescindibles para verificar si el estado de salud del trabajador puede constituir un peligro para él mismo, para los demás trabajadores o para otras personas relacionadas con la empresa.",
+            "c) Cuando así esté establecido en una disposición legal en relación con la protección de riesgos específicos y actividades de especial peligrosidad.",
+            "d) Todas las anteriores son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "32. En cuanto a la vigilancia de la salud de los trabajadores, en todo caso se deberá optar por la realización de reconocimientos o pruebas...",
+        "options": [
+            "a) Que sean más económicas.",
+            "b) Que causen las menores molestias al trabajador y que sean proporcionales al riesgo.",
+            "c) Que sean más eficaces, aun siendo molestas o desagradables.",
+            "d) Que, aunque no estén científicamente fundadas, sean eficaces en la detección de la desviación del estado de salud."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "33. Las medidas de vigilancia y control de la salud de los trabajadores se llevarán a cabo respetando siempre:",
+        "options": [
+            "a) El derecho a la dignidad de la persona del trabajador y la confidencialidad de toda la información relacionada con su estado de salud.",
+            "b) El derecho a la intimidad y a la confidencialidad de toda la información relacionada con su estado de salud.",
+            "c) El derecho a la igualdad, a la dignidad de la persona del trabajador y la confidencialidad de toda la información relacionada con su estado de salud.",
+            "d) El derecho a la intimidad, a la dignidad de la persona del trabajador y la confidencialidad de toda la información relacionada con su estado de salud."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "34. Los resultados de la vigilancia de la salud que el empresario realiza sobre los trabajadores, ¿serán comunicados a los trabajadores afectados?",
+        "options": [
+            "a) Sí.",
+            "b) No, no pudiendo ser usados con fines discriminatorios ni en perjuicio del trabajador.",
+            "c) No, pues tienen la consideración de datos de relevancia empresarial.",
+            "d) Sí, pudiendo ser facilitada al empresario la información médica de los trabajadores."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "35. ¿De qué datos el empresario y las personas u órganos con responsabilidades en materia de prevención serán informados con respecto a la vigilancia de la salud que se realice en los trabajadores?",
+        "options": [
+            "a) Ninguno.",
+            "b) De las conclusiones que se deriven de los reconocimientos efectuados en relación con la aptitud del trabajador para el desempeño del puesto de trabajo.",
+            "c) De la necesidad de introducir o mejorar las medidas de protección y prevención, a fin de que puedan desarrollar correctamente sus funciones en materia preventiva.",
+            "d) b) y c) son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "36. ¿El derecho de los trabajadores a la vigilancia periódica de su estado de salud deberá ser prolongado más allá de la finalización de la relación laboral?",
+        "options": [
+            "a) No, una vez extinguida la relación laboral se extingue igualmente la obligación para el empresario y el derecho del trabajador.",
+            "b) Sí, en los supuestos en que la naturaleza de los riesgos inherentes al trabajo lo haga necesario.",
+            "c) La a), salvo que así se acuerde en el despido o cese de la relación laboral por ambas partes.",
+            "d) La b), en los términos que reglamentariamente se determinen."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "37. Según la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales, las medidas de vigilancia y control de la salud de los trabajadores se llevarán a cabo por personal sanitario:",
+        "options": [
+            "a) Con competencia intelectual, formación y capacidad homologada.",
+            "b) Con competencia técnica, información y graduación.",
+            "c) Con competencia técnica, aptitud y capacidad acreditada.",
+            "d) Con competencia técnica, formación y capacidad acreditada."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "38. El empresario deberá elaborar y conservar a disposición de la autoridad laboral la siguiente documentación relativa a las obligaciones establecidas por la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales, excepto:",
+        "options": [
+            "a) Relación de riesgos.",
+            "b) Plan de prevención de riesgos laborales.",
+            "c) Evaluación de los riesgos para la seguridad y la salud en el trabajo.",
+            "d) Planificación de la actividad preventiva."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "39. El empresario deberá elaborar y conservar a disposición de la autoridad laboral la siguiente documentación relativa a las obligaciones establecidas por la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales, excepto:",
+        "options": [
+            "a) Contratos del estado de salud de los trabajadores y conclusiones obtenidas.",
+            "b) Relación de accidentes de trabajo y enfermedades profesionales.",
+            "c) La b) que hayan causado al trabajador una incapacidad laboral superior a un día de trabajo.",
+            "d) Daños del propio empresario."
+        ],
+        "correct": 3
+    },
+
+
+    {
+        "question": "40. Según la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales, ¿el empresario estará obligado a notificar por escrito a la autoridad laboral los daños para la salud de los trabajadores a su servicio que se hubieran producido con motivo del desarrollo de su trabajo?",
+        "options": [
+            "a) No, salvo solicitud expresa por parte de la autoridad laboral.",
+            "b) Sí conforme al procedimiento que se determine reglamentariamente.",
+            "c) No, salvo que así lo decida particular y voluntariamente.",
+            "d) No existe previsión sobre dicha circunstancia en la Ley 31/1995."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "41. La documentación que según el artículo 23 de la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales el empresario debe elaborar y conservar...",
+        "options": [
+            "a) Debe estar a disposición de la autoridad laboral.",
+            "b) Debe estar a disposición de las autoridades sanitarias.",
+            "c) Las empresas deberán remitir a la autoridad laboral dicha documentación en el momento de cesación de su actividad.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "42. Cuando en un mismo centro de trabajo desarrollen actividades trabajadores de dos o más empresas...",
+        "options": [
+            "a) Éstas deberán cooperar en la aplicación de la normativa sobre prevención de riesgos laborales.",
+            "b) La aplicación de la normativa sobre prevención de riesgos laborales le competerá y será responsabilidad de la empresa con mayor volumen de negocio.",
+            "c) En todo caso habrá que externalizar la aplicación de la normativa sobre prevención de riesgos laborales.",
+            "d) La a), aun sin medios para su coordinación."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "43. Cuando varios empresarios desarrollen actividades en un centro de trabajo, ¿quién adoptará las medidas necesarias para que dichas empresas reciban la información y las instrucciones adecuadas, en relación con los riesgos existentes en el centro de trabajo y con las medidas de protección y prevención correspondientes, así como sobre las medidas de emergencia a aplicar, para su traslado a sus respectivos trabajadores?",
+        "options": [
+            "a) El servicio de prevención de riesgos laborales.",
+            "b) La autoridad laboral.",
+            "c) El empresario titular del centro de trabajo.",
+            "d) La autoridad sanitaria."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "44. ¿Quiénes deberán vigilar el cumplimiento por los contratistas y subcontratistas de la normativa de prevención de riesgos laborales?",
+        "options": [
+            "a) Las empresas que contraten o subcontraten con otras la realización de obras o servicios correspondientes a su propia actividad.",
+            "b) La a), cuando se desarrollen en sus propios centros de trabajo.",
+            "c) Las propias empresas contratistas y/o subcontratistas.",
+            "d) La autoridad laboral."
+        ],
+        "correct": 1
+    },
+    {
+        "question": "45. Los fabricantes, importadores y suministradores, ¿deberán proporcionar a los empresarios y éstos recabar de aquéllos, la información necesaria para que la utilización y manipulación de la maquinaria, equipos, productos, materias primas y útiles de trabajo se produzca sin riesgos para la seguridad y la salud de los trabajadores así como para que los empresarios puedan cumplir con sus obligaciones de información respecto de los trabajadores?",
+        "options": [
+            "a) En las operaciones contratadas, en los supuestos en que los trabajadores de la empresa contratista o subcontratista no presten servicios en los centros de trabajo de la empresa principal.",
+            "b) Siempre que tales trabajadores deban operar con maquinaria, equipos, productos, materias primas o útiles proporcionados por la empresa principal.",
+            "c) a) y b) son correctas.",
+            "d) No."
+        ],
+        "correct": 2
+    },
+    {
+        "question": "46. Si en un centro de trabajo, además de varias empresas, contratadas/subcontratadas o no, existen trabajadores autónomos que desarrollen actividades en dichos centros de trabajo, ¿serán de aplicación con respecto de ésos los deberes de cooperación, de información e instrucción previstos en la Ley 31/1995, de 8 de noviembre, de prevención de riesgos laborales?",
+        "options": [
+            "a) No, pues no son empresas con personalidad jurídica.",
+            "b) No, pues forman parte de la plantilla de la empresa principal.",
+            "c) No, pues es el propio autónomo el responsable en estos casos.",
+            "d) Ninguna es correcta."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "47. ¿Garantizará el empresario de manera específica la protección de los trabajadores que sean especialmente sensibles a los riesgos derivados del trabajo?",
+        "options": [
+            "a) Sí, por sus propias características personales o estado biológico conocido.",
+            "b) La a), incluidos los que tengan reconocida discapacidad física, psíquica o sensorial.",
+            "c) A tal fin, deberá tener en cuenta dichos aspectos en las evaluaciones de los riesgos y en función de éstas adoptará las medidas preventivas y de protección necesarias.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    },
+    {
+        "question": "48. ¿Pueden ser empleados los trabajadores en aquellos puestos de trabajo en los que, a causa de sus características personales, estado biológico o por su discapacidad física, psíquica o sensorial debidamente reconocida, puedan ellos, los demás trabajadores u otras personas relacionadas con la empresa ponerse en situación de peligro?",
+        "options": [
+            "a) No.",
+            "b) Sí, en situaciones justificadas.",
+            "c) No, salvo aceptación voluntaria.",
+            "d) Sí, en cualquier caso."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "49. ¿Pueden ser empleados los trabajadores en puestos de trabajo cuando se encuentren manifiestamente en estados o situaciones transitorias que no respondan a las exigencias psicofísicas de los respectivos puestos de trabajo?",
+        "options": [
+            "a) No.",
+            "b) Sí, en situaciones justificadas.",
+            "c) No, salvo aceptación voluntaria.",
+            "d) Sí, en cualquier caso."
+        ],
+        "correct": 0
+    },
+    {
+        "question": "50. ¿Debe el empresario tener en cuenta en las evaluaciones, los factores de riesgo que puedan incidir en la función de procreación de los trabajadores y trabajadoras?",
+        "options": [
+            "a) Sí, en particular por la exposición a agentes físicos, químicos y biológicos que puedan ejercer efectos mutagénicos o de toxicidad para la procreación.",
+            "b) Sí, tanto en los aspectos de la fertilidad, como del desarrollo de la descendencia.",
+            "c) Sí, con objeto de adoptar las medidas preventivas necesarias.",
+            "d) Todas son correctas."
+        ],
+        "correct": 3
+    }
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
