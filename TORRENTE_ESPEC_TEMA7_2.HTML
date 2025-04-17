@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [
+{
+    "question": "1. En salud mental, las administraciones sanitarias competentes adecuarán su actuación a diversos objetivos entre los que no se encuentra:",
+    "options": [
+        "a) La hospitalización de los pacientes por procesos que así lo requieran se realizará en las unidades generales de los hospitales de referencia.",
+        "b) Los servicios de salud mental y de atención psiquiátrica del sistema sanitario general cubrirán, asimismo, en coordinación con los servicios sociales, los aspectos de prevención primaria y la atención a los problemas psicosociales que acompañan a la pérdida de salud en general.",
+        "c) La atención a los problemas de salud mental de la población se realizará en el ámbito comunitario, potenciando los recursos asistenciales a nivel ambulatorio y los sistemas de hospitalización parcial y atención a domicilio, que reduzcan al máximo posible la necesidad de hospitalización.",
+        "d) Se considerarán de modo especial aquellos problemas referentes a la psiquiatría infantil y psicogeriatría."
+    ],
+    "correct": 0
+},
+{
+    "question": "2. Entendemos por psiquiatría:",
+    "options": [
+        "a) Una rama de la medicina.",
+        "b) La parte de la medicina que tiene por objeto el estudio y prevención de las enfermedades mentales.",
+        "c) Una parte de la medicina que tiene por objeto el diagnóstico y tratamiento de las enfermedades mentales.",
+        "d) Todas son ciertas."
+    ],
+    "correct": 3
+},
+{
+    "question": "3. En el centro de salud mental se constituye un equipo multidisciplinar donde no se incluye:",
+    "options": [
+        "a) Psicólogo.",
+        "b) Celadores.",
+        "c) Trabajadores sociales.",
+        "d) Médicos de familia."
+    ],
+    "correct": 3
+},
+{
+    "question": "4. En las unidades de hospitalización psiquiátrica no se dedican a:",
+    "options": [
+        "a) Desintoxicación.",
+        "b) Evaluación y progreso diagnóstico.",
+        "c) Reinserción social.",
+        "d) Fracaso de tratamientos ambulatorios."
+    ],
+    "correct": 2
+},
+{
+    "question": "5. El hospital de día presenta normalmente un horario de:",
+    "options": [
+        "a) Todo el día.",
+        "b) Mañana y media tarde.",
+        "c) Mañana.",
+        "d) Tarde."
+    ],
+    "correct": 1
+},
+{
+    "question": "6. No es un dispositivo rehabilitador en salud mental:",
+    "options": [
+        "a) Centro de media estancia.",
+        "b) Centro de larga estancia.",
+        "c) Taller ocupacional.",
+        "d) Hospital de día."
+    ],
+    "correct": 3
+},
+{
+    "question": "7. La finalidad de los centros día en salud mental es:",
+    "options": [
+        "a) La recuperación de habilidades para integrarse en la sociedad.",
+        "b) La desintoxicación de drogas de abuso.",
+        "c) La integración y terapia familiar.",
+        "d) Todas son ciertas."
+    ],
+    "correct": 0
+},
+{
+    "question": "8. Los centros de media estancia en salud mental pertenecen al nivel:",
+    "options": [
+        "a) Primario.",
+        "b) Secundario.",
+        "c) Terciario.",
+        "d) Básico."
+    ],
+    "correct": 2
+},
+{
+    "question": "9. Los centros de larga estancia en salud mental están dedicados a:",
+    "options": [
+        "a) Pacientes autónomos pero sin recursos.",
+        "b) Pacientes sin autonomía ni familia.",
+        "c) Pacientes autónomos y con recursos pero sin familia.",
+        "d) Cualquier paciente que lo solicite."
+    ],
+    "correct": 1
+},
+{
+    "question": "10. La finalidad de los pisos protegidos en salud mental es:",
+    "options": [
+        "a) La reinserción en el mundo laboral.",
+        "b) La vida completamente autónoma bajo supervisión por un trabajador social.",
+        "c) La rehabilitación física.",
+        "d) El control de su economía por personal especializado en trastornos de la conducta."
+    ],
+    "correct": 1
+},
+{
+    "question": "11. Consideramos en salud mental como afecto a:",
+    "options": [
+        "a) El tono emocional de una persona.",
+        "b) Manifestaciones afectivas de la mente.",
+        "c) La regulación nerviosa de las manifestaciones emocionales.",
+        "d) Ninguna es cierta."
+    ],
+    "correct": 0
+},
+{
+    "question": "12. En el episodio maníaco encontramos un estado de ánimo:",
+    "options": [
+        "a) Anormalmente elevado.",
+        "b) Irritado.",
+        "c) Expansivo.",
+        "d) Todas son ciertas."
+    ],
+    "correct": 3
+},
+{
+    "question": "13. El trastorno distímico en salud mental se caracteriza por:",
+    "options": [
+        "a) Un estado anímico crónicamente depresivo de al menos dos meses.",
+        "b) Un estado anímico cambiante que varía de la euforia a la depresión.",
+        "c) Un estado anímico aleatorio a un ritmo hormonal.",
+        "d) Ninguna es cierta."
+    ],
+    "correct": 0
+},
+{
+    "question": "14. Entre las manifestaciones de la conducta y motivacionales de los estados depresivos no encontramos:",
+    "options": [
+        "a) Retraso psicomotor.",
+        "b) Expresión facial triste.",
+        "c) Desesperación.",
+        "d) Discurso elaborado."
+    ],
+    "correct": 2
+},
+{
+    "question": "15. No es un tipo de ansiedad en salud mental:",
+    "options": [
+        "a) Trastorno fóbico.",
+        "b) Trastorno por ansiedad generalizada.",
+        "c) Trastorno por ataque de angustia.",
+        "d) Trastorno bipolar breve."
+    ],
+    "correct": 3
+},
+{
+    "question": "16. Es un error sensorial en salud mental:",
+    "options": [
+        "a) Hiperalgias.",
+        "b) Analgesias.",
+        "c) Ilusiones.",
+        "d) Hiperacusia."
+    ],
+    "correct": 2
+},
+{
+    "question": "17. El lenguaje demasiado bajo se denomina:",
+    "options": [
+        "a) Musitación.",
+        "b) Coprolalia.",
+        "c) Dislalia.",
+        "d) Logorrea."
+    ],
+    "correct": 0
+},
+{
+    "question": "18. Una sensación subjetiva de claridad mental se denomina:",
+    "options": [
+        "a) Estado crepuscular.",
+        "b) Confusión.",
+        "c) Delirio.",
+        "d) Hipervigilia."
+    ],
+    "correct": 3
+},
+{
+    "question": "19. Un estado de paralización del cuerpo acompañado de mutismo se denomina:",
+    "options": [
+        "a) Estereotipia.",
+        "b) Tics.",
+        "c) Estupor.",
+        "d) Agitación psicomotriz."
+    ],
+    "correct": 2
+},
+{
+    "question": "20. Es falso que los trastornos obsesivos-compulsivos:",
+    "options": [
+        "a) Se caractericen por la incapacidad de resistir la intrusión de pensamientos.",
+        "b) El tratamiento se puede basar en la psicoterapia.",
+        "c) Suelen aparecer en la primera infancia.",
+        "d) Suelen aparecer tras sentimientos de culpa."
+    ],
+    "correct": 2
+},
+{
+    "question": "21. ¿Cuál de las siguientes afirmaciones sobre los síntomas psicóticos es cierta?",
+    "options": [
+        "a) Ideas delirantes.",
+        "b) Episodios de confusión transitoria.",
+        "c) Alucinaciones visuales.",
+        "d) Todas son ciertas."
+    ],
+    "correct": 0
+},
+{
+    "question": "22. La esquizofrenia:",
+    "options": [
+        "a) Es una psicosis de inicio precoz.",
+        "b) Presenta formas de lenguaje peculiares.",
+        "c) No se conoce su etiología.",
+        "d) Todas son ciertas."
+    ],
+    "correct": 3
+},
+{
+    "question": "23. Es falso que las demencias:",
+    "options": [
+        "a) Se caracterizan por el deterioro de la memoria.",
+        "b) Es un síndrome adquirido.",
+        "c) Se desconoce su etiología.",
+        "d) Es más frecuente en mujeres."
+    ],
+    "correct": 2
+},
+{
+    "question": "24. El alzhéimer es un proceso degenerativo que presenta:",
+    "options": [
+        "a) Cuatro estadios de gravedad.",
+        "b) Tres estadios de gravedad.",
+        "c) Dos estadios de gravedad.",
+        "d) Seis estadios de gravedad."
+    ],
+    "correct": 1
+},
+{
+    "question": "25. La enfermedad de Pick es:",
+    "options": [
+        "a) Una demencia que aparece en personas de mediana edad.",
+        "b) Un trastorno compulsivo que aparece en la adolescencia.",
+        "c) Una alteración de la memoria secundaria a una alteración vascular.",
+        "d) Ninguna es cierta."
+    ],
+    "correct": 0
+},
+{
+    "question": "26. Entre las funciones del celador en relación con el enfermo mental encontramos:",
+    "options": [
+        "a) Ayudar al aseo personal de los pacientes que lo precisen.",
+        "b) Favorecer el descanso nocturno.",
+        "c) Controlar el acceso y la circulación de personas por la unidad.",
+        "d) Todas son ciertas."
+    ],
+    "correct": 3
+},
+{
+    "question": "27. ¿Cuál de las siguientes afirmaciones sobre la actuación en pacientes agresivos no es cierta?",
+    "options": [
+        "a) El médico y la enfermera responsable del paciente deben ser avisados de inmediato.",
+        "b) El médico realizará una valoración continua para comprobar el estado del paciente, indicando el momento de la liberación.",
+        "c) Informar al paciente de todo el procedimiento que se va a realizar de forma clara y simple, si es posible, antes de actuar.",
+        "d) El resto de los pacientes deben colaborar en este procedimiento por lo que se explicará claramente la secuencia."
+    ],
+    "correct": 3
+},
+{
+    "question": "28. Existen tres tipos de contención del enfermo psiquiátrico entre los que no encontramos:",
+    "options": [
+        "a) Reducción verbal.",
+        "b) Reducción farmacológica.",
+        "c) Reducción física.",
+        "d) Reducción cognitiva."
+    ],
+    "correct": 3
+},
+{
+    "question": "29. ¿Qué patologías de estas incluirías en las psicosis?",
+    "options": [
+        "a) Esquizofrenia.",
+        "b) Depresión tipo neurosis.",
+        "c) Sociopatía (trastorno antisocial de la personalidad).",
+        "d) Ninguna es psicosis."
+    ],
+    "correct": 0
+},
+{
+    "question": "30. La ansiedad es un trastorno de tipo:",
+    "options": [
+        "a) Psicótico.",
+        "b) Neurótico.",
+        "c) Sociopático.",
+        "d) Psicopático, asociado a toxicomanías."
+    ],
+    "correct": 1
+},
+{
+    "question": "31. ¿Qué modalidad de la ansiedad es aquella que se manifiesta por la presencia de un temor irracional y persistente ante un objeto específico, actividad y situación que determina una conducta de evitación (evitación, negación, racionalización...) del objeto o situación temidos?",
+    "options": [
+        "a) Trastorno por ansiedad simple.",
+        "b) Trastorno por ansiedad generalizada.",
+        "c) Trastorno de ataque de angustia.",
+        "d) Trastorno fóbico."
+    ],
+    "correct": 3
+},
+{
+    "question": "32. El miedo irracional a los espacios abiertos se denomina:",
+    "options": [
+        "a) Claustrofobia.",
+        "b) Dimorfobia.",
+        "c) Agorafobia.",
+        "d) Eritrofobia."
+    ],
+    "correct": 2
+},
+{
+    "question": "33. Según la DSM los trastornos del estado de ánimo o afectivos denominados trastornos depresivos incluyen:",
+    "options": [
+        "a) Las fobias y los trastornos bipolares.",
+        "b) El episodio depresivo mayor, el episodio maníaco y el episodio mixto.",
+        "c) El trastorno depresivo mayor y el trastorno distímico.",
+        "d) Los trastornos bipolares y ciclotímicos."
+    ],
+    "correct": 2
+},
+{
+    "question": "34. ¿Qué trastorno del ánimo o afectivo (según DSM) pertenece al grupo de los trastornos depresivos?",
+    "options": [
+        "a) Trastorno distímico.",
+        "b) Episodio maníaco.",
+        "c) Episodio mixto.",
+        "d) Trastorno bipolar."
+    ],
+    "correct": 0
+},
+{
+    "question": "35. ¿Qué otro nombre recibe los trastornos bipolares?",
+    "options": [
+        "a) Ciclotimia.",
+        "b) Psicosis afectiva no polar.",
+        "c) Psicosis fasotímica.",
+        "d) Todos los anteriores son correctos."
+    ],
+    "correct": 0
+},
+{
+    "question": "36. ¿Cuál ha sido desde siempre y hoy sobre todo, el tipo de tratamiento más empleado en el campo de la salud mental?",
+    "options": [
+        "a) Tratamiento somático.",
+        "b) Tratamiento social.",
+        "c) Tratamiento ambiental.",
+        "d) Tratamiento de reducción verbal."
+    ],
+    "correct": 0
+},
+{
+    "question": "37. ¿A qué tipo de modalidad terapéutica, dentro de las restricciones o categorías de contención del enfermo psiquiátrico, pertenece la clase que incluye entre otras acciones el control de estímulos y la vigilancia de la existencia de espacios apropiados?",
+    "options": [
+        "a) Reducción verbal.",
+        "b) Acción farmacológica.",
+        "c) Reducción física.",
+        "d) Reducción ambiental."
+    ],
+    "correct": 3
+},
+{
+    "question": "38. El empleo de sistemas de sujeción e inmovilización mecánica en el anciano dentro de las restricciones que se aplica al enfermo psiquiátrico pertenece al grupo de:",
+    "options": [
+        "a) Reducción verbal.",
+        "b) Acción farmacológica.",
+        "c) Reducción física.",
+        "d) Reducción ambiental."
+    ],
+    "correct": 2
+},
+{
+    "question": "39. Respecto a los medios de sujeción e inmovilización mecánica sobre los pacientes es incorrecto que:",
+    "options": [
+        "a) Deben aplicarse con suma discreción.",
+        "b) Deben reunir las máximas garantías de seguridad.",
+        "c) No tienen que estar recomendadas siempre por un facultativo médico.",
+        "d) Deben ser siempre el último recurso ante determinadas conductas."
+    ],
+    "correct": 2
+},
+{
+    "question": "40. Es frecuente que los pacientes sujetos:",
+    "options": [
+        "a) Se calmen después de un tiempo.",
+        "b) Nunca se calmen y deban seguir en esa situación.",
+        "c) No representen una amenaza para su integridad física, si no lo estuvieran.",
+        "d) Se enajenen definitivamente."
+    ],
+    "correct": 0
+},
+{
+    "question": "41. Respecto a los pacientes paranoides, en el entorno de una institución donde se va a inmovilizar a otro paciente, lo más correcto es actuar:",
+    "options": [
+        "a) Con público, ya que disminuye la ansiedad en el resto de pacientes.",
+        "b) Sin público, ya que disminuye la ansiedad en el resto de pacientes.",
+        "c) Con público, ya que aumenta la ansiedad en el resto de pacientes.",
+        "d) Sin público, ya que aumenta la ansiedad en el resto de pacientes."
+    ],
+    "correct": 1
+},
+{
+    "question": "42. ¿Qué situación es incorrecta por parte del personal sanitario que realiza una intervención para reducir a un paciente agresivo?",
+    "options": [
+        "a) Deberá actuar profesionalmente.",
+        "b) Poseerá durante la misma una actitud enérgica pero amable.",
+        "c) Se actuará impidiéndole el movimiento.",
+        "d) Se golpeará con saña para reducirlo."
+    ],
+    "correct": 3
+},
+{
+    "question": "43. ¿Qué elemento corporal se debe inmovilizar por cada miembro del personal que actúa en la intervención para reducir a un paciente agresivo?",
+    "options": [
+        "a) Miembros en zonas proximales, tronco y cabeza.",
+        "b) Exclusivamente los miembros en sus zonas proximales.",
+        "c) Exclusivamente los miembros en sus zonas distales.",
+        "d) Tórax y abdomen, por delante y por detrás."
+    ],
+    "correct": 2
+},
+{
+    "question": "44. ¿Cómo debe ser mejor y más adecuada la autorización por el médico de una reducción y sujeción de un paciente agresivo?",
+    "options": [
+        "a) Mediante lenguaje no verbal (para que el paciente no se dé cuenta).",
+        "b) Mediante lenguaje verbal.",
+        "c) Por escrito.",
+        "d) Por teléfono."
+    ],
+    "correct": 2
+},
+{
+    "question": "45. ¿Se debe registrar la razón de la contención a un paciente agresivo?",
+    "options": [
+        "a) No es necesario.",
+        "b) Siempre y de forma minuciosa, detallando solo el tiempo que esta duró.",
+        "c) Siempre y de forma minuciosa, detallando el tiempo que duró y la respuesta del enfermo.",
+        "d) Siempre y de forma minuciosa, detallando el tiempo que duró, la respuesta del sujeto y la evolución del tratamiento."
+    ],
+    "correct": 3
+},
+{
+    "question": "46. Respecto a la sujeción física de estos pacientes es cierto:",
+    "options": [
+        "a) Que debe llevarse a cabo con cualquier material que lo inmovilice.",
+        "b) Que debe hacerse por el personal hasta que este se calme.",
+        "c) Que no debe emplearse ningún sistema de sujeción física, sino la palabra del sanitario.",
+        "d) Que debe emplearse exclusivamente sistemas homologados de sujeción."
+    ],
+    "correct": 3
+},
+{
+    "question": "47. Para sujetar a un paciente agitado se requerirá como mínimo:",
+    "options": [
+        "a) 4 personas.",
+        "b) 6 personas.",
+        "c) 8 personas.",
+        "d) 10 personas."
+    ],
+    "correct": 0
+},
+{
+    "question": "48. Un miembro del equipo de sujeción terapéutica siempre debería estar visible para el paciente con la finalidad de:",
+    "options": [
+        "a) Amedrentarlo durante la sujeción.",
+        "b) Tranquilizarlo durante la sujeción.",
+        "c) Que tenga un punto de referencia del entorno.",
+        "d) Amenazarlo durante la sujeción."
+    ],
+    "correct": 1
+},
+{
+    "question": "49. ¿Cómo deben estar las piernas del paciente para aplicar la sujeción terapéutica a los tobillos mediante las tiras de Segufix o al travesero de la cama?",
+    "options": [
+        "a) Deberían sujetarse con las piernas extendidas y ligeramente abiertas.",
+        "b) Deberían sujetarse con las piernas flexionadas y ligeramente abiertas.",
+        "c) Deberían sujetarse con las piernas extendidas y cerradas completamente.",
+        "d) Deberían sujetarse con las piernas flexionadas y cerradas completamente."
+    ],
+    "correct": 0
+},
+{
+    "question": "50. ¿Cómo debe sujetarse el tronco a la cama en la sujeción terapéutica?",
+    "options": [
+        "a) Debe sujetarse a la cama con la correa especial (la más ancha) y más bien floja.",
+        "b) Debe sujetar firmemente a la cama con la correa especial (la más fina) ni muy floja ni excesivamente fuerte.",
+        "c) Debe sujetar firmemente a la cama con la correa especial (la más fina) excesivamente fuerte, para evitar cualquier movimiento.",
+        "d) Debe sujetar firmemente a la cama con la correa especial (la más ancha) ni muy floja ni excesivamente fuerte."
+    ],
+    "correct": 3
+},
+{
+    "question": "51. ¿Qué es incorrecto de la sujeción terapéutica?",
+    "options": [
+        "a) La cabeza del paciente debe estar ligeramente levantada.",
+        "b) La sujeción no tiene por qué permitir la administración mediante perfusión endovenosa por el antebrazo, ya que existen otras vías posibles.",
+        "c) Debe comprobarse periódicamente las sujeciones.",
+        "d) Las muñecas deben de sujetarse a las tiras del segufix o al travesero de la cama."
+    ],
+    "correct": 1
+},
+{
+    "question": "52. ¿Cómo y cuándo el médico comienza el tratamiento con un paciente violento?",
+    "options": [
+        "a) Durante la intervención para su reducción.",
+        "b) Antes de que se inicie la crisis de agitación mediante una intervención verbal.",
+        "c) Una vez que el paciente esté bien sujeto en la cama mediante una intervención verbal.",
+        "d) Una vez que el paciente esté bien sujeto en la cama mediante una intervención farmacológica."
+    ],
+    "correct": 2
+},
+{
+    "question": "53. ¿Qué medicación requieren los pacientes violentos aun estando sujetos?",
+    "options": [
+        "a) Medicación antidepresiva por vía intramuscular.",
+        "b) Medicación antipsicótica por vía intramuscular.",
+        "c) Medicación antidepresiva por vía intravenosa.",
+        "d) Medicación antishock por vía parenteral."
+    ],
+    "correct": 1
+},
+{
+    "question": "54. ¿Cada cuánto tiempo al paciente violento se le deben ir eliminando las restricciones si está ya bajo control?",
+    "options": [
+        "a) En intervalos de una restricción/sujeción cada cinco minutos.",
+        "b) En intervalos de una restricción/sujeción cada veinte minutos.",
+        "c) En intervalos de una restricción/sujeción cada hora.",
+        "d) En intervalos de una restricción/sujeción cada dos horas."
+    ],
+    "correct": 0
+},
+{
+    "question": "55. Antes de quitarle todas las restricciones a un paciente que se ha sometido a sujeción terapéutica, al menos deben quedarle:",
+    "options": [
+        "a) Una sujeción.",
+        "b) Dos sujeciones.",
+        "c) Cinco sujeciones.",
+        "d) Diez sujeciones."
+    ],
+    "correct": 1
+},
+{
+    "question": "56. Para una inmovilización terapéutica superior a las 24 h o en pacientes con factores de riesgo de trombosis requerirá hacer profilaxis de:",
+    "options": [
+        "a) Antiagregante plaquetario tipo AINE.",
+        "b) Heparina de alto peso molecular.",
+        "c) Heparina de bajo peso molecular.",
+        "d) Heparina Lantuse."
+    ],
+    "correct": 2
+},
+{
+    "question": "57. ¿Qué acción o acciones del equipo sanitario en un paciente sujeto terapéuticamente son incorrectas?",
+    "options": [
+        "a) Preservar la intimidad del paciente.",
+        "b) Acostumbrar progresivamente al paciente a la seguridad que supone un entorno de aislamiento.",
+        "c) Mantener contacto verbal con intervalos regulares mientras se halle despierto.",
+        "d) Implicar al paciente en planes para poder finalizar la sujeción mecánica."
+    ],
+    "correct": 1
+},
+{
+    "question": "58. ¿Qué no se regula en la Ley de Enjuiciamiento Civil (Ley 1/2000)?",
+    "options": [
+        "a) Las autorizaciones judiciales preceptivas que se requieren para el internamiento.",
+        "b) El internamiento forzoso del enfermo mental.",
+        "c) El internamiento voluntario del enfermo mental.",
+        "d) El internamiento de menores se realizará siempre en un establecimiento de salud mental adecuado a su edad, previo informe de los servicios de asistencia al menor."
+    ],
+    "correct": 2
+},
+{
+    "question": "59. ¿En qué circunstancias de estas no se recomienda el internamiento forzoso y urgente del enfermo mental?",
+    "options": [
+        "a) Leve disminución de la autonomía personal.",
+        "b) Riesgo de auto agresividad.",
+        "c) Riesgo de hetero agresividad.",
+        "d) Grave enfermedad mental que suponga un riesgo de agravación en caso de no ser adecuadamente tratada."
+    ],
+    "correct": 0
+},
+{
+    "question": "60. ¿En qué artículo de la Ley de Enjuiciamiento Civil (Ley 1/2000) se señala que el internamiento forzoso del enfermo mental requiere para ello previa autorización judicial?",
+    "options": [
+        "a) En el artículo 17.",
+        "b) En el artículo 48.",
+        "c) En el artículo 315.",
+        "d) En el artículo 763."
+    ],
+    "correct": 3
+},
+{
+    "question": "61. ¿En qué plazo se dará cuenta de comunicación al juez del internamiento urgente del enfermo mental, según dice el artículo 763 de la Ley de Enjuiciamiento Civil (Ley 1/2000)?",
+    "options": [
+        "a) Dentro de las 24 horas primeras.",
+        "b) Dentro de las 48 horas primeras.",
+        "c) Dentro de las 72 horas primeras.",
+        "d) No hay que dar cuenta al juez."
+    ],
+    "correct": 0
+}
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
