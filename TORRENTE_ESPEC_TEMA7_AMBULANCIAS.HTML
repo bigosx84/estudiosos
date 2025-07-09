@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+ {
+    "question": "1. Se denomina transporte aéreo a:",
+    "options": [
+      "a) Al transporte que se realiza desde el lugar donde se produce la necesidad de asistencia hasta el hospital o centro de atención de referencia del paciente",
+      "b) Al transporte del paciente desde un centro sanitario a otro para que le realicen una prueba diagnóstica o para que permanezca en ese centro",
+      "c) Al transporte del paciente desde un servicio a otro dentro del mismo hospital para que le realicen una prueba o le cambien de unidad",
+      "d) Al transporte que se realiza utilizando medios especiales de transporte como un helicóptero"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "2. Las ambulancias acondicionadas para el transporte colectivo de enfermos, cuyo traslado no revista carácter de urgencia, ni estén aquejados de enfermedades infectocontagiosas, son:",
+    "options": [
+      "a) Ambulancias de clase A1",
+      "b) Ambulancias de clase A2",
+      "c) Ambulancias de clase B",
+      "d) Ambulancias de clase C"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "3. Una de las siguientes características no es propia de las ambulancias de clase B:",
+    "options": [
+      "a) Son asistenciales",
+      "b) Pueden proporcionar soporte vital básico",
+      "c) Se utilizan para el transporte colectivo",
+      "d) Pueden proporcionar atención sanitaria inicial"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "4. Se denomina transporte primario a:",
+    "options": [
+      "a) Al transporte que se realiza desde el lugar donde se produce la necesidad de asistencia hasta el hospital o centro de atención de referencia del paciente",
+      "b) Al transporte del paciente desde un centro sanitario a otro para que le realicen una prueba diagnóstica o para que permanezca en ese centro",
+      "c) Al transporte del paciente desde un servicio a otro dentro del mismo hospital para que le realicen una prueba o le cambien de unidad",
+      "d) Al transporte que se realiza utilizando medios especiales de transporte como un helicóptero"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "5. Las ambulancias acondicionadas para el transporte de enfermos, destinadas a proporcionar soporte vital avanzado, son:",
+    "options": [
+      "a) Ambulancias de clase A1",
+      "b) Ambulancias de clase A2",
+      "c) Ambulancias de clase B",
+      "d) Ambulancias de clase C"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "6. Dentro del equipamiento para el transporte sanitario medicalizado y de urgencias, el colchón de vacío es un material:",
+    "options": [
+      "a) De oxigenoterapia",
+      "b) Quirúrgico",
+      "c) Cardiovascular",
+      "d) Traumatológico"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "7. Respecto a las características de los vehículos de transporte sanitario, señala la incorrecta:",
+    "options": [
+      "a) Deberán llevar inscrita la palabra \"AMBULANCIA\" en la parte delantera y en sentido inverso para que pueda ser leído por reflexión",
+      "b) Las ambulancias asistenciales deberán contar con dispositivos de transmisión de datos y localización GPS con su Centro de Coordinación de Urgencias",
+      "c) La disposición de camilla será de carácter obligatorio en las ambulancias de clase A2",
+      "d) Deberán disponer de armarios para material, instrumental y lencería"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "8. Los vehículos destinados a la prestación de los servicios de transporte sanitario que estén dotados al menos de un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias, de un enfermero y cuando la asistencia a prestar lo requiera deberá contar de un médico, son:",
+    "options": [
+      "a) Las ambulancias asistenciales A1",
+      "b) Las ambulancias asistenciales B",
+      "c) Las ambulancias asistenciales C",
+      "d) Las ambulancias no asistenciales A2"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "9. El transporte sanitario en ambulancia es:",
+    "options": [
+      "a) Una actividad especializada del Sistema Nacional de Salud",
+      "b) Una prestación complementaria del Sistema Nacional de Salud",
+      "c) Una prestación básica del Sistema Nacional de Salud",
+      "d) Una prestación excluida del Sistema Nacional de Salud, pues lo realizan empresas concertadas"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "10. Las ambulancias de clase C son aquellas destinadas a:",
+    "options": [
+      "a) Proporcionar soporte vital básico y atención sanitaria inicial",
+      "b) Al transporte conjunto de enfermos cuyo traslado no revista carácter de urgencia, ni estén aquejados de enfermedades infectocontagiosas",
+      "c) Proporcionar soporte vital avanzado",
+      "d) Destinadas al transporte convencional de pacientes en camilla"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "11. Las ambulancias de clase A1 son aquellas destinadas a:",
+    "options": [
+      "a) Proporcionar soporte vital básico",
+      "b) Al transporte convencional de pacientes en camilla",
+      "c) Al transporte colectivo",
+      "d) Ninguna de las respuestas anteriores es correcta"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "12. De las siguientes ambulancias, ¿cuáles pertenecen a las llamadas asistenciales?",
+    "options": [
+      "a) Las ambulancias de clase B y C",
+      "b) Las ambulancias de clase A1 y A2",
+      "c) Las ambulancias de clase C",
+      "d) Las ambulancias mixtas"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "13. Las ambulancias convencionales destinadas al transporte de pacientes en camilla son las denominadas:",
+    "options": [
+      "a) Ambulancias de clase A2",
+      "b) Ambulancias de clase B",
+      "c) Ambulancias de clase A1",
+      "d) Ambulancias de clase C"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "14. Las ambulancias de clase A2 son aquellas destinadas a:",
+    "options": [
+      "a) Al transporte convencional de pacientes en camilla",
+      "b) Al transporte conjunto de enfermos cuyo traslado no revista carácter de urgencia, ni estén aquejados de enfermedades infectocontagiosas",
+      "c) A proporcionar soporte vital básico",
+      "d) A proporcionar soporte vital avanzado"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "15. En relación a las exigencias que deben cumplir los vehículos de transporte sanitario, señala la respuesta correcta:",
+    "options": [
+      "a) Deberán tener señalización luminosa y acústica de preferencia de paso inadecuada a lo dispuesto en la reglamentación vigente",
+      "b) Identificación exterior que permita distinguir claramente que se trata de una ambulancia, mediante la inscripción de la palabra \"Ambulancia\" detrás y delante. La inscripción delantera se realizará en sentido directo para que pueda ser leído por reflexión",
+      "c) Registro de desinfecciones del habitáculo y del equipamiento",
+      "d) Todas las respuestas anteriores son correctas"
+    ],
+    "correct": 2
+  },
+   {
+    "question": "16. Las ambulancias de clase A1 y A2, ¿con qué dotación de personal deberán contar?",
+    "options": [
+      "a) Al menos, con un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias",
+      "b) Al menos, con un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias, con un enfermero que ostente el título de Grado que habilite para el ejercicio de la profesión regulada de enfermería",
+      "c) Al menos, con un conductor que ostente, como mínimo, el certificado de profesionalidad de transporte sanitario y, cuando el tipo de servicio lo requiera, otro en funciones de ayudante con la misma cualificación",
+      "d) Con un conductor que ostente el certificado de profesionalidad de transporte sanitario"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "17. Se denomina transporte secundario a:",
+    "options": [
+      "a) Al transporte que se realiza desde el lugar donde se produce la necesidad de asistencia hasta el hospital o centro de atención de referencia del paciente",
+      "b) Al transporte del paciente desde un servicio a otro dentro del mismo hospital para que le realicen una prueba o le cambien de unidad",
+      "c) Al transporte del paciente desde un centro sanitario a otro para que le realicen una prueba diagnóstica o para que permanezca en ese centro",
+      "d) Al transporte que se realiza cuando el paciente no requiere de una asistencia inmediata"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "18. Según el R.D. 836/2012 los vehículos de transporte sanitario, independientemente de su clase, deberán cumplir, entre otras, las siguientes exigencias con respecto a la célula sanitaria:",
+    "options": [
+      "a) Disponer de revestimientos interiores lisos y sin elementos cortantes y llevar cuñas y botellas irrompibles",
+      "b) Disponer de una puerta lateral izquierda y puerta trasera con apertura suficiente para permitir el acceso del paciente",
+      "c) Poseer camillas y material mínimo de inmovilización",
+      "d) Disponer de botiquines adaptados a cada nivel dependiendo del tipo de ambulancia"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "19. Según el RD 836/2012 las ambulancias no asistenciales deberán contar con una dotación personal que cumpla los siguientes requisitos:",
+    "options": [
+      "a) Al menos con un conductor que esté en posesión del título de FP de Técnico en Emergencias Sanitarias",
+      "b) Al menos con un conductor y un sanitario que estén en posesión del título de FP de Técnico en Emergencias Sanitarias",
+      "c) Al menos con un conductor que esté en posesión del certificado de profesionalidad de Transporte Sanitario",
+      "d) Al menos con un conductor y un sanitario que estén en posesión del título del certificado de profesionalidad de Transporte Sanitario"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "20. Respecto a los vehículos de transporte sanitario por carretera, la ambulancia destinada a proporcionar soporte vital avanzado (SVA) se corresponde con:",
+    "options": [
+      "a) Ambulancia de clase A1",
+      "b) Ambulancia de clase A2",
+      "c) Ambulancia de clase B",
+      "d) Ambulancia de clase C"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "21. ¿En qué tipo de ambulancia, la disposición de camilla será opcional?",
+    "options": [
+      "a) Ambulancias de clase A1",
+      "b) Ambulancias de clase A2",
+      "c) Ambulancias de clase B",
+      "d) Ambulancias de clase C"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "22. En el contexto de las fases del decálogo prehospitalario, ¿a qué se denomina triaje?",
+    "options": [
+      "a) Al conjunto de maniobras de reanimación indispensables que hacen posible la supervivencia de un paciente",
+      "b) A la puesta en marcha del Sistema de Emergencias",
+      "c) Al conjunto de actuaciones dirigidas a conseguir que las funciones ventilatorias y hemodinámicas estén aseguradas durante el traslado",
+      "d) A la clasificación de los pacientes"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "23. Según el decálogo prehospitalario, una de las fases es la de aproximación, ¿cuál es la correcta?",
+    "options": [
+      "a) Acceso al lugar del siniestro por el más rápido, más seguro y más corto",
+      "b) Acceso al lugar del siniestro por el más seguro, más rápido y más corto",
+      "c) Acceso al lugar del siniestro por el más corto, más seguro y más rápido",
+      "d) Acceso al lugar del siniestro por el más seguro, más corto y más rápido"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "24. Señala el orden correcto de las fases del decálogo de la atención prehospitalaria en accidentes de múltiples víctimas y catástrofes:",
+    "options": [
+      "a) Alarma, alerta, aproximación, triaje, aislamiento, estabilidad, SVB-SVA, transporte, transferencia, reactivación",
+      "b) Alerta, alarma, aproximación, aislamiento, triaje, estabilización, SVB-SVA, transporte, transferencia, reactivación",
+      "c) Alerta, alarma, aproximación, aislamiento, triaje, estabilización, SVB-SVA, transferencia, transporte, reactivación",
+      "d) Alerta, alarma, aproximación, aislamiento, triaje, SVB-SVA, estabilización, transporte, transferencia, reactivación"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "25. Se denomina estabilización, en el marco del decálogo prehospitalario, a:",
+    "options": [
+      "a) Al conjunto de actuaciones indispensables para la supervivencia del paciente",
+      "b) Análisis y tratamiento de la llamada telefónica para determinar el lugar y motivo del siniestro",
+      "c) Al conjunto de actuaciones dirigidas a conseguir asegurar las funciones vitales del paciente durante su traslado",
+      "d) Clasificación de los pacientes en el lugar del siniestro"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "26. El acto de entrega del paciente a la atención hospitalaria, informando sobre el estado clínico del paciente, se corresponde con la fase del decálogo prehospitalario de:",
+    "options": [
+      "a) Transferencia",
+      "b) Entrega",
+      "c) Estabilización",
+      "d) Triaje"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "27. Según el decálogo prehospitalario, ¿a cuál de las siguientes opciones corresponde la fase de alarma?",
+    "options": [
+      "a) A la clasificación de los pacientes",
+      "b) A la actitud de 'espera y listos'",
+      "c) A la puesta en marcha del Sistema de Emergencias",
+      "d) Al conjunto de actuaciones dirigidas a conseguir que las funciones ventilatorias y hemodinámicas estén aseguradas durante el traslado"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "28. El número común telefónico para los servicios de emergencias que estableció el Consejo de la Unión Europea es:",
+    "options": [
+      "a) 091",
+      "b) 061",
+      "c) 112",
+      "d) Todos ellos"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "29. ¿En cuál de los siguientes tipos de ambulancias se trasladará de forma ordinaria a un paciente que va a ser sometido a sesión de hemodiálisis?",
+    "options": [
+      "a) Ambulancia medicalizada.",
+      "b) Ambulancia de SVB.",
+      "c) Ambulancia de SVA.",
+      "d) Ambulancias de clase A2."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "30. Señala cuál de las siguientes no es una ambulancia asistencial:",
+    "options": [
+      "a) Ambulancia de clase B",
+      "b) Ambulancia que proporciona soporte vital básico y atención sanitaria inicial.",
+      "c) Ambulancia de clase A1.",
+      "d) Ambulancia de soporte vital avanzado."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "31. Señala cuál de las siguientes es una ambulancia de la clase A1:",
+    "options": [
+      "a) La destinada al trasporte de pacientes en camilla.",
+      "b) Las destinadas al transporte colectivo.",
+      "c) Las destinadas a proporcionar soporte vital básico.",
+      "d) Las destinadas a proporcionar soporte vital avanzado."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "32. Las ambulancias de clases A1 y A2 contarán:",
+    "options": [
+      "a) Con un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias.",
+      "b) Con un enfermero que ostente su título universitario.",
+      "c) Con un conductor que ostente, como mínimo, el certificado de profesionalidad de transporte sanitario.",
+      "d) Con un médico que esté en posesión del título universitario de licenciado en Medicina."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "33. Según el RD 836/2012 ¿Cuántas categorías de ambulancias existen?",
+    "options": [
+      "a) Dos",
+      "b) Tres",
+      "c) Cuatro",
+      "d) Cinco"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "34. Los tipos de transporte sanitario atendiendo a la clasificación según la urgencia vital son:",
+    "options": [
+      "a) Primario, secundario o terciario",
+      "b) Vital, grave o secundario",
+      "c) Terrestre, aéreo o marítimo",
+      "d) Emergente, urgente o demorable"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "35. ¿Cuál debe ser la dotación de personal de las ambulancias no asistenciales según el RD 836/2012?",
+    "options": [
+      "a) Conductor que ostente, como mínimo, el certificado de profesionalidad de transporte sanitario y ayudante con la misma cualificación",
+      "b) Conductor y, cuando el tipo de servicio lo requiera, otro en funciones de ayudante con la misma cualificación",
+      "c) Conductor y, cuando el tipo de servicio lo requiera, otro en funciones de ayudante con la misma cualificación y enfermero",
+      "d) Conductor, ayudante, enfermero y médico"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "36. ¿Cuál debe ser la dotación de personal de las ambulancias de soporte vital básico según el RD 836/2012?",
+    "options": [
+      "a) Al menos, con un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias",
+      "b) Un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias y un enfermero",
+      "c) Un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias, un enfermero y un médico",
+      "d) Un médico y un enfermero que también será conductor"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "37. ¿En el decálogo prehospitalario, qué fase precede al triaje?",
+    "options": [
+      "a) Alarma",
+      "b) Estabilización",
+      "c) Aproximación",
+      "d) Aislamiento y control"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "38. Una tarjeta de color amarillo en el triaje de pacientes accidentados en el lugar del accidente significa:",
+    "options": [
+      "a) Se define como 2.º grado de urgencia pudiéndose diferir el tratamiento entre 6 y 18 h. Se evacuarán en ambulancias medicalizadas. El tiempo de asistencia será inferior a 6 horas.",
+      "b) Es la urgencia absoluta necesitando asistencia inmediata. Se evacuará en UVI MÓVIL. Necesita un tratamiento definitivo antes de 6 horas.",
+      "c) Se define como tercer grado de urgencia pudiéndose diferir su tratamiento entre 18 y 24 horas. Se evacuarán en ambulancias convencionales. El tiempo de asistencia puede ser superior a 6 horas.",
+      "d) Pacientes con un pronóstico vital muy pobre realizándose su evacuación en último lugar"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "39. En Extremadura, ¿cuál no es un vehículo tipo C?",
+    "options": [
+      "a) UME",
+      "b) UMAR",
+      "c) UMTS BADAJOZ",
+      "d) Ambulancia bariátrica"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "40. Las ambulancias tipo C contarán con la presencia de médico según el RD 836/2012:",
+    "options": [
+      "a) Siempre",
+      "b) Cuando la asistencia a prestar lo requiera",
+      "c) Cuando no sea posible contar con al menos un TES",
+      "d) Cuando así lo determine el consejero de sanidad"
+    ],
+    "correct": 1
+  }
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

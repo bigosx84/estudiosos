@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+  {
+    "question": "1. Una urgencia es:",
+    "options": [
+      "a) Toda aquella condición que, en opinión del paciente, su familia, o quien quiera que asuma la responsabilidad de la demanda, requiere una asistencia sanitaria inmediata.",
+      "b) La aparición fortuita en cualquier lugar o actividad de un problema de causa diversa y gravedad variable que genera la conciencia de una necesidad inminente de atención por parte del sujeto que lo sufre o de su familia.",
+      "c) La patología cuya evolución es lenta y no necesariamente mortal, pero que debe ser atendida en 6 horas como máximo, para evitar complicaciones mayores.",
+      "d) Todas las respuestas anteriores son correctas"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "2. Señala la respuesta incorrecta respecto a las urgencias:",
+    "options": [
+      "a) Requiere la hospitalización del paciente",
+      "b) Se presta las 24 horas, los 365 días del año.",
+      "c) Se presta desde diversos ámbitos, en Atención Primaria y Atención Especializada, en un determinado servicio o unidad y en el domicilio del paciente o allí donde se produzca la situación urgente o emergente.",
+      "d) Las respuestas b) y c) son correctas"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "3. Señala cuál de los siguientes es el personal responsable de la Unidad de Urgencias hospitalaria:",
+    "options": [
+      "a) El médico de Urgencias.",
+      "b) El coordinador médico de Urgencia.",
+      "c) El jefe del personal médico de enfermería.",
+      "d) La supervisora médica."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "4. Las ambulancias de la clase B y C:",
+    "options": [
+      "a) Están destinadas al trasporte de pacientes en camilla y al transporte colectivo respectivamente.",
+      "b) Están destinadas al transporte colectivo y al trasporte de pacientes en camilla respectivamente.",
+      "c) Están acondicionadas para proporcionar soporte vital básico y soporte vital avanzado respectivamente.",
+      "d) Están acondicionadas para proporcionar soporte vital avanzado y soporte vital básico respectivamente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "5. Las ambulancias de clase C contarán siempre con:",
+    "options": [
+      "a) Con un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias.",
+      "b) Con un enfermero que ostente su título universitario.",
+      "c) Con un médico que esté en posesión del título universitario de licenciado en Medicina.",
+      "d) Con un conductor que esté en posesión del título de formación profesional de técnico en emergencias sanitarias y con un médico que esté en posesión del título universitario de licenciado en Medicina cuando las circunstancias lo requieran."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "6. La secuencia de la acción 'Ver - oír - sentir', se utiliza para:",
+    "options": [
+      "a) Buscar circulación",
+      "b) Valorar la consciencia",
+      "c) Valorar la respiración",
+      "d) Pedir ayuda"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "7. Se considera que lo ideal sería que supieran técnicas de RCP:",
+    "options": [
+      "a) Todo el personal sanitario.",
+      "b) Todo el personal de primera intervención.",
+      "c) Todos los ciudadanos.",
+      "d) Todo el personal que trabaje en un servicio sanitario."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "8. El estilo Ustean en el soporte vital básico es:",
+    "options": [
+      "a) Un acuerdo a nivel mundial para consensuar definiciones relacionadas con la RCP.",
+      "b) La principal asociación de indicaciones en RCP a nivel europeo.",
+      "c) La secuencia de actuación correcta ante una emergencia clínica.",
+      "d) Todas son ciertas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "9. El cerebro humano empieza a deteriorarse por falta de oxígeno a los:",
+    "options": [
+      "a) 10 minutos.",
+      "b) 15 minutos.",
+      "c) 4 minutos.",
+      "d) 1 minuto."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "10. Para despejar la vía aérea usaremos la técnica de:",
+    "options": [
+      "a) Tracción mandibular.",
+      "b) VOS.",
+      "c) Insuflaciones.",
+      "d) Dedo en gancho"
+    ],
+    "correct": 0
+  },
+    {
+    "question": "11. Un paciente inconsciente que respira:",
+    "options": [
+      "a) Se deja como está y se avisa a los servicios de emergencias.",
+      "b) No hará falta avisar a nadie.",
+      "c) Se inicia de forma inmediata las maniobras de RCP.",
+      "d) Se coloca en PLS (posición lateral de seguridad)."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "12. La secuencia correcta entre compresiones e insuflaciones en adultos es de:",
+    "options": [
+      "a) 30/2.",
+      "b) 15/2.",
+      "c) 30/1.",
+      "d) Depende del número de reanimadores."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "13. ¿Cuál de las siguientes afirmaciones sobre el boca a boca es falsa?",
+    "options": [
+      "a) Debemos tapar los orificios nasales.",
+      "b) Debemos sellar la boca del paciente con nuestra boca.",
+      "c) Se realizarán 2 insuflaciones cada 30 compresiones.",
+      "d) Se realizará una insuflación profunda para mejorar la oxigenación."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "14. ¿Cuál de las siguientes afirmaciones sobre el masaje cardiaco externo es falsa?",
+    "options": [
+      "a) Se realiza en el centro del pecho.",
+      "b) Se realiza sobre el tercio inferior del esternón.",
+      "c) Se realiza con los brazos oblicuos al cuerpo.",
+      "d) Se realiza con el talón de la mano."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "15. Consideraremos una obstrucción como parcial si:",
+    "options": [
+      "a) El paciente no se encuentra atragantado.",
+      "b) El paciente puede respirar y toser.",
+      "c) El paciente no puede toser.",
+      "d) El paciente se encuentra consciente."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "16. La maniobra de Heimlich la realizaremos en un paciente:",
+    "options": [
+      "a) Que presente un OVACE incompleto y esté inconsciente.",
+      "b) Que presente un OVACE completo y esté consciente.",
+      "c) Que presente un OVACE completo y esté inconsciente.",
+      "d) Que no pueda respirar con normalidad."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "17. Ante una hemorragia debemos:",
+    "options": [
+      "a) Dar agua para reponer el volumen perdido.",
+      "b) Usar un torniquete.",
+      "c) Hacer compresión sobre la herida.",
+      "d) Aplicar calor seco."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "18. La cánula de Guedel:",
+    "options": [
+      "a) Es una cánula orofaringea.",
+      "b) Se utiliza para mantener la vía aérea permeable.",
+      "c) Es un tubo de plástico abierto en su interior.",
+      "d) Todas las respuestas son ciertas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "19. Si está indicada la descarga con el desfibrilador deberemos estar seguros de que:",
+    "options": [
+      "a) El ritmo es desfibrilable.",
+      "b) El nivel de julios es el correcto.",
+      "c) Nadie toca al paciente.",
+      "d) El DESA tiene baterías."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "20. En los/las niños/as las técnicas de RCP se inician con:",
+    "options": [
+      "a) 30 compresiones.",
+      "b) 2 ventilaciones.",
+      "c) 5 ventilaciones.",
+      "d) 15 compresiones."
+    ],
+    "correct": 2
+  },
+   {
+    "question": "21. La secuencia ideal entre compresiones y ventilaciones en los/las niños/as es de:",
+    "options": [
+      "a) 30/2.",
+      "b) 15/2.",
+      "c) 30/1.",
+      "d) 15/5."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "22. La realización de la RCP en niños/as debe hacerse con el/la niño/a:",
+    "options": [
+      "a) En PLS.",
+      "b) En decúbito prono sobre una superficie dura.",
+      "c) En decúbito supino sobre una superficie dura.",
+      "d) En la posición en la que nos encontramos al paciente evitando la movilización."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "23. Ante un paciente inconsciente deberemos:",
+    "options": [
+      "a) Comprobar la consciencia.",
+      "b) Comprobar la respiración.",
+      "c) Comprobar la circulación.",
+      "d) Iniciar la RCP."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "24. En paciente con traumatismos abriremos la vía aérea mediante:",
+    "options": [
+      "a) La maniobra frente-mentón.",
+      "b) La tracción mandibular.",
+      "c) El ambú.",
+      "d) Todas son ciertas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "25. Cuando la sangre que brota de una herida lo hace de forma continua y babeante, de color azulado, podemos sospechar que existe una:",
+    "options": [
+      "a) Hemorragia arterial.",
+      "b) Hemorragia venosa.",
+      "c) Hemorragia capilar.",
+      "d) Hemorragia interna."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "26. Si una persona no responde (está inconsciente) y no respira, probablemente ha sufrido un paro cardio-respiratorio. Si se ha solicitado ayuda, pero no ha llegado el carro y el monitor-desfibrilador, ¿cuál es la acción más beneficiosa que debemos realizar?",
+    "options": [
+      "a) Maniobra de Heimlich",
+      "b) Compresiones torácicas",
+      "c) Intubación endotraqueal",
+      "d) Adrenalina intravenosa"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "27. La hemorragia procedente del aparato digestivo que es expulsada con el vómito se llama:",
+    "options": [
+      "a) Melenas.",
+      "b) Epistaxis.",
+      "c) Hemoptisis.",
+      "d) Hematemesis."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "28. ¿Cómo se denomina la hemorragia que presenta un accidentado por un traumatismo que sangra por el oído?",
+    "options": [
+      "a) Otorragia.",
+      "b) Epistaxis.",
+      "c) Metrorragia.",
+      "d) Hemartros."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "29. El tipo de fractura, propia en los niños, consistente en una rotura en donde las partes no pierden el contacto se denomina:",
+    "options": [
+      "a) Completa.",
+      "b) En tallo verde.",
+      "c) Brote.",
+      "d) Cápsula."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "30. La fórmula que establece la extensión de la superficie quemada se llama:",
+    "options": [
+      "a) La regla de Wallace.",
+      "b) La fórmula de Lund y Browder.",
+      "c) La regla de los 7.",
+      "d) La regla de los 6."
+    ],
+    "correct": 0
+  },
+    {
+    "question": "31. En la Unidad de Urgencias se distinguen zonas y áreas de trabajo; señale la incorrecta:",
+    "options": [
+      "a) Área de admisión de Enfermos",
+      "b) Área de consultas",
+      "c) Área de hospitalización",
+      "d) Área de boxes"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "32. ¿Deberá el celador de puerta de entrada de urgencias ayudar a los/as pacientes a descender de los vehículos particulares?",
+    "options": [
+      "a) Sí, siempre que la situación lo requiera.",
+      "b) No, nunca",
+      "c) Sí, independientemente del estado del paciente.",
+      "d) No, sólo lo hará con aquellos que lleguen en ambulancia"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "33. No es función del celador de urgencias del hospital:",
+    "options": [
+      "a) Mantener la entrada provistas de sillas y camillas",
+      "b) Avisar a los allegados de los pacientes que van a ingresar para que los acompañen",
+      "c) Administrar oxígeno a los pacientes que lo necesiten al llegar al servicio",
+      "d) Sujeción de niños a los que se va a suturar"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "34. La regla de Wallace o de los 9 se aplica en:",
+    "options": [
+      "a) Fracturas",
+      "b) Hemorragias",
+      "c) Asfixia",
+      "d) Quemaduras"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "35. El reanimador deberá suspender la RCP básica:",
+    "options": [
+      "a) Cuando tras valorar al paciente, este se encuentre inconsciente y no respire en cuyo caso lo colocará en PLS",
+      "b) Tras realizar las insuflaciones",
+      "c) Cuando el reanimador está exhausto.",
+      "d) Para realizar la maniobra de Heimlich"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "36. ¿En qué supuesto resulta recomendado que efectuemos la maniobra de Heimlich?:",
+    "options": [
+      "a) Paciente consciente con las vías respiratorias obstruidas sin que pueda toser",
+      "b) Paciente que sufre una crisis por epilepsia",
+      "c) Paciente inconsciente que no respira",
+      "d) Paciente inconsciente que respira"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "37. La cánula orofaríngea más conocida y usada que ayuda a la apertura de la vía aérea es:",
+    "options": [
+      "a) Cánula de Wallace",
+      "b) Cánula de Heimlich",
+      "c) Tubo de Guedel",
+      "d) Ninguna respuesta es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "38. Si por las circunstancias que fueran, un reanimador no quiere o no puede dar ventilación artificial boca a boca, ¿qué debe hacer?",
+    "options": [
+      "a) Suspender las maniobras",
+      "b) Esperar a que el paciente sea intubado para continuar las maniobras",
+      "c) Maniobra de Heimlich",
+      "d) RCP solo con compresiones"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "39. Ante una persona que se ha atragantado y está tosiendo, deberemos:",
+    "options": [
+      "a) Dar 5 golpes interescapulares",
+      "b) Tumbarlo en el suelo, abrir la vía aérea y comenzar las compresiones",
+      "c) Realizar la Maniobra de Heimlich",
+      "d) Animarle a que siga tosiendo"
+    ],
+    "correct": 3
+  },
+  {
+    "question": "40. En soporte vital básico la denominada conducta PAS significa:",
+    "options": [
+      "a) Paciente - Alerta - Sanitaria",
+      "b) Prevenir - Alertar - Socorrer",
+      "c) Precaución - Alarma - Socorro",
+      "d) Proteger - Avisar - Socorrer"
+    ],
+    "correct": 3
+  }
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>

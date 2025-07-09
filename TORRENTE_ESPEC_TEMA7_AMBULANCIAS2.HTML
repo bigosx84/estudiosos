@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Preguntas</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7fc;
+            display: flex; flex-wrap: wrap;
+            justify-content: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #eef3ff;
+            border-left: 5px solid #4a90e2;
+        }
+        .question label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            font-size: 17px; font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #d1d8e0;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+            width: calc(100% - 20px); max-width: 100%;
+        }
+        .option:hover {
+            background-color: #d9e8ff;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #e53935;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="quizForm"></form>
+    </div>
+    
+    <script>
+        const questions = [ 
+ {
+    "question": "1. La UVI móvil y su personal serían un servicio de asistencia sanitaria de urgencias:",
+    "options": [
+      "a) Hospitalario.",
+      "b) Extrahospitalario.",
+      "c) Hospitalario entre las 17 h. y las 9 h.",
+      "d) Implantado en pequeñas poblaciones."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "2. No es un área de la Unidad de Urgencias del Hospital:",
+    "options": [
+      "a) Admisión de pacientes.",
+      "b) Hospitalización.",
+      "c) Observación.",
+      "d) Consultas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "3. Las ambulancias tipo A1 tienen como finalidad:",
+    "options": [
+      "a) El desplazamiento de pacientes en camilla.",
+      "b) Prestar asistencia en ruta.",
+      "c) Traslado colectivo de pacientes.",
+      "d) Son correctas a) y b)."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "4. Acaba de entrar un enfermo por la puerta de urgencias del hospital. El traslado se efectuará preferentemente:",
+    "options": [
+      "a) En silla de ruedas.",
+      "b) En cama.",
+      "c) Por su propio pie.",
+      "d) Por cualquiera de ellos, según el tipo de dolencia."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "5. ¿En qué circunstancias podría el celador destinado en urgencias realizar una cura?",
+    "options": [
+      "a) Si se lo ordena el médico.",
+      "b) Bajo la supervisión de una enfermera.",
+      "c) Si el personal de enfermería se encontrase ocupado con otro enfermo.",
+      "d) Ninguna es correcta."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "6. Los dispositivos de urgencias sanitarias garantizan a los usuarios del Sistema Sanitario Público una atención continuada, y para ello:",
+    "options": [
+      "a) Tratan todo tipo de procesos.",
+      "b) Estos dispositivos son susceptibles de tiempos de espera de la asistencia ambulatoria.",
+      "c) Garantizan a los usuarios una atención sanitaria durante las 24 horas del día.",
+      "d) Consideran la situación y tienen en cuenta la equidad."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "7. Es una característica de la urgencia:",
+    "options": [
+      "a) El déficit de salud de un individuo que requiere atención inmediata.",
+      "b) Una situación de emergencia colectiva.",
+      "c) Una situación de desestabilización social en que entran en juego las fuerzas de la naturaleza.",
+      "d) Una situación de riesgo universal."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "8. ¿Cuál de las siguientes afirmaciones expresa alguna característica propia del término «emergencia»?",
+    "options": [
+      "a) Es un tipo agravado de urgencia en la que existe un peligro inmediato, real o potencial, para la vida del paciente.",
+      "b) Existe peligro de secuelas para el paciente.",
+      "c) Suceso que provoca en el organismo una lesión y es de forma fortuita.",
+      "d) Suceso que altera el orden normal de las cosas y provoca una gran necesidad de asistencia sanitaria."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "9. Se considera «emergencia» a aquella situación que:",
+    "options": [
+      "a) Supone una pérdida de calidad de vida para la persona y debe ser atendida de forma preferente.",
+      "b) Es percibida como tal por el usuario.",
+      "c) Supone una amenaza inmediata para la vida o salud de la persona.",
+      "d) Es definida como tal por Atención Primaria."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "10. Las Unidades de Urgencias de los Hospitales Generales y Especialidades prestan asistencia:",
+    "options": [
+      "a) Ambulatoria.",
+      "b) Domiciliaria.",
+      "c) Especializada.",
+      "d) De urgencia."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "11. Los hospitales que atienden urgencias de todas las especialidades, ¿a qué nivel pertenecen?",
+    "options": [
+      "a) Al nivel 4.",
+      "b) Al nivel 3.",
+      "c) Al nivel 2.",
+      "d) Al nivel 1."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "12. Señala cuál de las siguientes no es una zona diferenciada de la unidad de urgencias:",
+    "options": [
+      "a) Área de admisión de familiares.",
+      "b) Área de boxes.",
+      "c) Área de observación.",
+      "d) Área de emergencias."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "13. Dentro del equipamiento del que está dotado un servicio de Urgencias, no se encuentra:",
+    "options": [
+      "a) Equipo de ventilación mecánica asistida.",
+      "b) Sala de esterilización por plasma gas.",
+      "c) Desfibrilador cardiaco con sincronizados.",
+      "d) Laringoscopio y tubos endotraqueales."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "14. Dentro del equipamiento del que está dotado un servicio de Urgencias no se encuentra/n:",
+    "options": [
+      "a) Equipos para cateterización uretral.",
+      "b) Torniquetes y material para clampajes vasculares.",
+      "c) Instrumental de cirugía mayor.",
+      "d) Equipos de atención obstétrica urgente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "15. El plan de Urgencias del hospital se integrará:",
+    "options": [
+      "a) En la planificación del Hospital.",
+      "b) En los programas del Hospital.",
+      "c) En el Plan General del Hospital.",
+      "d) En la cartera de servicios no comunes del hospital."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "16. El transporte sanitario programado en ambulancia en Extremadura es:",
+    "options": [
+      "a) El traslado del que no se tiene conocimiento y puede preverse su realización, transcurriendo un intervalo de tiempo de 18 horas o más desde la solicitud del traslado hasta la ejecución del servicio.",
+      "b) El traslado del que se tiene conocimiento previo y puede preverse su realización, transcurriendo un plazo de tiempo inferior a 18 horas desde la solicitud del traslado y la ejecución del servicio.",
+      "c) El traslado del que no se tiene conocimiento previo ni puede preverse su realización, transcurriendo un plazo de tiempo inferior a 18 horas desde la solicitud del traslado y la ejecución del servicio.",
+      "d) El traslado del que se tiene conocimiento y puede preverse su realización, transcurriendo un intervalo de tiempo de 18 horas o más desde la solicitud del traslado hasta la ejecución del servicio."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "17. El Plan de Urgencias debe incluir una descripción detallada de la unidad y no incluye:",
+    "options": [
+      "a) Organigrama.",
+      "b) Historia clínica.",
+      "c) Circuito administrativo y asistencial.",
+      "d) Protocolo de todo tipo de asistencia sanitaria."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "18. La asistencia continuada de urgencias se prestará por el personal del Equipo de AP de la Zona de Salud en:",
+    "options": [
+      "a) Domicilio.",
+      "b) Hospital.",
+      "c) Centro de salud.",
+      "d) Las respuestas a) y c) son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "19. Una de las siguientes funciones no corresponde al celador/a en las unidades de urgencias extrahospitalarias:",
+    "options": [
+      "a) Velar por el funcionamiento del servicio.",
+      "b) Podrá derivar urgencias a otros dispositivos sanitarios en situaciones de mucha demanda.",
+      "c) Facilitar la hoja de reclamaciones a usuarios que no estén de acuerdo con la atención recibida.",
+      "d) No abandonará su puesto cuando esté solo en el servicio por ausencia del equipo sanitario."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "20. En un triaje se consideran situación de emergencia, nivel 1:",
+    "options": [
+      "a) Pacientes cuya atención puede demorarse más de 30 minutos.",
+      "b) Pacientes a los que se asigna una etiqueta o código rojo.",
+      "c) Pacientes en coma.",
+      "d) Pacientes a los que se asigna etiqueta o código verde."
+    ],
+    "correct": 1
+  },
+    {
+    "question": "21. El proceso de valoración clínica preliminar que ordena los pacientes antes de la valoración diagnóstica terapéutica completa, de forma que en una saturación del servicio, los pacientes más urgentes son tratados los primeros, corresponde al concepto de:",
+    "options": [
+      "a) Manchester.",
+      "b) Triaje.",
+      "c) Urgencia.",
+      "d) Emergencia."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "22. Señala la respuesta incorrecta respecto a las UMEs en Extremadura:",
+    "options": [
+      "a) Están reguladas por la Resolución de 5 de diciembre de 2006,de la Dirección Gerencia del Servicio Extremeño de Salud, por la que se regulan las Unidades Medicalizadas de Emergencia, en la Comunidad Autónoma de Extremadura.",
+      "b) El objetivo fundamental de las UMEs es la Atención Sanitaria Urgente a ciudadanos que han sufrido un grave y agudo problema de salud que requiere Atención Sanitaria inmediata en el lugar donde se ha producido el incidente.",
+      "c) Cuando las necesidades lo requieran, cada UME contará con un médico y una enfermera en servicio durante las 24 horas del día los 365 días del año. Asimismo, cada UME contará con una ambulancia asistencial tipo UVI-Móvil.",
+      "d) Actualmente las UMEs terrestres existentes son 16 unidades."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "23. El nivel 2 de triaje corresponde:",
+    "options": [
+      "a) A un nivel muy urgente, con un tiempo para atender al paciente de 15 minutos, al que se le asigna etiqueta naranja.",
+      "b) A un nivel muy urgente, con un tiempo para atender al paciente de 30 minutos, al que se le asigna etiqueta amarilla.",
+      "c) A un nivel urgente, con un tiempo para atender al paciente de 15 minutos, al que se le asigna etiqueta roja.",
+      "d) A un nivel urgente, con un tiempo para atender al paciente de 30 minutos, al que se le asigna etiqueta naranja."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "24. El nivel 3 de Triaje corresponde:",
+    "options": [
+      "a) A un nivel muy urgente, con un tiempo para atender al paciente de 15 minutos, al que se le asigna etiqueta naranja.",
+      "b) A un nivel muy urgente, con un tiempo para atender al paciente de 30 minutos, al que se le asigna etiqueta amarilla.",
+      "c) A un nivel urgente, con un tiempo para atender al paciente de 15 minutos, al que se le asigna etiqueta roja.",
+      "d) A un nivel urgente, con un tiempo para atender al paciente de 60 minutos, al que se le asigna etiqueta amarilla."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "25. Señala cuál de los siguientes no es una función del celador en la entrada de Urgencias:",
+    "options": [
+      "a) Recibir a los pacientes que lleguen a la puerta de Urgencias, saliendo a su encuentro y acomodándolos.",
+      "b) Cuidar de que el paciente acuda a la zona de boxes o consulta de Urgencias acompañado de sus familiares.",
+      "c) Mantener la entrada de Urgencias convenientemente surtida de carros y camillas.",
+      "d) Trasladar al paciente a: sala de espera de pacientes, de yesos, de observación, de radiología, de consultas externas y servicios diagnósticos."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "26. Señala cuál es un tipo de transporte sanitario dependiendo del carácter del transporte:",
+    "options": [
+      "a) Primario, secundario o terciario.",
+      "b) Emergente, urgente, demorable.",
+      "c) Terrestre, aéreo o marítimo.",
+      "d) Público o concertado."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "27. En Extremadura las UMTS son:",
+    "options": [
+      "a) ambulancias no asistenciales tipo A1 destinadas al transporte secundario.",
+      "b) ambulancias asistenciales tipo B destinadas al transporte secundario.",
+      "c) ambulancias no asistenciales tipo C destinadas al transporte secundario.",
+      "d) ambulancias asistenciales tipo C destinadas al transporte secundario."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "28. Un paciente que se traslada de un centro a otro bien sea concertado o privado, realiza un transporte:",
+    "options": [
+      "a) Rutinario.",
+      "b) Primario.",
+      "c) Secundario.",
+      "d) Emergente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "29. ¿En cuál de los siguientes tipos de ambulancias se trasladará de forma ordinaria a un paciente que va a ser sometido a sesión de hemodiálisis?",
+    "options": [
+      "a) Ambulancia medicalizada.",
+      "b) Ambulancia de SVB.",
+      "c) Ambulancia de SVA.",
+      "d) Ambulancias de clase A2."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "30. Señala cuál de las siguientes no es una ambulancia asistencial:",
+    "options": [
+      "a) Ambulancia de clase B.",
+      "b) Ambulancia que proporciona soporte vital básico y atención sanitaria inicial.",
+      "c) Ambulancia de clase A1.",
+      "d) Ambulancia de soporte vital avanzado."
+    ],
+    "correct": 2
+  },
+    {
+    "question": "31. ¿En qué posición se pondría a un paciente con una herida en el abdomen?",
+    "options": [
+      "a) Posición lateral o seguridad.",
+      "b) Sedestación.",
+      "c) Decúbito supino y piernas flexionadas.",
+      "d) Decúbito supino y piernas elevadas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "32. Según el sistema español de triaje la atención no urgente deberá ser atendida antes de:",
+    "options": [
+      "a) 240 min",
+      "b) 60 min",
+      "c) 120 min",
+      "d) 180 min"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "33. ¿En qué posición se deberá colocar a un enfermo que ha perdido la consciencia, respira y queremos facilitar la eliminación de secreciones y mantener despejada la vía aérea?",
+    "options": [
+      "a) Fowler.",
+      "b) Trendelemburg.",
+      "c) Genupectoral.",
+      "d) PLS."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "34. Los vehículos acondicionados con los elementos que permitan administrar cuidados básicos de soporte vital al paciente y al transporte de todo tipo de enfermos o accidentados que necesiten o puedan precisar asistencia sanitaria en ruta son:",
+    "options": [
+      "a) Tipo A1",
+      "b) Tipo A2",
+      "c) Tipo B",
+      "d) Tipo C"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "35. El primer eslabón de la cadena de supervivencia es:",
+    "options": [
+      "a) RCP básica.",
+      "b) Desfibrilación precoz.",
+      "c) Activación de los servicios de emergencia.",
+      "d) Soporte vital avanzado."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "36. Lo primero que se debe hacer en una situación de emergencia es:",
+    "options": [
+      "a) Avisar a los servicios sanitarios.",
+      "b) Realizar una valoración del paciente.",
+      "c) Protegernos a nosotros, al paciente y a la zona.",
+      "d) Socorrer al herido."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "37. ¿En qué posición se trasladará a un paciente diagnosticado de insuficiencia respiratoria con oxigenoterapia?",
+    "options": [
+      "a) Fowler.",
+      "b) Sims.",
+      "c) Trendelenburg",
+      "d) Roser."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "38. ¿En qué posición se colocará a un paciente que tiene una hemorragia interna?",
+    "options": [
+      "a) Decúbito lateral.",
+      "b) Decúbito ventral.",
+      "c) Decúbito supino.",
+      "d) Decúbito prono."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "39. En general todo paciente traumatizado deberá ser trasladado en ambulancia en posición:",
+    "options": [
+      "a) Decúbito supino con cabeza y tronco alineados (180°)",
+      "b) En PLS.",
+      "c) Fowler",
+      "d) Decúbito prono."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "40. Todos los vehículos de transporte sanitario, sea cual fuere su clase, deberán cumplir las siguientes exigencias: (señala la incorrecta)",
+    "options": [
+      "a) Faros antiniebla anteriores y posteriores.",
+      "b) Identificación exterior que permita distinguir claramente que se trata de una ambulancia, mediante la inscripción de la palabra «Ambulancia» detrás y delante. La inscripción delantera se realizará en sentido inverso para que pueda ser leído por reflexión.",
+      "c) Extintor de incendios, con arreglo a lo dispuesto en la reglamentación vigente.",
+      "d) Neumáticos de invierno, o en su defecto cadenas para hielo y nieve, al menos para el periodo comprendido entre noviembre y mayo, ambos incluidos."
+    ],
+    "correct": 3
+  }
+      ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            const optionsList = document.createElement('ul');
+            optionsList.classList.add('options');
+
+            q.options.forEach((option, i) => {
+                const optionItem = document.createElement('li');
+                optionItem.classList.add('option');
+
+                const radio = document.createElement('input');
+                optionItem.addEventListener('click', () => radio.click());
+                radio.type = 'radio';
+                radio.name = `question${index}`;
+                radio.value = i;
+                radio.addEventListener('change', () => {
+                    if (i === q.correct) {
+                        optionItem.classList.add('correct');
+                        optionItem.classList.remove('incorrect');
+                    } else {
+                        optionItem.classList.add('incorrect');
+                        optionItem.classList.remove('correct');
+                    }
+                });
+
+                optionItem.appendChild(radio);
+                optionItem.appendChild(document.createTextNode(option));
+                optionsList.appendChild(optionItem);
+            });
+
+            questionDiv.appendChild(optionsList);
+            form.appendChild(questionDiv);
+        });
+    </script>
+</body>
+</html>
